@@ -1,5 +1,5 @@
-#ifndef _PIPELINE_H
-#define _PIPELINE_H
+#ifndef _CMI_H
+#define _CMI_H
 
 #include <vector>
 #include <string>
@@ -15,28 +15,28 @@ class Job;
 class CPUUsage;
 
 
-class Pipeline{
+class CMI{
 protected:
-	// This attribute indicates if the Pipeline is initialized
+	// This attribute indicates if the McFTP is initialized
 	static bool initialized;
 
-	// This attribute indicates if the Pipeline is simulating
+	// This attribute indicates if the McFTP is simulating
 	static bool simulating;
 
-	// number of pipeline stages
-	int n_stages;
+	// number of used cores set in the xml file
+	int n_used;
 
-	// number of cpu cores in the  processor
+	// number of cpu cores in the hardware platform
 	int n_cpus;
 
-	// This vector stores the cpu core ids corresponding to each stage
+	// This vector stores the cpu core ids corresponding to each core
 	std::vector<unsigned> worker_cpu;
 
 	// This vector stores pointers to workers. Each worker represents 
-	// a stage.
+	// a core.
 	std::vector<Worker*> workers;
 
-	// Dispatcher release jobs to Pipeline
+	// Dispatcher release jobs to CMI
 	Dispatcher 	*dispatcher;
 
 	// Scheduler manages the execution of the workers
@@ -56,12 +56,12 @@ protected:
 public:
 
 	// Constructor needs the xml file path
-	explicit Pipeline(std::string);
+	explicit CMI(std::string);
 
 	// Constructor needs the xml file path
-	explicit Pipeline(std::string, int);
+	explicit CMI(std::string, int);
 
-	~Pipeline();
+	~CMI();
 
 	/************** Simulation interface functions ************/
 	// prepare for simulation, initialize statistics, dispatcher, scheduler
@@ -102,7 +102,7 @@ public:
 
 	// This function collects all the information of the pipeline
 	// in the simulation
-	void getAllPipelineInfo(PipelineInfo& p);
+	void getDynamicInfo(PipelineInfo& p);
 
 
 

@@ -1,7 +1,5 @@
 #include "Priorities.h"
 
-///Maximum number of threads under a scheduler
-#define MAX_LEVELS 10
 
 /***************************************
  *        CLASS DEFINITION             * 
@@ -10,17 +8,12 @@
 /*********** MEMBER FUNCTIONS ***********/
 
 int Priorities::get_main_pr() {
-  return 7+MAX_LEVELS;
+  return 7;
 }
 
 
-int Priorities::get_sched_pr(int level) {
-  if(level<0 || level>MAX_LEVELS) {
-    return 0;
-  }
-  else {
-     return 6+MAX_LEVELS-level; 
-  }
+int Priorities::get_sched_pr() {
+  return 6
 }
 
 int Priorities::get_disp_pr() {

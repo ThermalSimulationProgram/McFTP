@@ -1,4 +1,4 @@
-#include "Pipeline.h"
+#include "CMI.h"
 
 
 #include <unistd.h>
@@ -31,16 +31,16 @@ using namespace std;
 #define _INFO 0
 
 
-bool Pipeline::initialized = false;
-bool Pipeline::simulating  = false;
+bool CMI::initialized = false;
+bool CMI::simulating  = false;
 
 // Constructor needs the xml file path
-Pipeline::Pipeline(string xml_path):Pipeline(xml_path, 0){
+CMI::CMI(string xml_path):CMI(xml_path, 0){
 
 }
 
 // Constructor needs the xml file path
-Pipeline::Pipeline(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
+CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 {
 	Parser* p = new Parser(xml_path);
 	if (p->parseFile()!=0){
@@ -53,21 +53,21 @@ Pipeline::Pipeline(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 	#endif
 
 	// compare stage number with CPU number
-	int _n_stages = Scratch::getNstage();
+	int _n_used = Scratch::getNstage();
 	n_cpus        = (int)sysconf(_SC_NPROCESSORS_ONLN);
-	if (_n_stages <= 0 || _n_stages > n_cpus){
+	if (_n_used <= 0 || _n_used > n_cpus){
 		cerr << "Invalid stage number, should be a positive integer which is less than n_cpus";
 		pthread_exit(0);
 	}
 	
-	n_stages        = _n_stages;
+	n_used        = _n_used;
 	// create a Dispatcher and a Scheduler
 	dispatcher      = new Dispatcher(this, Scratch::getArrivalTimes(), 17);
 
 	scheduler       = new Scheduler(this, Scratch::getKernel(), 99);
 	
-	// create n_stages workers and attach it to default CPU
-	for (int i = 0; i < n_stages; ++i){
+	// create n_used workers and attach it to default CPU
+	for (int i = 0; i < n_used; ++i){
 		Worker *t = new Worker(i, i);
 		workers.push_back(t);
 		worker_cpu.push_back(i);		
@@ -85,7 +85,7 @@ Pipeline::Pipeline(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 	// initialize();	
 }
 
-Pipeline::~Pipeline(){
+CMI::~CMI(){
 	delete dispatcher;
 	delete scheduler;
 	delete tempwatcher;
@@ -97,7 +97,7 @@ Pipeline::~Pipeline(){
 
 
 // explicitly set the CPUs to which the works are attached 
-void Pipeline::setWorkerCPU(vector<unsigned> order){
+void CMI::setWorkerCPU(vector<unsigned> order){
 	if(order.size()!= (unsigned)n_stages){
 		cout<<"Pipeline::setWorkerCPU: invalid input\n";
 		return;
@@ -112,7 +112,7 @@ void Pipeline::setWorkerCPU(vector<unsigned> order){
 }
 
 // prepare for simulation, initialize statistics, dispatcher, scheduler
-void Pipeline::initialize(){
+void CMI::initialize(){
 	Statistics::initialize();
 
 	
@@ -142,7 +142,7 @@ void Pipeline::initialize(){
 }
 
 // Start the simulation, the duration is loaded from Scratch class
-double Pipeline::simulate(){
+double CMI::simulate(){
 	Worker *t;
 	// activate all the threads and attach them to their CPUs.
 	for (unsigned i = 0; i < workers.size(); ++i)
@@ -226,7 +226,7 @@ double Pipeline::simulate(){
 }
 
 
-void Pipeline::join_all() {
+void CMI::join_all() {
 	Worker* t;
    	#if _DEBUG==1
   		cout << "Joining all threads...\n";
@@ -247,7 +247,7 @@ void Pipeline::join_all() {
 }
 
 
-void Pipeline::getAllPipelineInfo(PipelineInfo& pinfo){
+void CMI::getAllPipelineInfo(PipelineInfo& pinfo){
 
 	pinfo.workerinfos.clear();
 	pinfo.temperature = tempwatcher->getCurTemp();
@@ -268,7 +268,7 @@ void Pipeline::getAllPipelineInfo(PipelineInfo& pinfo){
 
 
 // This function is called by the dispatcher to release a new job
-void Pipeline::newJob(Job* j, long accurate_time){
+void CMI::newJob(Job* j, long accurate_time){
 	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();
 	cout << "New job with id: " << j->getId() << " released at time: " 
@@ -285,22 +285,22 @@ void Pipeline::newJob(Job* j, long accurate_time){
 }
 
 // call this function to stop the simulation
-void Pipeline::endSimulation(){
+void CMI::endSimulation(){
 	simulating = false;
 }
 
 // Interface function to get member 'initialized'
-bool Pipeline::isInitialized(){
+bool CMI::isInitialized(){
 	return initialized;
 }
 // Interface function to get member 'simulating'
-bool Pipeline::isSimulating(){
+bool CMI::isSimulating(){
 	return simulating;
 }
 
 
 // This function is called by the end stage to announce a job is finished
-void Pipeline::finishedJob(Job* j){
+void CMI::finishedJob(Job* j){
 	// let the job self-check if it is real finished
 
 	double now = Statistics::getRelativeTime_ms();
@@ -336,48 +336,21 @@ void Pipeline::finishedJob(Job* j){
 }
 
 // This function is called by the scheduler to apply new schedule scheme to each stage
-void Pipeline::setPTMs(vector<unsigned long> ton, vector<unsigned long> toff){
+void CMI::setPTMs(vector<unsigned long> ton, vector<unsigned long> toff){
 	// simply forwards the ton and toff to each stage
 	for (unsigned i = 0; i < workers.size(); ++i)
 		workers[i]->setPTM(ton[i], toff[i]);
 }
 
 
-unsigned Pipeline::getNCPU(){
+unsigned CMI::getNCPU(){
 	return n_cpus;
 }
 
 
 
 
-// // This function is used for debugging, not used in real program
-// void Pipeline::loadInfoFromFile(pipeinfo& config, 
-// const vector<double>& wcets, const vector<double>& TBET,
-// enum _schedule_kernel kernel){
-// 	config.allT = loadVectorFromFile<double>("allT.csv");
-// 	double curTime = loadDoubleFromFile("CurTime.csv");
-// 	unsigned ustages = wcets.size();
-// 	vector<workerinfo> allinfo =  loadWorkerInfo(ustages);
-// 	for (unsigned i = 0; i < ustages; ++i){
-		
-// 		workerinfo tmp = allinfo[i];
-// 		config.Q.push_back(tmp.nFIFOJobs);
-// 		if (tmp.state == _sleep){
-// 			config.sleepSet.push_back(tmp.stageId);
-// 			if (TBET[i] > tmp.sleepTime)
-// 				config.ccs.push_back(TBET[i] - tmp.sleepTime);
-// 			else
-// 				config.ccs.push_back(0);
-// 		}
-// 		else
-// 			config.activeSet.push_back(tmp.stageId);
 
-// 		config.FIFOcurveData.push_back(getFIFODemands(curTime,
-// 			tmp.allEventAbsDeadlines, tmp.onGoEventId, tmp.executed,
-// 			wcets[i], kernel));
-// 	}
-	
-// }
 
 
 

@@ -18,7 +18,7 @@ class Priorities {
   static int get_disp_pr();
 
   ///This function returns the SCHED_PR constant, which depends on the scheduler's hierarchical level
-  static int get_sched_pr(int level);
+  static int get_sched_pr();
     
   ///This function returns the SERVER_PR constant
   static int get_server_pr();
