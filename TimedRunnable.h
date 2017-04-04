@@ -12,21 +12,21 @@ class TimedRunnable : public Thread{
 
 protected:
 
-	///This vector stores the absolute times instances when the timedJob functin is called
-	// must be set before simulation starts
-	std::vector<struct timespec> abs_times;
+	///This variable stores the absolute times instances when the next call of timedJob functin
+	struct timespec abs_time;
 
-	///Thie attribute indicates if vector abs_times has been set
 	bool abs_times_ready;
 
 	///This semaphore is used to block the thread until next absolute times instance in abs_times
 	sem_t wrapper_sem;
 
-	
+	///This is a signal semaphore, indicating whether the abs_time is already set
+	sem_t time_sem;
 
 public:
 	///Constructor needs nothing
 	explicit TimedRunnable(unsigned);
+
 	virtual ~TimedRunnable();
 
 	///gives the  thread the ACTIVE priority
@@ -40,12 +40,7 @@ public:
 
 	virtual void join() = 0;
 
-	///This function set the abs_times vector
-	void setAbsTimes(const std::vector<struct timespec>&);
-
-	///This fucntion calculates the abs_times vector according to given
-	/// relative times and time offset.
-	void convertRelativeTimesToAbs(const std::vector<unsigned long>&, unsigned long);
+	void setAbsTime(struct timespec t);
 
 	// pure virtual function. Should be implemented in derived classes
 	virtual void timedJob(unsigned) = 0;

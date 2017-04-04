@@ -23,7 +23,7 @@ protected:
 	// This attribute indicates if the McFTP is simulating
 	static bool simulating;
 
-	// number of used cores set in the xml file
+	// number of used cores, should be set in the xml file
 	int n_used;
 
 	// number of cpu cores in the hardware platform
@@ -103,23 +103,6 @@ public:
 	// This function collects all the information of the pipeline
 	// in the simulation
 	void getDynamicInfo(PipelineInfo& p);
-
-
-
-
-
-
-	/************** Functions for APTM and BWS kernels ************/
-	// This function collects the dynamic information of the pipeline
-	// in the simulation, and save it in config		
-	// void getInfo(pipeinfo&, const vector<double>&, const vector<double>&, 
-	// 	enum _schedule_kernel kernel);
-
-
-
-	// This function is used for debugging, not used in real program
-	// static void loadInfoFromFile(pipeinfo&, const vector<double>&, 
-	// 	const vector<double>&, enum _schedule_kernel kernel);
 
 
 };
