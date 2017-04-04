@@ -5,7 +5,6 @@
 #include <unistd.h>
 
 #include "Semaphores.h"
-#include "CMI.h"
 #include "TimeUtil.h"
 
 using namespace std;
@@ -19,6 +18,10 @@ TimedRunnable::TimedRunnable(unsigned _id) : Thread(_id){
 
 	///time_sem initialize  0
 	sem_init(&time_sem, 0, 0);
+
+	running = false;
+
+	counter = 0;
 }
 
 TimedRunnable::~TimedRunnable(){
@@ -34,40 +37,49 @@ void TimedRunnable::wrapper(){
   
 }
 
+void TimedRunnable::join_unblock(){
+	sem_post(&time_sem);
+}
+
 void TimedRunnable::timedRun(){
 	
 	int ret, err_no;
-	///wait for the absolute times are setted
-	while(!abs_times_ready && (CMI::isSimulating()) ){};
 
 	TimedRunnable * t = (TimedRunnable*) this;
 
-	while (CMI::isSimulating()){
+	while (running){
 		sem_wait(&time_sem);
-		ret = sem_timedwait(&wrapper_sem, &abs_time);
+		if (abs_times_ready){
+			ret = sem_timedwait(&wrapper_sem, &abs_time);
+			abs_times_ready = false; // current abs_time has already expired!
 
-		err_no = errno;
-		if(ret == -1){
+			err_no = errno;
+			if(ret == -1){
 
-			if(err_no == ETIMEDOUT) {
+				if(err_no == ETIMEDOUT) {
       				// cout << "TimedRunnable::wrapper: time out\n";
+				}
+				else if (err_no==EINVAL){
+					cout << "TimedRunnable::wrapper: EINVAL ERROR\n";
+				}
+				else if (err_no==EAGAIN){
+					cout << "TimedRunnable::wrapper: EAGAIN ERROR\n";
+				}
+				else {
+					cout << "TimedRunnable::wrapper: semaphore error (" << errno << ") - "  << "\n";
+				}
 			}
-			else if (err_no==EINVAL){
-				cout << "TimedRunnable::wrapper: EINVAL ERROR\n";
-			}
-			else if (err_no==EAGAIN){
-				cout << "TimedRunnable::wrapper: EAGAIN ERROR\n";
-			}
-			else {
-				cout << "TimedRunnable::wrapper: semaphore error (" << errno << ") - "  << "\n";
-			}
-		}
           //If the call received a signal, it is being deactivated
-		else {
-			cout << "TimedRunnable::wrapper: received a signal, be deactivated" << endl;
-		}
+			else {
+				cout << "TimedRunnable::wrapper: received a signal, be deactivated" << endl;
+			}
 
-		t->timedJob(i);
+			t->timedJob(counter); // stopTimedRun should be called here at the end
+
+			++counter;
+
+		}
+		
 	}
 }
 
@@ -78,5 +90,15 @@ void TimedRunnable::setAbsTime(struct timespec _t){
 	abs_times_ready = true;
 	sem_post(&time_sem);
 }
+
+void TimedRunnable::startTimedRun(){
+	running = true;
+}
+
+void TimedRunnable::stopTimedRun(){
+	running = false;
+}
+
+
 
 

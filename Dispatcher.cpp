@@ -7,8 +7,9 @@
 #include "Semaphores.h"
 #include "Scratch.h"
 #include "Statistics.h"
-#include "Pipeline.h"
+#include "CMI.h"
 #include "Job.h"
+#include "TimeUtil.h"
 
 
 
@@ -19,11 +20,10 @@ using namespace std;
 
 
 ///Constructor needs the relative release times of the jobs
-Dispatcher::Dispatcher(Pipeline* p, const vector<unsigned long>& _rl_arrive_times, 
+Dispatcher::Dispatcher(CMI* p, const vector<unsigned long>& _rl_arrive_times, 
 	unsigned _id): TimedRunnable(_id), rl_arrive_times(_rl_arrive_times) {
 	thread_type = dispatcher;
-	pipeline = p;
-	//rl_arrive_times = _rl_arrive_times;
+	cmi = p;
 }	
 
 
@@ -50,7 +50,7 @@ void Dispatcher::wrapper(){
 
 	
 	///wait for the simulation start
-	while(!Pipeline::isSimulating()){};
+	while(!CMI::isSimulating()){};
 
 	///Dispatcher releases jobs to a Pipeline object
 	if (pipeline == NULL){
@@ -60,6 +60,7 @@ void Dispatcher::wrapper(){
 
 	///Invokes parent class memember function to release jobs
 	///in a timed pattern
+	startTimedRun();
 	timedRun();
 
 	#if _INFO == 1
@@ -77,12 +78,19 @@ void Dispatcher::timedJob(unsigned index){
 	///release the 'index'th job, inform the job the current time
 	jobs[index].release(releasetime);
 	///pass the pointer of the new job to pipeline
-	pipeline->newJob(&jobs[index], rl_arrive_times[index]);
+	cmi->newJob(&jobs[index], rl_arrive_times[index]);
+
 	#if _DEBUG == 1
 	Semaphores::print_sem.wait_sem();
 	cout << "Dispatcher " << id << " dispatched a new job: " << index << endl;
 	Semaphores::print_sem.post_sem();
 	#endif
+
+	if (CMI::isSimulating() && index < abs_arrive_times.size()-1 ){
+		setAbsTime(abs_arrive_times[index+1]);
+	}else{
+		stopTimedRun();
+	}	
 }
 
 // void Dispatcher::setPipeline(Pipeline * p){
@@ -109,10 +117,11 @@ void Dispatcher::activate(){
 
 ///This function needs the absolute start time of the simulation
 void Dispatcher::setAbsReleaseTimes(unsigned long start_time){
-	convertRelativeTimesToAbs(rl_arrive_times, start_time);
+	abs_arrive_times = TimeUtil::relative2absolute(TimeUtil::Micros(start_time), rl_arrive_times);
 }
 
 ///No unblocking mechanism is needed
 void Dispatcher::join(){
+	join_unblock();
 	join2();
 }

@@ -60,6 +60,35 @@ void TimeUtil::setOffset()
 
 /*********** AUXILIARY FUNCTIONS ***********/
 
+std::vector<struct timespec> TimeUtil::relative2absloute(
+    struct timespec offset, const std::vector<unsigned long>& relativeTimes){
+  std::vector<struct timespec> abs_times;
+  unsigned long offset_micro;
+
+  offset_micro = convert_us(offset);
+  abs_times.reserve(relativeTimes.size());
+
+  unsigned long aux;
+  for (unsigned i = 0; i < relativeTimes.size(); ++i){
+    aux = offset_micro + relativeTimes[i];
+    abs_times.push_back(TimeUtil::Micros(aux));
+  }
+
+  return abs_times;
+  
+}
+
+struct timespec TimeUtil::relative2absloute(
+  struct timespec offset, unsigned long relativeTime){
+  struct timespec absoluteTime;
+  unsigned long t;
+  t = convert_us(offset) + relativeTime;
+  absoluteTime = Micros(t);
+
+  return absoluteTime;
+}
+
+
 ///Converts a timespec to unsigned long usecs
 unsigned long TimeUtil::convert_us(struct timespec t1)
 {

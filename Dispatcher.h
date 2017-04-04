@@ -2,12 +2,13 @@
 #define _DISPATCHER_H
 
 #include <vector>
+#include <time.h>
 
 
 #include "TimedRunnable.h"
 
 
-class Pipeline;
+class CMI;
 class Job;
 
 
@@ -18,11 +19,13 @@ private:
 	//relative release time is the time from the beginning  of the simulation, 
 	std::vector<unsigned long> rl_arrive_times;
 
+	std::vector<struct timespec> abs_arrive_times;
+
 	//This vector stores all the job objects
 	std::vector<Job> jobs;
 
 	///This pointer points to the Pipeline object to which this dispatcher is linked
-	Pipeline * pipeline;
+	CMI* cmi;
 
 
 public:

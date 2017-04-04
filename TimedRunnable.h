@@ -17,11 +17,15 @@ protected:
 
 	bool abs_times_ready;
 
+	bool running;
+
 	///This semaphore is used to block the thread until next absolute times instance in abs_times
 	sem_t wrapper_sem;
 
 	///This is a signal semaphore, indicating whether the abs_time is already set
 	sem_t time_sem;
+
+	unsigned counter;
 
 public:
 	///Constructor needs nothing
@@ -40,7 +44,13 @@ public:
 
 	virtual void join() = 0;
 
+	void join_unblock();
+
 	void setAbsTime(struct timespec t);
+
+	void stopTimedRun();
+
+	void startTimedRun();
 
 	// pure virtual function. Should be implemented in derived classes
 	virtual void timedJob(unsigned) = 0;

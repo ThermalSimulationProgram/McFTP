@@ -5,6 +5,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 
 /***************************************
  *        CLASS DECLARATION            * 
@@ -37,6 +38,12 @@ class TimeUtil {
   static void setOffset();
 
   /*********** AUXILIARY FUNCTIONS ***********/
+
+  static std::vector<struct timespec> relative2absloute(
+    struct timespec offset, const std::vector<unsigned long>& relativeTimes);
+
+  static struct timespec relative2absloute(
+    struct timespec offset, unsigned long relativeTime);
 
   ///Converts a timespec to unsigned long usecs
   static unsigned long convert_us(struct timespec t1);
