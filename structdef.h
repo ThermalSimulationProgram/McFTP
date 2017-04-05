@@ -4,15 +4,9 @@
 #include <vector>
 
 
-#include "warmingCurve.h"
+
 #include "Enumerations.h"
 
-typedef struct offlinedata{
-	std::vector<std::vector<double>> coolbreakToffs;
-	std::vector<std::vector<double>> coolslopes;
-	std::vector<int> numValidData;
-	std::vector<warmingCurves> allStageCurves;
-}thermalProp;
 
 typedef struct pipeinfo
 {
@@ -23,7 +17,7 @@ typedef struct pipeinfo
 	std::vector<double> dcs;
 	std::vector<double> rho;
 	std::vector<double> K;
-	std::vector<std::vector<double>> FIFOcurveData;
+	std::vector<std::vector<double> > FIFOcurveData;
 	std::vector<double> allT;
 	unsigned adaptionIndex;
 } pipeinfo;

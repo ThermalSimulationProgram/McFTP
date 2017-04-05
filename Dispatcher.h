@@ -1,61 +1,67 @@
 #ifndef _DISPATCHER_H
 #define _DISPATCHER_H
 
-#include <vector>
+#include "Thread.h"
+#include "Enumerations.h"
+
 #include <time.h>
 
-
-#include "TimedRunnable.h"
-
-
 class CMI;
-class Job;
 
+/***************************************
+ *        CLASS DECLARATION            * 
+ ***************************************/
 
-class Dispatcher : public TimedRunnable
-{
-private:
-	//This vector stores the relative release times (in millisecond) of the jobs, loaded from input csv file
-	//relative release time is the time from the beginning  of the simulation, 
-	std::vector<unsigned long> rl_arrive_times;
+class Dispatcher : public Thread {
 
-	std::vector<struct timespec> abs_arrive_times;
+ protected:
 
-	//This vector stores all the job objects
-	std::vector<Job> jobs;
+  /*********** VARIABLES ***********/
 
-	///This pointer points to the Pipeline object to which this dispatcher is linked
-	CMI* cmi;
+  ///Periodicity of the task to be dispatched
+  _task_periodicity periodicity;
 
+  ///When this is set, the dispatcher will sleep for the specified time before beginning to dispatch
+  struct timespec offset;
+    
+ public:
+ 
+  ///Pointer to the CMI associated to the dispatcher
+  CMI *cmi;
 
-public:
-	///Constructor needs the relative release times of the jobs
-	Dispatcher(Pipeline* ,const std::vector<unsigned long>&, unsigned);
-	~Dispatcher();
+  /*********** CONSTRUCTOR ***********/
 
-	///gives the dispatcher thread the ACTIVE_PR priority
-	void activate();
+  ///Contructor needs a disp_id
+  Dispatcher (unsigned int id);
 
-	///This join function takes into account the dispatcher's unblocking mechanism
-	void join();
+  /*********** INHERITED FUNCTIONS ***********/
 
-	///This function statically creates  all the jobs according to given WCETs,
-	/// execution time variation factor, and the relative deadline of the task. 
-	void createJobs(std::vector<unsigned long>, float, unsigned long);
+  /**** FROM THREAD ****/
 
-	///The created thread in the object starts execution by invoking this function 
-	void wrapper();
+  ///This join function takes into account the dispatcher's unblocking mechanism
+  void join();
+  
+  ///This is the pthread's wrapper function, calls dispatch -> which has the flagged loop.
+  void wrapper();
 
-	/// This function is invoked at given time instances to release a new job.
-	void timedJob(unsigned);
+  /*********** MEMBER FUNCTIONS ***********/
 
-	///This function calculates the absolute release time instance for all job, 
-	/// must be called before actual dispatching 
-	void setAbsReleaseTimes(unsigned long);
+  ///This function assignes DISP_PR to the thread
+  void activate();  
 
-	///This function links the dispatcher to a Pipeline object
-	// void setPipeline(Pipeline*);
+  ///This function was a flagged loop that activates the Worker according to the task periodicity
+  virtual void dispatch();
 
+  /*********** SETTER FUNCTIONS ***********/
+
+  ///This function sets the dispatcher's offset
+  void setOffset(struct timespec o);
+
+  ///This function sets the tasks's periodicity
+  void setPeriodicity(_task_periodicity t);
+
+  ///This function sets the associated CMI
+  void setCMI(CMI *c);
 };
 
 #endif

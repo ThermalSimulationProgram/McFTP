@@ -59,10 +59,10 @@ void TimedRunnable::timedRun(){
 				if(err_no == ETIMEDOUT) {
       				// cout << "TimedRunnable::wrapper: time out\n";
 				}
-				else if (err_no==EINVAL){
+				else if (err_no == EINVAL){
 					cout << "TimedRunnable::wrapper: EINVAL ERROR\n";
 				}
-				else if (err_no==EAGAIN){
+				else if (err_no == EAGAIN){
 					cout << "TimedRunnable::wrapper: EAGAIN ERROR\n";
 				}
 				else {

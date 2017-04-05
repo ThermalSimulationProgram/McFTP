@@ -42,20 +42,12 @@ Worker::Worker(int _stageId, int _id) : Thread(_id), load(Scratch::getBenchmarkN
 }
 
 Worker::~Worker(){
-	 // std::cout << "worker with id " << id << " is being destructed\n";
+	 
 }
 
-// void Worker::init(){
-// 	trigger();
-// 	initialized = true;
-// }
 
 bool Worker::isInitialized(){
 	return initialized;
-}
-
-void Worker::setNext(Worker* _next){
-	next = _next;
 }
 
 

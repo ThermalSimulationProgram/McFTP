@@ -47,6 +47,7 @@ struct timespec operator +(struct timespec a, struct timespec b) {
 }
 
 
+
 struct timespec operator -(struct timespec a, struct timespec b) {
   struct timespec x;
   x.tv_sec = a.tv_sec - b.tv_sec;

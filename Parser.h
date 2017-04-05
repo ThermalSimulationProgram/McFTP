@@ -8,11 +8,8 @@
 
 #include "pugixml.hpp"
 
-#include "structdef.h"
 #include "utils.h"
 
-
-// using namespace pugi;
 
 
 
@@ -30,13 +27,7 @@ public:
 	struct timespec parseTime(pugi::xml_node n);
 	unsigned long parseTimeMircroSecond(pugi::xml_node n);
 
-		
-	// This function loads warming curves of the processor from csv files
-	static std::vector<warmingCurves> parseWarmingingCurve(std::string,
-		unsigned);
-
-	// This function loads thermal property data of the processor from csv files
-	static thermalProp getOfflineData(std::string, unsigned);
+	
 	
 };
 
@@ -74,12 +65,6 @@ template<typename T> std::vector<T> parseTimeVectorMicro(pugi::xml_node n){
 
 	return ret;	
 }
-
-
-// This function is used for debugging. Not used in real program
-pipeinfo loadPipeInfo(unsigned nstage);
-// This function is used for debugging. Not used in real program
-std::vector<WorkerInfo> loadWorkerInfo(unsigned nstage);
 
 
 

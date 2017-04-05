@@ -8,7 +8,6 @@
 #include "Scratch.h"
 #include "TimeUtil.h"
 #include "Enumerations.h"
-#include "warmingCurve.h"
 #include "vectormath.h"
 #include "FileOperator.h"
 
@@ -24,7 +23,8 @@ Parser::Parser(string _xml_path){
 // This function parse the file pointed by xml_path, and then 
 // save all necessary data required by the simulation in Scratch class.
 int Parser::parseFile(){
-	int ret = 0;
+	return 0;
+	/*int ret = 0;
 
 	// load the xml file
 	xml_document doc;
@@ -172,68 +172,7 @@ int Parser::parseFile(){
 		Scratch::setPTMValues(ptm);
 	}
 	// Scratch::print();
-	return ret;
-}
-
-// This function loads thermal property data of the processor from csv files
-thermalProp Parser::getOfflineData(string prefix, unsigned nstage){
-	thermalProp ret;
-	ret.coolbreakToffs = loadMatrixFromFile<double>(prefix+"_coolBreakToffs.csv");
-	ret.coolslopes     = loadMatrixFromFile<double>(prefix+"_coolslopes.csv");
-	ret.numValidData   = loadVectorFromFile<int>(prefix+"_numValidData.csv");
-	ret.allStageCurves = parseWarmingingCurve(prefix, nstage);
-	return ret;
-}
-
-
-// This function loads warming curves of the processor from csv files
-vector<warmingCurves> Parser::parseWarmingingCurve(string prefix, unsigned nstage){
-
-	// first get the activation slope step
-	unsigned slopestep = (unsigned) loadDoubleFromFile( prefix+"_slopestep.csv");
-
-	vector<warmingCurves> ret;
-	// load the warming curves for all stages
-	for (unsigned i = 0; i < nstage; ++i)
-	{
-		// for each stage, the warmingCurves object constains x=floor(95/step) curves
-		warmingCurves aStageCurves = warmingCurves(slopestep);
-
-		stringstream name1, name2; 
-		// load the data files for the warmingCurves object.
-		// The format of prefix_warmingdata.csv:
-		// toff11, toff12, toff13, ..., toff1n, toff21, toff22, ... toff2m, .... , toffx1,...,toffxt.
-		// temp11, temp12, temp13, ..., temp1n, temp21, temp22, ... temp2m, .... , tempx1,...,tempxt.
-		// slope11, slope12, ... slope1n, slope21, slope22, ... slope2m, slopex1, ..., slopext.
-		// the element numbers in each curve, i.e., the n, m, and t above, are saved in prefix_warmingdataNumber.csv
-		name1 << prefix << "_warmingdata" << i+1 << ".csv";
-		name2 << prefix << "_warmingdataNumber" << i+1 << ".csv";
-
-
-		// load the matrix representation of the two files
-		vector<vector<double>> tmp  = loadMatrixFromFile<double>(name1.str());
-		vector<unsigned> dataNumber = loadVectorFromFile<unsigned>(name2.str());
-
-		// load the curve for each activation slope
-		unsigned cursor = 0;
- 		for (unsigned j = 0; j < dataNumber.size(); ++j){
-			unsigned length       = dataNumber[j];
-			vector<int> ids       = integerVector(cursor, cursor+length-1);
-			vector<double> toffs  = vectorExtract(tmp[0], ids);
-			vector<double> temps  = vectorExtract(tmp[1], ids);
-			vector<double> slopes = vectorExtract(tmp[2], ids);
-			// construct a linearSegs object
-			linearSegs tmpSeg     = linearSegs();
-			tmpSeg.setData(toffs, slopes, temps);
-
-			aStageCurves.insert(tmpSeg);
-
-			cursor += length;
-		}
-
-		ret.push_back(aStageCurves);
-	}
-	return ret;
+	return ret;*/
 }
 
 
@@ -266,72 +205,4 @@ struct timespec Parser::parseTime(xml_node n) {
 }
 
 
-// This function is used for debugging. Not used in real program
-pipeinfo loadPipeInfo(unsigned nstage){
-	pipeinfo ret;
-	ret.Q         = loadVectorFromFile<int>("Q.csv");
-	ret.activeSet = loadVectorFromFile<int>("activeSet.csv");
-	ret.sleepSet  = loadVectorFromFile<int>("sleepSet.csv");
-	ret.ccs       = loadVectorFromFile<double>("ccs.csv");
-	ret.dcs       = loadVectorFromFile<double>("dcs.csv");
-	ret.rho       = loadVectorFromFile<double>("rho.csv");
-	ret.K         = loadVectorFromFile<double>("K.csv");
-	ret.allT      = loadVectorFromFile<double>("allT.csv");
 
-	vector<vector<double>> tmp;
-	for (unsigned i = 0; i < nstage; ++i){
-		stringstream name1; 
-		name1 << "FIFOcurveData" << i+1 << ".csv";
-		vector<double> tmpstage = loadVectorFromFile<double>(name1.str());
-		tmp.push_back(tmpstage);
-
-	}
-
-	ret.FIFOcurveData = tmp;
-	return ret;
-}
-
-// This function is used for debugging. Not used in real program
-vector<WorkerInfo> loadWorkerInfo(unsigned nstage){
-	
-	vector<WorkerInfo> ret;
-
-	vector<int> allnfifijobs     = loadVectorFromFile<int>(
-		"allnFIFOJobs.csv");
-	vector<unsigned> allstates   = loadVectorFromFile<unsigned>(
-		"allstates.csv");
-	vector<int> allonGoEventIds  = loadVectorFromFile<int>(
-		"allonGoEventIds.csv");
-	vector<double> allexecuteds  = loadVectorFromFile<double>(
-		"allexecuteds.csv");
-	vector<double> allsleepTimes = loadVectorFromFile<double>(
-		"allsleepTimes.csv");
-
-	for (int i = 0; i < (int)nstage; ++i)
-	{
-		WorkerInfo tmp;
-		tmp.stageId   = i;
-		tmp.nFIFOJobs = allnfifijobs[i];
-		tmp.executed  = allexecuteds[i];
-		unsigned s    = allstates[i];
-
-		if (s==0)
-			tmp.state = _sleep;
-		else
-			tmp.state = _active;
-
-		tmp.sleepTime   = allsleepTimes[i];
-		
-		tmp.onGoEventId = allonGoEventIds[i];
-
-		stringstream name1;
-		name1 << "allEventAbsDeadlines" << i+1 << ".csv";
-		tmp.allEventAbsDeadlines = loadVectorFromFile<double>(name1.str());
-		
-		name1.str("");
-
-		ret.push_back(tmp);
-
-	}
-	return ret;
-}

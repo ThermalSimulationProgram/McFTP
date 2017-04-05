@@ -2,22 +2,33 @@
 #define POWERMANAGER_H 
 
 #include <vector>
-
+#include <string>
 
 #include "StateTable.h"
+#include "HyperStateTable.h"
 #include "TimedRunnable.h"
 
-class Worker;
+class Worker{
+public:
+	void activate(){
+
+	};
+
+	void deactivate(){
+
+	};
+};
 
 class PowerManager: public TimedRunnable{
 private:
-	std::vector<StateTable> tables;
+	std::vector<HyperStateTable> tables;
 	std::vector<Worker* > workers;
 
-	std::vector<int> nextCoreId;
+	int nextCoreId;
 
+	std::vector<std::string> freqInterface; 
 public:
-	PowerManager(unsigned);
+	PowerManager(unsigned, std::vector<Worker* > workers);
 
 	///gives the PowerManager thread the ACTIVE_PR priority
 	void activate();
@@ -31,9 +42,14 @@ public:
 	/// This function is invoked at given time instances to control the power.
 	void timedJob(unsigned);
 
-	void updateNextTime();
+	// void updateNextTime();
 
-	void setStateTables();
+	void setStateTables(const std::vector<StateTable> &);
+
+	void changePower(int id, double f);
+
+	void setFrequency(int id, double f);
+
 
 };
 

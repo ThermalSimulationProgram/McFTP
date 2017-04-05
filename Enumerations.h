@@ -20,6 +20,12 @@ enum _sched_type
   rm
 };
 
+///This enumeration descibes the possible task models
+enum _task_periodicity {
+  aperiodic,
+  periodic,
+  periodic_jitter
+};
 
 enum _worker_state{
   _sleep,

@@ -1,127 +1,104 @@
 #include "Dispatcher.h"
 
-#include <iostream>
-
+#include "CMI.h"
 
 #include "Priorities.h"
-#include "Semaphores.h"
-#include "Scratch.h"
-#include "Statistics.h"
-#include "CMI.h"
-#include "Job.h"
-#include "TimeUtil.h"
 
+#include <time.h>
+#include <iostream>
 
+#define _INFO 0
 
-
-#define _INFO 1
-#define _DEBUG 0
 using namespace std;
 
+/***************************************
+ *        CLASS DEFINITION             * 
+ ***************************************/
 
-///Constructor needs the relative release times of the jobs
-Dispatcher::Dispatcher(CMI* p, const vector<unsigned long>& _rl_arrive_times, 
-	unsigned _id): TimedRunnable(_id), rl_arrive_times(_rl_arrive_times) {
-	thread_type = dispatcher;
-	cmi = p;
-}	
+/*********** CONSTRUCTOR ***********/
 
+///Constructor needs Simulation pointer, and a disp_id
+Dispatcher::Dispatcher(unsigned int _id) : Thread(_id)
+{
+  #if _INFO == 1
+  cout << "++New Dispatcher - " << _id << "\n";
+  #endif
 
-Dispatcher::~Dispatcher(){
-	// std::cout << "dispatcher with id " << id << " is being destructed\n";
+  thread_type = dispatcher;
+
+  //By default periodic
+  periodicity = periodic;
+
+  //Offset is initially 0
+  offset.tv_sec = 0;
+  offset.tv_nsec = 0;
+
+  cmi = NULL;
+}
+
+/*********** INHERITED FUNCTIONS ***********/
+
+/**** FROM THREAD ****/
+
+///This join function takes into account the dispatcher's unblocking mechanism
+void Dispatcher::join() {
+ 
+  join2();
 }
 
 ///This is the pthread's wrapper function
-void Dispatcher::wrapper(){
-	#if _INFO == 1
-  	Semaphores::print_sem.wait_sem();
-	cout << "Dispatcher: " << id << " waiting for initialization\n";
-	Semaphores::print_sem.post_sem();
-  	#endif
+void Dispatcher::wrapper() {
+  struct timespec rem;
 
-  //Wait until the simulation is initialized
-	while( !Pipeline::isInitialized() );
+  #if _INFO == 1
+  cout << "Disp: " << id << " waiting for initialization\n";
+  #endif
 
-  	#if _INFO == 1
-	Semaphores::print_sem.wait_sem();
-	cout << "Dispatcher: " << id << " begining execution \n";
-	Semaphores::print_sem.post_sem();
-  	#endif
+  //Wait until the CMI is initialized
+  while( !CMI::isInitialized() );
+  
+  #if _INFO == 1
+  cout << "Disp: " << id << " begining execution \n";
+  #endif
 
-	
-	///wait for the simulation start
-	while(!CMI::isSimulating()){};
+  //if offset != 0, sleep before dispatching
+  if(offset.tv_nsec != 0 || offset.tv_sec !=0) {
+    nanosleep(&offset, &rem);
+  }
 
-	///Dispatcher releases jobs to a Pipeline object
-	if (pipeline == NULL){
-		cout << "Dispatcher error: Pipeline is null!\n";
-		return;
-	}
+  dispatch();
 
-	///Invokes parent class memember function to release jobs
-	///in a timed pattern
-	startTimedRun();
-	timedRun();
-
-	#if _INFO == 1
-	Semaphores::print_sem.wait_sem();
-	cout << "Dispatcher " << id << " exiting wrapper...\n";
-	Semaphores::print_sem.post_sem();
+  #if _INFO == 1
+  cout << "Dispatcher " << id << " exiting wrapper...\n";
   #endif
 }
 
-///This function needs the index of 'itself'
-/// index indicates this is the 'index'th time this function is called
-void Dispatcher::timedJob(unsigned index){
-	///get the absolute release time of the new job
-	unsigned long releasetime = Statistics::getRelativeTime();
-	///release the 'index'th job, inform the job the current time
-	jobs[index].release(releasetime);
-	///pass the pointer of the new job to pipeline
-	cmi->newJob(&jobs[index], rl_arrive_times[index]);
+/*********** MEMBER FUNCTIONS ***********/
 
-	#if _DEBUG == 1
-	Semaphores::print_sem.wait_sem();
-	cout << "Dispatcher " << id << " dispatched a new job: " << index << endl;
-	Semaphores::print_sem.post_sem();
-	#endif
-
-	if (CMI::isSimulating() && index < abs_arrive_times.size()-1 ){
-		setAbsTime(abs_arrive_times[index+1]);
-	}else{
-		stopTimedRun();
-	}	
+///This function sets the dispatcher's priority to DISP_PR
+void Dispatcher::activate() {
+  setPriority(Priorities::get_disp_pr());
 }
 
-// void Dispatcher::setPipeline(Pipeline * p){
-// 	pipeline = p;
-	
-// }
-
-void Dispatcher::createJobs(vector<unsigned long> wcets, float factor,
-	unsigned long _rltDeadline){
-	jobs.clear();
-	///get the number of stage from Scratch class
-	unsigned nstage = Scratch::getNstage();
-	///create the jobs according to their releative release times
-	for (unsigned i = 0; i < rl_arrive_times.size(); ++i){
-		Job j = Job(nstage, i+1, _rltDeadline, rl_arrive_times[i]);
-		j.setRCET(wcets, factor);
-		jobs.push_back(j);
-	}
+///This virtual function should be implemented by the subclasses
+void Dispatcher::dispatch() {
+  //empty
+  cout << "Dispatcher::dispatch - This should not print!\n";
 }
 
-void Dispatcher::activate(){
-	setPriority(Priorities::get_disp_pr());
+/*********** SETTER FUNCTIONS ***********/
+
+///This function sets the dispatcher's offset
+void Dispatcher::setOffset(struct timespec o) {
+  offset = o;
 }
 
-///This function needs the absolute start time of the simulation
-void Dispatcher::setAbsReleaseTimes(unsigned long start_time){
-	abs_arrive_times = TimeUtil::relative2absolute(TimeUtil::Micros(start_time), rl_arrive_times);
+///This function sets the dispatcher's periodicity
+void Dispatcher::setPeriodicity(_task_periodicity t) {
+  periodicity = t;
 }
 
-///No unblocking mechanism is needed
-void Dispatcher::join(){
-	join_unblock();
-	join2();
+///This function sets the worker
+void Dispatcher::setCMI(CMI *c) {
+  cmi = c;
 }

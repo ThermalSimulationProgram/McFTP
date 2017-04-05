@@ -5,23 +5,17 @@
 
 using namespace std;
 
-StableTable::StableTable(int _coreId):frequencies(),lengths(),
-	stateRowId(0), coreId(_coreId){
+StateTable::StateTable(int _coreId):frequencies(),lengths(),
+	coreId(_coreId){
 	frequencies.reserve(100);
 	lengths.reserve(100);
-	stateEndTimes.reserve(100);
 }
 
-StableTable::~StableTable(){}
+StateTable::~StateTable(){}
 
-void StableTable::pushState(double f, long l){
+void StateTable::pushState(double f, unsigned long l){
 	if (f < 0){
-		cerr << "StableTable::pushState: input frequency must be nonnegative" << endl;
-		exit(1);
-	}
-
-	if (l < 0){
-		cerr << "StableTable::pushState: input time length must be nonnegative" << endl;
+		cerr << "StateTable::pushState: input frequency must be nonnegative" << endl;
 		exit(1);
 	}
 
@@ -31,19 +25,39 @@ void StableTable::pushState(double f, long l){
 }
 
 
-void StableTable::getState(double& f, long& l){
-	f = frequencies[stateRowId];
-	l = lengths[stateRowId];
-	++stateRowId;
-	if (stateRowId >= lengths.size()){
-		stateRowId = 0;
-	}
+void StateTable::getState(int id, double& f, unsigned long& l){
+
+	f = getFrequency(id);
+	l = getLength(id);
 }
 
-void StableTable::setStateId(int id){
-	if (id >= lengths.size() || id < 0){
-		id = 0;
+double StateTable::getFrequency(int id){
+	if (id < 0 || id >= frequencies.size()){
+		cerr << "StateTable::getFrequency: state id exceeds range" << endl;
+		exit(1);
 	}
 
-	stateRowId = id;
+	return frequencies[id];
+}
+
+unsigned long StateTable::getLength(int id){
+	if (id < 0 || id >= lengths.size()){
+		cerr << "StateTable::getLength: state id exceeds range" << endl;
+		exit(1);
+	}
+
+	return lengths[id];
+}
+
+// void StateTable::setStateId(int id){
+// 	if (id >= lengths.size() || id < 0){
+// 		id = 0;
+// 	}
+
+// 	stateRowId = id;
+// }
+
+
+unsigned StateTable::getSize(){
+	return lengths.size();
 }

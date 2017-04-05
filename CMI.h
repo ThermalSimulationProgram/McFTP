@@ -13,6 +13,7 @@ class Scheduler;
 class TempWatcher;
 class Job;
 class CPUUsage;
+class PowerManager;
 
 
 class CMI{
@@ -45,6 +46,9 @@ protected:
 	// TempWatcher periodically reads the temperatures of the cpu cores and 
 	// records them
 	TempWatcher *tempwatcher;
+
+
+	PowerManager * powermanager;
 
 	// auxiliary variable to set main thread priority
 	struct sched_param param;

@@ -16,20 +16,17 @@
 
 
 
-class Pipeline;
+class CMI;
 
 
 
 class Worker : public Thread
 {
 protected:
-	int stageId;
-	unsigned long ton;
-	unsigned long toff;
+	int Id;
 
 	enum _worker_state state;
 	struct timespec latestSleep;
-
 
 	///This vector stores the ids of jobs that are waiting for execution
 	std::deque<Job *> FIFO;
@@ -38,10 +35,8 @@ protected:
 	unsigned base ;
 
 
-	Pipeline * pipeline;
+	CMI * pipeline;
 
-	///This attribute points to next stage, should be NULL when it's the end stage
-	Worker *next;
 
 	///semaphore controls accessing vector FIFO
 	sem_t FIFO_sem;
