@@ -1,9 +1,9 @@
-#include "Aperiodic.h"
+#include "dispatchers/Aperiodic.h"
 
-#include "CMI.h"
+#include "core/CMI.h"
 #include "results/Statistics.h"
-#include "util/Operators.h"
-#include "util/TimeUtil.h"
+#include "utils/Operators.h"
+#include "utils/TimeUtil.h"
 
 #include <iostream>
 
@@ -15,7 +15,7 @@
 
 ///Constructor needs a pointer to simulation and id
 Aperiodic::Aperiodic(unsigned int id) : Dispatcher(id) {
-  releaseTime = TimeUtil::Millis(5); //default release time is 5 ms
+  releaseTime = TimeUtil::Millis(10); //default release time is 5 ms
 }
 
 /*********** INHERITED FUNCTIONS ***********/
@@ -35,7 +35,7 @@ void Aperiodic::dispatch() {
   Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
   
   if(cmi != NULL) {
-    cmi->newJob();
+    cmi->newJob(TASK_TYPE);
   }
   else {
     cout << "Dispatcher error: CMI is null!\n";
@@ -43,9 +43,9 @@ void Aperiodic::dispatch() {
   
   //wait until simulation is done to free worker
   do {
-    struct timespec aux = Simulation::getSimTime() - releaseTime - offset;
+    struct timespec aux = CMI::getSimTime() - releaseTime - offset;
     nanosleep(&aux, &rem);
-  } while(Simulation::isSimulating());
+  } while(CMI::isrunning());
   
 
 }

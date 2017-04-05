@@ -1,8 +1,8 @@
 #ifndef _DISPATCHER_H
 #define _DISPATCHER_H
 
-#include "Thread.h"
-#include "Enumerations.h"
+#include "pthread/Thread.h"
+#include "utils/Enumerations.h"
 
 #include <time.h>
 
@@ -23,16 +23,18 @@ class Dispatcher : public Thread {
 
   ///When this is set, the dispatcher will sleep for the specified time before beginning to dispatch
   struct timespec offset;
-    
- public:
- 
+
   ///Pointer to the CMI associated to the dispatcher
   CMI *cmi;
 
+  const _task_type TASK_TYPE;
+    
+ public:
+
   /*********** CONSTRUCTOR ***********/
 
-  ///Contructor needs a disp_id
-  Dispatcher (unsigned int id);
+  ///Constructor needs  a disp_id and the type of the task associated with it
+  Dispatcher (unsigned int id, _task_type task_type);
 
   /*********** INHERITED FUNCTIONS ***********/
 

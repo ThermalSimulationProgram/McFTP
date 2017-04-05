@@ -1,4 +1,4 @@
-#include "CMI.h"
+#include "core/CMI.h"
 
 
 #include <unistd.h>
@@ -7,22 +7,22 @@
 #include <string>
 
 //components
-#include "temperature.h"
-#include "Dispatcher.h"
-#include "Scheduler.h"
-#include "Worker.h"
-#include "Job.h"
+#include "core/TempWatcher.h"
+#include "core/Dispatcher.h"
+#include "core/ThermalApproach.h"
+#include "core/Worker.h"
+#include "core/Task.h"
 
 //parser
-#include "Parser.h"
+#include "utils/Parser.h"
 //utilities
-#include "Scratch.h"
-#include "TimeUtil.h"
-#include "Semaphores.h"
-#include "Priorities.h"
-#include "Statistics.h"
-#include "Operators.h"
-#include "FileOperator.h"
+#include "configuration/Scratch.h"
+#include "utils/TimeUtil.h"
+#include "utils/Semaphores.h"
+#include "pthread/Priorities.h"
+#include "results/Statistics.h"
+#include "utils/Operators.h"
+#include "utils/FileOperator.h"
 
 
 
@@ -32,7 +32,7 @@ using namespace std;
 
 
 bool CMI::initialized = false;
-bool CMI::simulating  = false;
+bool CMI::running  = false;
 
 // Constructor needs the xml file path
 CMI::CMI(string xml_path):CMI(xml_path, 0){
@@ -295,7 +295,7 @@ bool CMI::isInitialized(){
 }
 // Interface function to get member 'simulating'
 bool CMI::isSimulating(){
-	return simulating;
+	return running;
 }
 
 

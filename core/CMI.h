@@ -4,8 +4,9 @@
 #include <vector>
 #include <string>
 
-#include "structdef.h"
-#include "CPUUsage.h"
+#include "core/structdef.h"
+#include "results/CPUUsage.h"
+#include "utils/Enumerations.h"
 
 class Worker;
 class Dispatcher;
@@ -21,8 +22,8 @@ protected:
 	// This attribute indicates if the McFTP is initialized
 	static bool initialized;
 
-	// This attribute indicates if the McFTP is simulating
-	static bool simulating;
+	// This attribute indicates if the McFTP is running
+	static bool running;
 
 	// number of used cores, should be set in the xml file
 	int n_used;
@@ -47,7 +48,8 @@ protected:
 	// records them
 	TempWatcher *tempwatcher;
 
-
+	// PowerManager controls the power dissipation of the cores according to
+	// StateTables given by thermal approaches
 	PowerManager * powermanager;
 
 	// auxiliary variable to set main thread priority
@@ -86,7 +88,7 @@ public:
 
 	/************** Simulation functions ************/
 	// This function is called by the dispatcher to release a new job
-	void newJob(Job*, long);
+	void newJob(_task_type task_type);
 
 	// call this function to stop the simulation
 	void endSimulation();
@@ -94,11 +96,11 @@ public:
 	// Interface function to get member 'initialized'
 	static bool isInitialized();
 
-	// Interface function to get member 'simulating'
-	static bool isSimulating();
+	// Interface function to get member 'running'
+	static bool isRunning();
 
-	// This function is called by the end stage to announce a job is finished
-	void finishedJob(Job*);
+	// This function is called by the work 
+	void finishedJob(Task*);
 
 	// This function is called by the scheduler to apply new schedule scheme to 
 	// each stage

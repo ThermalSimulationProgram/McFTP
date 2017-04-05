@@ -3,8 +3,8 @@
 #include "core/Simulation.h"
 #include "core/Worker.h"
 #include "results/Statistics.h"
-#include "util/Operators.h"
-#include "util/TimeUtil.h"
+#include "utils/Operators.h"
+#include "utils/TimeUtil.h"
 
 #include <iostream>
 #include <stdlib.h>
@@ -32,18 +32,18 @@ void PeriodicJitter::dispatch() {
   struct timespec newPeriod, rem;
   double random;
 
-  while (Simulation::isSimulating()) {
+  while (CMI::isrunning()) {
 
     Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
 
-    if(worker != NULL) {
-      worker->newJob();
+    if(cmi != NULL) {
+      cmi->newJob(TASK_TYPE);
     }
     else {
       cout << "Dispatcher error: worker is null!\n";
     }
 
-    if(Simulation::isSimulating()) {
+    if(CMI::isrunning()) {
       random = (1+(rand()%200))/100.0; //random in [1/100,2]
       newPeriod = period + jitter - random*jitter - deltaPeriod;
       //deltaPeriod keeps the timing to n*P+-jitter

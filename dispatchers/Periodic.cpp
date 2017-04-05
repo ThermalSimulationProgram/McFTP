@@ -30,21 +30,21 @@ Periodic::Periodic(unsigned int id) : Dispatcher(id) {
 void Periodic::dispatch() {
   struct timespec rem;
 
-  while (Simulation::isSimulating()) {
+  while (CMI::isrunning()) {
 
     Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
 
-    if(worker != NULL) {
+    if(cmi != NULL) {
       #if _INFO==1
       cout << "Disp : " << id << " is registering a new job\n";// @t=" << TimeUtil::getTimeUSec() << "\n";
       #endif
-      worker->newJob();
+      cmi->newJob(TASK_TYPE);
     }
     else {
-      cout << "Dispatcher error: worker is null!\n";
+      cout << "Dispatcher error: cmi is null!\n";
     }
 
-    if(Simulation::isSimulating()) {
+    if(CMI::isrunning()) {
       nanosleep(&period, &rem);
     }
   }

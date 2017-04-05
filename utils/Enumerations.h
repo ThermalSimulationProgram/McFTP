@@ -57,7 +57,7 @@ enum _task_action
 enum _thread_type 
 {
   idle,
-  scheduler,
+  thermal_approach,
   dispatcher,
   server,
   worker
@@ -69,6 +69,14 @@ enum _time_type
 {
   absolute,
   relative
+};
+
+
+enum _task_type
+{
+  busywait,
+  benchmark,
+  userdefined
 };
 
 #endif

@@ -10,7 +10,9 @@
 #include <string>
 #include <semaphore.h>
 
-#include "TimedRunnable.h"
+#include <time.h>
+
+#include "pthread/Thread.h"
 
 #define SENSORS_ERR_WILDCARDS	1 /* Wildcard found in chip name */
 #define SENSORS_ERR_NO_ENTRY	2 /* No such subfeature known */
@@ -142,19 +144,14 @@ typedef enum sensors_subfeature_type {
 } sensors_subfeature_type;
 
 
-// static
-// int get_type_scaling(sensors_subfeature_type type);
-
-class TempWatcher : public TimedRunnable{
+class TempWatcher: public Thread{
 
 protected:
-	std::vector<std::vector<double>> tempTrace;
+	std::vector<std::vector<double> > tempTrace;
 	std::vector<double> curTemp;
 
 
-	std::vector<unsigned long> reading_times;
-
-	std::string filename;
+	struct timespec samplingPeriod;
 
 	sem_t temp_sem;
 
@@ -162,10 +159,7 @@ protected:
 public:
 	TempWatcher(unsigned, std::string, unsigned);
 	~TempWatcher();
-
-	static std::vector<double> get_cpu_temperature();
-
-
+	
 	void activate();
 
 	///This join function takes into account the dispatcher's unblocking mechanism
@@ -173,23 +167,15 @@ public:
 
 	void wrapper();
 
-	void setReadingTimes(unsigned long);
-
-	void timedJob(unsigned);
+	static std::vector<double> get_cpu_temperature();
 
 	std::vector<double> getCurTemp();
-
-	void toFile();
 
 	double getMaxTemp();
 
 	double getMeanMaxTemp();
 
 	std::vector<double> getMeanTemp();
-
-
-
-
 };
 
 

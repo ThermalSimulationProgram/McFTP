@@ -1,11 +1,12 @@
-#include "Dispatcher.h"
-
-#include "CMI.h"
-
-#include "Priorities.h"
+#include "core/Dispatcher.h"
 
 #include <time.h>
 #include <iostream>
+
+#include "core/CMI.h"
+#include "pthread/Priorities.h"
+
+
 
 #define _INFO 0
 
@@ -17,9 +18,9 @@ using namespace std;
 
 /*********** CONSTRUCTOR ***********/
 
-///Constructor needs Simulation pointer, and a disp_id
-Dispatcher::Dispatcher(unsigned int _id) : Thread(_id)
-{
+///Constructor needs  a disp_id and the type of the task associated with it
+Dispatcher::Dispatcher(unsigned int _id, _task_type task_type): 
+Thread(_id), TASK_TYPE(task_type) {
   #if _INFO == 1
   cout << "++New Dispatcher - " << _id << "\n";
   #endif

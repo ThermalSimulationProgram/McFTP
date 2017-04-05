@@ -3,13 +3,13 @@
 #include <iostream>
 
 
-#include "Pipeline.h"
-#include "Scratch.h"
-#include "vectormath.h"
-#include "Priorities.h"
-#include "Semaphores.h"
-#include "FileOperator.h"
-
+#include "core/CMI.h"
+#include "configuration/Scratch.h"
+#include "utils/vectormath.h"
+#include "pthread/Priorities.h"
+#include "utils/Semaphores.h"
+#include "utils/FileOperator.h"
+#include "utils/TimeUtil.h"
 
 using namespace std;
 
@@ -20,11 +20,13 @@ using namespace std;
 
 
 
+/***************************************
+ *        CLASS DEFINITION             * 
+ ***************************************/
 
+TempWatcher::TempWatcher(unsigned period, unsigned _id):Thread(_id){
 
-TempWatcher::TempWatcher(unsigned period, string _filename, unsigned _id): TimedRunnable(_id){
-
-	unsigned long sim_length = Scratch::getDuration();
+	
 	if (period == 0){
 		cerr << "TempWatcher::TempWatcher: Error, period is zero!\n";
 		exit(-1);
@@ -34,10 +36,8 @@ TempWatcher::TempWatcher(unsigned period, string _filename, unsigned _id): Timed
   sem_wait(&temp_sem);
   curTemp = get_cpu_temperature();
   sem_post(&temp_sem);
-  unsigned count           = sim_length/period;
-  for (unsigned i = 0; i < count; ++i){
-    reading_times.push_back((unsigned long) i*period);
-  }
+  
+  samplingPeriod = TimeUtil::Micros(period);
 
   filename = _filename;
 
@@ -58,7 +58,7 @@ void TempWatcher::join(){
 
 
 void TempWatcher::wrapper(){
-
+  struct timespec rem;
   #if _INFO == 1
   Semaphores::print_sem.wait_sem();
   cout << "TempWatcher: " << id << " waiting for initialization\n";
@@ -67,7 +67,7 @@ void TempWatcher::wrapper(){
 
 
   //Wait until the simulation is initialized
-  while( !Pipeline::isInitialized() );
+  while( !CMI::isInitialized() ){}
 
   #if _INFO == 1
   Semaphores::print_sem.wait_sem();
@@ -76,12 +76,16 @@ void TempWatcher::wrapper(){
   #endif
 
 	///wait for the simulation start
-  while(!Pipeline::isSimulating()){};
+  while(!CMI::isRunning()){}
 
+  while(CMI::isRunning()){
+    sem_wait(&temp_sem);
+    curTemp = get_cpu_temperature();
+    sem_post(&temp_sem);
+    tempTrace.push_back(curTemp);
 
-  timedRun();
-
-	//toFile();
+    nanosleep(&samplingPeriod, &rem);
+  }
 
 	#if _INFO == 1
   Semaphores::print_sem.wait_sem();
@@ -90,17 +94,6 @@ void TempWatcher::wrapper(){
   #endif
 }
 
-void TempWatcher::setReadingTimes(unsigned long start_time){
-  convertRelativeTimesToAbs(reading_times, start_time);
-}
-
-
-void TempWatcher::timedJob(unsigned index){
-	sem_wait(&temp_sem);
-  curTemp = get_cpu_temperature();
-  sem_post(&temp_sem);
-  tempTrace.push_back(curTemp);
-}
 
 
 vector<double> TempWatcher::getCurTemp(){
@@ -110,12 +103,6 @@ vector<double> TempWatcher::getCurTemp(){
   sem_post(&temp_sem);
 
   return ret;
-}
-
-void TempWatcher::toFile(){
-
-  filename = filename + "_temprature_trace.csv";
-  saveToNewFile(filename, tempTrace);
 }
 
 
