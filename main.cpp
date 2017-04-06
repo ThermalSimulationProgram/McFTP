@@ -20,11 +20,10 @@
 // #include "TimeSim.h"
 // #include "Dispatcher.h"
 // #include "Scheduler.h"
-#include "Pipeline.h"
+#include "core/CMI.h"
 // #include "Worker.h"
 // #include "Parser.h"
 // #include "Scratch.h"
-#include "warming.h"
 // #include "rtc.h"
 // #include "temperature.h"
 // #include "vectormath.h"
@@ -34,7 +33,7 @@
 // #include "utils.h"
 // #include "FileOperator.h"
 
-#include "UnitTesting.h"
+// #include "UnitTesting.h"
 using namespace std;
 
 
@@ -44,7 +43,6 @@ using namespace std;
 
 
 void runSimulation(int argc, char** argv);
-void offlineSimulation();
 
 
 
@@ -66,22 +64,6 @@ runSimulation( argc, argv);
 	//testParser("example.xml");
 }
 
-
-
-
-
-
-
-
-
-
-void offlineSimulation(){
-	unsigned ncore = 4;
-	vector<unsigned long> wcets = {14200, 9000, 3600, 5700};
-	getWarmingCurve(ncore);
-	getCoolingCurve(ncore, wcets);
-
-}
 
 
 
@@ -110,7 +92,7 @@ void runSimulation(int argc, char** argv){
 		file = new string("example.xml");
 	}
 
-	Pipeline *p = new Pipeline(*file, isAppendSaveFile);
+	CMI *p = new CMI(*file, isAppendSaveFile);
 	// cout << "begin initialize Pipeline\n";
 	p->initialize();
 
