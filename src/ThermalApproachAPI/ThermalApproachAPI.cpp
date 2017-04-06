@@ -1,6 +1,9 @@
 #include "ThermalApproachAPI.h"
 
+#include <iostream>
+
 #include "core/CMI.h"
+#include "results/Statistics.h"
 using namespace std;
 
 string ThermalApproachAPI::approachName = "default";
@@ -14,17 +17,13 @@ void ThermalApproachAPI::init(string __aproachname){
 Configuration ThermalApproachAPI::runThermalApproach(const DynamicInfo& info){
 	Configuration ret;
 
-	switch (approachName){
-		case "example1":{
+	if (approachName == "example1"){
 
-		}
-
-		case "default":{
-			break;
-		}
+	}else if (approachName == "default"){
 
 	}
-
+	
+	return ret;
 }
 
 
@@ -37,5 +36,7 @@ int ThermalApproachAPI::addNewJob(_task_type, CMI* cmi){
 }
 
 Configuration ThermalApproachAPI::finishJob(Task* t){
-	
+	Configuration ret;
+	cout << "Task with id: " << t->getId() << "finished at time: " << Statistics::getRelativeTime() << endl; 
+	return ret;
 }

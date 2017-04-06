@@ -42,7 +42,7 @@ public:
 
 	void setStateTables(const std::vector<StateTable> &);
 
-	void changePower(int id, double f);
+	void changePower(int id, double f, struct timespec);
 
 	void setFrequency(int id, double f);
 

@@ -18,16 +18,16 @@ void Configuration::pushConfigurationOfOneCore(
 }
 
 
-vector<StateTable> Configuration::getAllStateTables(){
+vector<StateTable> Configuration::getAllStateTables() const{
 	return statetables;
 }
 
-vector<JobQueue> Configuration::getAllJobQueue(){
+vector<JobQueue> Configuration::getAllJobQueue() const{
 	return jobqueues;
 }
 
 JobQueue Configuration::getJobQueue(int id){
-	if (id < 0 || id >= jobqueues.size()){
+	if (id < 0 || id >= (int)jobqueues.size()){
 		cerr << "Configuration::getJobQueue: invalid index" << endl;
 		exit(1);
 	}

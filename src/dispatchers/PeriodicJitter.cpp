@@ -10,7 +10,7 @@
 #include "utils/Operators.h"
 #include "utils/TimeUtil.h"
 
-
+using namespace std;
 
 /***************************************
  *        CLASS DEFINITION             * 
@@ -34,9 +34,9 @@ void PeriodicJitter::dispatch() {
   struct timespec newPeriod, rem;
   double random;
 
-  while (CMI::isrunning()) {
+  while (CMI::isRunning()) {
 
-    Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
+    // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
 
     if(cmi != NULL) {
       cmi->newJob(TASK_TYPE);
@@ -45,7 +45,7 @@ void PeriodicJitter::dispatch() {
       cout << "Dispatcher error: worker is null!\n";
     }
 
-    if(CMI::isrunning()) {
+    if(CMI::isRunning()) {
       random = (1+(rand()%200))/100.0; //random in [1/100,2]
       newPeriod = period + jitter - random*jitter - deltaPeriod;
       //deltaPeriod keeps the timing to n*P+-jitter

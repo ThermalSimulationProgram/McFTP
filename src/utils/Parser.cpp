@@ -4,12 +4,18 @@
 #include <string>
 #include <algorithm>
 
+#include "core/Dispatcher.h"
+#include "dispatchers/Aperiodic.h"
+#include "dispatchers/Periodic.h"
+#include "dispatchers/PeriodicJitter.h"
 
 #include "configuration/Scratch.h"
 #include "utils/TimeUtil.h"
 #include "utils/Enumerations.h"
 #include "utils/vectormath.h"
 #include "utils/FileOperator.h"
+
+#include "core/structdef.h"
 
 
 
@@ -24,7 +30,7 @@ Parser::Parser(string _xml_path){
 // save all necessary data required by the simulation in Scratch class.
 int Parser::parseFile(){
 	return 0;
-	/*int ret = 0;
+	int ret = 0;
 
 	// load the xml file
 	xml_document doc;
@@ -33,8 +39,8 @@ int Parser::parseFile(){
 		return -1;
 	}
 
-	// get simulation name and duration
-	xml_node sim_node      = doc.child("simulation");
+	// get experiment name and duration
+	xml_node sim_node      = doc.child("experiment");
 	string name            = sim_node.attribute("name").value();
 
 
@@ -42,75 +48,62 @@ int Parser::parseFile(){
 	unsigned long duration = parseTimeMircroSecond(sim_node.child("duration"));
 	
 	// get pipeline stage number
-	xml_node pipe_node     = sim_node.child("pipeline");
-	int nstage             = (int) stoul(pipe_node.attribute("stagenumber").value(), NULL, 0);
-
-	// get job release times
-	vector<unsigned long> rl_release_times;
-	xml_node event_node     = sim_node.child("events");
-	string arrival_csv_path = event_node.child("csv_path").attribute("value").value();
-	string unit             = event_node.child("csv_path").attribute("unit").value();
-	
-	if(arrival_csv_path.length() > 0){
-		vector<double> initv = loadVectorFromFile<double> (arrival_csv_path);
-		vector<double> v     = formatTimeMicros<double>(initv, unit);
-
-		for (unsigned i = 0; i < v.size(); ++i){
-			if( (i>0) && (v[i]< v[i-1])){			
-				cout << "At lease on element in input time vector is less than its" <<
-				" previous and is modified to its previous value \n";
-				v[i] = v[i-1];
-			} 
-			rl_release_times.push_back(v[i]);
-		}
-	}
-	
-	// get task parameteres: period, jitter, distance, and wcets
-	unsigned long period        = parseTimeMircroSecond(
-		event_node.child("period"));
-	unsigned long jitter        = parseTimeMircroSecond(
-		event_node.child("jitter"));
-	unsigned long distance      = parseTimeMircroSecond(
-		event_node.child("distance"));
-	unsigned long rltDeadline   = parseTimeMircroSecond(
-		event_node.child("relative_deadline"));
-	vector<unsigned long> wcets = parseTimeVectorMicro<unsigned long>(
-		event_node.child("wcets"));
-	if ((int)wcets.size() != nstage){
-		cout << "Parser error: wcetvalues' size doesn't match pipeline stage number\n";
-		return -1;
-	}
-	
-	// get the execution time factor
-	double exe_factor = event_node.child("exe_factor").attribute("value").as_double();
-
-	// get scheduler attributes
-	xml_node schedule_node = sim_node.child("scheduler");
-	xml_node kernel_node   = schedule_node.child("kernel");
-	string kernel_type     = kernel_node.attribute("type").value();
-	enum _schedule_kernel type = GE;
-	if (kernel_type == "APTM")
-		type = APTM;
-	else if (kernel_type == "BWS")
-		type = BWS;
-	else if (kernel_type == "PBOO")
-		type = PBOO;
-	else if (kernel_type == "GE")
-		type = GE;
-	else{
-		cout << "Parser error: could not recognize kernel type!\n";
-		return -1;
-	}
+	xml_node processor     = sim_node.child("processor");
+	int ncores             = (int) stoul(processor.attribute("core_number").value(), NULL, 0);
 
 	// put all the necessary input parameters in scratch
-	Scratch::initialize(nstage, period, jitter, distance, 
-		rltDeadline, wcets, rl_release_times, type, duration, name);
+	Scratch::initialize(ncores, duration, name);
 
-	Scratch::setExeFactor(exe_factor);
+	// get parameters of all tasks
+	xml_node task_node     = sim_node.child("tasks");
+	//iterate through all of the children nodes
+	for (xml_node task = task_node.first_child(); task; task = task.next_sibling()){
+		string task_type = task.attribute("type").as_string();
+		string periodicity = task.attribute("periodicity").as_string();
 
+		_task_type type;
+		_task_periodicity pcity;
+		task_data data;
+		if (task_type == "busy_wait"){
+			type = busywait;
+		}else if (task_type == "benchmark"){
+			type = benchmark;
+			string benchmark_name = task.attribute("benchmark_name").as_string();
+			data.benchmark = benchmark_name;
+		}else if (task_type == "user_defined"){
+			type = userdefined;
+		}else {
+			cout << "parseFile: task type was not recognized" << endl;
+			exit(1);
+		}
+
+		 /**** CREATE DISPATCHER ****/
+		if(periodicity == "periodic") {
+			pcity = periodic;
+			data.period = parseTime(task.child("period"));
+		}
+		else if(periodicity == "periodic_jitter") {
+			pcity = periodic_jitter;
+			data.period = parseTime(task.child("period"));
+			data.jitter = parseTime(task.child("jitter"));
+		}
+		else if(periodicity == "aperiodic") {
+			pcity = aperiodic;
+			data.release_time = parseTime(task.child("release_time"));
+		}
+		else {
+			cout << "parseFile: task periodicity was not recognized" << endl;
+			exit(1);
+		}
+
+		Scratch::addTask(type, pcity, data);
+	}
+
+
+	
+   // if save the results into files
 	xml_node isSaveFile	   = sim_node.child("save_result");
 	if (isSaveFile){
-
 		string isSave 		=  isSaveFile.attribute("value").value();
 		if ((isSave == "false") || (isSave == "False")){
 			Scratch::setSavingFile(false);
@@ -121,60 +114,9 @@ int Parser::parseFile(){
 		}
 	}
 
-	xml_node benchmark = sim_node.child("benchmark");
-	if(benchmark){
-		string benchmark_name = benchmark.attribute("name").value();
-		Scratch::setBenchmark(benchmark_name);
-	}
-	
-
-	// handle additional parameters for the scheduler
-	if(type == APTM){
-		xml_node APeriodNode  = kernel_node.child("period");
-		xml_node b_factorNode = kernel_node.child("b_factor");
-		xml_node offline_node = kernel_node.child("offlinedata");
-
-		if(!APeriodNode){
-			cout << "Parser::parseFile(): adaption period is required for APTM kernel\n";
-			return -1;
-		}
-		if(!offline_node){
-			cout << "Parser::parseFile(): offline data is required for APTM kernel\n";
-			return -1;
-		}
-		unsigned long adaptPeriod = parseTimeMircroSecond(APeriodNode);
-		string prefix             = offline_node.child("prefix").attribute("path").value();
-		thermalProp offlinedata   = getOfflineData(prefix, nstage);
-
-		
-		Scratch::setAdaptionPeriod(adaptPeriod);
-		Scratch::setOfflineData(offlinedata);
-
-		if(b_factorNode){
-			double b_factor   	= b_factorNode.attribute("value").as_double();
-			Scratch::setBFactor(b_factor);
-		}
-		
-	}else if (type == BWS){
-		unsigned long adaptPeriod = parseTimeMircroSecond(kernel_node.child("period"));
-		Scratch::setAdaptionPeriod(adaptPeriod);
-	}else if (type == PBOO){
-		ptmspec ptm;
-		vector<unsigned long> tons  = parseTimeVectorMicro<unsigned long>(kernel_node.child("ton"));
-		vector<unsigned long> toffs = parseTimeVectorMicro<unsigned long>(kernel_node.child("toff"));
-		ptm.tons                    = tons/1000;  
-		ptm.toffs                   = toffs/1000;
-		Scratch::setPTMValues(ptm);
-	}else if (type == GE){
-		ptmspec ptm;
-		ptm.tons  = vector<double>(nstage,1000);  
-		ptm.toffs = vector<double>(nstage,0);
-		Scratch::setPTMValues(ptm);
-	}
 	// Scratch::print();
-	return ret;*/
+	return ret;
 }
-
 
 
 unsigned long Parser::parseTimeMircroSecond(xml_node n){

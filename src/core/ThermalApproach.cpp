@@ -5,7 +5,9 @@
 #include "pthread/Priorities.h"
 #include "utils/Semaphores.h"
 #include "configuration/Scratch.h"
+#include "configuration/Configuration.h"
 #include "core/CMI.h"
+#include "core/structdef.h"
 #include "ThermalApproachAPI/ThermalApproachAPI.h"
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
@@ -16,14 +18,14 @@ using namespace std;
 #define _DEBUG 0;
 
 ThermalApproach::ThermalApproach(unsigned _id, CMI * c, 
-	string _approachName): TimedRunnable(_id){
+	string _approachName): Thread(_id){
 	///  initialize member vairables
 	cmi          = c;
 	thread_type  = thermal_approach;
 	approachName = _approachName;
 	
 	/// set thermal approach period
-	period = Scratch::getAdaptionPeriod();
+	period = TimeUtil::Micros(Scratch::getAdaptionPeriod());
 
 	timeExpense.reserve(1000);
 }
@@ -42,7 +44,7 @@ void ThermalApproach::init(){
 
 
 void ThermalApproach::activate(){
-	setPriority(Priorities::get_sched_pr(3));
+	setPriority(Priorities::get_tempwatcher_pr());
 }
 
 
@@ -74,13 +76,14 @@ void ThermalApproach::wrapper(){
 
 	while(CMI::isRunning()){
 
-		dynamicinfo d = cmi->getMcFTPInfo();
+		DynamicInfo d;
+		cmi->getDynamicInfo(d);
 
 		struct timespec timein = TimeUtil::getTime();
-		configuration c = ThermalApproachAPI::runThermalApproach(d);
+		Configuration config = ThermalApproachAPI::runThermalApproach(d);
 		struct timespec timeout = TimeUtil::getTime();
 
-		cmi->updateConfiguration(c);
+		cmi->updateConfiguration(config);
 
 		timeExpense.push_back(TimeUtil::convert_us(timeout - timein));
 

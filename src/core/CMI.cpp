@@ -7,11 +7,16 @@
 #include <string>
 
 //components
+#include "core/PowerManager.h"
 #include "core/TempWatcher.h"
 #include "core/Dispatcher.h"
 #include "core/ThermalApproach.h"
 #include "core/Worker.h"
 #include "core/Task.h"
+#include "dispatchers/Aperiodic.h"
+#include "dispatchers/Periodic.h"
+#include "dispatchers/PeriodicJitter.h"
+#include "tasks/BusyWait.h"
 
 //parser
 #include "utils/Parser.h"
@@ -24,6 +29,7 @@
 #include "utils/Operators.h"
 #include "utils/FileOperator.h"
 #include "utils/Enumerations.h"
+
 
 #include "ThermalApproachAPI/ThermalApproachAPI.h"
 
@@ -68,7 +74,7 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 
 	// create Dispatchers
 	vector<_task_type> allTaskTypes = Scratch::getAllTaskTypes();
-	vector<_task_type> allTaskPeriodicity = Scratch::getAllTaskPeriodicity();
+	vector<_task_periodicity> allTaskPeriodicity = Scratch::getAllTaskPeriodicity();
 
 	for (int i = 0; i < (int) allTaskTypes.size(); ++i)
 	{
@@ -85,21 +91,24 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 
 		switch (allTaskPeriodicity[i]){
 			case aperiodic:{
-				Aperiodic* aux = Aperiodic(100+i, allTaskTypes[i]);
+				Aperiodic* aux = new Aperiodic(100+i, allTaskTypes[i]);
+				dispatchers.push_back((Dispatcher*)aux);
 				break;
 			}
 			case periodic:{
-				Periodic* aux = Periodic(100+i, allTaskTypes[i]);
+				Periodic* aux = new Periodic(100+i, allTaskTypes[i]);
+				dispatchers.push_back((Dispatcher*)aux);
 				break;
 			}
 			case periodic_jitter:{
-				PeriodicJitter* aux = PeriodicJitter(100+i, allTaskTypes[i]);
+				PeriodicJitter* aux = new PeriodicJitter(100+i, allTaskTypes[i]);
+				dispatchers.push_back((Dispatcher*)aux);
 				break;
 			}
 
 		}
 
-		dispatchers.push_back((Dispatcher*)aux);
+		
 		
 	}
 	
@@ -133,7 +142,7 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 		sem_init(&aux2, 0, 0);
 		jobnumber_sems.push_back(aux2);
 
-		JobQueue temp_q();
+		JobQueue temp_q = JobQueue();
 		allTaskQueues.push_back(temp_q);
 	}
 
@@ -169,9 +178,9 @@ void CMI::initialize(){
 
 	tempwatcher->trigger();
 
-	Worker *current;
+	
 	for (int i = 0; i < (int) workers.size(); ++i){
-		current->setCMI(this);
+		workers[i]->setCMI(this);
 	}
 
 	// Main thread waits for all threads initialized, especially the scheduler
@@ -184,7 +193,7 @@ void CMI::initialize(){
 
 // explicitly set the CPUs to which the works are attached 
 void CMI::setWorkerCPU(vector<unsigned> order){
-	if(order.size()!= (unsigned)n_stages){
+	if(order.size()!= (unsigned)n_used){
 		cout<<"CMI::setWorkerCPU: invalid input\n";
 		return;
 	}
@@ -230,7 +239,6 @@ double CMI::simulate(){
 	Statistics::enable();
 	Statistics::start();
 
-	unsigned long tstart_us = TimeUtil::convert_us(Statistics::getStart());
 
 	// simulation starts now
 	cpuUsageRecorder.startLoggingCPU();
@@ -282,8 +290,8 @@ void CMI::join_all() {
 }
 
 
-void CMI::updateConfiguration(const Configuration& c){
-	powermanager->setStateTables(c.getAllStateTables);
+void CMI::updateConfiguration(const Configuration& config){
+	powermanager->setStateTables(config.getAllStateTables());
 
 	// for (int i = 0; i < (int) workers.size(); ++i)
 	// {
@@ -291,7 +299,7 @@ void CMI::updateConfiguration(const Configuration& c){
 	// }
 
 	tryLockTaskQueues();
-	allTaskQueue = c.getAllJobQueue();
+	allTaskQueues = config.getAllJobQueue();
 	unlockTaskQueues();
 
 }
@@ -309,14 +317,19 @@ void CMI::newJob(_task_type TASK_TYPE){
 	
 	int coreId = ThermalApproachAPI::addNewJob(TASK_TYPE, this);
 
-	switch (TASK_TYPE){
-		case busywait:
-		case benchmark:
-		case userdefined:
-		break;
-	}
+	// switch (TASK_TYPE){
+	// 	case busywait:
+	// 	BusyWait* newTask = new BusyWait();
+	// 	case benchmark:
+	// 	case userdefined:
+	// 	break;
+	// }
+	struct timespec wcet = TimeUtil::Micros(100000);
+	BusyWait* newTask = new BusyWait(wcet);
+
+
 	sem_wait(&taskqueue_sems[coreId]);
-	allTaskQueue[coreId].insertJob(newTask);
+	allTaskQueues[coreId].insertJob(newTask);
 	sem_post(&jobnumber_sems[coreId]);
 	sem_post(&taskqueue_sems[coreId]);
 
@@ -328,7 +341,7 @@ Task* CMI::tryLoadJob(int workerId){
 	sem_wait(&taskqueue_sems[workerId]);
 
 	sem_wait(&jobnumber_sems[workerId]);
-	ret = allTaskQueue[workerId].pop_front();
+	ret = allTaskQueues[workerId].pop_front();
 
 	sem_post(&taskqueue_sems[workerId]);
 	return ret;
@@ -361,7 +374,7 @@ void CMI::unlockTaskQueues(){
 
 // This function is called by the end stage to announce a job is finished
 void CMI::finishedJob(Task* t){
-	Configuration ThermalApproachAPI::finishJob(t);
+	ThermalApproachAPI::finishJob(t);
 }
 
 
@@ -370,17 +383,10 @@ bool CMI::isInitialized(){
 	return initialized;
 }
 // Interface function to get member 'simulating'
-bool CMI::isSimulating(){
+bool CMI::isRunning(){
 	return running;
 }
 
-
-// This function is called by the scheduler to apply new schedule scheme to each stage
-void CMI::setPTMs(vector<unsigned long> ton, vector<unsigned long> toff){
-	// simply forwards the ton and toff to each stage
-	for (unsigned i = 0; i < workers.size(); ++i)
-		workers[i]->setPTM(ton[i], toff[i]);
-}
 
 
 unsigned CMI::getNCPU(){
@@ -399,11 +405,17 @@ void CMI::getDynamicInfo(DynamicInfo& pinfo){
 
 	pinfo.currentTime = curTime;
 
-	for (int i = 0; i < n_stages; ++i){
+	for (int i = 0; i < n_used; ++i){
 		WorkerInfo tmp;
 		workers[i]->getAllInfo(curTime, tmp);
 		pinfo.workerinfos.push_back(tmp);
 	}	
+}
+
+
+struct timespec CMI::getSimTime(){
+	return TimeUtil::Micros(Scratch::getDuration());
+
 }
 
 void CMI::saveResults(){

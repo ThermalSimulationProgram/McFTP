@@ -6,7 +6,9 @@
 
 
 #include "core/CMI.h"
+#include "core/Worker.h"
 #include "configuration/Scratch.h"
+#include "pthread/Priorities.h"
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
 #include "utils/Semaphores.h"
@@ -14,7 +16,7 @@
 using namespace std;
 
 #define EPSILON 0.00001
-PowerManager::PowerManager(unsigned _id, std::vector<Worker* > _workers):TimedRunnable(_id), 
+PowerManager::PowerManager(unsigned _id, std::vector<Worker* > _workers):Thread(_id), 
 workers(_workers){
 
 	sem_init(&interrupt_sem, 0, 0);
@@ -32,7 +34,6 @@ workers(_workers){
 }
 
 void PowerManager::join(){
-	join_unblock();
 	join2();
 }
 
@@ -77,10 +78,11 @@ void PowerManager::wrapper(){
 
 		if (tables.size() > 0){
 			struct timespec now = TimeUtil::getTime();
+			struct timespec length;
 			// get state from hyper table, updating its next action time
-			double f = tables[nextCoreId].getState(now);
+			double f = tables[nextCoreId].getState(now, length);
 			// change the power state of the id
-			changePower(nextCoreId,   f);
+			changePower(nextCoreId,   f, length);
 
 			// update nextActionTime
 			nextActionTime = tables[0].peekNextTime();
@@ -97,6 +99,23 @@ void PowerManager::wrapper(){
 		sem_post(&statetable_sem);
 
 	}
+}
+
+void PowerManager::changePower(int id, double f, struct timespec length){
+	if ( f<EPSILON && f>-EPSILON){
+		workers[id]->deactivate(length);
+	}else if (f > 0){
+		if (!workers[id]->isActive()){
+			workers[id]->activate();
+		}	
+		setFrequency(id, f);
+	}
+}
+
+void PowerManager::setFrequency(int id, double f){
+	ostringstream freq;
+	freq << f;
+	system(("echo " + freq.str() + " > " + freqInterface[id]).c_str());
 }
 
 
@@ -123,19 +142,3 @@ void PowerManager::setStateTables(const std::vector<StateTable> & newtables){
 
 
 
-void PowerManager::changePower(int id, double f){
-	if ( f<EPSILON && f>-EPSILON){
-		workers[id]->deactivate();
-	}else if (f > 0){
-		if (!workers[id]->isActive()){
-			workers[id]->activate();
-		}	
-		setFrequency(id, f);
-	}
-}
-
-void PowerManager::setFrequency(int id, double f){
-	ostringstream freq;
-	freq << f;
-	system(("echo " + freq.str() + " > " + freqInterface[id]).c_str());
-}

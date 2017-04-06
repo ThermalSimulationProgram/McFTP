@@ -32,7 +32,7 @@ void StateTable::getState(int id, double& f, unsigned long& l){
 }
 
 double StateTable::getFrequency(int id){
-	if (id < 0 || id >= frequencies.size()){
+	if (id < 0 || id >= (int)frequencies.size()){
 		cerr << "StateTable::getFrequency: state id exceeds range" << endl;
 		exit(1);
 	}
@@ -41,7 +41,7 @@ double StateTable::getFrequency(int id){
 }
 
 unsigned long StateTable::getLength(int id){
-	if (id < 0 || id >= lengths.size()){
+	if (id < 0 || id >= (int)lengths.size()){
 		cerr << "StateTable::getLength: state id exceeds range" << endl;
 		exit(1);
 	}

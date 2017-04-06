@@ -2,8 +2,8 @@
 #define _STRUCTDEF_H 
 
 #include <vector>
-
-
+#include <string>
+#include <time.h>
 
 #include "utils/Enumerations.h"
 
@@ -30,6 +30,15 @@ typedef struct ptmspec{
 }ptmspec;
 
 
+typedef struct taskdata
+{
+	struct timespec period;
+	struct timespec jitter;
+	struct timespec release_time;
+	std::string name;
+	std::string benchmark;
+
+}task_data;
 
 
 

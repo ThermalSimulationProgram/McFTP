@@ -28,7 +28,7 @@ protected:
 	std::vector<double> timeExpense;
 
 public:
-	ThermalApproach(unsigned, CMI *, std::string, );
+	ThermalApproach(unsigned _id, CMI *c, std::string name);
 	
 	~ThermalApproach();
 

@@ -8,7 +8,9 @@ HyperStateTable::HyperStateTable():
  	rowId = 0;
  	tableSize = 0;
 }
-
+HyperStateTable::~HyperStateTable(){
+	
+}
 
 void HyperStateTable::setStateTable(const StateTable& s, const struct timespec& now){
 	nextActionTime = now;
@@ -17,12 +19,13 @@ void HyperStateTable::setStateTable(const StateTable& s, const struct timespec& 
  	rowId = 0;
 }
 
-double HyperStateTable::getState(const  struct timespec& now){
+double HyperStateTable::getState(const  struct timespec& now, struct timespec& length){
 	double ret;
 	if (tableSize > 0){
 		ret = statetable.getFrequency(rowId);
 		unsigned long lastLength = statetable.getLength(rowId);
-		nextActionTime = now + TimeUtil::Micros(lastLength);
+		length = TimeUtil::Micros(lastLength);
+		nextActionTime = now + length;
 
 		if (rowId >= tableSize - 1){
 			rowId = 0;
@@ -30,6 +33,7 @@ double HyperStateTable::getState(const  struct timespec& now){
 			++rowId;
 		}
 	}else{
+		length = TimeUtil::Micros(0);
 		ret = -1; // default: no control
 	}
 	

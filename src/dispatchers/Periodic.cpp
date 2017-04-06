@@ -1,10 +1,10 @@
 #include "dispatchers/Periodic.h"
 
-#include "core/Simulation.h"
+#include "core/CMI.h"
 #include "core/Worker.h"
 #include "results/Statistics.h"
-#include "util/Operators.h"
-#include "util/TimeUtil.h"
+#include "utils/Operators.h"
+#include "utils/TimeUtil.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -30,9 +30,9 @@ Periodic::Periodic(unsigned int id, _task_type task_type) : Dispatcher(id, task_
 void Periodic::dispatch() {
   struct timespec rem;
 
-  while (CMI::isrunning()) {
+  while (CMI::isRunning()) {
 
-    Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
+    // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
 
     if(cmi != NULL) {
       #if _INFO==1
@@ -44,7 +44,7 @@ void Periodic::dispatch() {
       cout << "Dispatcher error: cmi is null!\n";
     }
 
-    if(CMI::isrunning()) {
+    if(CMI::isRunning()) {
       nanosleep(&period, &rem);
     }
   }

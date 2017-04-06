@@ -12,7 +12,7 @@
 #include "pthread/Priorities.h"
 #include "configuration/Scratch.h"
 #include "core/CMI.h"
-
+#include "core/Task.h"
 
 using namespace std;
 
@@ -27,10 +27,12 @@ Worker::Worker(int _workerId, int _id) : Thread(_id){
 	current_job = NULL;
 	state 		= _active;
 	
-	sem_init(&queue_sem, 0, 1);
-	sem_init(&queue_lock_sem, 0, 1);
-	sem_init(&job_sem, 0, 0);
+	// sem_init(&queue_sem, 0, 1);
+	// sem_init(&queue_lock_sem, 0, 1);
+	// sem_init(&job_sem, 0, 0);
 	sem_init(&state_sem, 0, 1);
+	sem_init(&suspend_sem, 0, 0);
+	sem_init(&resume_sem, 0, 0);
 
 
 	latestSleep = TimeUtil::Millis(0);
@@ -44,17 +46,15 @@ Worker::~Worker(){
 
 
 void Worker::join(){
-	sem_post(&queue_sem);
-	sem_post(&queue_sem);
-	sem_post(&queue_sem);
-	sem_post(&schedule_sem);
-	sem_post(&schedule_sem);
+	// sem_post(&queue_sem);
+	// sem_post(&queue_sem);
+	sem_post(&resume_sem);
 	sem_post(&state_sem);
 	join2();
 }
 
 void Worker::getAllInfo(double now, WorkerInfo & ret){
-	ret.stageId = stageId;
+	ret.stageId = workerId;
 	struct timespec tmp;
 	
 	sem_wait(&state_sem);
@@ -85,7 +85,7 @@ void Worker::getAllInfo(double now, WorkerInfo & ret){
 	Semaphores::print_sem.post_sem();
 	#endif
 
-	ret.nFIFOJobs            =  queue.getSize();
+	ret.nFIFOJobs            =  0;
 	
 	if (current_job != NULL){
 		ret.onGoEventId = (int)current_job->getId();
@@ -105,7 +105,7 @@ unsigned long Worker::getExecuted(){
 
 vector<unsigned long> Worker::getAllAbsDeadline(){
 	vector<unsigned long> ret;
-	sem_wait(&queue_sem);
+	// sem_wait(&queue_sem);
 	// for (unsigned i = 0; i < FIFO.size(); ++i)
 	// {
 	// 	ret.push_back(FIFO[i]->getAbsDeadline());
@@ -117,9 +117,9 @@ vector<unsigned long> Worker::getAllAbsDeadline(){
 
 vector<double> Worker::getAllAbsDeadline_ms(){
 	vector<double> ret;
-	sem_wait(&queue_sem);
-	//     
-	sem_post(&queue_sem);
+	// sem_wait(&queue_sem);
+	// //     
+	// sem_post(&queue_sem);
 	return ret;
 }
 
@@ -156,26 +156,26 @@ bool Worker::isActive(){
 
 // lock the job queue. When the worker finishes current job, 
 // it cannot load new job from the queue
-void Worker::lockQueue(){
-	sem_wait(&queue_lock_sem);
-}
+// void Worker::lockQueue(){
+// 	sem_wait(&queue_lock_sem);
+// }
 
-	// unlock the job queue
-void Worker::unlockQueue(){
-	sem_post(&queue_lock_sem);
-}
+// 	// unlock the job queue
+// void Worker::unlockQueue(){
+// 	sem_post(&queue_lock_sem);
+// }
 
 
-void Worker::setJobQueue(const JobQueue& q){
-	sem_wait(&queue_sem);
-	// sem_init(&job_sem, 0, 0);
-	queue = q;
-	// for (int i = 0; i < queue.getSize(); ++i)
-	// {
-	// 	sem_post(&job_sem);
-	// }
-	sem_post(&queue_sem);
-}
+// void Worker::setJobQueue(const JobQueue& q){
+// 	sem_wait(&queue_sem);
+// 	// sem_init(&job_sem, 0, 0);
+// 	queue = q;
+// 	// for (int i = 0; i < queue.getSize(); ++i)
+// 	// {
+// 	// 	sem_post(&job_sem);
+// 	// }
+// 	sem_post(&queue_sem);
+// }
 
 void Worker::wrapper(){
 
@@ -207,8 +207,8 @@ void Worker::wrapper(){
 		setSuspendPoint();
 
 		if (current_job == NULL){
-			sem_wait(&job_sem);
-			tryLoadJob();
+			// sem_wait(&job_sem);
+			current_job = cmi->tryLoadJob(workerId);
 		}else{
 			current_job->setWorker(this);
 			current_job->fire();
@@ -220,21 +220,21 @@ void Worker::wrapper(){
 }
 
 
-void Worker::tryLoadJob(){
-	sem_wait(&queue_lock_sem); 
-	sem_wait(&queue_sem);
-	current_job = queue.pop_front();
-	sem_post(&queue_sem);
-	sem_post(&queue_lock_sem);
-}
+// void Worker::tryLoadJob(){
+// 	sem_wait(&queue_lock_sem); 
+// 	sem_wait(&queue_sem);
+// 	current_job = queue.pop_front();
+// 	sem_post(&queue_sem);
+// 	sem_post(&queue_lock_sem);
+// }
 
 
-void Worker::addJob(Task* newTask){
-	sem_wait(&queue_sem);
-	queue->insertJob(newTask);
-	sem_post(&job_sem);
-	sem_post(&queue_sem);
-}
+// void Worker::addJob(Task* newTask){
+// 	sem_wait(&queue_sem);
+// 	queue->insertJob(newTask);
+// 	sem_post(&job_sem);
+// 	sem_post(&queue_sem);
+// }
 
 void Worker::setCMI(CMI * c)
 {

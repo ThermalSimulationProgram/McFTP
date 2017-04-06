@@ -1,4 +1,4 @@
-#include "UnitTest/UnitTesting.h"
+#include "UnitTest/UnitTest.h"
 
 
 #include "utils/Parser.h"

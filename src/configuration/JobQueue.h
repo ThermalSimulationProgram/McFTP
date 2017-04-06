@@ -49,13 +49,15 @@ public:
 	///Destructor
 	~JobQueue();
 
+	JobQueue(const JobQueue& j);
+
 protected:
 
   /*********** PROTECTED MEMBER FUNCTIONS ***********/
 
   	///This function removes the queue's pointer to the Task with the specified type and id. 
  	///returns true if the task was found, false otherwise
-	bool protectedDeleteJob(_task_type type, unsigned int id);
+	bool protectedDeleteJob(_task_type type, int id);
 
   	///This function inserts the new task in the queue
 	bool protectedInsertJob(Task* newTask);
@@ -65,7 +67,7 @@ public:
   /*********** PUBLIC MEMBER FUNCTIONS ***********/
 
   	///This function is a public wrapper to the protectedDeleteJob function
-	bool deleteJOb(_task_type type, unsigned int id);
+	bool deleteJob(_task_type type, int id);
 
   	///This function is a public wrapper to the protectedInsertJob function
 	bool insertJob(Task* newTask);
@@ -83,10 +85,6 @@ public:
 	///and returns the head pointer
 	Task* pop_front();
 
-	void lock();
-
-	void unlock();
-
   /*********** GETTER FUNCTIONS ***********/
 
   ///This function returns the size of the JobQueue
@@ -95,8 +93,3 @@ public:
 
 #endif
 
-
-
-
-
-#endif

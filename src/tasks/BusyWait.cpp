@@ -6,6 +6,7 @@
 #include "core/CMI.h"
 #include "utils/Operators.h"
 #include "utils/TimeUtil.h"
+#include "utils/Enumerations.h"
 
 
 
@@ -18,7 +19,7 @@ using namespace std;
 /*********** CONSTRUCTOR ***********/
 
 ///The constructor requires a pointer to the simulation, its own dispatcher, and the WCET
-BusyWait::BusyWait(struct timespec wcet) : Task(busy_wait) {
+BusyWait::BusyWait(struct timespec wcet) : Task(busywait) {
   WCET = wcet;
 }
 

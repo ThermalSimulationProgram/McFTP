@@ -125,6 +125,8 @@ public:
 
 	void saveResults();
 
+	static struct timespec getSimTime();
+
 
 
 };

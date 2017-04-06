@@ -39,7 +39,6 @@ TempWatcher::TempWatcher(unsigned period, unsigned _id):Thread(_id){
   
   samplingPeriod = TimeUtil::Micros(period);
 
-  filename = _filename;
 
 }	
 
@@ -49,7 +48,7 @@ TempWatcher::~TempWatcher(){
 }
 
 void TempWatcher::activate(){
-	setPriority(Priorities::get_server_pr());
+	setPriority(Priorities::get_tempwatcher_pr());
 }
 
 void TempWatcher::join(){

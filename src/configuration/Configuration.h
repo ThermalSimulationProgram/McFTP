@@ -17,9 +17,9 @@ public:
 
 	void pushConfigurationOfOneCore(const StateTable& s, const JobQueue& q);
 
-	std::vector<StateTable> getAllStateTables();
+	std::vector<StateTable> getAllStateTables() const;
 
-	std::vector<JobQueue> getAllJobQueue();
+	std::vector<JobQueue> getAllJobQueue() const;
 	JobQueue getJobQueue(int id);
 
 };

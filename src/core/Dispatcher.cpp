@@ -78,7 +78,7 @@ void Dispatcher::wrapper() {
 
 ///This function sets the dispatcher's priority to DISP_PR
 void Dispatcher::activate() {
-  setPriority(Priorities::get_disp_pr());
+  setPriority(Priorities::get_dispatcher_pr());
 }
 
 ///This virtual function should be implemented by the subclasses

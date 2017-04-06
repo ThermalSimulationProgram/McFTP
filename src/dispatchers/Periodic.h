@@ -21,7 +21,7 @@ class Periodic : public Dispatcher {
   /*********** CONSTRUCTOR ***********/
 
   ///Constructor needs simulation pointer, and id
-  Periodic(unsigned int id, , _task_type task_type);
+  Periodic(unsigned int id, _task_type task_type);
 
   /*********** INHERITED FUNCTIONS ***********/
   

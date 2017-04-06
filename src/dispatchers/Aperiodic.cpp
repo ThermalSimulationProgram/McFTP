@@ -9,6 +9,7 @@
 
 
 
+using namespace std;
 /***************************************
  *        CLASS DEFINITION             * 
  ***************************************/
@@ -30,11 +31,11 @@ void Aperiodic::dispatch() {
 
   nanosleep(&releaseTime, &rem);
 
-  #if _INFO == 1
-  cout << "+Worker " << worker->getId() << " has new job!\n";
-  #endif  
+  // #if _INFO == 1
+  // cout << "+Worker " << worker->getId() << " has new job!\n";
+  // #endif  
 
-  Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
+  // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
   
   if(cmi != NULL) {
     cmi->newJob(TASK_TYPE);
@@ -47,7 +48,7 @@ void Aperiodic::dispatch() {
   do {
     struct timespec aux = CMI::getSimTime() - releaseTime - offset;
     nanosleep(&aux, &rem);
-  } while(CMI::isrunning());
+  } while(CMI::isRunning());
   
 
 }

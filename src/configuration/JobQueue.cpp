@@ -21,6 +21,37 @@ JobQueue::JobQueue() {
   sem_init(&queue_sem, 0, 1); //mutex semaphore
 }
 
+JobQueue::JobQueue(const JobQueue& j){
+	if (j.head == NULL){
+
+	}else{
+		Node* copy = (Node*) malloc(sizeof(Node));;
+		copy->r = j.head->r;
+		copy->next = NULL;
+
+		head = copy;
+
+		Node* current = j.head->next;
+		
+		while (current != NULL){
+
+			copy->next = (Node*) malloc(sizeof(Node));
+			copy = copy->next;
+			copy->r = current->r;
+			copy->next = NULL;
+
+			current = current->next;
+
+		}
+
+		tail = copy;
+
+		size = j.size;
+		sem_init(&queue_sem, 0, 1);
+
+	}
+}
+
 ///destructor delete the link list
 JobQueue::~JobQueue(){
 	// if the link list is not empty
@@ -41,7 +72,7 @@ JobQueue::~JobQueue(){
 
 ///This function removes the queue's pointer to the Task with the specified type and id. 
 ///returns true if the task was found, false otherwise
-bool JobQueue::protectedDeleteTask(_task_type type, unsigned int id) {
+bool JobQueue::protectedDeleteJob(_task_type type, int id) {
 	if(head!=NULL) {
     //If task is the head, delete the head
 		if(head->r->getId()==id && head->r->getType()==type) {
@@ -79,7 +110,7 @@ bool JobQueue::protectedDeleteTask(_task_type type, unsigned int id) {
 }
 
 ///This function inserts the new task in the queue 
-bool JobQueue::protectedInsertTask(Task* newTask) {
+bool JobQueue::protectedInsertJob(Task* newTask) {
     //increase the size counter
 	size++;
 
@@ -120,18 +151,18 @@ bool JobQueue::protectedInsertTask(Task* newTask) {
 /*********** PUBLIC MEMBER FUNCTIONS ***********/
 
 ///This function is a public wrapper to the protectedDeleteRunnable function
-bool JobQueue::deleteTask(_task_type type, unsigned int id) {
+bool JobQueue::deleteJob(_task_type type, int id) {
 	bool ret;
 
 	sem_wait(&queue_sem);
-	ret = protectedDeleteRunnable(type, id);
+	ret = protectedDeleteJob(type, id);
 	sem_post(&queue_sem);
 
 	return ret;
 }
 
 ///This function is a public wrapper to the protectedInsertRunnable function
-bool JobQueue::insertRunnable(Task* newTask) {
+bool JobQueue::insertJob(Task* newTask) {
 	bool ret;
 
 	if(newTask == NULL) {
@@ -141,9 +172,9 @@ bool JobQueue::insertRunnable(Task* newTask) {
 
 	sem_wait(&queue_sem);
     //Clear the queue of any nodes with this task           
-	protectedDeleteTask(newTask->getType(), newTask->getId());
+	protectedDeleteJob(newTask->getType(), newTask->getId());
     //Insert into the queue
-	ret = protectedInsertTask(newTask);
+	ret = protectedInsertJob(newTask);
     //cout << size << endl;
 	sem_post(&queue_sem);
 	return ret;  
@@ -175,7 +206,7 @@ Task* JobQueue::pop_front() {
 
 	Task* aux = head->r;
 
-	deleteTask(aux->getType(), aux->getId());
+	deleteJob(aux->getType(), aux->getId());
 
 	return aux;
 }

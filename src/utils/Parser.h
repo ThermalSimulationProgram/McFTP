@@ -28,7 +28,6 @@ public:
 	unsigned long parseTimeMircroSecond(pugi::xml_node n);
 
 	
-	
 };
 
 

@@ -157,7 +157,7 @@ protected:
 
 
 public:
-	TempWatcher(unsigned, std::string, unsigned);
+	TempWatcher(unsigned, unsigned);
 	~TempWatcher();
 	
 	void activate();

@@ -27,7 +27,7 @@ public:
 
 	struct timespec peekNextTime();
 
-	double getState(const  struct timespec& now);
+	double getState(const struct timespec& now, struct timespec& length);
 
 	
 
