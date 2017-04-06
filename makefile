@@ -2,7 +2,7 @@
 
 #Main compiler/linker variables
 CXX=g++
-CFLAGS=-Wall -I./src/
+CFLAGS=-Wall -I./src/ -g -std=c++11
 CARG=-lrt
 LFLAGS= -lm 
 LARG=-ldl -lpthread -lrt -lX11 #-lSM -lICE -lXext -lpng -lz -Wl-rpath #-lGLU -lGL
@@ -19,7 +19,7 @@ SRCDIR=src
 
 #Libraries
 XML=xml/pugixml.cpp
-MATHGL= -rdynamic /usr/local/lib/libmgl.so.7.0.0
+
 
 #SOURCE FILES
 SF3PSRC=mainSF3P.cpp
