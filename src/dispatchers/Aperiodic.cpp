@@ -38,7 +38,8 @@ void Aperiodic::dispatch() {
   // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
   
   if(cmi != NULL) {
-    cmi->newJob(TASK_TYPE);
+    Task* t = createNewTask();
+    cmi->newJob(t, TASK_TYPE);
   }
   else {
     cout << "Dispatcher error: CMI is null!\n";

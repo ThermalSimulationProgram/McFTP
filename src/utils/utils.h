@@ -8,14 +8,21 @@
 #include <fstream>
 #include <sstream>
 #include <iterator>
-
+#include <time.h>
+#include <limits.h>
+#include <unistd.h>
+// void formatPrintTime(struct timespec);
 // using namespace std;
+
+
+
+std::string getexepath();
 
 std::string formatString(const std::string& base);
 // std::istringstream stringToiss(const std::string& base);
 
 
-// This function converts a string to a double vector. The  string should be 
+// This function converts a string to a number vector. The  string should be 
 // in format: {number1, number2, ..., numbern} or {number1 number2 ... numbern}
 template<typename T> 
 std::vector<T> stringToVector(std::string const& pointLine)

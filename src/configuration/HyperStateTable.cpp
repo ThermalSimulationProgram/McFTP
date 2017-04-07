@@ -25,7 +25,7 @@ double HyperStateTable::getState(const  struct timespec& now, struct timespec& l
 		ret = statetable.getFrequency(rowId);
 		unsigned long lastLength = statetable.getLength(rowId);
 		length = TimeUtil::Micros(lastLength);
-		nextActionTime = now + length;
+		nextActionTime = nextActionTime + length;
 
 		if (rowId >= tableSize - 1){
 			rowId = 0;

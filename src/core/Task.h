@@ -8,13 +8,15 @@
 #include "utils/Enumerations.h"
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
+#include "results/Statistics.h"
+#include "core/Worker.h"
 
 /***************************************
  *        CLASS DECLARATION            * 
  ***************************************/
  
 
-class Worker;
+
 
 class Task {
 private:
@@ -37,12 +39,16 @@ protected:
 
   struct timespec sleepLength;
 
+  bool finished;
+
 public:
  
   /*********** CONSTRUCTOR ***********/
   
   ///Constructor needs its load type
   Task(_task_type load);
+
+  virtual ~Task();
 
   /*********** MEMBER FUNCTIONS ***********/
 
@@ -70,14 +76,18 @@ public:
       {
          sem_trywait(&resume_sem);
       }
-
+      _thread_type thread_type = _worker;
+      Statistics::addTrace(thread_type, worker->getId(), sleep_start);
       // two exit conditions: reach the sleepEnd time, or recieves a resume_sem signal
       sem_timedwait(&resume_sem, &sleepEnd);
+      Statistics::addTrace(thread_type, worker->getId(), sleep_end);
     }
 
   };
 
   _task_type getType();
+
+  bool isFinished();
 
 
 

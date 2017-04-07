@@ -2,6 +2,7 @@
 
 
 #include "utils/utils.h"
+#include "utils/TimeUtil.h"
 
 #include <sstream>
 
@@ -25,3 +26,5 @@ void pipeinfo_print(const pipeinfo & config){
 	}
 	
 }
+
+

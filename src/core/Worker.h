@@ -45,7 +45,9 @@ protected:
 	///semaphore controls accessing state and latestSleep
 	sem_t state_sem;
 
-	struct timespec sleepLength;
+	// struct timespec sleepLength;
+
+	struct timespec sleepEnd;
 
 	sem_t suspend_sem;
 
@@ -64,8 +66,8 @@ public:
 	inline void setSuspendPoint(){
     if (sem_trywait(&suspend_sem) == 0)//successfully read a suspend singal, block the executing immediately
     {
-      struct timespec now = TimeUtil::getTime();
-      struct timespec sleepEnd = now + sleepLength;
+      // struct timespec now = TimeUtil::getTime();
+      // struct timespec sleepEnd = now + sleepLength;
       int resumeVal;
 
       // make sure the resume semaphore is cleared
@@ -73,14 +75,12 @@ public:
       for (int i = 0; i < resumeVal; ++i){
          sem_trywait(&resume_sem);
       }
-      latestSleep = now;
-      state = _sleep;
+      
       
       // two exit conditions: reach the sleepEnd time, or recieves a resume_sem signal
       sem_timedwait(&resume_sem, &sleepEnd);
       
-      state = _active;
-      latestSleep = TimeUtil::Millis(0);
+      
     }
 
   };
@@ -112,6 +112,8 @@ public:
 	std::vector<double> getAllAbsDeadline_ms();
 
 	bool isActive();
+
+	int getId();
 
 };
 

@@ -64,7 +64,7 @@ class Thread {
   virtual void join();
 
   ///Copy of the join() method -> in case join() is redefined by a subclass
-  virtual void join2();
+  void join2();
 
   ///Pure virtual function
   ///This function is called by the static wrapper. In the Worker object, it should point 

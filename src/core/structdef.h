@@ -37,8 +37,9 @@ typedef struct taskdata
 	struct timespec release_time;
 	std::string name;
 	std::string benchmark;
-
+	std::vector<int> attached_cores;
 }task_data;
+
 
 
 

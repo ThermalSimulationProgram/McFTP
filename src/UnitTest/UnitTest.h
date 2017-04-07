@@ -8,6 +8,9 @@
 
 void testFileOperator();
 
+void testJobQueue();
+
+void testHyperStateTable();
 
 void testStringUtils();
 

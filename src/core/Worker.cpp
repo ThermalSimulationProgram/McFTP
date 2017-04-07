@@ -16,14 +16,14 @@
 
 using namespace std;
 
-#define _INFO 0
+#define _INFO 1
 #define _DEBUG 0
 
 
 
 Worker::Worker(int _workerId, int _id) : Thread(_id){
 	workerId     = _workerId; 
-	thread_type = worker;
+	thread_type = _worker;
 	current_job = NULL;
 	state 		= _active;
 	
@@ -48,9 +48,12 @@ Worker::~Worker(){
 void Worker::join(){
 	// sem_post(&queue_sem);
 	// sem_post(&queue_sem);
+	// cout << "worker " << id << "joining"<< endl;
 	sem_post(&resume_sem);
 	sem_post(&state_sem);
+	// cout << "worker " << id << "join2ing"<< endl;
 	join2();
+	// cout << "worker " << id << "joined"<< endl;
 }
 
 void Worker::getAllInfo(double now, WorkerInfo & ret){
@@ -125,7 +128,9 @@ vector<double> Worker::getAllAbsDeadline_ms(){
 
 
 void Worker::activate(){
-	// setPriority(Priorities::get_active_pr());
+	setPriority(Priorities::get_active_pr());
+	state = _active;
+	latestSleep = TimeUtil::Millis(0);
 	sem_post(&resume_sem);
 	if (current_job != NULL){
 		current_job->resume();
@@ -134,7 +139,10 @@ void Worker::activate(){
 
 void Worker::deactivate(const struct timespec& length){
 	// setPriority(Priorities::get_inactive_pr());
-	sleepLength = length;
+	struct timespec now = TimeUtil::getTime();
+    sleepEnd = now + length;
+    latestSleep = now;
+    state = _sleep;
 	sem_post(&suspend_sem);
 	if (current_job != NULL){
 		current_job->suspend(length);
@@ -211,9 +219,11 @@ void Worker::wrapper(){
 			current_job = cmi->tryLoadJob(workerId);
 		}else{
 			current_job->setWorker(this);
-			current_job->fire();
-			setSuspendPoint();
+			Statistics::addTrace(thread_type, id, task_start);
+			current_job->fire();			
 			cmi->finishedJob(current_job);
+			// Statistics::addTrace(thread_type, id, task_end);
+			setSuspendPoint();
 			current_job = NULL;
 		}
 	}
@@ -239,6 +249,9 @@ void Worker::wrapper(){
 void Worker::setCMI(CMI * c)
 {
 	cmi = c;
+}
+int Worker::getId(){
+	return workerId;
 }
 
 

@@ -29,7 +29,12 @@ Periodic::Periodic(unsigned int id, _task_type task_type) : Dispatcher(id, task_
 
 void Periodic::dispatch() {
   struct timespec rem;
+  // #if _INFO==1
+  //     cout << "Inside Periodic::dispatch " << endl;// @t=" << TimeUtil::getTimeUSec() << "\n";
+  //     cout << "period is: " << TimeUtil::convert_ms(period) << endl;
+  // #endif
 
+      
   while (CMI::isRunning()) {
 
     // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
@@ -38,7 +43,8 @@ void Periodic::dispatch() {
       #if _INFO==1
       cout << "Disp : " << id << " is registering a new job\n";// @t=" << TimeUtil::getTimeUSec() << "\n";
       #endif
-      cmi->newJob(TASK_TYPE);
+      Task* t = createNewTask();
+      cmi->newJob(t, TASK_TYPE);
     }
     else {
       cout << "Dispatcher error: cmi is null!\n";

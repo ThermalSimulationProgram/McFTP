@@ -70,7 +70,7 @@ enum _thread_type
   thermal_approach,
   dispatcher,
   server,
-  worker
+  _worker
 };
 
 

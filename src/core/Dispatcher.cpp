@@ -4,8 +4,12 @@
 #include <iostream>
 
 #include "core/CMI.h"
+#include "core/Task.h"
+#include "configuration/Scratch.h"
 #include "pthread/Priorities.h"
-
+#include "tasks/BusyWait.h"
+#include "utils/TimeUtil.h"
+#include "utils/vectormath.h"
 
 
 #define _INFO 0
@@ -21,9 +25,9 @@ using namespace std;
 ///Constructor needs  a disp_id and the type of the task associated with it
 Dispatcher::Dispatcher(unsigned int _id, _task_type task_type): 
 Thread(_id), TASK_TYPE(task_type) {
-  #if _INFO == 1
-  cout << "++New Dispatcher - " << _id << "\n";
-  #endif
+  // #if _INFO == 1
+  // cout << "++New Dispatcher - " << _id << "\n";
+  // #endif
 
   thread_type = dispatcher;
 
@@ -37,13 +41,19 @@ Thread(_id), TASK_TYPE(task_type) {
   cmi = NULL;
 }
 
+Dispatcher::~Dispatcher(){
+  for (int i = 0; i < (int) allTasks.size(); ++i)
+  {
+     delete allTasks[i];
+  }
+}
+
 /*********** INHERITED FUNCTIONS ***********/
 
 /**** FROM THREAD ****/
 
 ///This join function takes into account the dispatcher's unblocking mechanism
 void Dispatcher::join() {
- 
   join2();
 }
 
@@ -62,12 +72,16 @@ void Dispatcher::wrapper() {
   cout << "Disp: " << id << " begining execution \n";
   #endif
 
+  while( !CMI::isRunning() );
+
   //if offset != 0, sleep before dispatching
   if(offset.tv_nsec != 0 || offset.tv_sec !=0) {
     nanosleep(&offset, &rem);
   }
 
-  dispatch();
+
+  Dispatcher* disp = (Dispatcher*)this;
+  disp->dispatch();
 
   #if _INFO == 1
   cout << "Dispatcher " << id << " exiting wrapper...\n";
@@ -79,6 +93,29 @@ void Dispatcher::wrapper() {
 ///This function sets the dispatcher's priority to DISP_PR
 void Dispatcher::activate() {
   setPriority(Priorities::get_dispatcher_pr());
+}
+
+Task* Dispatcher::createNewTask(){
+  Task * t = NULL;
+  switch (TASK_TYPE){
+    case busywait:{
+      int n_used = Scratch::getNcores();
+      vector<struct timespec> wcets = vector<struct timespec> (n_used, TimeUtil::Micros(50000));
+      BusyWait* newTask = new BusyWait(wcets, integerVector(0, n_used-1));
+      t = (Task*) newTask;
+      break;
+    }
+
+    case benchmark:{
+
+    }
+    case userdefined:{
+
+    }
+
+  }
+  allTasks.push_back(t);
+  return t;
 }
 
 ///This virtual function should be implemented by the subclasses

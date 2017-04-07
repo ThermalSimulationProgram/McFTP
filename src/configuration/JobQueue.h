@@ -5,6 +5,7 @@
 
 
 #include <semaphore.h>
+#include <deque>
 
 #include "utils/Enumerations.h"
 
@@ -29,13 +30,9 @@ protected:
  /*********** VARIABLES ***********/
 
  	///This variable holds the size of the queue
-	int size;
+	// int size;
 
-  	///The head of the queue points the current job. 
-	Node* head;
-
-  	///The tail of the queue points to the last job on the active queue.
-	Node* tail;
+	std::deque<Task*> taskPointers;
 
   	///This semaphore protects access to the linked list (for insertion and removal)
 	sem_t queue_sem;
@@ -50,27 +47,15 @@ public:
 	~JobQueue();
 
 	JobQueue(const JobQueue& j);
-
-protected:
-
-  /*********** PROTECTED MEMBER FUNCTIONS ***********/
-
-  	///This function removes the queue's pointer to the Task with the specified type and id. 
- 	///returns true if the task was found, false otherwise
-	bool protectedDeleteJob(_task_type type, int id);
-
-  	///This function inserts the new task in the queue
-	bool protectedInsertJob(Task* newTask);
-
 public:
 
   /*********** PUBLIC MEMBER FUNCTIONS ***********/
 
-  	///This function is a public wrapper to the protectedDeleteJob function
-	bool deleteJob(_task_type type, int id);
+ //  	///This function is a public wrapper to the protectedDeleteJob function
+	// bool deleteJob(_task_type type, int id);
 
   	///This function is a public wrapper to the protectedInsertJob function
-	bool insertJob(Task* newTask);
+	void insertJob(Task* newTask);
 
   	///This function reads the head of the queue (non-destructive read) 
 	///and returns a pointer to the task
@@ -89,6 +74,8 @@ public:
 
   ///This function returns the size of the JobQueue
 	int getSize();
+
+	void print();
 };
 
 #endif

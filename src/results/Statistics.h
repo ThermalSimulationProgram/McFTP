@@ -88,7 +88,7 @@ class Statistics {
   static void addRuntime(enum _thread_type type, unsigned int t_id, struct timespec rt);
 
   ///This function adds a trace to the vector
-  static void addTrace(enum _thread_type type, unsigned int t_id, enum _task_action act);
+  static void addTrace(enum _thread_type type, int t_id, enum _task_action act);
 
   ///This function should be called by the Worker constructor to 'register' its id
   static void addWorkerId(unsigned int id);

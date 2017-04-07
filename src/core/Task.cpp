@@ -21,9 +21,14 @@ Task::Task(_task_type load) {
   jobId = jobCounter;
   jobCounter++;
   worker = NULL;
+  finished = false;
 
   sem_init(&suspend_sem, 0, 0);
   sem_init(&resume_sem, 0, 0);
+}
+
+Task::~Task(){
+  
 }
 
 /*********** MEMBER FUNCTIONS ***********/
@@ -54,6 +59,11 @@ void Task::suspend(const struct timespec& length){
 
 void Task::resume(){
 	sem_post(&resume_sem);
+}
+
+
+bool Task::isFinished(){
+  return finished;
 }
 
 

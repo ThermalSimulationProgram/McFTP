@@ -14,7 +14,7 @@
 
 using namespace std;
 
-#define _INFO 0
+#define _INFO 1
 #define _DEBUG 0;
 
 ThermalApproach::ThermalApproach(unsigned _id, CMI * c, 
@@ -73,6 +73,12 @@ void ThermalApproach::wrapper(){
 
 	///wait for the simulation start
 	while(!CMI::isRunning()){}
+
+		#if _INFO == 1
+	Semaphores::print_sem.wait_sem();
+	cout << "ThermalApproach: " << id << " begin execution \n";
+	Semaphores::print_sem.post_sem();
+  	#endif
 
 	while(CMI::isRunning()){
 

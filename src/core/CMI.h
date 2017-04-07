@@ -16,7 +16,7 @@ class Worker;
 class Dispatcher;
 class ThermalApproach;
 class TempWatcher;
-class Job;
+class Task;
 class CPUUsage;
 class PowerManager;
 
@@ -98,7 +98,9 @@ public:
 	void updateConfiguration(const Configuration& c);
 
 	// This function is called by the dispatcher to release a new job
-	void newJob(_task_type task_type);
+	void newJob(Task *, _task_type);
+
+	void insertJobToQueue(int queueId, Task*);
 
 	Task* tryLoadJob(int workerId);
 

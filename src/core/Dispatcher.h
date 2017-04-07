@@ -2,9 +2,11 @@
 #define _DISPATCHER_H
 
 #include <time.h>
+#include <vector>
 
 #include "pthread/Thread.h"
 #include "utils/Enumerations.h"
+#include "core/Task.h"
 
 class CMI;
 
@@ -27,6 +29,8 @@ class Dispatcher : public Thread {
   ///Pointer to the CMI associated to the dispatcher
   CMI *cmi;
 
+  std::vector<Task*> allTasks;
+
   const _task_type TASK_TYPE;
     
  public:
@@ -35,6 +39,8 @@ class Dispatcher : public Thread {
 
   ///Constructor needs  a disp_id and the type of the task associated with it
   Dispatcher (unsigned int id, _task_type task_type);
+
+  ~Dispatcher();
 
   /*********** INHERITED FUNCTIONS ***********/
 
@@ -64,6 +70,8 @@ class Dispatcher : public Thread {
 
   ///This function sets the associated CMI
   void setCMI(CMI *c);
+
+  Task* createNewTask();
 };
 
 #endif

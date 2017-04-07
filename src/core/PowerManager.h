@@ -15,8 +15,8 @@ class PowerManager: public Thread{
 private:
 	struct timespec nextActionTime;
 
-
 	std::vector<HyperStateTable> tables;
+
 	std::vector<Worker* > workers;
 
 	int nextCoreId;
@@ -26,7 +26,9 @@ private:
 	sem_t interrupt_sem;
 
 	sem_t statetable_sem;
+
 public:
+
 	PowerManager(unsigned, std::vector<Worker* > workers);
 
 	///gives the PowerManager thread the ACTIVE_PR priority

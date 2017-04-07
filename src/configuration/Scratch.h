@@ -1,13 +1,14 @@
-	#ifndef _SCRATCH_H
-	#define _SCRATCH_H
+#ifndef _SCRATCH_H
+#define _SCRATCH_H
 
-	#include <vector>
-	#include <string>
-	#include <semaphore.h>
+#include <vector>
+#include <string>
+#include <semaphore.h>
 
 
-	#include "utils/Enumerations.h"
-	#include "core/structdef.h"
+#include "utils/Enumerations.h"
+#include "utils/TimeUtil.h"
+#include "core/structdef.h"
 
 
 
@@ -26,8 +27,8 @@ public:
 	
 	
 	static unsigned long 			getAdaptionPeriod();
-	static std::string 					getName();
-	static int 						getNstage();
+	static std::string 				getName();
+	static int 						getNcores();
 	
 	// static std::vector<unsigned long> 	getWcets();
 	
@@ -39,6 +40,7 @@ public:
 	static std::vector<_task_type>	getAllTaskTypes();
 	static std::vector<_task_periodicity> 	getAllTaskPeriodicity();
 	static std::vector<task_data>  getTaskData();
+	static task_data  getTaskData(_task_type);
 	static std::string 				getApproachName();
 	
 	
@@ -68,5 +70,5 @@ private:
 	static std::string 				benchmark;
 };
 
-
+void task_data_print(const task_data &);
 	#endif 

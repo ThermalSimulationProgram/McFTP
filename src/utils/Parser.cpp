@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <algorithm>
 
 #include "core/Dispatcher.h"
@@ -29,12 +30,13 @@ Parser::Parser(string _xml_path){
 // This function parse the file pointed by xml_path, and then 
 // save all necessary data required by the simulation in Scratch class.
 int Parser::parseFile(){
-	return 0;
 	int ret = 0;
 
 	// load the xml file
 	xml_document doc;
 	if( !doc.load_file(xml_path.data()) ){
+		cout << getexepath() << endl;
+		std::cout << "xml_path: " << xml_path.data() << endl;
 		std::cout << "Could not find file...\n";
 		return -1;
 	}
@@ -57,6 +59,7 @@ int Parser::parseFile(){
 	// get parameters of all tasks
 	xml_node task_node     = sim_node.child("tasks");
 	//iterate through all of the children nodes
+	int taskid = 1;
 	for (xml_node task = task_node.first_child(); task; task = task.next_sibling()){
 		string task_type = task.attribute("type").as_string();
 		string periodicity = task.attribute("periodicity").as_string();
@@ -95,6 +98,23 @@ int Parser::parseFile(){
 			cout << "parseFile: task periodicity was not recognized" << endl;
 			exit(1);
 		}
+		string task_name = task.attribute("name").as_string();
+
+		if(task_name.length() > 0 ){
+			data.name = task_name;
+		}else{
+			ostringstream tmp;
+			tmp << taskid;
+			data.name = "task" + tmp.str();
+		}
+
+		xml_node attachedCores = task.child("attached_cores");
+		vector<int> attached_cores;
+		if(attachedCores){
+			attached_cores = stringToVector<int>(attachedCores.attribute("value").as_string());
+		}
+
+		data.attached_cores = attached_cores;
 
 		Scratch::addTask(type, pcity, data);
 	}
@@ -114,7 +134,7 @@ int Parser::parseFile(){
 		}
 	}
 
-	// Scratch::print();
+	Scratch::print();
 	return ret;
 }
 

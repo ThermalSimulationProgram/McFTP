@@ -85,12 +85,12 @@ void * Thread::static_wrapper(void * This)
   // Semaphores::print_sem.wait_sem();
   // cout << "THread::static_wrapper: finished wrapper, id " << t->id << endl;
   // Semaphores::print_sem.post_sem();
-  struct timespec ts;
+  // struct timespec ts;
 
-  clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ts);
+  // clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ts);
  //Save the runtime statistic
   
-  Statistics::addRuntime(t->thread_type, t->id, ts);
+  // Statistics::addRuntime(t->thread_type, t->id, ts);
   // Semaphores::print_sem.wait_sem();
   // cout << "THread::static_wrapper: finished saving time, id " << t->id << endl;
   // Semaphores::print_sem.post_sem();

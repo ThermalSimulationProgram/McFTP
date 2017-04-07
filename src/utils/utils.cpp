@@ -26,3 +26,11 @@ string formatString(const string& base){
 void dumpLinesSeperator(){
 	std::cout << "***********************************************" << std::endl;
 }
+
+
+std::string getexepath()
+{
+  char result[ PATH_MAX ];
+  ssize_t count = readlink( "/proc/self/exe", result, PATH_MAX );
+  return std::string( result, (count > 0) ? count : 0 );
+}

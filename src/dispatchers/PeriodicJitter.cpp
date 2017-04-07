@@ -39,7 +39,8 @@ void PeriodicJitter::dispatch() {
     // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
 
     if(cmi != NULL) {
-      cmi->newJob(TASK_TYPE);
+      Task* t = createNewTask();
+      cmi->newJob(t, TASK_TYPE);
     }
     else {
       cout << "Dispatcher error: worker is null!\n";

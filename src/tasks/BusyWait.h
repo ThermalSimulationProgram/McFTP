@@ -1,6 +1,8 @@
 #ifndef _BUSYWAIT_H
 #define _BUSYWAIT_H
 
+#include <vector>
+
 #include "core/Task.h"
 
 /***************************************
@@ -14,14 +16,22 @@ class BusyWait : public Task {
   /*********** VARIABLES ***********/
 
   ///This paremeter specifies the worst-case execution time for the busy wait loop
-  struct timespec WCET;
+  std::vector<struct timespec> WCET;
+
+  std::vector<int> coreIds;
+
+  std::vector<bool> coreFinished;
+
+  int nextCoreId;
 
  public:
 
   /*********** CONSTRUCTOR ***********/
 
   ///The constructor requires a pointer
-  BusyWait(struct timespec wcet);
+  BusyWait(std::vector<struct timespec> wcet, std::vector<int> _coreIds);
+
+  ~BusyWait();
 
   /*********** INHERITED FUNCTIONS ***********/
   
@@ -29,6 +39,8 @@ class BusyWait : public Task {
   
   //This function will perform one task with execution time WCET
   void fire();
+
+  int getNextCoreId();
 };
 
 #endif

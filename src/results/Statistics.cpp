@@ -110,8 +110,9 @@ void Statistics::addRuntime(enum _thread_type type, unsigned int id, struct time
   // Semaphores::print_sem.post_sem();
 }
 
+
 ///This function adds a trace to the vector
-void Statistics::addTrace(enum _thread_type type, unsigned int t_id, enum _task_action act) {
+void Statistics::addTrace(enum _thread_type type, int t_id, enum _task_action act) {
   #if _TRACING_ENABLED == 1
   if(state == 1) {
     Trace t;

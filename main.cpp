@@ -33,7 +33,7 @@
 // #include "utils.h"
 // #include "FileOperator.h"
 
-// #include "UnitTesting.h"
+#include "UnitTest/UnitTest.h"
 using namespace std;
 
 
@@ -56,7 +56,8 @@ int main(int argc, char** argv){
 
  // testrtc();
 runSimulation( argc, argv);
-
+// testJobQueue();
+	// testHyperStateTable();
 	// offlineSimulation();
 	// testStringUtils();
 	// testFileOperator();
