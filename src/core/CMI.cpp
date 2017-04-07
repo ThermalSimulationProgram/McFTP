@@ -37,8 +37,8 @@
 
 
 using namespace std;
-#define _DEBUG 1
-#define _INFO 1
+#define _DEBUG 0
+#define _INFO 0
 
 
 bool CMI::initialized = false;
@@ -181,7 +181,7 @@ void CMI::initialize(){
 	powermanager->trigger();
 
 	thermal_approach->trigger();
-	thermal_approach->setCPU(n_cpus - 2);
+	thermal_approach->setCPU(n_cpus - 1);
 	thermal_approach->activate();
 
 	tempwatcher->trigger();
@@ -242,12 +242,12 @@ double CMI::simulate(){
 	else
 		tempwatcher->setCPU(n_cpus - 1);
 		
-	powermanager->setCPU(0);
+	powermanager->setCPU(6);
 	powermanager->activate();
 
 	Statistics::enable();
 	
-
+	cout << "start simulation" << endl;
 
 	// simulation starts now
 	cpuUsageRecorder.startLoggingCPU();
@@ -270,6 +270,16 @@ double CMI::simulate(){
 
 	// join other threads, wait them to finish
 	join_all();
+	enum _thread_type main_type = _main;
+	Statistics::addRuntime(main_type, 1000, TimeUtil::getTime() - Statistics::getStart());
+
+	vector<struct timespec> allWCETs = Scratch::getWCETs();
+	for (int i = 0; i < (int) workers.size(); ++i)
+	{
+		int counter = workers[i]->getJobCounter();
+		Statistics::addRuntime(_worker, workers[i]->getId(), counter*allWCETs[i]);
+	}
+
 	// return the average temperature 
 	// cout << "cpuUsageRecorder..." << endl;
 	cpuUsageRecorder.endLoggingCPU();

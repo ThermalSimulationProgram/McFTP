@@ -33,6 +33,7 @@ protected:
 
 	Task* current_job;
 
+	int job_counter;
 
 	CMI * cmi;
 
@@ -114,6 +115,8 @@ public:
 	bool isActive();
 
 	int getId();
+
+	int getJobCounter();
 
 };
 

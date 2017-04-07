@@ -10,11 +10,12 @@
 #include "utils/Semaphores.h"
 #include "utils/FileOperator.h"
 #include "utils/TimeUtil.h"
+#include "utils/Enumerations.h"
 
 using namespace std;
 
 
-#define _INFO 1
+#define _INFO 0
 #define _DEBUG 1
 
 
@@ -26,7 +27,7 @@ using namespace std;
 
 TempWatcher::TempWatcher(unsigned period, unsigned _id):Thread(_id){
 
-	
+	thread_type = _temp_watcher;
 	if (period == 0){
 		cerr << "TempWatcher::TempWatcher: Error, period is zero!\n";
 		exit(-1);
@@ -52,7 +53,7 @@ void TempWatcher::activate(){
 }
 
 void TempWatcher::join(){
-  cout << "TempWatcher::joining" << endl;
+  // cout << "TempWatcher::joining" << endl;
 	join2();
 }
 

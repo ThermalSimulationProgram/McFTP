@@ -17,6 +17,7 @@ class BusyWait : public Task {
 
   ///This paremeter specifies the worst-case execution time for the busy wait loop
   std::vector<struct timespec> WCET;
+  std::vector<unsigned long> wcet_us;
 
   std::vector<int> coreIds;
 

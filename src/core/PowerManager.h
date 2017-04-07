@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <stdio.h>
 #include <semaphore.h>
 
 #include "configuration/StateTable.h"
@@ -27,6 +28,8 @@ private:
 
 	sem_t statetable_sem;
 
+	// std::vector<FILE*> file_d;
+
 public:
 
 	PowerManager(unsigned, std::vector<Worker* > workers);
@@ -46,7 +49,7 @@ public:
 
 	void changePower(int id, double f, struct timespec);
 
-	void setFrequency(int id, double f);
+	void setFrequency(int id, int f);
 
 
 };

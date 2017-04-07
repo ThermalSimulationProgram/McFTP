@@ -16,16 +16,17 @@
 
 using namespace std;
 
-#define _INFO 1
+#define _INFO 0
 #define _DEBUG 0
 
 
 
 Worker::Worker(int _workerId, int _id) : Thread(_id){
-	workerId     = _workerId; 
+	workerId    = _workerId; 
 	thread_type = _worker;
 	current_job = NULL;
 	state 		= _active;
+	job_counter = 0;
 	
 	// sem_init(&queue_sem, 0, 1);
 	// sem_init(&queue_lock_sem, 0, 1);
@@ -36,6 +37,7 @@ Worker::Worker(int _workerId, int _id) : Thread(_id){
 
 
 	latestSleep = TimeUtil::Millis(0);
+
 }
 
 Worker::~Worker(){
@@ -128,18 +130,22 @@ vector<double> Worker::getAllAbsDeadline_ms(){
 
 
 void Worker::activate(){
-	setPriority(Priorities::get_active_pr());
+	// setPriority(Priorities::get_active_pr());
+
 	state = _active;
 	latestSleep = TimeUtil::Millis(0);
 	sem_post(&resume_sem);
+	
 	if (current_job != NULL){
 		current_job->resume();
 	}
+
 }
 
 void Worker::deactivate(const struct timespec& length){
 	// setPriority(Priorities::get_inactive_pr());
 	struct timespec now = TimeUtil::getTime();
+	// unsigned long timein = TimeUtil::convert_us(now);
     sleepEnd = now + length;
     latestSleep = now;
     state = _sleep;
@@ -147,6 +153,7 @@ void Worker::deactivate(const struct timespec& length){
 	if (current_job != NULL){
 		current_job->suspend(length);
 	}
+	
 }
 
 
@@ -222,11 +229,14 @@ void Worker::wrapper(){
 			Statistics::addTrace(thread_type, id, task_start);
 			current_job->fire();			
 			cmi->finishedJob(current_job);
+			job_counter++;
 			// Statistics::addTrace(thread_type, id, task_end);
 			setSuspendPoint();
 			current_job = NULL;
 		}
 	}
+
+	
 }
 
 
@@ -254,6 +264,8 @@ int Worker::getId(){
 	return workerId;
 }
 
-
+int Worker::getJobCounter(){
+	return job_counter;
+}
 
 

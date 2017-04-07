@@ -4,7 +4,7 @@
 #include <cstdlib>
 
 #include "core/Dispatcher.h"
-#include "core/CMI.h"
+// #include "core/CMI.h"
 #include "core/Worker.h"
 #include "utils/Operators.h"
 #include "utils/TimeUtil.h"
@@ -31,6 +31,10 @@ BusyWait::BusyWait(vector<struct timespec> wcet, vector<int> _coreIds) : Task(bu
   WCET = wcet;
   coreIds = _coreIds;
   coreFinished = vector<bool> (wcet.size(), false);
+  for (int i = 0; i < (int) WCET.size(); ++i)
+  {
+    wcet_us.push_back(TimeUtil::convert_us(WCET[i]));
+  }
   nextCoreId = 0;
 }
 
@@ -50,10 +54,8 @@ void BusyWait::fire() {
     return;
   }
 
-  unsigned int count=0, wcet_us = TimeUtil::convert_us(WCET[current_core_id]);
+  unsigned int count=0, wcet_us_this = wcet_us[current_core_id];
   
-  
-
   //BUSY WAIT LOOP
   do {
      setSuspendPoint(); // set a suspend point here. When recieves a suspend signal, pause execution here
@@ -65,12 +67,12 @@ void BusyWait::fire() {
      }
 
       count += tmp_count;
-  } while ( count < wcet_us && CMI::isRunning()); 
+  } while ( count < wcet_us_this); 
 
   coreFinished[current_core_id] = true;
 
-  _thread_type thread_type = _worker;
-  Statistics::addTrace(thread_type, worker->getId(), task_end);
+  // _thread_type thread_type = _worker;
+  // Statistics::addTrace(thread_type, worker->getId(), task_end);
 
   if (vectorAll(coreFinished)){
     finished = true;

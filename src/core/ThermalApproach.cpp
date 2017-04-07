@@ -14,14 +14,14 @@
 
 using namespace std;
 
-#define _INFO 1
+#define _INFO 0
 #define _DEBUG 0;
 
 ThermalApproach::ThermalApproach(unsigned _id, CMI * c, 
 	string _approachName): Thread(_id){
 	///  initialize member vairables
 	cmi          = c;
-	thread_type  = thermal_approach;
+	thread_type  = _thermal_approach;
 	approachName = _approachName;
 	
 	/// set thermal approach period

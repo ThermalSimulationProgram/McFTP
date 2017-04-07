@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <time.h>
 #include <semaphore.h>
 
 
@@ -24,13 +25,13 @@ public:
 	static void 					setSavingFile(bool);
 	static void 					setBenchmark(const std::string&);
 	static void 					addTask(_task_type, _task_periodicity, task_data);
-	
+	static void 					setWCETs(std::vector<struct timespec>);
 	
 	static unsigned long 			getAdaptionPeriod();
 	static std::string 				getName();
 	static int 						getNcores();
 	
-	// static std::vector<unsigned long> 	getWcets();
+	static std::vector<struct timespec> 	getWCETs();
 	
 	static unsigned long 			getDuration();
 	
@@ -52,7 +53,7 @@ private:
 	
 	static std::string 				name;
 	static int 						nstage;
-	
+	static std::vector<struct timespec> 	WCETS;
 	// static std::vector<double> 			dwcets;
 	// static std::vector<unsigned long> 	arrival_times;
 	// static enum _schedule_kernel 	kernel;

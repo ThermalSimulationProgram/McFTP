@@ -20,6 +20,8 @@ vector<_task_periodicity> 	Scratch::periodicities;
 vector<_task_type> 			Scratch::task_types;
 vector<task_data>  			Scratch::all_task_data;
 
+vector<struct timespec> 	Scratch::WCETS;
+
 
 void Scratch::initialize(int _nstage,
 	unsigned long _duration,
@@ -31,6 +33,8 @@ void Scratch::initialize(int _nstage,
 	adaption_period = 1000000;
 	isSave 			= true;
 	benchmark 		= "default";
+
+	WCETS = vector<struct timespec> (nstage, TimeUtil::Micros(50000));
 
 	sem_init(&access_sem, 0, 1);
 }
@@ -85,7 +89,19 @@ void Scratch::setAdaptionPeriod(unsigned long p){
 	sem_wait(&access_sem);
 	adaption_period = p;
 	sem_post(&access_sem);
-	
+}
+
+void Scratch::setWCETs(vector<struct timespec> wcets){
+	sem_wait(&access_sem);
+	WCETS = wcets;
+	sem_post(&access_sem);
+}
+
+vector<struct timespec> Scratch::getWCETs(){
+	sem_wait(&access_sem);
+	vector<struct timespec> ret = WCETS;
+	sem_post(&access_sem);
+	return ret;
 }
 
 

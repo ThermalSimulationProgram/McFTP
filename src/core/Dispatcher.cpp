@@ -3,6 +3,7 @@
 #include <time.h>
 #include <iostream>
 
+
 #include "core/CMI.h"
 #include "core/Task.h"
 #include "configuration/Scratch.h"
@@ -29,7 +30,7 @@ Thread(_id), TASK_TYPE(task_type) {
   // cout << "++New Dispatcher - " << _id << "\n";
   // #endif
 
-  thread_type = dispatcher;
+  thread_type = _dispatcher;
 
   //By default periodic
   periodicity = periodic;
@@ -99,9 +100,9 @@ Task* Dispatcher::createNewTask(){
   Task * t = NULL;
   switch (TASK_TYPE){
     case busywait:{
-      int n_used = Scratch::getNcores();
-      vector<struct timespec> wcets = vector<struct timespec> (n_used, TimeUtil::Micros(50000));
-      BusyWait* newTask = new BusyWait(wcets, integerVector(0, n_used-1));
+      int ncores = Scratch::getNcores();
+      vector<struct timespec> wcets = Scratch::getWCETs();
+      BusyWait* newTask = new BusyWait(wcets, integerVector(0, ncores-1));
       t = (Task*) newTask;
       break;
     }

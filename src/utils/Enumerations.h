@@ -3,22 +3,6 @@
 
 
 
-///This enumeration describes the two runnable states
-enum _runnable_state 
-{
-  activated,
-  deactivated
-};
-
-///This enumeration describes the different scheduler types
-enum _sched_type 
-{
-  edf,
-  fifo,
-  fp,
-  tdma,
-  rm
-};
 
 ///This enumeration descibes the possible task models
 enum _task_periodicity {
@@ -66,10 +50,11 @@ enum _task_action
 ///This enum describes what thread types can produce traces
 enum _thread_type 
 {
-  idle,
-  thermal_approach,
-  dispatcher,
-  server,
+  _main,
+  _power_manager,
+  _thermal_approach,
+  _dispatcher,
+  _temp_watcher,
   _worker
 };
 

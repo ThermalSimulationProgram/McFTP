@@ -53,8 +53,9 @@ int ThermalApproachAPI::addNewJob(_task_type, CMI* cmi){
 
 }
 
+
 Configuration ThermalApproachAPI::finishJob(Task* t){
 	Configuration ret;
-	cout << "Task with id: " << t->getId() << " finished at time: " << Statistics::getRelativeTime_ms() << endl; 
+	// cout << "Task with id: " << t->getId() << " finished at time: " << Statistics::getRelativeTime_ms() << endl; 
 	return ret;
 }
