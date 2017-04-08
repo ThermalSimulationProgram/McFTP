@@ -26,6 +26,19 @@ public:
 	static void 					setBenchmark(const std::string&);
 	static void 					addTask(_task_type, _task_periodicity, task_data);
 	static void 					setWCETs(std::vector<struct timespec>);
+	static void 					setFixedFrequency(bool);
+	static void 					setFixedActive(bool);
+	static void 					setStaticApproach(bool);
+	static void 					setPBOOTons(std::vector<struct timespec>);
+	static void 					setPBOOToffs(std::vector<struct timespec>);
+
+
+
+	static bool 					isFixedFrequency();
+	static bool 					isFixedActive();
+	static bool 					isStaticApproach();
+	static std::vector<struct timespec> getPBOOTons();
+	static std::vector<struct timespec> getPBOOToffs();
 	
 	static unsigned long 			getAdaptionPeriod();
 	static std::string 				getName();
@@ -46,6 +59,12 @@ public:
 	
 	
 private:
+
+	static bool 					fixedFrequency;
+	static bool 					fixedActive;
+	static bool 					is_staticApproach;
+	static std::vector<struct timespec> 	PBOO_tons;
+	static std::vector<struct timespec> 	PBOO_toffs;
 	
 	static std::vector<_task_periodicity> periodicities;
 	static std::vector<_task_type> task_types;

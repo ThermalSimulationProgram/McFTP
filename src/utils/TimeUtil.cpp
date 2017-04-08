@@ -89,6 +89,15 @@ struct timespec TimeUtil::relative2absloute(
 }
 
 
+std::vector<unsigned long> TimeUtil::convert_us(std::vector<struct timespec> t1){
+    std::vector<unsigned long> ret;
+    for (int i = 0; i < (int)t1.size(); ++i)
+    {
+      ret.push_back(convert_us(t1[i]));
+    }
+    return ret;
+ }
+
 ///Converts a timespec to unsigned long usecs
 unsigned long TimeUtil::convert_us(struct timespec t1)
 {
@@ -101,6 +110,17 @@ unsigned long  TimeUtil::convert_ms(struct timespec t1) {
   unsigned long  ul = (unsigned long int) (t1.tv_sec)*1000 + (unsigned long int)(t1.tv_nsec)/1000000;
   return ul;
 }
+
+///This function returns a timespec with the specified microseconds
+std::vector<struct timespec> TimeUtil::Micros(std::vector<long int> us){
+  std::vector<struct timespec> ret;
+  for (int i = 0; i < (int)us.size(); ++i)
+  {
+    ret.push_back(Micros(us[i]));
+  }
+  return ret;
+}
+
 
 ///This function returns a timespec with the specified microseconds
 struct timespec TimeUtil::Micros(long int us) {

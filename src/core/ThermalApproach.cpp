@@ -28,6 +28,8 @@ ThermalApproach::ThermalApproach(unsigned _id, CMI * c,
 	period = TimeUtil::Micros(Scratch::getAdaptionPeriod());
 
 	timeExpense.reserve(1000);
+
+	isStatic = Scratch::isStaticApproach();
 }
 
 ThermalApproach::~ThermalApproach()
@@ -80,6 +82,8 @@ void ThermalApproach::wrapper(){
 	Semaphores::print_sem.post_sem();
   	#endif
 
+  	bool isUpdate = true;
+
 	while(CMI::isRunning()){
 
 		DynamicInfo d;
@@ -89,11 +93,21 @@ void ThermalApproach::wrapper(){
 		Configuration config = ThermalApproachAPI::runThermalApproach(d);
 		struct timespec timeout = TimeUtil::getTime();
 
-		cmi->updateConfiguration(config);
+		if (isUpdate){
+			cmi->updateConfiguration(config);
+			if (isStatic){
+				isUpdate = false;
+			}
+		}
+		
 
 		timeExpense.push_back(TimeUtil::convert_us(timeout - timein));
 
+	
+
 		nanosleep(&period, &rem);
+
+
 
 	}
 

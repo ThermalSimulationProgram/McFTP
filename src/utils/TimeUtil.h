@@ -48,11 +48,17 @@ class TimeUtil {
   ///Converts a timespec to unsigned long usecs
   static unsigned long convert_us(struct timespec t1);
 
+  ///Converts a timespec to unsigned long usecs
+  static std::vector<unsigned long> convert_us(std::vector<struct timespec> t1);
+
   ///Converts a timespec to unsigned long msecs
   static unsigned long convert_ms(struct timespec t1);
 
   ///This function returns a timespec with the specified microseconds
   static struct timespec Micros(long int us);
+
+  ///This function returns a timespec with the specified microseconds
+  static std::vector<struct timespec> Micros(std::vector<long int> us);
 
   ///This function returns a timespec with the specified milliseconds
   static struct timespec Millis(long int ms);

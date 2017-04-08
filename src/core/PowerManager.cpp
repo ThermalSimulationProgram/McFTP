@@ -43,6 +43,11 @@ workers(_workers){
 	freqInterface.push_back("/home/long/McFTP/trunk/test/test3");
 	freqInterface.push_back("/home/long/McFTP/trunk/test/test4");
 
+
+	isFixedFrequency = Scratch::isFixedFrequency();
+
+	isFixedActive = Scratch::isFixedActive();
+
 	// freqInterface.push_back("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed");
 	// freqInterface.push_back("/sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed");
 	// freqInterface.push_back("/sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed");
@@ -148,12 +153,19 @@ void PowerManager::wrapper(){
 void PowerManager::changePower(int id, double f, struct timespec length){
 	// std::cout << "PowerManager id: " << id << " is changing power";
 	if ( f<EPSILON && f>-EPSILON){
-		workers[id]->deactivate(length);
+		if (!isFixedActive){
+			workers[id]->deactivate(length);
+		}
+		
 	}else if (f > 0){
-		if (!workers[id]->isActive()){
+
+		if (!isFixedActive && !workers[id]->isActive()){
 			workers[id]->activate();
+		}
+		if (!isFixedFrequency){
+			setFrequency(id, (int)f);
 		}	
-		setFrequency(id, (int)f);
+		
 	}
 }
 

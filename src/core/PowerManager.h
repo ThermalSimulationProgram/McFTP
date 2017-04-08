@@ -28,6 +28,10 @@ private:
 
 	sem_t statetable_sem;
 
+	bool isFixedFrequency;
+
+	bool isFixedActive;
+
 	// std::vector<FILE*> file_d;
 
 public:

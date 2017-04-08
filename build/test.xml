@@ -7,6 +7,7 @@
    <tasks>
       <task1 name = "ptask" type="busy_wait" periodicity = "periodic">
          <period value = "100" unit="ms"/>
+         <wcets value = "{40, 40}" unit = "ms"/>
          <attached_cores value = "{0, 1}"/>
       </task1>
    </tasks>

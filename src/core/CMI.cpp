@@ -60,10 +60,13 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 	}
 
 	Parser* p = new Parser(xml_path);
+
 	if (p->parseFile()!=0){
 		cerr << "Pipeline::Pipeline: Cannot parse given xml file!\n";
 		exit(1);
 	}
+	// exit(1);
+	
 	delete p;
 	#if _DEBUG == 1
 	cout << "finished parse file\n";

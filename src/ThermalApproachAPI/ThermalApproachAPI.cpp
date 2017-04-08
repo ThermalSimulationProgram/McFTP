@@ -5,17 +5,24 @@
 #include "core/CMI.h"
 #include "results/Statistics.h"
 #include "configuration/StateTable.h"
+#include "configuration/Scratch.h"
 #include "configuration/JobQueue.h"
+#include "utils/TimeUtil.h"
 
 
 using namespace std;
 
 string ThermalApproachAPI::approachName = "default";
 
+vector<unsigned long> ThermalApproachAPI::tons ;
+vector<unsigned long> ThermalApproachAPI::toffs ;
+
 
 //fill the following functions according to the thermal approach
 void ThermalApproachAPI::init(string __aproachname){
 	approachName = __aproachname;
+	tons = TimeUtil::convert_us(Scratch::getPBOOTons());
+	toffs = TimeUtil::convert_us(Scratch::getPBOOToffs());
 }
 
 Configuration ThermalApproachAPI::runThermalApproach(const DynamicInfo& info){
@@ -26,20 +33,16 @@ Configuration ThermalApproachAPI::runThermalApproach(const DynamicInfo& info){
 	}else if (approachName == "default"){
 
 	}
+	for (int i = 0; i < (int)tons.size(); ++i)
+	{
+		StateTable st = StateTable(i);
+		st.pushState(0, toffs[i]);
+		st.pushState(1500, tons[i]);
+		JobQueue jq = JobQueue();
 
-	StateTable st = StateTable(0);
-	st.pushState(0, 20000);
-	st.pushState(1500, 20000);
-	JobQueue jq = JobQueue();
-
-	ret.pushConfigurationOfOneCore(st, jq);
-
-	StateTable st2 = StateTable(0);
-	st2.pushState(0, 30000);
-	st2.pushState(1500, 20000);
-
-	ret.pushConfigurationOfOneCore(st2, jq);
-
+		ret.pushConfigurationOfOneCore(st, jq);
+	}
+	
 
 	return ret;
 }

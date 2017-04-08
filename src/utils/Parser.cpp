@@ -23,6 +23,17 @@
 using namespace pugi;
 using namespace std;
 
+bool string2bool(string s){
+	if (s == "False" || s == "false"){
+		return false;
+	}else if (s == "True" || s == "true"){
+		return true;
+	}else{
+		cout << "Parser:: not recognized bool string!" << endl;
+		exit(1);
+	}
+}
+
 Parser::Parser(string _xml_path){
 	xml_path = _xml_path;
 }
@@ -55,6 +66,13 @@ int Parser::parseFile(){
 
 	// put all the necessary input parameters in scratch
 	Scratch::initialize(ncores, duration, name);
+
+	string fixed_frequency = processor.attribute("fixed_frequency").as_string();
+	string fixed_active = processor.attribute("fixed_active").as_string();
+
+	Scratch::setFixedFrequency(string2bool(fixed_frequency));
+	Scratch::setFixedActive(string2bool(fixed_active));
+
 
 	// get parameters of all tasks
 	xml_node task_node     = sim_node.child("tasks");
@@ -119,7 +137,18 @@ int Parser::parseFile(){
 		Scratch::addTask(type, pcity, data);
 	}
 
+	xml_node thermal_approach = sim_node.child("thermal_approach");
+	xml_node kernel = thermal_approach.child("kernel");
+	string kerneltype = kernel.attribute("type").as_string();
+	if (kerneltype == "pboo"){
+		Scratch::setStaticApproach(true);
+		vector<long int> tons_us = parseTimeVectorMicro<long int>(kernel.child("ton"));
+		vector<long int> toffs_us = parseTimeVectorMicro<long int>(kernel.child("toff"));
 
+		Scratch::setPBOOTons(TimeUtil::Micros(tons_us));
+		Scratch::setPBOOToffs(TimeUtil::Micros(toffs_us));
+
+	}
 	
    // if save the results into files
 	xml_node isSaveFile	   = sim_node.child("save_result");
@@ -134,7 +163,7 @@ int Parser::parseFile(){
 		}
 	}
 
-	// Scratch::print();
+	Scratch::print();
 	return ret;
 }
 

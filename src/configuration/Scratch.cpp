@@ -22,6 +22,12 @@ vector<task_data>  			Scratch::all_task_data;
 
 vector<struct timespec> 	Scratch::WCETS;
 
+bool 					Scratch::fixedFrequency;
+bool 					Scratch::fixedActive;
+bool 					Scratch::is_staticApproach;
+vector<struct timespec> 	Scratch::PBOO_tons;
+vector<struct timespec> 	Scratch::PBOO_toffs;
+
 
 void Scratch::initialize(int _nstage,
 	unsigned long _duration,
@@ -30,11 +36,17 @@ void Scratch::initialize(int _nstage,
 	nstage 			= _nstage;
 	duration 		= _duration;
 	name            = _name;
-	adaption_period = 1000000;
+	adaption_period = 50000;
 	isSave 			= true;
 	benchmark 		= "default";
+	fixedFrequency  = false;
+	fixedActive 	= false;
+	is_staticApproach= true;
+
 
 	WCETS = vector<struct timespec> (nstage, TimeUtil::Micros(50000));
+	PBOO_tons = vector<struct timespec> (nstage, TimeUtil::Micros(100000));
+	PBOO_toffs = vector<struct timespec> (nstage, TimeUtil::Micros(10000));
 
 	sem_init(&access_sem, 0, 1);
 }
@@ -96,6 +108,69 @@ void Scratch::setWCETs(vector<struct timespec> wcets){
 	WCETS = wcets;
 	sem_post(&access_sem);
 }
+
+
+void Scratch::setFixedFrequency(bool ff){
+	sem_wait(&access_sem);
+	fixedFrequency = ff;
+	sem_post(&access_sem);	
+}
+void Scratch::setFixedActive(bool fa){
+	sem_wait(&access_sem);
+	fixedActive = fa;
+	sem_post(&access_sem);
+}
+void Scratch::setStaticApproach(bool sa){
+	sem_wait(&access_sem);
+	is_staticApproach = sa;
+	sem_post(&access_sem);
+}
+void Scratch::setPBOOTons(std::vector<struct timespec> tons){
+	sem_wait(&access_sem);
+	PBOO_tons = tons;
+	sem_post(&access_sem);
+}
+void Scratch::setPBOOToffs(std::vector<struct timespec> toffs){
+	sem_wait(&access_sem);
+	PBOO_toffs = toffs;
+	sem_post(&access_sem);
+}
+
+
+
+bool Scratch::isFixedFrequency(){
+	sem_wait(&access_sem);
+	bool ret = fixedFrequency;
+	sem_post(&access_sem);
+	return ret;
+}
+bool Scratch::isFixedActive(){
+	sem_wait(&access_sem);
+	bool ret = fixedActive;
+	sem_post(&access_sem);
+	return ret;
+}
+bool Scratch::isStaticApproach(){
+	sem_wait(&access_sem);
+	bool ret = is_staticApproach;
+	sem_post(&access_sem);
+	return ret;
+}
+
+std::vector<struct timespec> Scratch::getPBOOTons(){
+	sem_wait(&access_sem);
+	vector<struct timespec> ret = PBOO_tons;
+	sem_post(&access_sem);
+	return ret;
+}
+std::vector<struct timespec> Scratch::getPBOOToffs(){
+	sem_wait(&access_sem);
+	vector<struct timespec> ret = PBOO_toffs;
+	sem_post(&access_sem);
+	return ret;
+}
+
+
 
 vector<struct timespec> Scratch::getWCETs(){
 	sem_wait(&access_sem);

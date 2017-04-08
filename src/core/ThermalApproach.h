@@ -27,6 +27,8 @@ protected:
 
 	std::vector<double> timeExpense;
 
+	bool isStatic;
+
 public:
 	ThermalApproach(unsigned _id, CMI *c, std::string name);
 	

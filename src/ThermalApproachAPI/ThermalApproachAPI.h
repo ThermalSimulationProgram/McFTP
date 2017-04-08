@@ -2,6 +2,7 @@
 #define THERMALAPPROACHAPI_H 
 
 #include <string>
+#include <vector>
 
 #include "utils/Enumerations.h"
 #include "core/Task.h"
@@ -14,6 +15,9 @@ class CMI;
 class ThermalApproachAPI{
 private:
 	static std::string approachName;
+
+	static std::vector<unsigned long> tons;
+	static std::vector<unsigned long> toffs;
 
 public:
 
