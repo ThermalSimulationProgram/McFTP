@@ -26,6 +26,8 @@ vector<Runtime> Statistics::runtimes;
 ///This vector holds alll of the time traces
 vector<Trace> Statistics::traces;
 
+vector<JobLog> Statistics::joblogs;
+
 ///This vector holds all of the missed deadlines
 vector<MissedDeadline> Statistics::missedDeadlines;
 
@@ -42,6 +44,8 @@ sem_t Statistics::trace_sem;
 
 ///Semaphore to protect writing to the missedDealine vector
 sem_t Statistics::deadline_sem;
+
+sem_t Statistics::joblog_sem;
 
 /*********** MEMBER FUNCTIONS ***********/
 struct timespec Statistics::getStart()
@@ -110,6 +114,27 @@ void Statistics::addRuntime(enum _thread_type type, unsigned int id, struct time
   // Semaphores::print_sem.post_sem();
 }
 
+void Statistics::addJobLog(int workerid, int taskid){
+
+  JobLog jl = JobLog(workerid, taskid);
+  sem_wait(&joblog_sem);
+  joblogs.push_back(jl);
+  sem_post(&joblog_sem);
+
+}
+
+int Statistics::getJobLogNumber(int workerid, int taskid){
+  int counter = 0;
+  sem_wait(&joblog_sem);
+  for (int i = 0; i < (int) joblogs.size(); ++i)
+  {
+    if(joblogs[i].isMatch(workerid, taskid)){
+      counter++;
+    }
+  }
+  sem_post(&joblog_sem);
+  return counter;
+}
 
 ///This function adds a trace to the vector
 void Statistics::addTrace(enum _thread_type type, int t_id, enum _task_action act) {
@@ -153,11 +178,14 @@ void Statistics::initialize() {
   runtimes.reserve(N_THREADS);
   traces.reserve(N_TRACES);
   missedDeadlines.reserve(N_DEADLINES);
+  joblogs.reserve(N_JOBLOGS);
 
   //Initialize semaphores to 1, so it acts like a mutex
   sem_init(&trace_sem, 0, 1);
   sem_init(&deadline_sem, 0, 1);
   sem_init(&runtime_sem, 0, 1);
+
+  sem_init(&joblog_sem, 0, 1);  
 
   //must call enable() before registering statistics
   state = 0;
@@ -168,13 +196,13 @@ void Statistics::toFile(const string& filePrefix) {
   ofstream file;
 
   /************ SAVING MISSED DEADLINES *********/
-  MissedDeadline aux_m;
-  file.open((filePrefix+"_missed_deadlines.csv").data());
-  for(unsigned int c=0;c<missedDeadlines.size();c++) {
-    aux_m = missedDeadlines[c];
-    file << aux_m.toString() << endl; 
-  }
-  file.close();
+  // MissedDeadline aux_m;
+  // file.open((filePrefix+"_missed_deadlines.csv").data());
+  // for(unsigned int c=0;c<missedDeadlines.size();c++) {
+  //   aux_m = missedDeadlines[c];
+  //   file << aux_m.toString() << endl; 
+  // }
+  // file.close();
 
   /************ SAVING RUNTIMES *********/
   Runtime aux_r;
@@ -189,13 +217,13 @@ void Statistics::toFile(const string& filePrefix) {
   file.close();
 
   /************ SAVING TRACES *********/
-  Trace aux_t;
-  file.open((filePrefix+"_traces.csv").data());
-  for(unsigned int c=0;c<traces.size();c++) {
-    aux_t = traces[c];
-    file << aux_t.toString() << "\n"; 
-  }
-  file.close();
+  // Trace aux_t;
+  // file.open((filePrefix+"_traces.csv").data());
+  // for(unsigned int c=0;c<traces.size();c++) {
+  //   aux_t = traces[c];
+  //   file << aux_t.toString() << "\n"; 
+  // }
+  // file.close();
 
   //Change the owner and permissions of generated files
   //system(("chown hsf:hsf " + filePrefix + "_*.csv").data() );

@@ -4,9 +4,11 @@
 #include <time.h>
 #include <vector>
 
+
 #include "pthread/Thread.h"
 #include "utils/Enumerations.h"
 #include "core/Task.h"
+#include "core/structdef.h"
 
 class CMI;
 
@@ -32,6 +34,8 @@ class Dispatcher : public Thread {
   std::vector<Task*> allTasks;
 
   const _task_type TASK_TYPE;
+
+  task_data taskdata;
     
  public:
 
@@ -67,6 +71,8 @@ class Dispatcher : public Thread {
 
   ///This function sets the tasks's periodicity
   void setPeriodicity(_task_periodicity t);
+
+  void setTaskData(task_data d);
 
   ///This function sets the associated CMI
   void setCMI(CMI *c);

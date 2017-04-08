@@ -9,11 +9,13 @@
 #include "results/MissedDeadline.h"
 #include "results/Runtime.h"
 #include "results/Trace.h"
+#include "results/JobLog.h"
 #include "utils/Enumerations.h"
 
 #define N_THREADS   100
 #define N_TRACES    50000
 #define N_DEADLINES 1000
+#define N_JOBLOGS 5000
 
 /***************************************
  *        CLASS DECLARATION            * 
@@ -33,7 +35,7 @@ struct compareId {
 
 class Statistics {
 
- private:
+private:
   static struct timespec tstart;
   static unsigned long tstart_us;
   static unsigned long tstart_ms;
@@ -52,6 +54,8 @@ class Statistics {
   ///This vector holds alll of the time traces
   static std::vector<Trace> traces;
 
+  static std::vector<JobLog> joblogs;
+
   //This vector holds the thread id's of all workers
   static std::vector<unsigned int> workerId;
 
@@ -68,8 +72,10 @@ class Statistics {
   ///Semaphore to protect writing to the missedDealine vector
   static sem_t deadline_sem;
 
- public:
- 
+  static sem_t joblog_sem;
+
+public:
+
   /*********** MEMBER FUNCTIONS ***********/
   static void start();
 
@@ -77,7 +83,11 @@ class Statistics {
   static unsigned long getRelativeTime_ms();
   
   static struct timespec getStart();
-  
+
+  static void addJobLog(int workerid, int taskid);
+
+  static int getJobLogNumber(int workerid, int taskid);
+
   ///This function adds a missed deadline trace to the vector
   static void addMissedDeadline(unsigned int t_id, unsigned long arrival_time, unsigned long deadline, 
     unsigned long finisht_time);
@@ -107,5 +117,5 @@ class Statistics {
   
 
 };
-  
+
 #endif

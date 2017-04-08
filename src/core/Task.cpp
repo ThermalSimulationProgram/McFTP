@@ -16,7 +16,7 @@ using namespace std;
 
 /*********** CONSTRUCTOR ***********/
 
-Task::Task(_task_type load) {
+Task::Task(const _task_type& load, int _taskId):taskId(_taskId) {
   task_load = load;
   jobId = jobCounter;
   jobCounter++;
@@ -25,6 +25,8 @@ Task::Task(_task_type load) {
 
   sem_init(&suspend_sem, 0, 0);
   sem_init(&resume_sem, 0, 0);
+
+
 }
 
 Task::~Task(){
@@ -44,6 +46,10 @@ void Task::fire() {
 
 int Task::getId(){
 	return jobId;
+}
+
+int Task::getTaskId(){
+  return taskId;
 }
 
 

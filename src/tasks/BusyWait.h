@@ -30,7 +30,7 @@ class BusyWait : public Task {
   /*********** CONSTRUCTOR ***********/
 
   ///The constructor requires a pointer
-  BusyWait(std::vector<struct timespec> wcet, std::vector<int> _coreIds);
+  BusyWait(const std::vector<struct timespec>& wcet, const std::vector<int>& _coreIds, int taskid);
 
   ~BusyWait();
 

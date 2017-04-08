@@ -3,6 +3,7 @@
 
 
 #include <time.h>
+#include <string>
 #include <semaphore.h>
 
 #include "utils/Enumerations.h"
@@ -29,7 +30,12 @@ protected:
   ///Varible describing the task's type of load (busywait, benchmarks, userdefined)
   _task_type task_load;
 
+  // std::string name;
+  int taskId;
+
   Worker* worker;
+
+  // int taskId;
 
   int jobId;
 
@@ -46,7 +52,7 @@ public:
   /*********** CONSTRUCTOR ***********/
   
   ///Constructor needs its load type
-  Task(_task_type load);
+  Task(const _task_type & load, int _taskId);
 
   virtual ~Task();
 
@@ -86,6 +92,8 @@ public:
   };
 
   _task_type getType();
+
+  int getTaskId();
 
   bool isFinished();
 

@@ -87,6 +87,10 @@ int Parser::parseFile(){
 		task_data data;
 		if (task_type == "busy_wait"){
 			type = busywait;
+			vector<long int> wcets = parseTimeVectorMicro<long int>(task.child("wcets"));
+
+		 	data.wcets = TimeUtil::Micros(wcets);
+
 		}else if (task_type == "benchmark"){
 			type = benchmark;
 			string benchmark_name = task.attribute("benchmark_name").as_string();
@@ -123,7 +127,7 @@ int Parser::parseFile(){
 		}else{
 			ostringstream tmp;
 			tmp << taskid;
-			data.name = "task" + tmp.str();
+			data.name = "default_task_name" + tmp.str();
 		}
 
 		xml_node attachedCores = task.child("attached_cores");
@@ -131,6 +135,10 @@ int Parser::parseFile(){
 		if(attachedCores){
 			attached_cores = stringToVector<int>(attachedCores.attribute("value").as_string());
 		}
+
+
+		data.taskId = taskid;
+		taskid++;
 
 		data.attached_cores = attached_cores;
 

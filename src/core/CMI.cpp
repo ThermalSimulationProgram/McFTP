@@ -114,6 +114,8 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 
 		}
 
+		dispatchers[i]->setTaskData(allTaskData[i]);
+
 		
 		
 	}
@@ -276,11 +278,21 @@ double CMI::simulate(){
 	enum _thread_type main_type = _main;
 	Statistics::addRuntime(main_type, 1000, TimeUtil::getTime() - Statistics::getStart());
 
-	vector<struct timespec> allWCETs = Scratch::getWCETs();
+	std::vector<task_data> allTaskData = Scratch::getTaskData();
+	int task_num = allTaskData.size();
 	for (int i = 0; i < (int) workers.size(); ++i)
 	{
-		int counter = workers[i]->getJobCounter();
-		Statistics::addRuntime(_worker, workers[i]->getId(), counter*allWCETs[i]);
+		struct timespec this_worker_job_time = TimeUtil::Micros(0);
+		int this_worker_id = workers[i]->getWorkerId();
+		
+		for (int j = 0; j < task_num; ++j)
+		{
+			int counter = Statistics::getJobLogNumber(this_worker_id, 
+				allTaskData[j].taskId);
+			this_worker_job_time = this_worker_job_time + counter*allTaskData[j].wcets[this_worker_id];
+		}
+
+		Statistics::addRuntime(_worker, workers[i]->getId(), this_worker_job_time);
 	}
 
 	// return the average temperature 

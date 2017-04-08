@@ -229,7 +229,7 @@ void Worker::wrapper(){
 			Statistics::addTrace(thread_type, id, task_start);
 			current_job->fire();			
 			cmi->finishedJob(current_job);
-			job_counter++;
+			Statistics::addJobLog(workerId, current_job->getTaskId());
 			// Statistics::addTrace(thread_type, id, task_end);
 			setSuspendPoint();
 			current_job = NULL;
@@ -260,7 +260,7 @@ void Worker::setCMI(CMI * c)
 {
 	cmi = c;
 }
-int Worker::getId(){
+int Worker::getWorkerId(){
 	return workerId;
 }
 

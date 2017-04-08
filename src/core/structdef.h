@@ -31,13 +31,15 @@ typedef struct ptmspec{
 
 
 typedef struct taskdata
-{
+{	
+	int taskId;
 	struct timespec period;
 	struct timespec jitter;
 	struct timespec release_time;
 	std::string name;
 	std::string benchmark;
 	std::vector<int> attached_cores;
+	std::vector<struct timespec> wcets;
 }task_data;
 
 

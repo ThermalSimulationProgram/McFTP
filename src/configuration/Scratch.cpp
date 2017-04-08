@@ -58,10 +58,10 @@ void Scratch::print(){
 	cout << "adaption_period \t= " << adaption_period << endl;
 
 	for (int i = 0; i < (int)all_task_data.size(); ++i)
-	{
+	{	
+		task_data_print(all_task_data[i]);
 		displayvector(periodicities, "periodicities");
 		displayvector(task_types, "task_types");
-		task_data_print(all_task_data[i]);
 	}
 }
 
@@ -257,12 +257,15 @@ unsigned long Scratch::getDuration(){
 
 void task_data_print(const task_data & data){
 	cout << "task name: " << data.name << endl;
+	cout << "task Id: " << data.taskId << endl;
 	cout << "period: " << TimeUtil::convert_ms(data.period) << endl;
 	cout << "jitter: " << TimeUtil::convert_ms(data.jitter) << endl;
 	cout << "release_time: " << TimeUtil::convert_ms(data.release_time) << endl;
 	
 	cout << "benchmark: " << data.benchmark << endl;
 	displayvector(data.attached_cores, "attached_cores");
+
+	displayvector(TimeUtil::convert_us(data.wcets), "wcets");
 }
 
 

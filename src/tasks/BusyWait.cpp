@@ -22,7 +22,8 @@ using namespace std;
 /*********** CONSTRUCTOR ***********/
 
 ///The constructor requires a pointer to the simulation, its own dispatcher, and the WCET
-BusyWait::BusyWait(vector<struct timespec> wcet, vector<int> _coreIds) : Task(busywait) {
+BusyWait::BusyWait(const vector<struct timespec>& wcet, const vector<int>& _coreIds, int taskid): 
+Task(busywait, taskid) {
   if (wcet.size() != _coreIds.size()){
     cout << "BusyWait::BusyWait: incorrect inputs" << endl;
     exit(1);

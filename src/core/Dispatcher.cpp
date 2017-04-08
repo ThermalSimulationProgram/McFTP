@@ -39,7 +39,10 @@ Thread(_id), TASK_TYPE(task_type) {
   offset.tv_sec = 0;
   offset.tv_nsec = 0;
 
+
   cmi = NULL;
+
+
 }
 
 Dispatcher::~Dispatcher(){
@@ -100,9 +103,9 @@ Task* Dispatcher::createNewTask(){
   Task * t = NULL;
   switch (TASK_TYPE){
     case busywait:{
-      int ncores = Scratch::getNcores();
-      vector<struct timespec> wcets = Scratch::getWCETs();
-      BusyWait* newTask = new BusyWait(wcets, integerVector(0, ncores-1));
+      int ncores = taskdata.attached_cores.size();
+      vector<struct timespec> wcets = taskdata.wcets;
+      BusyWait* newTask = new BusyWait(wcets, integerVector(0, ncores-1), taskdata.taskId);
       t = (Task*) newTask;
       break;
     }
@@ -140,4 +143,9 @@ void Dispatcher::setPeriodicity(_task_periodicity t) {
 ///This function sets the worker
 void Dispatcher::setCMI(CMI *c) {
   cmi = c;
+}
+
+
+void Dispatcher::setTaskData(task_data d){
+  taskdata = d;
 }

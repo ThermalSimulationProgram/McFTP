@@ -26,6 +26,7 @@ protected:
 	int workerId;
 
 	enum _worker_state state;
+
 	struct timespec latestSleep;
 
 	///This vector stores the jobs that are waiting for execution
@@ -114,7 +115,7 @@ public:
 
 	bool isActive();
 
-	int getId();
+	int getWorkerId();
 
 	int getJobCounter();
 
