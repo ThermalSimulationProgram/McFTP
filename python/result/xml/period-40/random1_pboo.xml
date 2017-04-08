@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<experiment name="./result/csv/period-40/random1_pboo">
+	<duration unit="sec" value="10"/>
+	<save_result value="True"/>
+	<processor core_number="3" fixed_active="False" fixed_frequency="True"/>
+	<tasks>
+		<task0 name="task0" periodicity="periodic" type="busy_wait">
+			<period unit="ms" value="40"/>
+			<wcets unit="ms" value="[0.53, 0.53, 0.53]"/>
+			<attached_cores value="[0, 1, 2]"/>
+		</task0>
+		<task1 name="task1" periodicity="periodic" type="busy_wait">
+			<period unit="ms" value="40"/>
+			<wcets unit="ms" value="[3.11, 3.11, 3.11]"/>
+			<attached_cores value="[0, 1, 2]"/>
+		</task1>
+		<task2 name="task2" periodicity="periodic" type="busy_wait">
+			<period unit="ms" value="40"/>
+			<wcets unit="ms" value="[0.41, 0.41, 0.41]"/>
+			<attached_cores value="[0, 1, 2]"/>
+		</task2>
+		<task3 name="task3" periodicity="periodic" type="busy_wait">
+			<period unit="ms" value="40"/>
+			<wcets unit="ms" value="[13.6, 13.6, 13.6]"/>
+			<attached_cores value="[0, 1, 2]"/>
+		</task3>
+		<task4 name="task4" periodicity="periodic" type="busy_wait">
+			<period unit="ms" value="40"/>
+			<wcets unit="ms" value="[2.36, 2.36, 2.36]"/>
+			<attached_cores value="[0, 1, 2]"/>
+		</task4>
+	</tasks>
+	<thermal_approach>
+		<kernel type="PBOO">
+			<ton unit="ms" value="{100, 100, 100}"/>
+			<toff unit="ms" value="{10, 10, 10}"/>
+		</kernel>
+	</thermal_approach>
+</experiment>

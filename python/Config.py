@@ -85,9 +85,9 @@ class Config(object):
 		self.kernel_type = 'pboo'
 		self.kernel_ton_value = '{100, 100, 100}'
 		self.kernel_ton_unit = 'ms'
-		self.kernel_toff_value = '{10, 10, 10}'
+		self.kernel_toff_value = '{50, 50, 50}'
 		self.kernel_toff_unit = 'ms'
-		self.fixedFrequency = True
+		self.fixedFrequency = False
 		self.fixedActive = False
 		self.xmlfileprefix = ''
 		self.csvfileprefix = ''
