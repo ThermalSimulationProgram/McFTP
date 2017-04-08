@@ -177,6 +177,9 @@ CMI::~CMI(){
 void CMI::initialize(){
 	Statistics::initialize();
 
+	for (int i = 0; i < (int) workers.size(); ++i){
+		workers[i]->setCMI(this);
+	}
 
 	for (int i = 0; i < (int) dispatchers.size(); ++i)
 	{
@@ -189,12 +192,10 @@ void CMI::initialize(){
 	thermal_approach->setCPU(n_cpus - 1);
 	thermal_approach->activate();
 
-	tempwatcher->trigger();
+	
 
 	
-	for (int i = 0; i < (int) workers.size(); ++i){
-		workers[i]->setCMI(this);
-	}
+	tempwatcher->trigger();
 
 	// Main thread waits for all threads initialized, especially the scheduler
 	Semaphores::rtcinit_sem.wait_sem();
@@ -238,6 +239,8 @@ double CMI::simulate(){
 		dispatchers[i]->activate();
 		
 	}
+
+	
 	
 
 	tempwatcher->activate();

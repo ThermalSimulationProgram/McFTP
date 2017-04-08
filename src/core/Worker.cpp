@@ -226,7 +226,7 @@ void Worker::wrapper(){
 			current_job = cmi->tryLoadJob(workerId);
 		}else{
 			current_job->setWorker(this);
-			Statistics::addTrace(thread_type, id, task_start);
+			// Statistics::addTrace(thread_type, id, task_start);
 			current_job->fire();			
 			cmi->finishedJob(current_job);
 			Statistics::addJobLog(workerId, current_job->getTaskId());

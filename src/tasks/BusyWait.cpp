@@ -47,13 +47,16 @@ BusyWait::~BusyWait(){
 /**** FROM TASK ****/
 
 void BusyWait::fire() {
+  unsigned int fire_start = TimeUtil::convert_us(TimeUtil::getTime());
+  
   int current_core_id = worker->getId();
-  if(current_core_id != nextCoreId ){
-    cout << current_core_id << endl;
-    // displayvector(coreIds, "coreIds");
-    cout << "BusyWait::fire: I am being run by a wrong core!" << endl;
-    return;
-  }
+  // if(current_core_id != nextCoreId ){
+  //   cout << current_core_id << endl;
+  //   // displayvector(coreIds, "coreIds");
+  //   cout << "BusyWait::fire: I am being run by a wrong core!" << endl;
+  //   return;
+  // }
+  
 
   unsigned int count=0, wcet_us_this = wcet_us[current_core_id];
   
@@ -61,21 +64,24 @@ void BusyWait::fire() {
   do {
      setSuspendPoint(); // set a suspend point here. When recieves a suspend signal, pause execution here
 
+     
      unsigned int start = 0, tmp_count = 0;
      start = TimeUtil::convert_us(TimeUtil::getTime());
-     while(tmp_count < 100){
+     while(tmp_count < 200){
       tmp_count = TimeUtil::convert_us(TimeUtil::getTime()) - start;
      }
 
-      count += tmp_count;
+      unsigned int end = TimeUtil::convert_us(TimeUtil::getTime());
+      count += end - fire_start;
+      fire_start = end;
   } while ( count < wcet_us_this); 
 
-  coreFinished[current_core_id] = true;
+  // coreFinished[current_core_id] = true;
 
   // _thread_type thread_type = _worker;
   // Statistics::addTrace(thread_type, worker->getId(), task_end);
 
-  if (vectorAll(coreFinished)){
+  if (current_core_id == WCET.size()-1){
     finished = true;
     nextCoreId = -1;
   }else{

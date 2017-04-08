@@ -101,8 +101,8 @@ void PowerManager::wrapper(){
 	Semaphores::print_sem.post_sem();
   	#endif
 
-	unsigned long time1 = 0, time2 = 0;
-	unsigned long timein, timeout;
+	// unsigned long time1 = 0, time2 = 0;
+	// unsigned long timein, timeout;
 	// unsigned long begin = TimeUtil::convert_ms(TimeUtil::getTime());
 	while(CMI::isRunning())
 	{
@@ -115,17 +115,17 @@ void PowerManager::wrapper(){
 		
 		if (tables.size() > 0){
 			struct timespec now = TimeUtil::getTime();
-			timein = TimeUtil::convert_us(now);
+			// timein = TimeUtil::convert_us(now);
 
 			struct timespec length;
 			// get state from hyper table, updating its next action time
 			double f = tables[nextCoreId].getState(now, length);
-			time1 += TimeUtil::convert_us(TimeUtil::getTime()) - timein;
-			timein = TimeUtil::convert_us(TimeUtil::getTime());
+			// time1 += TimeUtil::convert_us(TimeUtil::getTime()) - timein;
+			// timein = TimeUtil::convert_us(TimeUtil::getTime());
 			// change the power state of the id
 			changePower(nextCoreId,   f, length);
 			// std::cout << " at time: " << TimeUtil::convert_ms(now) - begin << std::endl;
-			time2 += TimeUtil::convert_us(TimeUtil::getTime()) - timein;
+			// time2 += TimeUtil::convert_us(TimeUtil::getTime()) - timein;
 
 
 			

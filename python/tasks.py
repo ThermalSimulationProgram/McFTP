@@ -30,7 +30,7 @@ class Task(object):
 
 		wcets = []
 		for i in range(0, _nstage):
-			wcets.append( int(_period*_utilization*100+0.5)*1.0/100 )
+			wcets.append( int(_period*_utilization+0.5) )
 		self.wcets = wcets
 
 	def to_xml_node(self):
