@@ -90,7 +90,8 @@ void PowerManager::wrapper(){
   	#endif
 
   	//Wait until the simulation is initialized
-	while( !CMI::isInitialized() ){}
+  	sem_wait(&CMI::init_sem);
+	// while( !CMI::isInitialized() ){}
 	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();
 	std::cout << "PowerManager: " << id << " waiting for simulation start\n";
@@ -98,7 +99,8 @@ void PowerManager::wrapper(){
   	#endif
 
 	///wait for the simulation start
-	while(!CMI::isRunning()){}
+	sem_wait(&CMI::running_sem);
+	// while(!CMI::isRunning()){}
 
   	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();

@@ -65,7 +65,8 @@ void ThermalApproach::wrapper(){
 
 	
   	//Wait until the simulation is initialized
-	while( !CMI::isInitialized() );
+  	sem_wait(&CMI::init_sem);
+	// while( !CMI::isInitialized() );
 
   	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();
@@ -74,7 +75,8 @@ void ThermalApproach::wrapper(){
   	#endif
 
 	///wait for the simulation start
-	while(!CMI::isRunning()){}
+	sem_wait(&CMI::running_sem);
+	// while(!CMI::isRunning()){}
 
 		#if _INFO == 1
 	Semaphores::print_sem.wait_sem();

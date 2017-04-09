@@ -63,6 +63,7 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 
 	sem_init(&init_sem, 0, 0);
 	sem_init(&running_sem, 0, 0);
+	thread_num = 0;
 
 	Parser* p = new Parser(xml_path);
 
@@ -118,7 +119,7 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 			}
 
 		}
-
+		++thread_num;
 		dispatchers[i]->setTaskData(allTaskData[i]);
 
 		
@@ -127,19 +128,23 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 	
 
 	thermal_approach       = new ThermalApproach(99, this, Scratch::getApproachName());
+	++thread_num;
 	
 	// create n_used workers and attach it to default CPU
 	for (int i = 0; i < n_used; ++i){
 		Worker *t = new Worker(i, i);
 		t->setCMI(this);
 		workers.push_back(t);
-		worker_cpu.push_back(i);		
+		worker_cpu.push_back(i);
+		++thread_num;		
 	}
 
 	
 	tempwatcher 	= new TempWatcher(200000, 98);
+	++thread_num;
 
 	powermanager 	= new PowerManager(200, workers);
+	++thread_num;
 
 	_isAppendSaveFile = isAppendSaveFile;
 
@@ -206,7 +211,7 @@ void CMI::initialize(){
 	Semaphores::rtcinit_sem.wait_sem();
 	// all threads initialized
 	initialized = true;
-	for (int i = 0; i < (int) workers.size(); ++i){
+	for (int i = 0; i < thread_num; ++i){
 		sem_post(&init_sem);
 	}
 	
@@ -275,7 +280,7 @@ double CMI::simulate(){
 
 	running = true;
 	
-	for (int i = 0; i < (int) workers.size(); ++i){
+	for (int i = 0; i < thread_num; ++i){
 		sem_post(&running_sem);
 	}
 

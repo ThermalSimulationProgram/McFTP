@@ -69,6 +69,7 @@ protected:
 	// CPUUsage records cpu active and idle times, used to calculate cpu usage
 	CPUUsage cpuUsageRecorder;
 
+	int thread_num;
 	int _isAppendSaveFile;
 public:
 

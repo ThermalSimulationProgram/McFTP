@@ -73,13 +73,15 @@ void Dispatcher::wrapper() {
   #endif
 
   //Wait until the CMI is initialized
-  while( !CMI::isInitialized() );
+  sem_wait(&CMI::init_sem);
+  // while( !CMI::isInitialized() );
   
   #if _INFO == 1
   cout << "Disp: " << id << " begining execution \n";
   #endif
 
-  while( !CMI::isRunning() );
+  // while( !CMI::isRunning() );
+  sem_wait(&CMI::running_sem);
 
   //if offset != 0, sleep before dispatching
   if(offset.tv_nsec != 0 || offset.tv_sec !=0) {
