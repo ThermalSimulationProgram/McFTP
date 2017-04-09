@@ -503,12 +503,12 @@ void CMI::saveResults(){
 			saveContentToNewFile(tempSaveName, beginOfData);
 		}
 		
-		// appendToFile(tempSaveName, tempwatcher->getMeanTemp());
-		// double maxTemp = tempwatcher->getMaxTemp();
-		// appendToFile(tempSaveName, vector<double>(1, maxTemp));
+		appendToFile(tempSaveName, tempwatcher->getMeanTemp());
+		double maxTemp = tempwatcher->getMaxTemp();
+		appendToFile(tempSaveName, vector<double>(1, maxTemp));
 
-		// double MeanMaxTemp = tempwatcher->getMeanMaxTemp();
-		// appendToFile(tempSaveName, vector<double>(1, MeanMaxTemp));
+		 double MeanMaxTemp = tempwatcher->getMeanMaxTemp();
+		appendToFile(tempSaveName, vector<double>(1, MeanMaxTemp));
 
 		// appendToFile(tempSaveName, scheduler->getKernelTime());
 
