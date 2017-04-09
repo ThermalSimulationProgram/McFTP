@@ -81,14 +81,14 @@ void TempWatcher::wrapper(){
   sem_wait(&CMI::running_sem);
   // while(!CMI::isRunning()){}
 
- /* while(CMI::isRunning()){
+  while(CMI::isRunning()){
     sem_wait(&temp_sem);
     curTemp = get_cpu_temperature();
     sem_post(&temp_sem);
     tempTrace.push_back(curTemp);
 
     nanosleep(&samplingPeriod, &rem);
-  }*/
+  }
 
 	#if _INFO == 1
   Semaphores::print_sem.wait_sem();
