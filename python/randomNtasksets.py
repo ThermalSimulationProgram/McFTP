@@ -6,10 +6,10 @@ config = Config();
 
 U = 0.5;
 task_num = 5;
-base = 30;
+base = 100;
 
-periods_num = 0;
-test_num_for_each_period = 20;
+periods_num = 1;
+test_num_for_each_period = 1;
 control = [1]
 # varying periods
 for i in range(0, periods_num):
@@ -22,7 +22,7 @@ for i in range(0, periods_num):
 
 
 
-periods_num = 1;
+periods_num = 0;
 test_num_for_each_period = 1;
 control = [1]
 config.fixedFrequency = True;

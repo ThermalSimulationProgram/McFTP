@@ -72,6 +72,9 @@ protected:
 	int _isAppendSaveFile;
 public:
 
+	static sem_t init_sem;
+	static sem_t running_sem;
+
 	// Constructor needs the xml file path
 	explicit CMI(std::string);
 

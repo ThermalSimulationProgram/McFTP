@@ -82,11 +82,11 @@ public:
       {
          sem_trywait(&resume_sem);
       }
-      _thread_type thread_type = _worker;
-      Statistics::addTrace(thread_type, worker->getId(), sleep_start);
+      // _thread_type thread_type = _worker;
+      // Statistics::addTrace(thread_type, worker->getId(), sleep_start);
       // two exit conditions: reach the sleepEnd time, or recieves a resume_sem signal
       sem_timedwait(&resume_sem, &sleepEnd);
-      Statistics::addTrace(thread_type, worker->getId(), sleep_end);
+      // Statistics::addTrace(thread_type, worker->getId(), sleep_end);
     }
 
   };

@@ -38,10 +38,15 @@ workers(_workers){
 	nextActionTime = TimeUtil::getTime() + duration; // default: no action 
 
 
-	freqInterface.push_back("/home/long/McFTP/trunk/test/test1");
-	freqInterface.push_back("/home/long/McFTP/trunk/test/test2");
-	freqInterface.push_back("/home/long/McFTP/trunk/test/test3");
-	freqInterface.push_back("/home/long/McFTP/trunk/test/test4");
+	// freqInterface.push_back("/home/long/McFTP/trunk/test/test1");
+	// freqInterface.push_back("/home/long/McFTP/trunk/test/test2");
+	// freqInterface.push_back("/home/long/McFTP/trunk/test/test3");
+	// freqInterface.push_back("/home/long/McFTP/trunk/test/test4");
+
+	freqInterface.push_back("../test/test1");
+	freqInterface.push_back("../test/test2");
+	freqInterface.push_back("../test/test3");
+	freqInterface.push_back("../test/test4");
 
 
 	isFixedFrequency = Scratch::isFixedFrequency();
@@ -157,7 +162,7 @@ void PowerManager::changePower(int id, double f, struct timespec length){
 			workers[id]->deactivate(length);
 		}
 		
-	}else if (f > 0){
+	}else if (f > EPSILON){
 
 		if (!isFixedActive && !workers[id]->isActive()){
 			workers[id]->activate();
@@ -176,7 +181,7 @@ void PowerManager::setFrequency(int id, int f){
 	FILE* file = fopen(freqInterface[id].c_str(), "w");
 		if (file == NULL){
 			// std::cout << "Failed open file: " << freqInterface[i] << std::endl;
-			printf("Failed open file");
+			printf("Failed open file\n");
 			exit(1);
 		}
 	if (fprintf(file, "%d", f) < 0) { 

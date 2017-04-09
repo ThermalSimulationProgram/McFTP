@@ -40,6 +40,7 @@ typedef struct taskdata
 	std::string benchmark;
 	std::vector<int> attached_cores;
 	std::vector<struct timespec> wcets;
+	std::vector<unsigned long> wcets_us;
 }task_data;
 
 

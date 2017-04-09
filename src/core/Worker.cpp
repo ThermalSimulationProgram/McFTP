@@ -201,7 +201,9 @@ void Worker::wrapper(){
   	#endif
 
   	//Wait until the simulation is initialized
-	while( !CMI::isInitialized() ){}
+	// while( !CMI::isInitialized() ){}
+	sem_wait(&CMI::init_sem);
+
 	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();
 	cout << "Worker: " << id << " waiting for simulation start\n";
@@ -209,7 +211,8 @@ void Worker::wrapper(){
   	#endif
 
 	///wait for the simulation start
-	while(!CMI::isRunning()){}
+	// while(!CMI::isRunning()){}
+	sem_wait(&CMI::running_sem);
 
   	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();
@@ -229,7 +232,7 @@ void Worker::wrapper(){
 			// Statistics::addTrace(thread_type, id, task_start);
 			current_job->fire();			
 			cmi->finishedJob(current_job);
-			Statistics::addJobLog(workerId, current_job->getTaskId());
+			// Statistics::addJobLog(workerId, current_job->getTaskId());
 			// Statistics::addTrace(thread_type, id, task_end);
 			setSuspendPoint();
 			current_job = NULL;

@@ -90,6 +90,7 @@ int Parser::parseFile(){
 			vector<long int> wcets = parseTimeVectorMicro<long int>(task.child("wcets"));
 
 		 	data.wcets = TimeUtil::Micros(wcets);
+		 	data.wcets_us = TimeUtil::convert_us(data.wcets);
 
 		}else if (task_type == "benchmark"){
 			type = benchmark;

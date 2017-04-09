@@ -41,6 +41,9 @@ Thread(_id), TASK_TYPE(task_type) {
 
 
   cmi = NULL;
+  allTasks.reserve(10000);
+
+  // ncores = taskdata.attached_cores.size();
 
 
 }
@@ -103,9 +106,7 @@ Task* Dispatcher::createNewTask(){
   Task * t = NULL;
   switch (TASK_TYPE){
     case busywait:{
-      int ncores = taskdata.attached_cores.size();
-      vector<struct timespec> wcets = taskdata.wcets;
-      BusyWait* newTask = new BusyWait(wcets, integerVector(0, ncores-1), taskdata.taskId);
+      BusyWait* newTask = new BusyWait(taskdata.wcets_us, taskdata.taskId);
       t = (Task*) newTask;
       break;
     }

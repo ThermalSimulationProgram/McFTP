@@ -33,26 +33,27 @@ void Periodic::dispatch() {
   //     cout << "Inside Periodic::dispatch " << endl;// @t=" << TimeUtil::getTimeUSec() << "\n";
   //     cout << "period is: " << TimeUtil::convert_ms(period) << endl;
   // #endif
-
+  if (cmi == NULL){
+      cout << "Dispatcher error: cmi is null!\n";
+      return;
+    }
       
   while (CMI::isRunning()) {
 
     // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
 
-    if(cmi != NULL) {
+   
       #if _INFO==1
       cout << "Disp : " << id << " is registering a new job\n";// @t=" << TimeUtil::getTimeUSec() << "\n";
       #endif
       Task* t = createNewTask();
       cmi->newJob(t, TASK_TYPE);
-    }
-    else {
-      cout << "Dispatcher error: cmi is null!\n";
-    }
+    
 
-    if(CMI::isRunning()) {
       nanosleep(&period, &rem);
-    }
+    // if(CMI::isRunning()) {
+      
+    // }
   }
 
   #if _INFO == 1

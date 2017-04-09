@@ -14,10 +14,10 @@ struct timespec operator-(struct timespec a, struct timespec b);
 
 
 ///This operator compares two timespecs 
-bool operator>(struct timespec a, struct timespec b);
+bool operator>(const struct timespec& a, const struct timespec& b);
 
 ///This operator compares two timespecs
-bool operator<(struct timespec a, struct timespec b);
+bool operator<(const struct timespec& a, const struct timespec& b);
 
 ///This operator compares two timespecs
 bool operator==(struct timespec a, struct timespec b);

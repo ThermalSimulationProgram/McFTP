@@ -56,6 +56,8 @@ void Scratch::print(){
 	cout << "duration \t\t= " << duration << endl;
 	cout << "name \t\t\t= " << name << endl;
 	cout << "adaption_period \t= " << adaption_period << endl;
+	cout << "fixedFrequency \t= " << fixedFrequency << endl;
+	cout << "fixedActive \t= " << fixedActive << endl;
 
 	for (int i = 0; i < (int)all_task_data.size(); ++i)
 	{	

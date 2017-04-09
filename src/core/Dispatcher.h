@@ -36,6 +36,8 @@ class Dispatcher : public Thread {
   const _task_type TASK_TYPE;
 
   task_data taskdata;
+
+  // int ncores;
     
  public:
 

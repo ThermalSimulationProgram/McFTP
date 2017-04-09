@@ -43,6 +43,8 @@ using namespace std;
 
 bool CMI::initialized = false;
 bool CMI::running  = false;
+sem_t CMI::init_sem;
+sem_t CMI::running_sem;
 
 // Constructor needs the xml file path
 CMI::CMI(string xml_path):CMI(xml_path, 0){
@@ -58,6 +60,9 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 		cout << "Run with root\n";
 		pthread_exit(0);
 	}
+
+	sem_init(&init_sem, 0, 0);
+	sem_init(&running_sem, 0, 0);
 
 	Parser* p = new Parser(xml_path);
 
@@ -201,6 +206,11 @@ void CMI::initialize(){
 	Semaphores::rtcinit_sem.wait_sem();
 	// all threads initialized
 	initialized = true;
+	for (int i = 0; i < (int) workers.size(); ++i){
+		sem_post(&init_sem);
+	}
+	
+
 }
 
 
@@ -264,6 +274,12 @@ double CMI::simulate(){
 	struct timespec duration = TimeUtil::Micros(Scratch::getDuration());
 
 	running = true;
+	
+	for (int i = 0; i < (int) workers.size(); ++i){
+		sem_post(&running_sem);
+	}
+
+
 	Statistics::start();
 	// main thread sleeps for duration time length
 	nanosleep(&duration, &rem);
@@ -482,12 +498,12 @@ void CMI::saveResults(){
 			saveContentToNewFile(tempSaveName, beginOfData);
 		}
 		
-		appendToFile(tempSaveName, tempwatcher->getMeanTemp());
-		double maxTemp = tempwatcher->getMaxTemp();
-		appendToFile(tempSaveName, vector<double>(1, maxTemp));
+		// appendToFile(tempSaveName, tempwatcher->getMeanTemp());
+		// double maxTemp = tempwatcher->getMaxTemp();
+		// appendToFile(tempSaveName, vector<double>(1, maxTemp));
 
-		double MeanMaxTemp = tempwatcher->getMeanMaxTemp();
-		appendToFile(tempSaveName, vector<double>(1, MeanMaxTemp));
+		// double MeanMaxTemp = tempwatcher->getMeanMaxTemp();
+		// appendToFile(tempSaveName, vector<double>(1, MeanMaxTemp));
 
 		// appendToFile(tempSaveName, scheduler->getKernelTime());
 

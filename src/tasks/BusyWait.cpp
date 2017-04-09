@@ -22,20 +22,21 @@ using namespace std;
 /*********** CONSTRUCTOR ***********/
 
 ///The constructor requires a pointer to the simulation, its own dispatcher, and the WCET
-BusyWait::BusyWait(const vector<struct timespec>& wcet, const vector<int>& _coreIds, int taskid): 
+BusyWait::BusyWait(const vector<unsigned long>& _wcet, int taskid): 
 Task(busywait, taskid) {
-  if (wcet.size() != _coreIds.size()){
-    cout << "BusyWait::BusyWait: incorrect inputs" << endl;
-    exit(1);
-  }
+  // if (wcet.size() != _coreIds.size()){
+  //   cout << "BusyWait::BusyWait: incorrect inputs" << endl;
+  //   exit(1);
+  // }
 
-  WCET = wcet;
-  coreIds = _coreIds;
-  coreFinished = vector<bool> (wcet.size(), false);
-  for (int i = 0; i < (int) WCET.size(); ++i)
-  {
-    wcet_us.push_back(TimeUtil::convert_us(WCET[i]));
-  }
+  // WCET = wcet;
+  // coreIds = _coreIds;
+  coreFinished = vector<bool> (_wcet.size(), false);
+  // for (int i = 0; i < (int) WCET.size(); ++i)
+  // {
+  //   wcet_us.push_back(TimeUtil::convert_us(WCET[i]));
+  // }
+  wcet_us = _wcet;
   nextCoreId = 0;
 }
 
@@ -81,7 +82,7 @@ void BusyWait::fire() {
   // _thread_type thread_type = _worker;
   // Statistics::addTrace(thread_type, worker->getId(), task_end);
 
-  if (current_core_id == WCET.size()-1){
+  if (current_core_id == wcet_us.size()-1){
     finished = true;
     nextCoreId = -1;
   }else{

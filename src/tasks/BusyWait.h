@@ -16,7 +16,7 @@ class BusyWait : public Task {
   /*********** VARIABLES ***********/
 
   ///This paremeter specifies the worst-case execution time for the busy wait loop
-  std::vector<struct timespec> WCET;
+  // std::vector<struct timespec> WCET;
   std::vector<unsigned long> wcet_us;
 
   std::vector<int> coreIds;
@@ -30,7 +30,7 @@ class BusyWait : public Task {
   /*********** CONSTRUCTOR ***********/
 
   ///The constructor requires a pointer
-  BusyWait(const std::vector<struct timespec>& wcet, const std::vector<int>& _coreIds, int taskid);
+  BusyWait(const std::vector<unsigned long>& wcet, int taskid);
 
   ~BusyWait();
 
