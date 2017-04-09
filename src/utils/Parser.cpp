@@ -172,7 +172,7 @@ int Parser::parseFile(){
 		}
 	}
 
-	Scratch::print();
+	// Scratch::print();
 	return ret;
 }
 

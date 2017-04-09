@@ -2,9 +2,12 @@
 
 #include <cstdlib>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 // #include <iostream>
-// #include <fcntl.h>
-// #include <unistd.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 
 #include "core/CMI.h"
@@ -180,17 +183,43 @@ void PowerManager::setFrequency(int id, int f){
 	// ostringstream freq;
 	// freq << f;
 	// system(("echo " + freq.str() + " > " + freqInterface[id]).c_str());
-	FILE* file = fopen(freqInterface[id].c_str(), "w");
-		if (file == NULL){
-			// std::cout << "Failed open file: " << freqInterface[i] << std::endl;
-			printf("Failed open file\n");
-			exit(1);
-		}
-	if (fprintf(file, "%d", f) < 0) { 
-		// std::cout << "failed to write file" << std::endl;
-	} 
 
-	fclose(file);
+
+	int fd = open( freqInterface[id].c_str(), O_WRONLY);
+	if (fd == -1){
+		printf("Failed open file\n");
+		return ;
+	}
+
+
+	char buf[10];
+
+	snprintf(buf, 10, "%d", f);
+
+
+	ssize_t numwrite = write(fd, buf, strlen(buf));
+	if (numwrite < 1) {
+		close(fd);
+		return ;
+	}
+
+	close(fd);
+
+
+
+
+
+	// FILE* file = fopen(freqInterface[id].c_str(), "w");
+	// 	if (file == NULL){
+	// 		// std::cout << "Failed open file: " << freqInterface[i] << std::endl;
+	// 		printf("Failed open file\n");
+	// 		exit(1);
+	// 	}
+	// if (fprintf(file, "%d", f) < 0) { 
+	// 	// std::cout << "failed to write file" << std::endl;
+	// } 
+
+	// fclose(file);
 
 }
 
