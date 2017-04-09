@@ -138,7 +138,7 @@ std::vector<double> TempWatcher::get_cpu_temperature(){
       if (fd != -1 ) {
 
         char buf[12];
-        ssize_t numwrite = read(fd, buf2, 12);
+        ssize_t numwrite = read(fd, buf, 12);
 
         if (numwrite < 1) {
           close(fd);
@@ -177,7 +177,7 @@ std::vector<double> TempWatcher::get_cpu_temperature(){
        //   printf("%d\n", -SENSORS_ERR_ACCESS_R);
        //   exit(-SENSORS_ERR_ACCESS_R) ;
        // }
-     }
+     
             // value /= get_type_scaling( SENSORS_SUBFEATURE_TEMP_INPUT);
    } else{
      printf( " TempWatcher::get_cpu_temperature: read temperature error, NO:");

@@ -6,10 +6,10 @@ config = Config();
 
 U = 0.5;
 task_num = 5;
-base = 30;
+base = 29;
 
-periods_num = 70;
-test_num_for_each_period = 10;
+periods_num = 1;
+test_num_for_each_period = 3;
 control = [1]
 # varying periods
 for i in range(0, periods_num):
