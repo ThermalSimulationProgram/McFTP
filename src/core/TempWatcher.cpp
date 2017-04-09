@@ -1,6 +1,13 @@
 #include "TempWatcher.h"
 
-#include <iostream>
+// #include <iostream>
+#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <fcntl.h>
+#include <unistd.h>
 
 
 #include "core/CMI.h"
@@ -29,7 +36,7 @@ TempWatcher::TempWatcher(unsigned period, unsigned _id):Thread(_id){
 
 	thread_type = _temp_watcher;
 	if (period == 0){
-		cerr << "TempWatcher::TempWatcher: Error, period is zero!\n";
+		printf("TempWatcher::TempWatcher: Error, period is zero!\n");
 		exit(-1);
 	}
   sem_init(&temp_sem, 0, 1);
@@ -62,7 +69,7 @@ void TempWatcher::wrapper(){
   struct timespec rem;
   #if _INFO == 1
   Semaphores::print_sem.wait_sem();
-  cout << "TempWatcher: " << id << " waiting for initialization\n";
+  printf("TempWatcher: waiting for initialization\n");
   Semaphores::print_sem.post_sem();
   #endif
 
@@ -73,7 +80,7 @@ void TempWatcher::wrapper(){
 
   #if _INFO == 1
   Semaphores::print_sem.wait_sem();
-  cout << "TempWatcher: " << id << " begining execution \n";
+  printf("TempWatcher: begining execution \n");
   Semaphores::print_sem.post_sem();
   #endif
 
@@ -92,7 +99,7 @@ void TempWatcher::wrapper(){
 
 	#if _INFO == 1
   Semaphores::print_sem.wait_sem();
-  cout << "TempWatcher " << id << " exiting wrapper...\n";
+  printf( "TempWatcher  exiting wrapper...\n");
   Semaphores::print_sem.post_sem();
   #endif
 }
@@ -118,41 +125,63 @@ std::vector<double> TempWatcher::get_cpu_temperature(){
     std::vector<double> ret;
     int value;
     int TEMP_IDX_MAX = 4;
-    FILE *f;
+    
     const char* n[] = {	"/sys/class/hwmon/hwmon1/temp2_input",
     "/sys/class/hwmon/hwmon1/temp3_input",
     "/sys/class/hwmon/hwmon1/temp4_input",
     "/sys/class/hwmon/hwmon1/temp5_input"};
 
+    int fd;
+
     for ( int i = 0; i < TEMP_IDX_MAX; ++i) {
-      if ( ( f = fopen( n[i], "r"))) {
-        int res, err = 0;
+      fd = open(n[i], O_RDONLY);
+      if (fd != -1 ) {
 
-        errno = 0;
-        res = fscanf( f, "%d", &value);
-        if ( res == EOF && errno == EIO)
-          err = -SENSORS_ERR_IO;
-        else if ( res != 1)
-          err = -SENSORS_ERR_ACCESS_R;
-        res = fclose( f);
-        if ( err){
-         std::cerr << " TempWatcher::get_cpu_temperature: read temperature error, NO:" << err <<std::endl;
-         exit(err);
-       }
+        char buf[12];
+        ssize_t numwrite = read(fd, buf2, 12);
 
-       if ( res == EOF) {
-        if ( errno == EIO){
-         std::cerr << " TempWatcher::get_cpu_temperature: read temperature error, NO:" << -SENSORS_ERR_IO <<std::endl;
-         exit(-SENSORS_ERR_IO) ;
-       }
-       else{
-         std::cerr << " TempWatcher::get_cpu_temperature: read temperature error, NO:" << -SENSORS_ERR_ACCESS_R <<std::endl;
-         exit(-SENSORS_ERR_ACCESS_R) ;
-       }
+        if (numwrite < 1) {
+          close(fd);
+          printf(" TempWatcher::get_cpu_temperature: read temperature error, can not read the file\n"); 
+          exit(1);
+        }
+
+        close(fd);
+
+        sscanf(buf, "%d", &value);
+
+
+       //  int res, err = 0;
+
+       //  errno = 0;
+       //  res = fscanf( f, "%d", &value);
+       //  if ( res == EOF && errno == EIO)
+       //    err = -SENSORS_ERR_IO;
+       //  else if ( res != 1)
+       //    err = -SENSORS_ERR_ACCESS_R;
+       //  res = fclose( f);
+       //  if ( err){
+       //   printf(" TempWatcher::get_cpu_temperature: read temperature error, NO:"); 
+       //   printf("%d\n", err);
+       //   exit(err);
+       // }
+
+       // if ( res == EOF) {
+       //  if ( errno == EIO){
+       //   printf(" TempWatcher::get_cpu_temperature: read temperature error, NO:");
+       //   printf("%d\n", -SENSORS_ERR_IO);
+       //   exit(-SENSORS_ERR_IO) ;
+       // }
+       // else{
+       //   printf(" TempWatcher::get_cpu_temperature: read temperature error, NO:");
+       //   printf("%d\n", -SENSORS_ERR_ACCESS_R);
+       //   exit(-SENSORS_ERR_ACCESS_R) ;
+       // }
      }
             // value /= get_type_scaling( SENSORS_SUBFEATURE_TEMP_INPUT);
    } else{
-     std::cout << " TempWatcher::get_cpu_temperature: read temperature error, NO:" << -SENSORS_ERR_KERNEL <<std::endl;
+     printf( " TempWatcher::get_cpu_temperature: read temperature error, NO:");
+     printf("%d\n", SENSORS_ERR_KERNEL); 
      exit(-SENSORS_ERR_KERNEL) ;
    }
 
