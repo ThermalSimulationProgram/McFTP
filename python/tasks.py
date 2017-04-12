@@ -22,7 +22,7 @@ class Task(object):
 		self.name = _name
 		self.type = "pipelined"
 		self.periodicity = "periodic"
-		self.task_load = "busywait"
+		self.load_type = "busywait"
 
 		self.benchmark_name = "default"
 		self.user_defined_load_id = 1;
@@ -48,8 +48,6 @@ class Task(object):
 		period = create_time_node("period", self.period, "ms");
 		wcets = create_time_node("wcets", self.wcets, "ms");
 		attached_cores = create_node("attached_cores", {'value':str(self.attached_cores)}, "");
-
-
 
 		task_node.append(period)
 		task_node.append(wcets)
