@@ -1,6 +1,8 @@
 from Config import *
 
+import os
 
+os.system('sudo cpupower -c all frequency-set -g userspace')
 config = Config();
 
 
