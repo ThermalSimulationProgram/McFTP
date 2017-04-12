@@ -138,7 +138,7 @@ TaskArgument Parser::parseTask(pugi::xml_node task, int taskid){
 
 	if (task_type == "singlecore"){
 		type = singlecore;
-	}else if (task_type == "pipeline"){
+	}else if (task_type == "pipelined"){
 		type = pipelined;
 	}else {
 		cout << "parseTask: task type was not recognized" << endl;
