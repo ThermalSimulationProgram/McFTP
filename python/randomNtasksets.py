@@ -32,12 +32,12 @@ task_num = 5;
 base = 30;
 
 period = 100;
-pboo_num = 2;
-test_num_for_each_pboo = 1;
+pboo_num = 70;
+test_num_for_each_pboo = 153;
 control = [1]
 # varying periods
 for i in range(0, pboo_num):
-	new_value = base + i*200
+	new_value = base + i*3
 	config.set_xml_csv_sub_dir('pbooptm-'+str(new_value)+'/')
 	for x in xrange(0, test_num_for_each_pboo):
 		config.set_task_set(task_num, period, U)
