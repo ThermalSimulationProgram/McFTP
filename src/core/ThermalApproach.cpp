@@ -29,7 +29,7 @@ ThermalApproach::ThermalApproach(unsigned _id, CMI * c,
 
 	timeExpense.reserve(1000);
 
-	isStatic = Scratch::isStaticApproach();
+	
 }
 
 ThermalApproach::~ThermalApproach()
@@ -76,6 +76,7 @@ void ThermalApproach::wrapper(){
 
 	///wait for the simulation start
 	sem_wait(&CMI::running_sem);
+	isStatic = Scratch::isStaticApproach();
 	// while(!CMI::isRunning()){}
 
 		#if _INFO == 1

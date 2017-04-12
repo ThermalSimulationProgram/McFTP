@@ -22,6 +22,7 @@ void StateTable::pushState(double f, unsigned long l){
 		frequencies.push_back(f);
 		lengths.push_back(l);
 	}
+
 	
 
 }

@@ -3,6 +3,7 @@
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
 
+#include <iostream>
 HyperStateTable::HyperStateTable():
  statetable(0){
  	rowId = 0;
@@ -24,6 +25,8 @@ double HyperStateTable::getState(const  struct timespec& now, struct timespec& l
 	if (tableSize > 0){
 		ret = statetable.getFrequency(rowId);
 		unsigned long lastLength = statetable.getLength(rowId);
+		// std::cout << "lastLength: " << lastLength << std::endl;
+		
 		length = TimeUtil::Micros(lastLength);
 		nextActionTime = nextActionTime + length;
 

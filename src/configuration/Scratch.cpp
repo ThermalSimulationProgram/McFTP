@@ -36,7 +36,8 @@ void Scratch::initialize(int _nstage,
 	nstage 			= _nstage;
 	duration 		= _duration;
 	name            = _name;
-	adaption_period = 50000;
+	unsigned long onesecond = 1000000;
+	adaption_period = 1*onesecond;
 	isSave 			= true;
 	benchmark 		= "default";
 	fixedFrequency  = false;

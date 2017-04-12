@@ -513,6 +513,8 @@ void CMI::saveResults(){
 
 		// appendContentToFile(tempSaveName, Statistics::getAllMissedDeadline());
 
+		appendToFile(tempSaveName, tempwatcher->getAllTempTrace());
+
 		vector<string> endOfData = vector<string>(1, "999999999999999999999999999999");
 		appendContentToFile(tempSaveName, endOfData);
 		// appendToFile(tempSaveName, scheduler->getAllSchemes());

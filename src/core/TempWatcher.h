@@ -176,6 +176,8 @@ public:
 	double getMeanMaxTemp();
 
 	std::vector<double> getMeanTemp();
+
+	std::vector<std::vector<double> > getAllTempTrace();
 };
 
 

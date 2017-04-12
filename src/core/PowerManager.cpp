@@ -45,20 +45,20 @@ workers(_workers){
 	// freqInterface.push_back("/home/long/McFTP/trunk/test/test3");
 	// freqInterface.push_back("/home/long/McFTP/trunk/test/test4");
 
-	freqInterface.push_back("../test/test1");
-	freqInterface.push_back("../test/test2");
-	freqInterface.push_back("../test/test3");
-	freqInterface.push_back("../test/test4");
+	// freqInterface.push_back("../test/test1");
+	// freqInterface.push_back("../test/test2");
+	// freqInterface.push_back("../test/test3");
+	// freqInterface.push_back("../test/test4");
 
 
 	isFixedFrequency = Scratch::isFixedFrequency();
 
 	isFixedActive = Scratch::isFixedActive();
 
-	// freqInterface.push_back("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed");
-	// freqInterface.push_back("/sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed");
-	// freqInterface.push_back("/sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed");
-	// freqInterface.push_back("/sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed");
+	freqInterface.push_back("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed");
+	freqInterface.push_back("/sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed");
+	freqInterface.push_back("/sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed");
+	freqInterface.push_back("/sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed");
 
 	
 	// for (int i = 0; i < (int) freqInterface.size(); ++i)
@@ -169,7 +169,7 @@ void PowerManager::changePower(int id, double f, struct timespec length){
 	}else if (f > EPSILON){
 
 		if (!isFixedActive && !workers[id]->isActive()){
-			// workers[id]->activate();
+			workers[id]->activate();
 		}
 		if (!isFixedFrequency){
 			setFrequency(id, (int)f);
@@ -183,21 +183,23 @@ void PowerManager::setFrequency(int id, int f){
 	// freq << f;
 	// system(("echo " + freq.str() + " > " + freqInterface[id]).c_str());
 
+	// printf("PowerManager:set cpu %d frequency %d\n", id, f);
 
 	int fd = open( freqInterface[id].c_str(), O_WRONLY);
 	if (fd == -1){
-		printf("Failed open file\n");
+		printf("Failed to open file\n");
 		return ;
 	}
 
 
-	char buf[10];
+	char buf[12];
 
-	snprintf(buf, 10, "%d", f);
+	snprintf(buf, 12, "%d", f);
 
 
 	ssize_t numwrite = write(fd, buf, strlen(buf));
 	if (numwrite < 1) {
+		printf("Failed to write file\n");
 		close(fd);
 		return ;
 	}

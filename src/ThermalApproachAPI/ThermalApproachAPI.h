@@ -14,8 +14,9 @@ class CMI;
 
 class ThermalApproachAPI{
 private:
+	static int  counter;
 	static std::string approachName;
-
+	
 	static std::vector<unsigned long> tons;
 	static std::vector<unsigned long> toffs;
 

@@ -87,7 +87,7 @@ int Parser::parseFile(){
 	xml_node thermal_approach = sim_node.child("thermal_approach");
 	xml_node kernel = thermal_approach.child("kernel");
 	string kerneltype = kernel.attribute("type").as_string();
-	if (kerneltype == "pboo" || kerneltype == "PBOO" ){
+	if (kerneltype == "pboo" || kerneltype == "PBOO"){
 		Scratch::setStaticApproach(true);
 		vector<long int> tons_us = parseTimeVectorMicro<long int>(kernel.child("ton"));
 		vector<long int> toffs_us = parseTimeVectorMicro<long int>(kernel.child("toff"));

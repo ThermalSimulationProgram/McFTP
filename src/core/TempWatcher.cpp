@@ -23,7 +23,7 @@ using namespace std;
 
 
 #define _INFO 0
-#define _DEBUG 1
+#define _DEBUG 0
 
 
 
@@ -46,6 +46,8 @@ TempWatcher::TempWatcher(unsigned period, unsigned _id):Thread(_id){
   sem_post(&temp_sem);
   
   samplingPeriod = TimeUtil::Micros(period);
+
+  tempTrace.reserve(Scratch::getDuration()/200000);
 
 
 }	
@@ -244,3 +246,6 @@ vector<double> TempWatcher::getMeanTemp(){
 // 		return 1;
 // 	}
 // }
+std::vector<std::vector<double> > TempWatcher::getAllTempTrace(){
+  return tempTrace;
+}
