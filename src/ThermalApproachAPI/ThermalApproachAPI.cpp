@@ -49,18 +49,30 @@ Configuration ThermalApproachAPI::runThermalApproach(const DynamicInfo& info){
 
 
 int ThermalApproachAPI::taskAllocator(Task *t, _task_type type, CMI* cmi){
-	if (cmi->getCurrentSimTime_ms() < 20000 ){
+	unsigned long time_ms =   cmi->getCurrentSimTime_ms();            
+	if ( time_ms < 1000000 ){
 		if (t->getTaskId() == 0)
 			return 0;
 		else
 			return 1;
+
+	}else if (time_ms < 2000000){ 
+		if (t->getTaskId() == 0)
+			return 1;
+		else
+			return 0;
+
+	} else if (time_ms < 3000000){
+		if (t->getTaskId() == 0)
+			return 2;
+		else
+			return 3;
 
 	}else{
 		if (t->getTaskId() == 0)
-			return 1;
+			return 3;
 		else
-			return 0;
-
+			return 2;
 	}
 
 }
