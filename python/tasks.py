@@ -22,7 +22,7 @@ class Task(object):
 		self.name = _name
 		self.type = "pipelined"
 		self.periodicity = "periodic"
-		self.load_type = "busywait"
+		self.load_type = "busy_wait"
 
 		self.benchmark_name = "default"
 		self.user_defined_load_id = 1;
