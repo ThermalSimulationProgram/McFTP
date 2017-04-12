@@ -8,6 +8,7 @@
 #include "configuration/Scratch.h"
 #include "configuration/JobQueue.h"
 #include "utils/TimeUtil.h"
+#include "utils/Enumerations.h"
 
 
 using namespace std;
@@ -36,15 +37,15 @@ Configuration ThermalApproachAPI::runThermalApproach(const DynamicInfo& info){
 	for (int i = 0; i < (int)tons.size(); ++i)
 	{
 		StateTable st = StateTable(i);
-		// st.pushState(0, toffs[i]);
+		st.pushState(0, toffs[i]);
 		st.pushState(3400000, tons[i]);
 
-		st.pushState(0, toffs[i]);
-		st.pushState(800000, tons[i]);
-		st.pushState(2100000, tons[i]);
-		st.pushState(3200000, tons[i]);
-		st.pushState(0, tons[i]);
-		st.pushState(3400000, tons[i]);
+		// st.pushState(0, toffs[i]);
+		// st.pushState(800000, tons[i]);
+		// st.pushState(2100000, tons[i]);
+		// st.pushState(3200000, tons[i]);
+		// st.pushState(0, tons[i]);
+		// st.pushState(3400000, tons[i]);
 
 
 
@@ -85,7 +86,13 @@ int ThermalApproachAPI::taskAllocator(Task *t, _task_type type, CMI* cmi){
 			return 2;
 	}*/
 
-	return t->getTaskId();
+	if (t->getType() == pipelined ){
+		return 0;
+	}else{
+		return t->getTaskId();
+	}
+
+	
 
 }
 
