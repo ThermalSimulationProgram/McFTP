@@ -48,7 +48,7 @@ for i in range(0, pboo_num):
 		config.kernel_ton_value = str(tons)
 		config.kernel_toff_value = str(tons)
 		config.set_xml_csv_file_prefix('random'+str(x));
-		config.run_all_kernels(control, 0)
+		config.run_all_kernels(control, 1)
 
 
 
