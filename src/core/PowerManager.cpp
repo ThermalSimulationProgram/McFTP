@@ -169,7 +169,7 @@ void PowerManager::changePower(int id, double f, struct timespec length){
 	}else if (f > EPSILON){
 
 		if (!isFixedActive && !workers[id]->isActive()){
-			workers[id]->activate();
+			// workers[id]->activate();
 		}
 		if (!isFixedFrequency){
 			setFrequency(id, (int)f);

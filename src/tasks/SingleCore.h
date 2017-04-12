@@ -10,7 +10,7 @@ private:
 	unsigned long wcet_us;
 
 public:
-	SingleCore(unsigned long wcet_us, _task_load_type  load, int taskid);
+	SingleCore(unsigned long wcet_us, _task_load_type  load, int loadId, int taskid);
 
 	void fire();
 };

@@ -48,17 +48,25 @@ Configuration ThermalApproachAPI::runThermalApproach(const DynamicInfo& info){
 }
 
 
-int ThermalApproachAPI::addNewJob(_task_type, CMI* cmi){
-	DynamicInfo p;
-	// cmi->getDynamicInfo(p);
+int ThermalApproachAPI::taskAllocator(Task *t, _task_type type, CMI* cmi){
+	if (cmi->getCurrentSimTime_ms() < 20000 ){
+		if (t->getTaskId() == 0)
+			return 0;
+		else
+			return 1;
 
-	return 0;
+	}else{
+		if (t->getTaskId() == 0)
+			return 1;
+		else
+			return 0;
+
+	}
 
 }
 
 
-Configuration ThermalApproachAPI::finishJob(Task* t){
-	Configuration ret;
-	// cout << "Task with id: " << t->getId() << " finished at time: " << Statistics::getRelativeTime_ms() << endl; 
-	return ret;
+void ThermalApproachAPI::finishJob(Task* t, CMI* cmi){
+	// std::cout << "task with id: " << t->getId() << " finishes at time: "
+	// << cmi->getCurrentSimTime_ms() << " millisecond!\n";	
 }

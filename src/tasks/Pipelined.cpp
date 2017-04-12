@@ -22,8 +22,8 @@ using namespace std;
 /*********** CONSTRUCTOR ***********/
 
 ///The constructor requires a pointer to the simulation, its own dispatcher, and the WCET
-Pipelined::Pipelined(const vector<unsigned long>& _wcet, _task_load_type  load, int taskid): 
-Task(pipelined, load, taskid) {
+Pipelined::Pipelined(const vector<unsigned long>& _wcet, _task_load_type  load,
+int loadId, int taskid): Task(pipelined, load, loadId, taskid) {
   
   coreFinished = vector<bool> (_wcet.size(), false);
   

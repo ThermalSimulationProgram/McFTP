@@ -266,7 +266,7 @@ double CMI::simulate(){
 	else
 		tempwatcher->setCPU(n_cpus - 1);
 		
-	powermanager->setCPU(6);
+	powermanager->setCPU(n_cpus-1);
 	powermanager->activate();
 
 	Statistics::enable();
@@ -375,16 +375,9 @@ void CMI::updateConfiguration(const Configuration& config){
 void CMI::newJob(Task * newTask, _task_type TASK_TYPE){
 	
 	
-	int coreId = ThermalApproachAPI::addNewJob(TASK_TYPE, this);
+	int coreId = ThermalApproachAPI::taskAllocator(newTask, TASK_TYPE, this);
 
 	insertJobToQueue(coreId, newTask);
-
-	// #if _INFO == 1
-	// Semaphores::print_sem.wait_sem();
-	// cout << "New job with type: " << TASK_TYPE << " released at time: " 
-	//   << (Statistics::getRelativeTime_ms()) << " microsecond!"  << endl;
-	// Semaphores::print_sem.post_sem();
-	// #endif
 }
 
 void CMI::insertJobToQueue(int queueId, Task* newTask){
@@ -393,8 +386,6 @@ void CMI::insertJobToQueue(int queueId, Task* newTask){
 	sem_post(&jobnumber_sems[queueId]);
 	sem_post(&taskqueue_sems[queueId]);
 }
-
-
 
 
 Task* CMI::tryLoadJob(int workerId){
@@ -463,12 +454,14 @@ void CMI::unlockTaskQueues(){
 
 
 // This function is called by the end stage to announce a job is finished
-void CMI::finishedJob(Task* t){
+void CMI::finishedJob(Task* t){	
 	if (t->isFinished()){
-		ThermalApproachAPI::finishJob(t);
+		ThermalApproachAPI::finishJob(t, this);
 	}else{
-		Pipelined* b = (Pipelined*)t;
-		insertJobToQueue(b->getNextCoreId(),t);
+		if (t->getType() == pipelined){
+			Pipelined* b = (Pipelined*)t;
+			insertJobToQueue(b->getNextCoreId(),t);
+		}
 	}
 	
 }
@@ -524,4 +517,9 @@ void CMI::saveResults(){
 		appendContentToFile(tempSaveName, endOfData);
 		// appendToFile(tempSaveName, scheduler->getAllSchemes());
 	}
+}
+
+
+unsigned long CMI::getCurrentSimTime_ms(){
+	return Statistics::getRelativeTime_ms();
 }

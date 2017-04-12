@@ -18,9 +18,11 @@ void StateTable::pushState(double f, unsigned long l){
 		cerr << "StateTable::pushState: input frequency must be nonnegative" << endl;
 		exit(1);
 	}
-
-	frequencies.push_back(f);
-	lengths.push_back(l);
+	if (l > 100){
+		frequencies.push_back(f);
+		lengths.push_back(l);
+	}
+	
 
 }
 

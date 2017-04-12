@@ -113,14 +113,14 @@ Task* Dispatcher::createNewTask(){
   switch (taskdata._type){
     case pipelined:{
       Pipelined* newTask = new Pipelined(taskdata.wcets_us, 
-        taskdata._load_type, taskdata.taskId);
+        taskdata._load_type, taskdata.getLoadId(), taskdata.taskId);
       t = (Task*) newTask;
       break;
     }
 
     case singlecore:{
       SingleCore* newTask = new SingleCore(taskdata.wcets_us[0],
-        taskdata._load_type, taskdata.taskId);
+        taskdata._load_type, taskdata.getLoadId(), taskdata.taskId);
       t = (Task*) newTask;
       break;
     }

@@ -19,14 +19,21 @@ def UUniFast(n, U):
 
 class Task(object):
 	def __init__(self, _period, _utilization, _nstage, _name):
+		self.name = _name
+		self.type = "pipelined"
+		self.periodicity = "periodic"
+		self.task_load = "busywait"
+
+		self.benchmark_name = "default"
+		self.user_defined_load_id = 1;
+
 		self.period = _period
 		self.u = _utilization
 		self.nstage = _nstage
-		self.name = _name
-		self.type = "busy_wait"
-		self.periodicity = "periodic"
+		
 		self.attached_cores = list(range(0, _nstage))
-
+		
+		
 
 		wcets = []
 		for i in range(0, _nstage):
@@ -37,14 +44,23 @@ class Task(object):
 		self.wcets = wcets
 
 	def to_xml_node(self):
-		task_node = create_node(str(self.name), {'type':str(self.type), 'periodicity':self.periodicity, 'name':str(self.name)}, "")
+		task_node = create_node(str(self.name), {'type':str(self.type), 'periodicity':self.periodicity, 'load_type':self.load_type,'name':str(self.name)}, "")
 		period = create_time_node("period", self.period, "ms");
 		wcets = create_time_node("wcets", self.wcets, "ms");
 		attached_cores = create_node("attached_cores", {'value':str(self.attached_cores)}, "");
 
+
+
 		task_node.append(period)
 		task_node.append(wcets)
 		task_node.append(attached_cores)
+
+		if (self.load_type == 'benchmark'):
+			benchmark = create_node("benchmark",{'name':self.benchmark_name},"");
+			task_node.append(benchmark)
+		if (self.load_type == 'user_defined'):
+			userload = create_node("defined_load",{'index':str(self.user_defined_load_id)},"");
+			task_node.append(userload)
 
 		return task_node
 

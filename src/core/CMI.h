@@ -133,6 +133,8 @@ public:
 
 	static struct timespec getSimTime();
 
+	unsigned long getCurrentSimTime_ms();
+
 
 
 };

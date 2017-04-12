@@ -41,6 +41,8 @@ public:
 
 	void print();
 
+	int getLoadId();
+
 };
 
 #endif

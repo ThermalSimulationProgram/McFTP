@@ -30,7 +30,7 @@ class Pipelined : public Task {
   /*********** CONSTRUCTOR ***********/
 
   ///The constructor requires a pointer
-  Pipelined(const std::vector<unsigned long>& wcet, _task_load_type  load, int taskid);
+  Pipelined(const std::vector<unsigned long>& wcet, _task_load_type  load, int loadId, int taskid);
 
   ~Pipelined();
 

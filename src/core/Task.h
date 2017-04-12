@@ -49,7 +49,7 @@ public:
   /*********** CONSTRUCTOR ***********/
   
   ///Constructor needs its load type
-  Task(_task_type type, _task_load_type  load, int _taskId);
+  Task(_task_type type, _task_load_type  load, int loadId, int _taskId);
 
   virtual ~Task();
 

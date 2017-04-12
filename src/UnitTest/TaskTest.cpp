@@ -8,7 +8,7 @@ int main(){
 
 for (int i = 0; i < 10; ++i)
 {
-	Task b = Task(singlecore, busywait, 11);
+	Task b = Task(singlecore, busywait, 1, 11);
 }
 
 }

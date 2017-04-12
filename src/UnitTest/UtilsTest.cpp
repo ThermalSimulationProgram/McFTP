@@ -58,7 +58,7 @@ void testJobQueue(){
 
 	for (int i = 0; i < n; ++i)
 	{
-		Task* aux = new Task(singlecore, busywait, 9);
+		Task* aux = new Task(singlecore, busywait, 1, 9);
 		tasks.push_back(aux);
 		j1->insertJob(aux);
 

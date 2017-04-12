@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "taskloads/BusyWait.h"
+#include "ThermalApproachAPI/UserDefinedLoad.h"
 
 // #include "core/Worker.h"
 
@@ -17,7 +18,7 @@ using namespace std;
 
 /*********** CONSTRUCTOR ***********/
 
-Task::Task(_task_type type, _task_load_type  load, int _taskId):taskId(_taskId) {
+Task::Task(_task_type type, _task_load_type  load, int loadId, int _taskId):taskId(_taskId) {
   task_load_type = load;
   task_type = type;
   jobId = jobCounter;
@@ -29,6 +30,7 @@ Task::Task(_task_type type, _task_load_type  load, int _taskId):taskId(_taskId) 
     case busywait:{
       BusyWait* newload = new BusyWait();
       loads = (TaskLoad*) newload;
+      break;
     }
 
     case benchmark:{
@@ -36,7 +38,9 @@ Task::Task(_task_type type, _task_load_type  load, int _taskId):taskId(_taskId) 
     }
 
     case userdefined:{
-
+      UserDefinedLoad* newload = new UserDefinedLoad(loadId);
+      loads = (TaskLoad*) newload;
+      break;
     }
 
 

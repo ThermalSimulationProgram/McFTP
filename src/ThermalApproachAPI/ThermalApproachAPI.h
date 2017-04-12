@@ -25,9 +25,9 @@ public:
 	
 	static Configuration runThermalApproach(const DynamicInfo&);
 
-	static int addNewJob(_task_type, CMI* cmi);
+	static int taskAllocator(Task *t, _task_type, CMI* cmi);
 
-	static Configuration finishJob(Task* t);
+	static void finishJob(Task* t, CMI* cmi);
 
 };
 

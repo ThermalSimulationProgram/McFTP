@@ -40,3 +40,12 @@ void TaskArgument::print(){
 	displayvector(wcets_us, "wcets_us");
 	displayvector(TimeUtil::convert_us(wcets), "wcets");
 }
+
+
+int TaskArgument::getLoadId(){
+	if (_load_type == benchmark){
+		return benchmark_id;
+	}else{
+		return user_defined_load_id;
+	}
+}

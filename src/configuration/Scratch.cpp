@@ -58,7 +58,8 @@ void Scratch::print(){
 	cout << "adaption_period \t= " << adaption_period << endl;
 	cout << "fixedFrequency \t= " << fixedFrequency << endl;
 	cout << "fixedActive \t= " << fixedActive << endl;
-
+	displayvector(TimeUtil::convert_us(PBOO_tons) , "PBOO_tons");
+	displayvector(TimeUtil::convert_us(PBOO_toffs), "PBOO_toffs");
 	for (int i = 0; i < (int)all_task_data.size(); ++i)
 	{	
 		all_task_data[i].print();

@@ -76,7 +76,7 @@ int Parser::parseFile(){
 	// get parameters of all tasks
 	xml_node task_node     = sim_node.child("tasks");
 	//iterate through all of the children nodes
-	int taskid = 1;
+	int taskid = 0;
 	for (xml_node task = task_node.first_child(); task; task = task.next_sibling()){
 		
 		TaskArgument data = parseTask(task, taskid);
@@ -87,7 +87,7 @@ int Parser::parseFile(){
 	xml_node thermal_approach = sim_node.child("thermal_approach");
 	xml_node kernel = thermal_approach.child("kernel");
 	string kerneltype = kernel.attribute("type").as_string();
-	if (kerneltype == "pboo"){
+	if (kerneltype == "pboo" || kerneltype == "PBOO" ){
 		Scratch::setStaticApproach(true);
 		vector<long int> tons_us = parseTimeVectorMicro<long int>(kernel.child("ton"));
 		vector<long int> toffs_us = parseTimeVectorMicro<long int>(kernel.child("toff"));
@@ -110,7 +110,7 @@ int Parser::parseFile(){
 		}
 	}
 
-	// Scratch::print();
+	Scratch::print();
 	return ret;
 }
 
@@ -143,7 +143,8 @@ TaskArgument Parser::parseTask(pugi::xml_node task, int taskid){
 	}else {
 		cout << "parseTask: task type was not recognized" << endl;
 		exit(1);
-	} 
+	}
+	
 	data._type = type;
 
 
@@ -157,15 +158,12 @@ TaskArgument Parser::parseTask(pugi::xml_node task, int taskid){
 	data.attached_cores = attached_cores;
 
 
-
+	vector<long int> wcets = parseTimeVectorMicro<long int>(task.child("wcets")); 
+	data.wcets = TimeUtil::Micros(wcets);
+	data.wcets_us = TimeUtil::convert_us(data.wcets);
 
 	if (load_type == "busy_wait"){
-		loadtype = busywait;
-		vector<long int> wcets = parseTimeVectorMicro<long int>(task.child("wcets"));
-
-		data.wcets = TimeUtil::Micros(wcets);
-		data.wcets_us = TimeUtil::convert_us(data.wcets);
-
+		loadtype = busywait;		
 	}else if (load_type == "benchmark"){
 		loadtype = benchmark;
 		string benchmark_name = task.child("benchmark").attribute("name").as_string();

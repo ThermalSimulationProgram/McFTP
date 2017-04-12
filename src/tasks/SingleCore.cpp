@@ -16,8 +16,8 @@
 using namespace std;
 
 
-SingleCore::SingleCore(unsigned long _wcet_us, _task_load_type  load, int taskid):
-Task(singlecore, load, taskid){
+SingleCore::SingleCore(unsigned long _wcet_us, _task_load_type  load, int loadId, int taskid):
+Task(singlecore, load, loadId, taskid){
 	wcet_us = _wcet_us;
 
 }
@@ -25,4 +25,5 @@ Task(singlecore, load, taskid){
 
 void SingleCore::fire(){
 	 loads->runLoads(wcet_us);
+	 finished = true;
 }
