@@ -18,7 +18,7 @@ bool 						Scratch::isSave;
 string 						Scratch::benchmark;
 vector<_task_periodicity> 	Scratch::periodicities;
 vector<_task_type> 			Scratch::task_types;
-vector<task_data>  			Scratch::all_task_data;
+vector<TaskArgument>  			Scratch::all_task_data;
 
 vector<struct timespec> 	Scratch::WCETS;
 
@@ -61,13 +61,11 @@ void Scratch::print(){
 
 	for (int i = 0; i < (int)all_task_data.size(); ++i)
 	{	
-		task_data_print(all_task_data[i]);
-		displayvector(periodicities, "periodicities");
-		displayvector(task_types, "task_types");
+		all_task_data[i].print();
 	}
 }
 
-void Scratch::addTask(_task_type type, _task_periodicity p, task_data data){
+void Scratch::addTask(_task_type type, _task_periodicity p, TaskArgument data){
 	task_types.push_back(type);
 	periodicities.push_back(p);
 	all_task_data.push_back(data);
@@ -190,16 +188,16 @@ vector<_task_periodicity> 	Scratch::getAllTaskPeriodicity(){
 	return periodicities;
 }
 
-vector<task_data>  Scratch::getTaskData(){
+vector<TaskArgument>  Scratch::getTaskData(){
 	return all_task_data;
 }
 
-task_data  Scratch::getTaskData(_task_type type){
+TaskArgument  Scratch::getTaskData(int taskid){
 	int id = 0;
 	bool found = false;
-	for (int i = 0; i < (int) task_types.size(); ++i)
+	for (int i = 0; i < (int) all_task_data.size(); ++i)
 	{
-		if(task_types[i] == type){
+		if(all_task_data[i].taskId == taskid){
 			id = i;
 			found = true;
 			break;
@@ -254,20 +252,6 @@ unsigned long Scratch::getDuration(){
 	unsigned long ret = duration;
 	sem_post(&access_sem);
 	return ret;
-}
-
-
-void task_data_print(const task_data & data){
-	cout << "task name: " << data.name << endl;
-	cout << "task Id: " << data.taskId << endl;
-	cout << "period: " << TimeUtil::convert_ms(data.period) << endl;
-	cout << "jitter: " << TimeUtil::convert_ms(data.jitter) << endl;
-	cout << "release_time: " << TimeUtil::convert_ms(data.release_time) << endl;
-	
-	cout << "benchmark: " << data.benchmark << endl;
-	displayvector(data.attached_cores, "attached_cores");
-
-	displayvector(TimeUtil::convert_us(data.wcets), "wcets");
 }
 
 

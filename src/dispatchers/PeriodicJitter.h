@@ -27,7 +27,7 @@ class PeriodicJitter : public Dispatcher {
   /*********** CONSTRUCTOR ***********/
 
   ///Constructor needs simulation pointer, and id
-  PeriodicJitter(unsigned int id, _task_type task_type);
+  PeriodicJitter(unsigned int id);
 
   /*********** INHERITED FUNCTIONS ***********/
 

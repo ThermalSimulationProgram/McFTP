@@ -18,7 +18,7 @@ using namespace std;
 
 /*********** CONSTRUCTOR ***********/
 
-PeriodicJitter::PeriodicJitter(unsigned int id, _task_type task_type) : Dispatcher(id, task_type) {
+PeriodicJitter::PeriodicJitter(unsigned int id) : Dispatcher(id) {
   period =  TimeUtil::Millis(20);
   deltaPeriod = TimeUtil::Millis(5);
 

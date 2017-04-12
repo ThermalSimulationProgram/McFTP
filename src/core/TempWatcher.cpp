@@ -149,36 +149,6 @@ std::vector<double> TempWatcher::get_cpu_temperature(){
         close(fd);
 
         sscanf(buf, "%d", &value);
-
-
-       //  int res, err = 0;
-
-       //  errno = 0;
-       //  res = fscanf( f, "%d", &value);
-       //  if ( res == EOF && errno == EIO)
-       //    err = -SENSORS_ERR_IO;
-       //  else if ( res != 1)
-       //    err = -SENSORS_ERR_ACCESS_R;
-       //  res = fclose( f);
-       //  if ( err){
-       //   printf(" TempWatcher::get_cpu_temperature: read temperature error, NO:"); 
-       //   printf("%d\n", err);
-       //   exit(err);
-       // }
-
-       // if ( res == EOF) {
-       //  if ( errno == EIO){
-       //   printf(" TempWatcher::get_cpu_temperature: read temperature error, NO:");
-       //   printf("%d\n", -SENSORS_ERR_IO);
-       //   exit(-SENSORS_ERR_IO) ;
-       // }
-       // else{
-       //   printf(" TempWatcher::get_cpu_temperature: read temperature error, NO:");
-       //   printf("%d\n", -SENSORS_ERR_ACCESS_R);
-       //   exit(-SENSORS_ERR_ACCESS_R) ;
-       // }
-     
-            // value /= get_type_scaling( SENSORS_SUBFEATURE_TEMP_INPUT);
    } else{
      printf( " TempWatcher::get_cpu_temperature: read temperature error, NO:");
      printf("%d\n", SENSORS_ERR_KERNEL); 

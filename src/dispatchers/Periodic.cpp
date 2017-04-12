@@ -19,7 +19,7 @@ using namespace std;
 
 /*********** CONSTRUCTOR ***********/
 
-Periodic::Periodic(unsigned int id, _task_type task_type) : Dispatcher(id, task_type) {
+Periodic::Periodic(unsigned int id) : Dispatcher(id) {
   period =  TimeUtil::Millis(20);
 }
 

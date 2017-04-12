@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-
+#include "core/TaskArgument.h"
 #include "utils/pugixml.hpp"
 
 #include "utils/utils.h"
@@ -23,6 +23,8 @@ public:
 	// This function parse the file pointed by xml_path, and then 
 	// save all necessary data required by the simulation in Scratch class.
 	int parseFile();
+
+	TaskArgument parseTask(pugi::xml_node task, int taskid);
 
 	struct timespec parseTime(pugi::xml_node n);
 	unsigned long parseTimeMircroSecond(pugi::xml_node n);

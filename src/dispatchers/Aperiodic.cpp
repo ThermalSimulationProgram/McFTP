@@ -17,7 +17,7 @@ using namespace std;
 /*********** CONSTRUCTOR ***********/
 
 ///Constructor needs a pointer to simulation and id
-Aperiodic::Aperiodic(unsigned int id, _task_type task_type) : Dispatcher(id, task_type) {
+Aperiodic::Aperiodic(unsigned int id) : Dispatcher(id) {
   releaseTime = TimeUtil::Millis(10); //default release time is 5 ms
 }
 

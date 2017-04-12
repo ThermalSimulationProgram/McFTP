@@ -11,14 +11,21 @@ enum _task_periodicity {
   periodic_jitter
 };
 
+//This enumeration decribes the type of the structure of a task
+enum _task_type{
+  singlecore, // the task is executed by one core
+  pipelined, // the task is divided into several sub-tasks. They are executed serially by several cores
+};
 
 //This enumeration decribes the type of the load of a task
-enum _task_type
+enum _task_load_type
 {
   busywait,
   benchmark,
   userdefined
 };
+
+
 
 
 enum _worker_state{

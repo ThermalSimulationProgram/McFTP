@@ -21,7 +21,7 @@ class Aperiodic : public Dispatcher {
   /*********** CONSTRUCTOR ***********/
 
   ///Constructor needs simulation pointer, and id
-  Aperiodic(unsigned int id, _task_type task_type);
+  Aperiodic(unsigned int id);
 
   /*********** INHERITED FUNCTIONS ***********/
   

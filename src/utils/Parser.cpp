@@ -15,7 +15,6 @@
 #include "utils/Enumerations.h"
 #include "utils/vectormath.h"
 #include "utils/FileOperator.h"
-
 #include "core/structdef.h"
 
 
@@ -79,71 +78,10 @@ int Parser::parseFile(){
 	//iterate through all of the children nodes
 	int taskid = 1;
 	for (xml_node task = task_node.first_child(); task; task = task.next_sibling()){
-		string task_type = task.attribute("type").as_string();
-		string periodicity = task.attribute("periodicity").as_string();
-
-		_task_type type;
-		_task_periodicity pcity;
-		task_data data;
-		if (task_type == "busy_wait"){
-			type = busywait;
-			vector<long int> wcets = parseTimeVectorMicro<long int>(task.child("wcets"));
-
-		 	data.wcets = TimeUtil::Micros(wcets);
-		 	data.wcets_us = TimeUtil::convert_us(data.wcets);
-
-		}else if (task_type == "benchmark"){
-			type = benchmark;
-			string benchmark_name = task.attribute("benchmark_name").as_string();
-			data.benchmark = benchmark_name;
-		}else if (task_type == "user_defined"){
-			type = userdefined;
-		}else {
-			cout << "parseFile: task type was not recognized" << endl;
-			exit(1);
-		}
-
-		 /**** CREATE DISPATCHER ****/
-		if(periodicity == "periodic") {
-			pcity = periodic;
-			data.period = parseTime(task.child("period"));
-		}
-		else if(periodicity == "periodic_jitter") {
-			pcity = periodic_jitter;
-			data.period = parseTime(task.child("period"));
-			data.jitter = parseTime(task.child("jitter"));
-		}
-		else if(periodicity == "aperiodic") {
-			pcity = aperiodic;
-			data.release_time = parseTime(task.child("release_time"));
-		}
-		else {
-			cout << "parseFile: task periodicity was not recognized" << endl;
-			exit(1);
-		}
-		string task_name = task.attribute("name").as_string();
-
-		if(task_name.length() > 0 ){
-			data.name = task_name;
-		}else{
-			ostringstream tmp;
-			tmp << taskid;
-			data.name = "default_task_name" + tmp.str();
-		}
-
-		xml_node attachedCores = task.child("attached_cores");
-		vector<int> attached_cores;
-		if(attachedCores){
-			attached_cores = stringToVector<int>(attachedCores.attribute("value").as_string());
-		}
-
-
-		data.taskId = taskid;
-		taskid++;
-
-		data.attached_cores = attached_cores;
-
-		Scratch::addTask(type, pcity, data);
+		
+		TaskArgument data = parseTask(task, taskid);
+		++taskid;
+		Scratch::addTask(data._type, data._periodicity, data);
 	}
 
 	xml_node thermal_approach = sim_node.child("thermal_approach");
@@ -176,6 +114,100 @@ int Parser::parseFile(){
 	return ret;
 }
 
+TaskArgument Parser::parseTask(pugi::xml_node task, int taskid){
+	TaskArgument data = TaskArgument();
+
+	string task_name = task.attribute("name").as_string();
+	if(task_name.length() > 0 ){
+		data.name = task_name;
+	}else{
+		ostringstream tmp;
+		tmp << taskid;
+		data.name = "default_task_name" + tmp.str();
+	}
+
+	data.taskId = taskid;
+
+	string task_type = task.attribute("type").as_string();
+	string load_type = task.attribute("load_type").as_string();
+	string periodicity = task.attribute("periodicity").as_string();
+
+	_task_type type;
+	_task_periodicity pcity;
+	_task_load_type loadtype;
+
+	if (task_type == "singlecore"){
+		type = singlecore;
+	}else if (task_type == "pipeline"){
+		type = pipelined;
+	}else {
+		cout << "parseTask: task type was not recognized" << endl;
+		exit(1);
+	} 
+	data._type = type;
+
+
+	xml_node attachedCores = task.child("attached_cores");
+	vector<int> attached_cores;
+	if(attachedCores){
+		attached_cores = stringToVector<int>(attachedCores.attribute("value").as_string());
+	}else{
+		attached_cores = vector<int>(1, 0);
+	}
+	data.attached_cores = attached_cores;
+
+
+
+
+	if (load_type == "busy_wait"){
+		loadtype = busywait;
+		vector<long int> wcets = parseTimeVectorMicro<long int>(task.child("wcets"));
+
+		data.wcets = TimeUtil::Micros(wcets);
+		data.wcets_us = TimeUtil::convert_us(data.wcets);
+
+	}else if (load_type == "benchmark"){
+		loadtype = benchmark;
+		string benchmark_name = task.child("benchmark").attribute("name").as_string();
+			// int benchmark_id = findBenchmarkId(benchmark_name);
+		int benchmark_id = 1;
+		data.benchmark_id = benchmark_id;
+	}else if (load_type == "user_defined"){
+		loadtype = userdefined;
+		int loadId = task.child("defined_load").attribute("index").as_int();
+		data.user_defined_load_id = loadId;
+
+	}else {
+		cout << "parseTask: task load type was not recognized" << endl;
+		exit(1);
+	}
+	data._load_type = loadtype;
+
+
+
+
+	if(periodicity == "periodic") {
+		pcity = periodic;
+		data.period = parseTime(task.child("period"));
+	}
+	else if(periodicity == "periodic_jitter") {
+		pcity = periodic_jitter;
+		data.period = parseTime(task.child("period"));
+		data.jitter = parseTime(task.child("jitter"));
+	}
+	else if(periodicity == "aperiodic") {
+		pcity = aperiodic;
+		data.release_time = parseTime(task.child("release_time"));
+	}
+	else {
+		cout << "parseTask: task periodicity was not recognized" << endl;
+		exit(1);
+	}
+	data._periodicity = pcity;
+
+	return data;
+
+}
 
 unsigned long Parser::parseTimeMircroSecond(xml_node n){
 	struct timespec tmp = parseTime(n);

@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "taskloads/BusyWait.h"
 
 // #include "core/Worker.h"
 
@@ -16,21 +17,36 @@ using namespace std;
 
 /*********** CONSTRUCTOR ***********/
 
-Task::Task(const _task_type& load, int _taskId):taskId(_taskId) {
-  task_load = load;
+Task::Task(_task_type type, _task_load_type  load, int _taskId):taskId(_taskId) {
+  task_load_type = load;
+  task_type = type;
   jobId = jobCounter;
   jobCounter++;
   worker = NULL;
   finished = false;
 
-  sem_init(&suspend_sem, 0, 0);
-  sem_init(&resume_sem, 0, 0);
+  switch (task_load_type){
+    case busywait:{
+      BusyWait* newload = new BusyWait();
+      loads = (TaskLoad*) newload;
+    }
+
+    case benchmark:{
+
+    }
+
+    case userdefined:{
+
+    }
+
+
+  }
 
 
 }
 
 Task::~Task(){
-  
+  delete loads;
 }
 
 /*********** MEMBER FUNCTIONS ***********/
@@ -38,6 +54,11 @@ Task::~Task(){
 void Task::setWorker(Worker* w){
 	worker = w;
 }
+
+void Task::setLoad(TaskLoad* l){
+  loads = l;
+}
+
 
 ///This function performs one task
 void Task::fire() {
@@ -54,17 +75,16 @@ int Task::getTaskId(){
 
 
 _task_type Task::getType(){
-	return task_load;
+	return task_type;
 }
 
 void Task::suspend(const struct timespec& length){
-	sleepLength = length;
-	sem_post(&suspend_sem);
+	loads->suspend(length);
 
 }
 
 void Task::resume(){
-	sem_post(&resume_sem);
+	loads->resume();
 }
 
 

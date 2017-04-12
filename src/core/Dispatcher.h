@@ -8,6 +8,7 @@
 #include "pthread/Thread.h"
 #include "utils/Enumerations.h"
 #include "core/Task.h"
+#include "core/TaskArgument.h"
 #include "core/structdef.h"
 
 class CMI;
@@ -33,9 +34,11 @@ class Dispatcher : public Thread {
 
   std::vector<Task*> allTasks;
 
-  const _task_type TASK_TYPE;
+  _task_load_type TASK_LOAD_TYPE;
 
-  task_data taskdata;
+  _task_type TASK_TYPE;
+
+  TaskArgument taskdata;
 
   // int ncores;
     
@@ -43,8 +46,8 @@ class Dispatcher : public Thread {
 
   /*********** CONSTRUCTOR ***********/
 
-  ///Constructor needs  a disp_id and the type of the task associated with it
-  Dispatcher (unsigned int id, _task_type task_type);
+  ///Constructor needs  a disp_id
+  Dispatcher (unsigned int id);
 
   ~Dispatcher();
 
@@ -74,7 +77,11 @@ class Dispatcher : public Thread {
   ///This function sets the tasks's periodicity
   void setPeriodicity(_task_periodicity t);
 
-  void setTaskData(task_data d);
+  void setTaskLoadType(_task_load_type type);
+
+  void setTaskType(_task_type type);
+
+  void setTaskData(TaskArgument d);
 
   ///This function sets the associated CMI
   void setCMI(CMI *c);

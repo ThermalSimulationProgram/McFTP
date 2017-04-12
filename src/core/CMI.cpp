@@ -16,10 +16,11 @@
 #include "dispatchers/Aperiodic.h"
 #include "dispatchers/Periodic.h"
 #include "dispatchers/PeriodicJitter.h"
-#include "tasks/BusyWait.h"
+#include "tasks/Pipelined.h"
 
 //parser
 #include "utils/Parser.h"
+#include "core/TaskArgument.h"
 //utilities
 #include "configuration/Scratch.h"
 #include "utils/TimeUtil.h"
@@ -91,26 +92,26 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 	// create Dispatchers
 	vector<_task_type> allTaskTypes = Scratch::getAllTaskTypes();
 	vector<_task_periodicity> allTaskPeriodicity = Scratch::getAllTaskPeriodicity();
-	vector<task_data> allTaskData =   Scratch::getTaskData();
+	vector<TaskArgument> allTaskData =   Scratch::getTaskData();
 	for (int i = 0; i < (int) allTaskTypes.size(); ++i)
 	{
 		switch (allTaskPeriodicity[i]){
 			case aperiodic:{
-				Aperiodic* aux = new Aperiodic(100+i, allTaskTypes[i]);
+				Aperiodic* aux = new Aperiodic(100+i);
 				aux->setReleaseTime(allTaskData[i].release_time);
 				aux->setCMI(this);
 				dispatchers.push_back((Dispatcher*)aux);
 				break;
 			}
 			case periodic:{
-				Periodic* aux = new Periodic(100+i, allTaskTypes[i]);
+				Periodic* aux = new Periodic(100+i);
 				aux->setPeriod(allTaskData[i].period);
 				aux->setCMI(this);
 				dispatchers.push_back((Dispatcher*)aux);
 				break;
 			}
 			case periodic_jitter:{
-				PeriodicJitter* aux = new PeriodicJitter(100+i, allTaskTypes[i]);
+				PeriodicJitter* aux = new PeriodicJitter(100+i);
 				aux->setPeriod(allTaskData[i].period);
 				aux->setPeriod(allTaskData[i].jitter);
 				aux->setCMI(this);
@@ -302,7 +303,7 @@ double CMI::simulate(){
 	enum _thread_type main_type = _main;
 	Statistics::addRuntime(main_type, 1000, TimeUtil::getTime() - Statistics::getStart());
 
-	std::vector<task_data> allTaskData = Scratch::getTaskData();
+	std::vector<TaskArgument> allTaskData = Scratch::getTaskData();
 	int task_num = allTaskData.size();
 	for (int i = 0; i < (int) workers.size(); ++i)
 	{
@@ -394,6 +395,8 @@ void CMI::insertJobToQueue(int queueId, Task* newTask){
 }
 
 
+
+
 Task* CMI::tryLoadJob(int workerId){
 	Task* ret = NULL;
 
@@ -464,7 +467,7 @@ void CMI::finishedJob(Task* t){
 	if (t->isFinished()){
 		ThermalApproachAPI::finishJob(t);
 	}else{
-		BusyWait* b = (BusyWait*)t;
+		Pipelined* b = (Pipelined*)t;
 		insertJobToQueue(b->getNextCoreId(),t);
 	}
 	

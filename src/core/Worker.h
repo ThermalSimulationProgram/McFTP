@@ -29,25 +29,14 @@ protected:
 
 	struct timespec latestSleep;
 
-	///This vector stores the jobs that are waiting for execution
-	
-
 	Task* current_job;
 
 	int job_counter;
 
 	CMI * cmi;
 
-	// ///semaphore controls setting the job queue
-	// sem_t queue_sem;
-
-	// //semaphore controls work loads from the job queue
-	// sem_t queue_lock_sem;
-
 	///semaphore controls accessing state and latestSleep
 	sem_t state_sem;
-
-	// struct timespec sleepLength;
 
 	struct timespec sleepEnd;
 

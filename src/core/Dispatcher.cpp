@@ -8,7 +8,8 @@
 #include "core/Task.h"
 #include "configuration/Scratch.h"
 #include "pthread/Priorities.h"
-#include "tasks/BusyWait.h"
+#include "tasks/Pipelined.h"
+#include "tasks/SingleCore.h"
 #include "utils/TimeUtil.h"
 #include "utils/vectormath.h"
 
@@ -24,8 +25,8 @@ using namespace std;
 /*********** CONSTRUCTOR ***********/
 
 ///Constructor needs  a disp_id and the type of the task associated with it
-Dispatcher::Dispatcher(unsigned int _id, _task_type task_type): 
-Thread(_id), TASK_TYPE(task_type) {
+Dispatcher::Dispatcher(unsigned int _id): 
+Thread(_id){
   // #if _INFO == 1
   // cout << "++New Dispatcher - " << _id << "\n";
   // #endif
@@ -34,6 +35,8 @@ Thread(_id), TASK_TYPE(task_type) {
 
   //By default periodic
   periodicity = periodic;
+
+  TASK_TYPE = singlecore;
 
   //Offset is initially 0
   offset.tv_sec = 0;
@@ -106,18 +109,20 @@ void Dispatcher::activate() {
 
 Task* Dispatcher::createNewTask(){
   Task * t = NULL;
-  switch (TASK_TYPE){
-    case busywait:{
-      BusyWait* newTask = new BusyWait(taskdata.wcets_us, taskdata.taskId);
+
+  switch (taskdata._type){
+    case pipelined:{
+      Pipelined* newTask = new Pipelined(taskdata.wcets_us, 
+        taskdata._load_type, taskdata.taskId);
       t = (Task*) newTask;
       break;
     }
 
-    case benchmark:{
-
-    }
-    case userdefined:{
-
+    case singlecore:{
+      SingleCore* newTask = new SingleCore(taskdata.wcets_us[0],
+        taskdata._load_type, taskdata.taskId);
+      t = (Task*) newTask;
+      break;
     }
 
   }
@@ -143,12 +148,25 @@ void Dispatcher::setPeriodicity(_task_periodicity t) {
   periodicity = t;
 }
 
+
+void Dispatcher::setTaskLoadType(_task_load_type type){
+  TASK_LOAD_TYPE = type;
+}
+
+void Dispatcher::setTaskType(_task_type type){
+  TASK_TYPE = type;
+}
+
+
 ///This function sets the worker
 void Dispatcher::setCMI(CMI *c) {
   cmi = c;
 }
 
 
-void Dispatcher::setTaskData(task_data d){
+void Dispatcher::setTaskData(TaskArgument d){
   taskdata = d;
+  setPeriodicity(taskdata._periodicity);
+  setTaskLoadType(taskdata._load_type);
+  setTaskType(taskdata._type);
 }

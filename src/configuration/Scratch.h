@@ -10,7 +10,7 @@
 #include "utils/Enumerations.h"
 #include "utils/TimeUtil.h"
 #include "core/structdef.h"
-
+#include "core/TaskArgument.h"
 
 
 
@@ -24,7 +24,7 @@ public:
 	static void 					setName(std::string);
 	static void 					setSavingFile(bool);
 	static void 					setBenchmark(const std::string&);
-	static void 					addTask(_task_type, _task_periodicity, task_data);
+	static void 					addTask(_task_type, _task_periodicity, TaskArgument);
 	static void 					setWCETs(std::vector<struct timespec>);
 	static void 					setFixedFrequency(bool);
 	static void 					setFixedActive(bool);
@@ -53,8 +53,8 @@ public:
 	static std::string 				getBenchmarkName();
 	static std::vector<_task_type>	getAllTaskTypes();
 	static std::vector<_task_periodicity> 	getAllTaskPeriodicity();
-	static std::vector<task_data>  getTaskData();
-	static task_data  getTaskData(_task_type);
+	static std::vector<TaskArgument>  getTaskData();
+	static TaskArgument  getTaskData(int taskid);
 	static std::string 				getApproachName();
 	
 	
@@ -68,7 +68,7 @@ private:
 	
 	static std::vector<_task_periodicity> periodicities;
 	static std::vector<_task_type> task_types;
-	static std::vector<task_data>  all_task_data;
+	static std::vector<TaskArgument>  all_task_data;
 	
 	static std::string 				name;
 	static int 						nstage;
@@ -90,5 +90,5 @@ private:
 	static std::string 				benchmark;
 };
 
-void task_data_print(const task_data &);
+// void task_data_print(const task_data &);
 	#endif 

@@ -16,8 +16,9 @@ add_subdirectory(./src/dispatchers)
 add_subdirectory(./src/pthread)
 add_subdirectory(./src/results)
 add_subdirectory(./src/tasks)
+add_subdirectory(./src/taskloads)
 add_subdirectory(./src/utils)
 
 add_executable(demo main.cpp)
 
-target_link_libraries(demo UnitTest core ThermalApproachAPI configuration  dispatchers pthread results tasks utils)
+target_link_libraries(demo UnitTest core ThermalApproachAPI configuration  dispatchers pthread results tasks taskloads utils)
