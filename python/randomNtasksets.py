@@ -33,7 +33,7 @@ base = 30;
 
 period = 100;
 pboo_num = 70;
-test_num_for_each_pboo = 153;
+test_num_for_each_pboo = 15;
 control = [1]
 # varying periods
 for i in range(0, pboo_num):
