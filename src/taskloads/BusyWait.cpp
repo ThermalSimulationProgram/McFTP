@@ -1,7 +1,11 @@
 #include "taskloads/BusyWait.h"
 
+#include <cmath>
+
 #include "utils/Operators.h"
 #include "utils/TimeUtil.h"
+
+#include "taskloads/MWC.h"
 
 
 BusyWait::BusyWait():TaskLoad(){
@@ -14,6 +18,7 @@ BusyWait::~BusyWait(){}
 void BusyWait::runLoads(unsigned long _wcet_us){
 
      wcet_us = _wcet_us;
+     MWC RND = MWC();
 
 	unsigned long fire_start = TimeUtil::convert_us(TimeUtil::getTime());
 
@@ -24,6 +29,10 @@ void BusyWait::runLoads(unsigned long _wcet_us){
      unsigned long start = 0, tmp_count = 0;
      start = TimeUtil::convert_us(TimeUtil::getTime());
      while(tmp_count < 200){
+          for (int i = 0; i < 3000; ++i)
+          {
+               sqrt(RND.mwc32());
+          }
      	tmp_count = TimeUtil::convert_us(TimeUtil::getTime()) - start;
      }
 
