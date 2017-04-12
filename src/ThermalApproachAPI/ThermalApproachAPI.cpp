@@ -37,7 +37,7 @@ Configuration ThermalApproachAPI::runThermalApproach(const DynamicInfo& info){
 	{
 		StateTable st = StateTable(i);
 		st.pushState(0, toffs[i]);
-		st.pushState(1500, tons[i]);
+		st.pushState(3400000, tons[i]);
 		JobQueue jq = JobQueue();
 
 		ret.pushConfigurationOfOneCore(st, jq);
