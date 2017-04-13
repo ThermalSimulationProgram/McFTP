@@ -179,6 +179,12 @@ class Config(object):
 
 		scheduler = create_node('thermal_approach', {}, "")
 		kernel    = create_node('kernel', {'type':self.kernel_type.upper()}, "")
+		# if (self.kernel_ton_value < 1):
+		# 	self.kernel_ton_value = self.kernel_ton_value * 1000
+		# 	self.kernel_ton_unit = 'us'
+		# if (self.kernel_toff_value < 1):
+		# 	self.kernel_toff_value = self.kernel_toff_value * 1000
+		# 	self.kernel_toff_unit = 'us'
 		if ((self.kernel_type == 'pboo') or (self.kernel_type == 'ge')):
 			ton  = create_time_node('ton', self.kernel_ton_value, self.kernel_ton_unit)
 			toff = create_time_node('toff', self.kernel_toff_value, self.kernel_toff_unit)
