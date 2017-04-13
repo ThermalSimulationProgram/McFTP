@@ -69,6 +69,11 @@ void Task::fire() {
   cout << "Task::fire - This should not print!\n";
 }
 
+unsigned long Task::getWCET(int id){
+  cout << "Task::getWCET - This should not print!\n";
+  return 0;
+}
+
 int Task::getId(){
 	return jobId;
 }

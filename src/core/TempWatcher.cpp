@@ -23,7 +23,7 @@ using namespace std;
 
 
 #define _INFO 0
-#define _DEBUG 0
+#define _DEBUG 1
 
 
 

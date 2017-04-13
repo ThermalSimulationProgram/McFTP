@@ -90,14 +90,15 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 
 
 	// create Dispatchers
-	vector<_task_type> allTaskTypes = Scratch::getAllTaskTypes();
-	vector<_task_periodicity> allTaskPeriodicity = Scratch::getAllTaskPeriodicity();
+	// vector<_task_type> allTaskTypes = Scratch::getAllTaskTypes();
+	// vector<_task_periodicity> allTaskPeriodicity = Scratch::getAllTaskPeriodicity();
 	vector<TaskArgument> allTaskData =   Scratch::getTaskData();
-	for (int i = 0; i < (int) allTaskTypes.size(); ++i)
+	for (int i = 0; i < (int) allTaskData.size(); ++i)
 	{
-		switch (allTaskPeriodicity[i]){
+		switch (allTaskData[i]._periodicity){
 			case aperiodic:{
 				Aperiodic* aux = new Aperiodic(100+i);
+				aux->setTaskData(allTaskData[i]);
 				aux->setReleaseTime(allTaskData[i].release_time);
 				aux->setCMI(this);
 				dispatchers.push_back((Dispatcher*)aux);
@@ -105,6 +106,7 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 			}
 			case periodic:{
 				Periodic* aux = new Periodic(100+i);
+				aux->setTaskData(allTaskData[i]);
 				aux->setPeriod(allTaskData[i].period);
 				aux->setCMI(this);
 				dispatchers.push_back((Dispatcher*)aux);
@@ -112,6 +114,7 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 			}
 			case periodic_jitter:{
 				PeriodicJitter* aux = new PeriodicJitter(100+i);
+				aux->setTaskData(allTaskData[i]);
 				aux->setPeriod(allTaskData[i].period);
 				aux->setPeriod(allTaskData[i].jitter);
 				aux->setCMI(this);
@@ -121,7 +124,7 @@ CMI::CMI(string xml_path, int isAppendSaveFile):cpuUsageRecorder()
 
 		}
 		++thread_num;
-		dispatchers[i]->setTaskData(allTaskData[i]);
+		// dispatchers[i]->setTaskData(allTaskData[i]);
 
 		
 		
@@ -459,8 +462,10 @@ void CMI::finishedJob(Task* t){
 		ThermalApproachAPI::finishJob(t, this);
 	}else{
 		if (t->getType() == pipelined){
+			// cout << "CMI::finishedJob with wcet: " <<t->getWCET(0) << ". insert to next stage at time: "
+			// << getCurrentSimTime_ms() << endl;			
 			Pipelined* b = (Pipelined*)t;
-			insertJobToQueue(b->getNextCoreId(),t);
+			insertJobToQueue(b->getNextCoreId(), t);
 		}
 	}
 	

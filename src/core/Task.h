@@ -74,6 +74,8 @@ public:
 
   bool isFinished();
 
+  virtual unsigned long getWCET(int id) ;
+
 
 
 };

@@ -66,5 +66,7 @@ void UserDefinedLoad::coolTask(){
      fire_start = end;
  } while ( count < wcet_us); 
 
+ count = 0;
+
 }
 

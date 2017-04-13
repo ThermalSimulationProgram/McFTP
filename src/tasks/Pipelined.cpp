@@ -25,7 +25,7 @@ using namespace std;
 Pipelined::Pipelined(const vector<unsigned long>& _wcet, _task_load_type  load,
 int loadId, int taskid): Task(pipelined, load, loadId, taskid) {
   
-  coreFinished = vector<bool> (_wcet.size(), false);
+  // coreFinished = vector<bool> (_wcet.size(), false);
   
   wcet_us = _wcet;
   nextCoreId = 0;
@@ -55,4 +55,8 @@ void Pipelined::fire() {
 
 int Pipelined::getNextCoreId(){
   return nextCoreId;
+}
+
+unsigned long Pipelined::getWCET(int id){
+  return wcet_us[id];
 }

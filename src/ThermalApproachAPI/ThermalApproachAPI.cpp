@@ -23,6 +23,7 @@ vector<unsigned long> ThermalApproachAPI::toffs ;
 void ThermalApproachAPI::init(string __aproachname){
 	approachName = __aproachname;
 	tons = TimeUtil::convert_us(Scratch::getPBOOTons());
+	// cout << "ThermalApproachAPI::init: tons1 " << tons[0] << endl;
 	toffs = TimeUtil::convert_us(Scratch::getPBOOToffs());
 }
 
@@ -98,6 +99,6 @@ int ThermalApproachAPI::taskAllocator(Task *t, _task_type type, CMI* cmi){
 
 
 void ThermalApproachAPI::finishJob(Task* t, CMI* cmi){
-	// std::cout << "task with id: " << t->getId() << " finishes at time: "
+	// std::cout << "task with id: " << t->getTaskId() << " finishes at time: "
 	// << cmi->getCurrentSimTime_ms() << " millisecond!\n";	
 }

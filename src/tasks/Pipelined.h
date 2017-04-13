@@ -21,7 +21,7 @@ class Pipelined : public Task {
 
   std::vector<int> coreIds;
 
-  std::vector<bool> coreFinished;
+  // std::vector<bool> coreFinished;
 
   int nextCoreId;
 
@@ -42,6 +42,8 @@ class Pipelined : public Task {
   void fire();
 
   int getNextCoreId();
+
+  unsigned long getWCET(int id);
 };
 
 #endif
