@@ -28,7 +28,7 @@ for i in range(0, pboo_num):
 		toffs=[];
 		for j in range(0, config.stage_number):
 			tons.append(new_value)
-			toffs.append(0)
+			toffs.append(new_value/2)
 
 		config.kernel_ton_value = str(tons)
 		config.kernel_toff_value = str(toffs)
