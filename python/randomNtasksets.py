@@ -10,7 +10,7 @@ U = 0.5;
 task_num = 5;
 base = 30;
 
-periods_num = 0;
+periods_num = 70;
 test_num_for_each_period = 15;
 control = [1]
 # varying periods
@@ -20,7 +20,7 @@ for i in range(0, periods_num):
 	for x in xrange(0, test_num_for_each_period):
 		config.set_task_set(task_num, new_value, U)
 		config.set_xml_csv_file_prefix('random'+str(x));
-		config.run_all_kernels(control, 0)
+		config.run_all_kernels(control, 1)
 
 
 
@@ -34,7 +34,7 @@ task_num = 5;
 base = 30;
 
 period = 100;
-pboo_num = 70;
+pboo_num = 0;
 test_num_for_each_pboo = 15;
 control = [1]
 # varying periods
