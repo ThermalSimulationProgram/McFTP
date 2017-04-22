@@ -11,7 +11,7 @@
 #include "core/TaskArgument.h"
 #include "core/structdef.h"
 
-class CMI;
+class Processor;
 
 /***************************************
  *        CLASS DECLARATION            * 
@@ -29,8 +29,8 @@ class Dispatcher : public Thread {
   ///When this is set, the dispatcher will sleep for the specified time before beginning to dispatch
   struct timespec offset;
 
-  ///Pointer to the CMI associated to the dispatcher
-  CMI *cmi;
+  ///Pointer to the Processor associated to the dispatcher
+  Processor *processor;
 
   std::vector<Task*> allTasks;
 
@@ -39,9 +39,7 @@ class Dispatcher : public Thread {
   _task_type TASK_TYPE;
 
   TaskArgument taskdata;
-
-  // int ncores;
-    
+   
  public:
 
   /*********** CONSTRUCTOR ***********/
@@ -84,9 +82,11 @@ class Dispatcher : public Thread {
   void setTaskData(TaskArgument d);
 
   ///This function sets the associated CMI
-  void setCMI(CMI *c);
+  void setProcessor(Processor *c);
 
   Task* createNewTask();
+
+  int getTaskId();
 };
 
 #endif

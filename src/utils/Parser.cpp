@@ -148,14 +148,14 @@ TaskArgument Parser::parseTask(pugi::xml_node task, int taskid){
 	data._type = type;
 
 
-	xml_node attachedCores = task.child("attached_cores");
-	vector<int> attached_cores;
-	if(attachedCores){
-		attached_cores = stringToVector<int>(attachedCores.attribute("value").as_string());
-	}else{
-		attached_cores = vector<int>(1, 0);
-	}
-	data.attached_cores = attached_cores;
+	// xml_node attachedCores = task.child("attached_cores");
+	// vector<int> attached_cores;
+	// if(attachedCores){
+	// 	attached_cores = stringToVector<int>(attachedCores.attribute("value").as_string());
+	// }else{
+	// 	attached_cores = vector<int>(1, 0);
+	// }
+	// data.attached_cores = attached_cores;
 
 
 	vector<long int> wcets = parseTimeVectorMicro<long int>(task.child("wcets")); 

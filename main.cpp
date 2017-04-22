@@ -93,11 +93,11 @@ void runSimulation(int argc, char** argv){
 		file = new string("example.xml");
 	}
 
-	CMI *p = new CMI(*file, isAppendSaveFile);
+	CMI *p = new CMI(*file);
 	// cout << "begin initialize Pipeline\n";
-	p->initialize();
+	p->startRunning();
 
-	double temp = p->simulate();
+	// double temp = p->simulate();
 	// cout << temp << endl;
 	delete p;
 	delete file;

@@ -2,7 +2,7 @@ from Config import *
 
 import os
 
-os.system('sudo cpupower -c all frequency-set -g userspace')
+# os.system('sudo cpupower -c all frequency-set -g userspace')
 config = Config();
 
 
@@ -10,7 +10,7 @@ U = 0.5;
 task_num = 5;
 base = 30;
 
-periods_num = 70;
+periods_num = 30;
 test_num_for_each_period = 15;
 control = [1]
 # varying periods

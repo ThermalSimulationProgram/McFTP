@@ -1,14 +1,12 @@
 #ifndef TESTLIB_H
 #define TESTLIB_H 
 
-
-// #include "stress-ng.h"
 #include <complex.h>
 #include <cstdint>
 #include <string>
 
 
-#include "MWC.h"
+#include "benchmarks/MWC.h"
 
 #define OPT_FLAGS_NO_RAND_SEED	0x2000000000000ULL	/* --no-rand-seed */
 /* debug output bitmasks */
@@ -566,10 +564,14 @@ private:
 	int index;
 public:
 	CPUStressor();
+
 	void stressOnce();
-	void stressWithMethod(int index);
-	int getMethodNumber();
-	std::string getMethodName(int id);
+
+	void stressWithBenchmark(int index);
+
+	int getBenchmarkNumber();
+
+	std::string getBenchmarkName(int id);
 
 };
 

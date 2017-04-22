@@ -8,8 +8,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-
-#include "core/CMI.h"
+#include "core/Processor.h"
 #include "core/Worker.h"
 #include "configuration/Scratch.h"
 #include "pthread/Priorities.h"
@@ -45,20 +44,20 @@ workers(_workers){
 	// freqInterface.push_back("/home/long/McFTP/trunk/test/test3");
 	// freqInterface.push_back("/home/long/McFTP/trunk/test/test4");
 
-	// freqInterface.push_back("../test/test1");
-	// freqInterface.push_back("../test/test2");
-	// freqInterface.push_back("../test/test3");
-	// freqInterface.push_back("../test/test4");
+	freqInterface.push_back("../test/test1");
+	freqInterface.push_back("../test/test2");
+	freqInterface.push_back("../test/test3");
+	freqInterface.push_back("../test/test4");
 
 
 	isFixedFrequency = Scratch::isFixedFrequency();
 
 	isFixedActive = Scratch::isFixedActive();
 
-	freqInterface.push_back("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed");
-	freqInterface.push_back("/sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed");
-	freqInterface.push_back("/sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed");
-	freqInterface.push_back("/sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed");
+	// freqInterface.push_back("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed");
+	// freqInterface.push_back("/sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed");
+	// freqInterface.push_back("/sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed");
+	// freqInterface.push_back("/sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed");
 
 	
 	// for (int i = 0; i < (int) freqInterface.size(); ++i)
@@ -92,7 +91,7 @@ void PowerManager::wrapper(){
   	#endif
 
   	//Wait until the simulation is initialized
-  	sem_wait(&CMI::init_sem);
+  	sem_wait(&Processor::init_sem);
 	// while( !CMI::isInitialized() ){}
 	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();
@@ -101,7 +100,7 @@ void PowerManager::wrapper(){
   	#endif
 
 	///wait for the simulation start
-	sem_wait(&CMI::running_sem);
+	sem_wait(&Processor::running_sem);
 	// while(!CMI::isRunning()){}
 
   	#if _INFO == 1
@@ -113,7 +112,7 @@ void PowerManager::wrapper(){
 	// unsigned long time1 = 0, time2 = 0;
 	// unsigned long timein, timeout;
 	// unsigned long begin = TimeUtil::convert_ms(TimeUtil::getTime());
-	while(CMI::isRunning())
+	while(Processor::isRunning())
 	{
 		// wait until next action time, or new tables are given
 		sem_timedwait(&interrupt_sem, &nextActionTime);

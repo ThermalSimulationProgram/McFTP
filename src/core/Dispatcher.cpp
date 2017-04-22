@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-#include "core/CMI.h"
+#include "core/Processor.h"
 #include "core/Task.h"
 #include "configuration/Scratch.h"
 #include "pthread/Priorities.h"
@@ -27,9 +27,6 @@ using namespace std;
 ///Constructor needs  a disp_id and the type of the task associated with it
 Dispatcher::Dispatcher(unsigned int _id): 
 Thread(_id){
-  // #if _INFO == 1
-  // cout << "++New Dispatcher - " << _id << "\n";
-  // #endif
 
   thread_type = _dispatcher;
 
@@ -42,20 +39,15 @@ Thread(_id){
   offset.tv_sec = 0;
   offset.tv_nsec = 0;
 
+  processor = NULL;
 
-  cmi = NULL;
   allTasks.reserve(10000);
-
-  // ncores = taskdata.attached_cores.size();
-
-
 }
 
 Dispatcher::~Dispatcher(){
-  for (int i = 0; i < (int) allTasks.size(); ++i)
-  {
+  for (int i = 0; i < (int) allTasks.size(); ++i){
      delete allTasks[i];
-  }
+ }
 }
 
 /*********** INHERITED FUNCTIONS ***********/
@@ -76,27 +68,25 @@ void Dispatcher::wrapper() {
   #endif
 
   //Wait until the CMI is initialized
-  sem_wait(&CMI::init_sem);
-  // while( !CMI::isInitialized() );
+  sem_wait(&Processor::init_sem);
   
   #if _INFO == 1
   cout << "Disp: " << id << " begining execution \n";
   #endif
 
-  // while( !CMI::isRunning() );
-  sem_wait(&CMI::running_sem);
+  sem_wait(&Processor::running_sem);
 
   //if offset != 0, sleep before dispatching
   if(offset.tv_nsec != 0 || offset.tv_sec !=0) {
     nanosleep(&offset, &rem);
-  }
+}
 
 
-  Dispatcher* disp = (Dispatcher*)this;
-  disp->dispatch();
+Dispatcher* disp = (Dispatcher*)this;
+disp->dispatch();
 
   #if _INFO == 1
-  cout << "Dispatcher " << id << " exiting wrapper...\n";
+cout << "Dispatcher " << id << " exiting wrapper...\n";
   #endif
 }
 
@@ -116,18 +106,18 @@ Task* Dispatcher::createNewTask(){
         taskdata._load_type, taskdata.getLoadId(), taskdata.taskId);
       t = (Task*) newTask;
       break;
-    }
+  }
 
-    case singlecore:{
+  case singlecore:{
       SingleCore* newTask = new SingleCore(taskdata.wcets_us[0],
         taskdata._load_type, taskdata.getLoadId(), taskdata.taskId);
       t = (Task*) newTask;
       break;
-    }
-
   }
-  allTasks.push_back(t);
-  return t;
+
+}
+allTasks.push_back(t);
+return t;
 }
 
 ///This virtual function should be implemented by the subclasses
@@ -159,8 +149,8 @@ void Dispatcher::setTaskType(_task_type type){
 
 
 ///This function sets the worker
-void Dispatcher::setCMI(CMI *c) {
-  cmi = c;
+void Dispatcher::setProcessor(Processor *c) {
+  processor = c;
 }
 
 
@@ -169,4 +159,8 @@ void Dispatcher::setTaskData(TaskArgument d){
   setPeriodicity(taskdata._periodicity);
   setTaskLoadType(taskdata._load_type);
   setTaskType(taskdata._type);
+}
+
+int Dispatcher::getTaskId(){
+  return taskdata.taskId;
 }

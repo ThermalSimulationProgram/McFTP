@@ -9,20 +9,29 @@ TaskLoad::TaskLoad(){
 
 	wcet_us = 0;
 	
-	sleepLength.tv_sec = 0;
-    sleepLength.tv_nsec = 0;
+	sleepEnd.tv_sec = 0;
+    sleepEnd.tv_nsec = 0;
+
+    TASKLOADCOUNTER = 0;
+    TASKLOADSTOPCOUNTER = 0;
 }
 
 TaskLoad::~TaskLoad(){}
 
-void TaskLoad::runLoads(unsigned long wcet_us){
+void TaskLoad::LoadsInterface(unsigned long _wcet_us){
+	initCheckCounter();
+	runLoads(_wcet_us);
+}
+
+
+void TaskLoad::runLoads(unsigned long _wcet_us){
 
 	std::cout << "TaskLoad::runLoads: This should not print!\n";
 
 }
 
-void TaskLoad::suspend(const struct timespec& length){
-	sleepLength = length;
+void TaskLoad::suspend(const struct timespec& _sleepEndTime){
+	sleepEnd = _sleepEndTime;
 	sem_post(&suspend_sem);
 }
 

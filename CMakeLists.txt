@@ -8,7 +8,8 @@ SET( CMAKE_EXE_LINKER_FLAGS  "-pthread -lm" )
 
 aux_source_directory(. DIR_SRCS)
 
-add_subdirectory(./src/ThermalApproachAPI)
+add_subdirectory(./src/interfaces)
+add_subdirectory(./src/benchmarks)
 add_subdirectory(./src/UnitTest)
 add_subdirectory(./src/configuration)
 add_subdirectory(./src/core)
@@ -21,4 +22,5 @@ add_subdirectory(./src/utils)
 
 add_executable(demo main.cpp)
 
-target_link_libraries(demo UnitTest core ThermalApproachAPI configuration  dispatchers pthread results tasks taskloads utils)
+
+target_link_libraries(demo UnitTest core interfaces configuration  dispatchers pthread results tasks taskloads utils benchmarks)

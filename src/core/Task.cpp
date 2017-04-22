@@ -3,7 +3,8 @@
 #include <iostream>
 
 #include "taskloads/BusyWait.h"
-#include "ThermalApproachAPI/UserDefinedLoad.h"
+#include "taskloads/Benchmark.h"
+#include "interfaces/UserDefinedLoad.h"
 
 // #include "core/Worker.h"
 
@@ -34,7 +35,9 @@ Task::Task(_task_type type, _task_load_type  load, int loadId, int _taskId):task
     }
 
     case benchmark:{
-
+      Benchmark* newload = new Benchmark();
+      loads = (TaskLoad*) newload;
+      break;
     }
 
     case userdefined:{
@@ -85,6 +88,10 @@ int Task::getTaskId(){
 
 _task_type Task::getType(){
 	return task_type;
+}
+
+void Task::stop(){
+  loads->stop();
 }
 
 void Task::suspend(const struct timespec& length){

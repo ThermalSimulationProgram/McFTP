@@ -32,7 +32,7 @@ public:
 	static void 					setPBOOTons(std::vector<struct timespec>);
 	static void 					setPBOOToffs(std::vector<struct timespec>);
 
-
+	static void 					printAllTaskInfo();
 
 	static bool 					isFixedFrequency();
 	static bool 					isFixedActive();

@@ -8,57 +8,18 @@
 #include "utils/Enumerations.h"
 
 
-typedef struct pipeinfo
-{
-	std::vector<int>   Q;
-	std::vector<int> activeSet;
-	std::vector<int> sleepSet;
-	std::vector<double> ccs;
-	std::vector<double> dcs;
-	std::vector<double> rho;
-	std::vector<double> K;
-	std::vector<std::vector<double> > FIFOcurveData;
-	std::vector<double> allT;
-	unsigned adaptionIndex;
-} pipeinfo;
-
-void pipeinfo_print(const pipeinfo &);
-
-typedef struct ptmspec{
-	std::vector<double> tons;
-	std::vector<double> toffs;
-}ptmspec;
-
-
-typedef struct taskdata
-{	
-	int taskId;
-	struct timespec period;
-	struct timespec jitter;
-	struct timespec release_time;
-	std::string name;
-	std::string benchmark;
-	std::vector<int> attached_cores;
-	std::vector<struct timespec> wcets;
-	std::vector<unsigned long> wcets_us;
-}task_data;
-
-
-
-
 typedef struct{
-	int stageId;
-	int nFIFOJobs;
-	double executed;
+	int workerId;
+	int onGoJobId;
+	enum _task_type onGoJobType;
 	enum _worker_state state;
-	double sleepTime;
-	int onGoEventId;
-	std::vector<double> allEventAbsDeadlines;
-} WorkerInfo;
+	struct timespec latestExecuteTime; //When the core started to execute the latest job, unit microsecond, 0 means no job
+	struct timespec latestSleepTime; //the latest time when the core entered sleep state, unit microsecond, o means currently active
+} CoreInfo;
 
 
 typedef struct{
-	std::vector<WorkerInfo> workerinfos;
+	std::vector<CoreInfo> coreinfos;
 	std::vector<double> temperature;
 	double currentTime;
 	int numstages;

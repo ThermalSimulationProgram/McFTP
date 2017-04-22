@@ -8,12 +8,13 @@
 #define MWC_SEED_W		(521288629UL)
 #define NO_RAND_SEED	(0)
 
+// fast pseudo random number generator
+// Note it is NOT thread safe
 class MWC{
 	/* Fast random number generator state */
 private:
 	uint32_t w;
 	uint32_t z;
-	// sem_t mwc_sem;
 public:
 	MWC();
 	~MWC();

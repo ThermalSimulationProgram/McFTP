@@ -1,7 +1,7 @@
 
 <?xml version="1.0" ?>
 <experiment name="hotAndCoolTasks">
-	<duration unit="sec" value="5000"/>
+	<duration unit="sec" value="5"/>
 	<save_result value="True"/>
 	<processor core_number="4" fixed_active="False" fixed_frequency="False"/>
 	<tasks>

@@ -61,6 +61,10 @@ void Scratch::print(){
 	cout << "fixedActive \t= " << fixedActive << endl;
 	displayvector(TimeUtil::convert_us(PBOO_tons) , "PBOO_tons");
 	displayvector(TimeUtil::convert_us(PBOO_toffs), "PBOO_toffs");
+	printAllTaskInfo();
+}
+
+void Scratch::printAllTaskInfo(){
 	for (int i = 0; i < (int)all_task_data.size(); ++i)
 	{	
 		all_task_data[i].print();

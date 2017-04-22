@@ -15,7 +15,7 @@
 #include "utils/Operators.h"
 
 
-class CMI;
+class Processor;
 
 class Task;
 
@@ -29,26 +29,33 @@ protected:
 
 	struct timespec latestSleep;
 
+	struct timespec latestExecuteJob;
+
 	Task* current_job;
 
-	int job_counter;
+	Processor * processor;
 
-	CMI * cmi;
+	struct timespec sleepEnd;
+
 
 	///semaphore controls accessing state and latestSleep
 	sem_t state_sem;
 
-	struct timespec sleepEnd;
+	sem_t exetime_sem;
 
 	sem_t suspend_sem;
 
 	sem_t resume_sem;
+
+	sem_t job_sem;
 
 public:
 	Worker(int, int);
 	~Worker();
 
 	void join();
+
+	Task* stopCurrentJob();
 	
 	void activate();
 
@@ -57,8 +64,6 @@ public:
 	inline void setSuspendPoint(){
     if (sem_trywait(&suspend_sem) == 0)//successfully read a suspend singal, block the executing immediately
     {
-      // struct timespec now = TimeUtil::getTime();
-      // struct timespec sleepEnd = now + sleepLength;
       int resumeVal;
 
       // make sure the resume semaphore is cleared
@@ -67,11 +72,8 @@ public:
          sem_trywait(&resume_sem);
       }
       
-      
       // two exit conditions: reach the sleepEnd time, or recieves a resume_sem signal
       sem_timedwait(&resume_sem, &sleepEnd);
-      
-      
     }
 
   };
@@ -79,34 +81,25 @@ public:
 
 	void wrapper();
 
-	// void addJob(Task * t);
+	// lock current job. When the worker finishes current job, 
+	// it cannot load new job
+	void lockCurrentJob();
 
-	// void finishedJob();
+	// unlock the job queue
+	void unlockCurrentJob();
 
-	// // lock the job queue. When the worker finishes current job, 
-	// // it cannot load new job from the queue
-	// void lockQueue();
+	void setProcessor(Processor*);
 
-	// // unlock the job queue
-	// void unlockQueue();
+	void getCoreInfo(CoreInfo& cinfo);
 
-	// void setJobQueue(const JobQueue q);
+	struct timespec getLatestSleepTime();
 
-	void setCMI(CMI*);
-
-	void getAllInfo(double, WorkerInfo&);
-
-	unsigned long getExecuted();
-
-	std::vector<unsigned long> getAllAbsDeadline();
-
-	std::vector<double> getAllAbsDeadline_ms();
+	struct timespec getlatestExecuteJobTime();
 
 	bool isActive();
 
 	int getWorkerId();
 
-	int getJobCounter();
 
 };
 

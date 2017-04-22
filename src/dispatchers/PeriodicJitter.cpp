@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "core/CMI.h"
+#include "core/Processor.h"
 #include "core/Worker.h"
 #include "results/Statistics.h"
 #include "utils/Operators.h"
@@ -34,19 +34,19 @@ void PeriodicJitter::dispatch() {
   struct timespec newPeriod, rem;
   double random;
 
-  while (CMI::isRunning()) {
+  while (Processor::isRunning()) {
 
     // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
 
-    if(cmi != NULL) {
+    if(processor != NULL) {
       Task* t = createNewTask();
-      cmi->newJob(t, TASK_TYPE);
+      processor->newJob(t, TASK_TYPE);
     }
     else {
       cout << "Dispatcher error: worker is null!\n";
     }
 
-    if(CMI::isRunning()) {
+    if(Processor::isRunning()) {
       random = (1+(rand()%200))/100.0; //random in [1/100,2]
       newPeriod = period + jitter - random*jitter - deltaPeriod;
       //deltaPeriod keeps the timing to n*P+-jitter

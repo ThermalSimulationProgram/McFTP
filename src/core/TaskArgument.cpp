@@ -7,7 +7,7 @@
 
 using namespace std;
 
-TaskArgument::TaskArgument():name(),attached_cores(1,0){
+TaskArgument::TaskArgument():name(){
 	_periodicity = periodic;
 	_load_type = busywait;
 	_type = singlecore;
@@ -36,7 +36,6 @@ void TaskArgument::print(){
 	
 	cout << "benchmark id: " << benchmark_id << endl;
 	cout << "user defined load id: " << user_defined_load_id << endl;
-	displayvector(attached_cores, "attached_cores");
 	displayvector(wcets_us, "wcets_us");
 	displayvector(TimeUtil::convert_us(wcets), "wcets");
 }

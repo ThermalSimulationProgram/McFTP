@@ -1,6 +1,6 @@
 #include "dispatchers/Periodic.h"
 
-#include "core/CMI.h"
+#include "core/Processor.h"
 #include "core/Worker.h"
 #include "results/Statistics.h"
 #include "utils/Operators.h"
@@ -33,12 +33,12 @@ void Periodic::dispatch() {
   //     cout << "Inside Periodic::dispatch " << endl;// @t=" << TimeUtil::getTimeUSec() << "\n";
   //     cout << "period is: " << TimeUtil::convert_ms(period) << endl;
   // #endif
-  if (cmi == NULL){
+  if (processor == NULL){
       cout << "Dispatcher error: cmi is null!\n";
       return;
     }
       
-  while (CMI::isRunning()) {
+  while (Processor::isRunning()) {
 
     // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
 
@@ -47,13 +47,10 @@ void Periodic::dispatch() {
       cout << "Disp : " << id << " is registering a new job\n";// @t=" << TimeUtil::getTimeUSec() << "\n";
       #endif
       Task* t = createNewTask();
-      cmi->newJob(t, TASK_TYPE);
+      processor->newJob(t, TASK_TYPE);
     
 
       nanosleep(&period, &rem);
-    // if(CMI::isRunning()) {
-      
-    // }
   }
 
   #if _INFO == 1

@@ -6,9 +6,9 @@
 #include "utils/Semaphores.h"
 #include "configuration/Scratch.h"
 #include "configuration/Configuration.h"
-#include "core/CMI.h"
+#include "core/Processor.h"
 #include "core/structdef.h"
-#include "ThermalApproachAPI/ThermalApproachAPI.h"
+#include "interfaces/ThermalApproachAPI.h"
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
 
@@ -17,10 +17,10 @@ using namespace std;
 #define _INFO 0
 #define _DEBUG 0;
 
-ThermalApproach::ThermalApproach(unsigned _id, CMI * c, 
+ThermalApproach::ThermalApproach(unsigned _id, Processor * c, 
 	string _approachName): Thread(_id){
 	///  initialize member vairables
-	cmi          = c;
+	processor          = c;
 	thread_type  = _thermal_approach;
 	approachName = _approachName;
 	
@@ -30,6 +30,9 @@ ThermalApproach::ThermalApproach(unsigned _id, CMI * c,
 	timeExpense.reserve(1000);
 
 	
+	onlineApproach = NULL;	
+	offlineApproach = NULL;
+
 }
 
 ThermalApproach::~ThermalApproach()
@@ -62,11 +65,9 @@ void ThermalApproach::wrapper(){
 	cout << "ThermalApproach: " << id << " waiting for initialization\n";
 	Semaphores::print_sem.post_sem();
   	#endif
-
 	
   	//Wait until the simulation is initialized
-  	sem_wait(&CMI::init_sem);
-	// while( !CMI::isInitialized() );
+  	sem_wait(&Processor::init_sem);
 
   	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();
@@ -75,43 +76,37 @@ void ThermalApproach::wrapper(){
   	#endif
 
 	///wait for the simulation start
-	sem_wait(&CMI::running_sem);
-	isStatic = Scratch::isStaticApproach();
-	// while(!CMI::isRunning()){}
+	sem_wait(&Processor::running_sem);
 
-		#if _INFO == 1
+	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();
 	cout << "ThermalApproach: " << id << " begin execution \n";
 	Semaphores::print_sem.post_sem();
   	#endif
 
-  	bool isUpdate = true;
+  	
 
-	while(CMI::isRunning()){
+  	if (offlineApproach != NULL ){
+  		Configuration config;
+		offlineApproach(config);
+		processor->updateConfiguration(config);
+  	}
+
+	while(Processor::isRunning() && onlineApproach != NULL){
 
 		DynamicInfo d;
-		cmi->getDynamicInfo(d);
+		processor->getDynamicInfo(d);
 
 		struct timespec timein = TimeUtil::getTime();
-		Configuration config = ThermalApproachAPI::runThermalApproach(d);
+		Configuration config;
+		onlineApproach(d, config);
 		struct timespec timeout = TimeUtil::getTime();
-
-		if (isUpdate){
-			cmi->updateConfiguration(config);
-			if (isStatic){
-				isUpdate = false;
-			}
-		}
 		
-
+		processor->updateConfiguration(config);
+			
 		timeExpense.push_back(TimeUtil::convert_us(timeout - timein));
 
-	
-
 		nanosleep(&period, &rem);
-
-
-
 	}
 
 
@@ -124,8 +119,17 @@ void ThermalApproach::wrapper(){
 
 
 vector<double> ThermalApproach::getKernelTime(){
-
 	return timeExpense;
 }
 
+void ThermalApproach::setPeriod(unsigned long period_us){
+	period = TimeUtil::Micros(period_us);
+}
 
+void ThermalApproach::setOnlineApproach(online_thermal_approach newapproach){
+	onlineApproach = newapproach;
+}
+
+void ThermalApproach::setOfflineApproach(offline_thermal_approach newapproach){
+	offlineApproach = newapproach;
+}

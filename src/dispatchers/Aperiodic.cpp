@@ -2,11 +2,11 @@
 
 #include <iostream>
 
-#include "core/CMI.h"
+#include "core/Processor.h"
 #include "results/Statistics.h"
 #include "utils/Operators.h"
 #include "utils/TimeUtil.h"
-
+#include "configuration/Scratch.h"
 
 
 using namespace std;
@@ -37,19 +37,19 @@ void Aperiodic::dispatch() {
 
   // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
   
-  if(cmi != NULL) {
+  if(processor != NULL) {
     Task* t = createNewTask();
-    cmi->newJob(t, TASK_TYPE);
+    processor->newJob(t, TASK_TYPE);
   }
   else {
-    cout << "Dispatcher error: CMI is null!\n";
+    cout << "Dispatcher error: Processor is null!\n";
   }
   
   //wait until simulation is done to free worker
   do {
-    struct timespec aux = CMI::getSimTime() - releaseTime - offset;
+    struct timespec aux = TimeUtil::Micros(Scratch::getDuration()) - releaseTime - offset;
     nanosleep(&aux, &rem);
-  } while(CMI::isRunning());
+  } while(Processor::isRunning());
   
 
 }

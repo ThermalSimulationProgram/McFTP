@@ -1,4 +1,4 @@
-#include "benchmarks.h"
+#include "benchmarks/benchmarks.h"
 
 
 #include <math.h>
@@ -11,7 +11,6 @@
 #include <malloc.h>
 #endif
 
-#include "MWC.h"
 
 uint64_t opt_flags = PR_ERROR | PR_INFO | OPT_FLAGS_MMAP_MADVISE;
 
@@ -61,21 +60,6 @@ void double_put(const double a)
 }
 
 
-/*
- *  opt_cpu_load_slice:
- *	< 0   - number of iterations per busy slice
- *	= 0   - random duration between 0..0.5 seconds
- *	> 0   - milliseconds per busy slice
- */
-// static int32_t opt_cpu_load_slice = -64;
-// static int32_t opt_cpu_load = 100;
-// static const stress_cpu_stressor_info_t *opt_cpu_stressor;
-// static const stress_cpu_stressor_info_t cpu_methods[];
-
-/* Don't make this static to ensure dithering does not get optimised out */
-// uint8_t pixels[STRESS_CPU_DITHER_X][STRESS_CPU_DITHER_Y];
-
-
 static const uint32_t queens_solutions[] = {
 	0, 1, 0, 0, 2, 10, 4, 40, 92, 352, 724, 2680, 14200
 };
@@ -88,16 +72,9 @@ void stress_cpu_queens(const char *name)
 
 	for (int i = 0; i < 7; ++i)
 	{
-		queens_try(0, 0, 0, all);
-		// printf("%d %d\n", all, solutions);
+		queens_try(0, 0, 0, all);		
 		all = (all + all) + 1;
-		// uint64_put(solutions);
 	}
-	// 
-	
-	// if(all > 500){
-	// 	all = 1;
-	// }
 }
 
 
@@ -131,7 +108,6 @@ uint32_t queens_try(
 void HOT stress_cpu_sqrt(const char *name)
 {
 	int i;
-	//for (i = 0; i < 16384; i++) {
 	for (i = 0; i < 256; i++) {
 		uint64_t rnd = i * i + 123;
 		double r = sqrt((double)rnd) * sqrt((double)rnd);
@@ -144,13 +120,11 @@ void HOT stress_cpu_sqrt(const char *name)
 void stress_cpu_loop(const char *name)
 {
 	uint32_t i, i_sum = 0;
-	// const uint32_t sum = 134209536UL;
 
 	for (i = 0; i < 1500; i++) {
 		i_sum += i;
 		FORCE_DO_NOTHING();
 	}
-	// uint64_put(sum);
 }
 
 
@@ -158,7 +132,6 @@ void HOT OPTIMIZE3 stress_cpu_gcd(const char *name)
 {
 	uint32_t  i_sum = 0;
 	uint32_t i = 0;
-	// const uint32_t sum = 63000868UL;
 
 	for (i = 0; i < 512; i++) {
 		register uint32_t a = i, b = i % (3 + (1997 ^ i));
@@ -175,7 +148,6 @@ void HOT OPTIMIZE3 stress_cpu_gcd(const char *name)
 			i = 0;
 		}
 	}
-	// uint64_put(sum);
 }
 
 
@@ -188,7 +160,6 @@ void HOT OPTIMIZE3 stress_cpu_bitops(const char *name)
 {
 	uint32_t i_sum = 0;
 	uint32_t i = 0;
-	// const uint32_t sum = 0x8aadcaab;
 
 	for (i = 0; i < 128; i++) {
 		{
@@ -233,11 +204,7 @@ void HOT OPTIMIZE3 stress_cpu_bitops(const char *name)
 			i_sum += v;
 		}
 	}
-		// i++;
-		// if(i > 16384){
-		// 	i = 0;
-		// }
-	// uint64_put(sum);
+	
 }
 
 
@@ -329,9 +296,7 @@ void HOT OPTIMIZE3 stress_cpu_rand(const char *name)
 	int i;
 	uint32_t i_sum = 0;
 	MWC RND = MWC();
-	// const uint32_t sum = 0xc253698c;
 
-	// for (i = 0; i < 16384; i++)
 	for (i = 0; i < 16; i++){
 		i_sum += RND.mwc32();
 	}
@@ -351,7 +316,6 @@ void HOT OPTIMIZE3 stress_cpu_rand48(const char *name)
 	(void)name;
 
 	srand48(0x0defaced);
-	// for (i = 0; i < 16384; i++) {
 	for (i = 0; i < 256; i++) {
 		d += drand48();
 		l += lrand48();
@@ -370,7 +334,6 @@ void HOT OPTIMIZE3 stress_cpu_nsqrt(const char *name)
 	const long double precision = 1.0e-12;
 	const int max_iter = 56;
 
-	// for (i = 0; i < 16384; i++) 
 	for (i = 0; i < 10; i++) {
 		long double n = (double)i;
 		long double lo = (n < 1.0) ? n : 1.0;
@@ -399,8 +362,6 @@ void HOT OPTIMIZE3 stress_cpu_nsqrt(const char *name)
 void HOT OPTIMIZE3 stress_cpu_phi(const char *name)
 {
 	long double phi; /* Golden ratio */
-	// const long double precision = 1.0e-20;
-	// const long double phi_ = (1.0 + sqrtl(5.0)) / 2.0;
 	register uint64_t a, b;
 	const uint64_t mask = 1ULL << 63;
 	int i;
@@ -737,17 +698,6 @@ void HOT OPTIMIZE3 stress_cpu_idct(const char *name)
 			// idct[i][j] = 0.25 * sum;
 		}
 	}
-	// /* Final output should be a 8x8 matrix of values 255 */
-	// for (i = 0; i < sz; i++) {
-	// 	for (j = 0; j < sz; j++) {
-	// 		if (((int)idct[i][j] != 255) &&
-	// 		    (opt_flags & OPT_FLAGS_VERIFY)) {
-	// 			cout << " IDCT error detected " << endl;
-	// 		}
-	// 		if (!opt_do_run)
-	// 			return;
-	// 	}
-	// }
 }
 
 
@@ -1335,11 +1285,11 @@ CPUStressor::CPUStressor(){
 	index = 1;
 }
 
-int CPUStressor::getMethodNumber(){
+int CPUStressor::getBenchmarkNumber(){
 	return numberStressor;
 }
 
-std::string CPUStressor::getMethodName(int id){
+std::string CPUStressor::getBenchmarkName(int id){
 	std::string ret;
 	if (id < 0 || id > numberStressor){
 		return ret;
@@ -1357,7 +1307,7 @@ void CPUStressor::stressOnce(){
 }
 
 
-void CPUStressor::stressWithMethod(int index){
+void CPUStressor::stressWithBenchmark(int index){
 	const char* name = "";
 	methods[index].func(name);
 }

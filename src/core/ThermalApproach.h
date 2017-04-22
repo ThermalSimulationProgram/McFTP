@@ -8,11 +8,12 @@
 #include <semaphore.h>
 
 #include "pthread/Thread.h"
+#include "core/CMI.h"
 
 
 
 
-class CMI;
+class Processor;
 
 class ThermalApproach: public Thread
 {
@@ -21,16 +22,18 @@ protected:
 	/////////////////////////////////////////////
 	struct timespec period;
 	
-	CMI* cmi;
+	Processor* processor;
 
 	std::string approachName;
 
 	std::vector<double> timeExpense;
 
-	bool isStatic;
+	online_thermal_approach onlineApproach;
+
+	offline_thermal_approach offlineApproach;
 
 public:
-	ThermalApproach(unsigned _id, CMI *c, std::string name);
+	ThermalApproach(unsigned _id, Processor *c, std::string name);
 	
 	~ThermalApproach();
 
@@ -44,7 +47,11 @@ public:
 
 	std::vector<double> getKernelTime();
 
-	
+	void setPeriod(unsigned long period_us);
+
+	void setOnlineApproach(online_thermal_approach newapproach);
+
+	void setOfflineApproach(offline_thermal_approach newapproach);
 
 };
 

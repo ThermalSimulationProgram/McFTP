@@ -1,5 +1,5 @@
-#ifndef _CMI_H
-#define _CMI_H
+#ifndef CMI_H
+#define CMI_H 
 
 #include <vector>
 #include <string>
@@ -7,137 +7,104 @@
 
 
 #include "core/structdef.h"
-#include "results/CPUUsage.h"
-#include "utils/Enumerations.h"
-#include "configuration/JobQueue.h"
 #include "configuration/Configuration.h"
 
-class Worker;
-class Dispatcher;
-class ThermalApproach;
-class TempWatcher;
-class Task;
-class CPUUsage;
-class PowerManager;
 
+
+typedef void (* online_thermal_approach) (const DynamicInfo& p, Configuration& c);
+typedef void (* offline_thermal_approach) (Configuration& c);
+
+
+typedef struct {
+	const std::string  name;	// human readable form of approach function 
+	const online_thermal_approach func;	/* the thermal online function */
+} online_thermal_approach_info_t;
+
+typedef int (* online_task_allocator)(int _taskId);
+
+
+class Processor;
 
 class CMI{
-protected:
-	// This attribute indicates if the McFTP is initialized
-	static bool initialized;
+private:
+	int workerNumber;
 
-	// This attribute indicates if the McFTP is running
-	static bool running;
+	// pointer to the processor object, containing all necessary entities
+	Processor* processor;
 
-	// number of used cores, should be set in the xml file
-	int n_used;
+	// The offline approach will be called only once at the beginning of the experiment
+	offline_thermal_approach offlineApproach;
 
-	// number of cpu cores in the hardware platform
-	int n_cpus;
+	// collection of thermal approaches
+	std::vector<online_thermal_approach_info_t> onlineApproaches;
 
-	// This vector stores the cpu core ids corresponding to each core
-	std::vector<unsigned> worker_cpu;
+	// the used thermal approach, should be one element of onlineApproaches
+	online_thermal_approach validApproach;
 
-	// This vector stores pointers to workers. Each worker represents 
-	// a core.
-	std::vector<Worker*> workers;
+	// the index of validApproach in vector onlineApproaches
+	int onlineApproachId;
 
-	// Dispatchers release jobs to CMI
-	std::vector<Dispatcher*> dispatchers;
+	// function pointer to the function allocating new Jobs.
+	// The function will ba called every time a new job is created.
+	online_task_allocator taskAllocator;
 
-	// JobQueue allTaskQueue;
-	std::vector<JobQueue> allTaskQueues;
+	// This is the default task allocator
+	// syntax: staticTaskAllocator[TASKID] returns the id of the worker on which 
+	// the new created job whose taskid is TASKID.
+	// users can set it before running the experiment
+	std::vector<int> staticTaskAllocator;
 
-	std::vector<sem_t> taskqueue_sems;
-
-	std::vector<sem_t> jobnumber_sems;
-
-	// ThermalApproach manages the execution of the workers
-	ThermalApproach* thermal_approach;
-
-	// TempWatcher periodically reads the temperatures of the cpu cores and 
-	// records them
-	TempWatcher *tempwatcher;
-
-	// PowerManager controls the power dissipation of the cores according to
-	// StateTables given by thermal approaches
-	PowerManager * powermanager;
-
-	// auxiliary variable to set main thread priority
-	struct sched_param param;
-
-	// CPUUsage records cpu active and idle times, used to calculate cpu usage
-	CPUUsage cpuUsageRecorder;
-
-	int thread_num;
-	int _isAppendSaveFile;
 public:
 
-	static sem_t init_sem;
-	static sem_t running_sem;
-
-	// Constructor needs the xml file path
-	explicit CMI(std::string);
-
-	// Constructor needs the xml file path
-	explicit CMI(std::string, int);
+	CMI(std::string);
 
 	~CMI();
 
-	/************** Simulation interface functions ************/
-	// prepare for simulation, initialize statistics, dispatcher, scheduler
-	void initialize();
+	void setOfflineThermalApproach(offline_thermal_approach _approach);
 
-	// explicitly set the CPUs to which the workers are attached 
-	void setWorkerCPU(std::vector<unsigned>);
+	void addOnlineThermalApproach(std::string _name, online_thermal_approach _approach);
 
-	// Start the simulation, the duration is loaded from Scratch class
-	double simulate();
+	void setValidOnlineThermalApproach(std::string _name);
 
-	// join other threads, wait them to finish
-	void join_all();
+	void setOnlineThermalApproachPeriod(unsigned long period_us);
 
-	
-	/************** Simulation functions ************/
-	void updateConfiguration(const Configuration& c);
+	void setTaskRunningCore(int _taskId, int _coreId);
+
+	void setOnlineTaskAllocator(online_task_allocator _allocator);
+
+	std::vector<int> getAllTaskIds();
+
+	void startRunning();
+
+	void printAllTaskInfo();
+
+	unsigned long getRelativeTimeUsec();
 
 	// This function is called by the dispatcher to release a new job
-	void newJob(Task *, _task_type);
-
-	void insertJobToQueue(int queueId, Task*);
-
-	Task* tryLoadJob(int workerId);
-
-	void lockTaskQueues();
-
-	void tryLockTaskQueues();
-
-	void unlockTaskQueues();
+	int getNewJobTargetCore(Task *, _task_type);
 
 	// This function is called by the work 
 	void finishedJob(Task*);
 
-	// Interface function to get member 'initialized'
-	static bool isInitialized();
-
-	// Interface function to get member 'running'
-	static bool isRunning();
-
-	unsigned getNCPU();
-
-	// This function collects all the information of the pipeline
+	// This function collects all the information of the processor
 	// in the simulation
 	void getDynamicInfo(DynamicInfo& p);
 
-	void saveResults();
-
-	static struct timespec getSimTime();
-
 	unsigned long getCurrentSimTime_ms();
 
+	void lockAllJobs();
 
-
+	void unlockAllJobs();
 };
+
+
+
+
+
+
+
+
+
 
 
 

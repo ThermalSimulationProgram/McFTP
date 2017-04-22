@@ -60,6 +60,8 @@ public:
   ///This function performs one task 
   virtual void fire();
 
+  void stop();
+
   void setLoad(TaskLoad* l);
 
   void suspend(const struct timespec& length);

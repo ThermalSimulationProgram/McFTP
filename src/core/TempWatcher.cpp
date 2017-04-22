@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 
-#include "core/CMI.h"
+#include "core/Processor.h"
 #include "configuration/Scratch.h"
 #include "utils/vectormath.h"
 #include "pthread/Priorities.h"
@@ -23,7 +23,7 @@ using namespace std;
 
 
 #define _INFO 0
-#define _DEBUG 1
+#define _DEBUG 0
 
 
 
@@ -77,8 +77,7 @@ void TempWatcher::wrapper(){
 
 
   //Wait until the simulation is initialized
-  sem_wait(&CMI::init_sem);
-  // while( !CMI::isInitialized() ){}
+  sem_wait(&Processor::init_sem);
 
   #if _INFO == 1
   Semaphores::print_sem.wait_sem();
@@ -87,10 +86,10 @@ void TempWatcher::wrapper(){
   #endif
 
 	///wait for the simulation start
-  sem_wait(&CMI::running_sem);
-  // while(!CMI::isRunning()){}
+  sem_wait(&Processor::running_sem);
 
-  while(CMI::isRunning()){
+
+  while(Processor::isRunning()){
     sem_wait(&temp_sem);
     curTemp = get_cpu_temperature();
     sem_post(&temp_sem);
@@ -128,10 +127,17 @@ std::vector<double> TempWatcher::get_cpu_temperature(){
     int value;
     int TEMP_IDX_MAX = 4;
     
-    const char* n[] = {	"/sys/class/hwmon/hwmon1/temp2_input",
-    "/sys/class/hwmon/hwmon1/temp3_input",
-    "/sys/class/hwmon/hwmon1/temp4_input",
-    "/sys/class/hwmon/hwmon1/temp5_input"};
+    // const char* n[] = {	"/sys/class/hwmon/hwmon1/temp2_input",
+    // "/sys/class/hwmon/hwmon1/temp3_input",
+    // "/sys/class/hwmon/hwmon1/temp4_input",
+    // "/sys/class/hwmon/hwmon1/temp5_input"};
+
+    const char* n[] = { "/home/long/test/test1",
+    "/home/long/test/test2",
+    "/home/long/test/test3",
+    "/home/long/test/test4"};
+
+    
 
     int fd;
 
