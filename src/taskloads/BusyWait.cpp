@@ -15,13 +15,11 @@ BusyWait::BusyWait():TaskLoad(){
 BusyWait::~BusyWait(){}
 
 
-void BusyWait::runLoads(unsigned long _wcet_us){
+bool BusyWait::runLoads(unsigned long _wcet_us){
      initCheckCounter();
      unsigned long fire_start = TimeUtil::convert_us(TimeUtil::getTime());
      wcet_us = _wcet_us;
      MWC RND = MWC();
-
-
 
      do {
           setSuspendPoint(); // set a suspend point here. When recieves a suspend signal, pause execution here
@@ -44,7 +42,7 @@ void BusyWait::runLoads(unsigned long _wcet_us){
      } while ( count < wcet_us); 
 
      count = 0;
-
+     return true;
 }
 
 

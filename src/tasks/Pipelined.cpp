@@ -22,7 +22,9 @@ using namespace std;
 
 ///The constructor requires a pointer to the simulation, its own dispatcher, and the WCET
 Pipelined::Pipelined(const vector<unsigned long>& _wcet, _task_load_type  load,
-int loadId, int taskid): Task(pipelined, load, loadId, taskid) {
+int loadId, int taskid, int _JobId, 
+struct timespec _relativeDeadline): 
+Task(pipelined, load, loadId, taskid, _JobId, _relativeDeadline) {
   
   // coreFinished = vector<bool> (_wcet.size(), false);
   
@@ -37,11 +39,11 @@ Pipelined::~Pipelined(){
 
 /**** FROM TASK ****/
 
-void Pipelined::fire() {
+bool Pipelined::fire() {
   
   int current_core_id = worker->getId();
   
-  loads->runLoads(wcet_us[current_core_id]);
+  bool isfinished = loads->runLoads(wcet_us[current_core_id]);
 
   if (current_core_id == (int)wcet_us.size()-1){
     finished = true;
@@ -49,6 +51,8 @@ void Pipelined::fire() {
   }else{
     nextCoreId++;
   }
+
+  return isfinished;
 }
 
 

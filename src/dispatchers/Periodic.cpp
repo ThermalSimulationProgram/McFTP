@@ -21,6 +21,8 @@ using namespace std;
 
 Periodic::Periodic(unsigned int id) : Dispatcher(id) {
   period =  TimeUtil::Millis(20);
+  sem_init(&dispatch_sem, 0, 0);
+
 }
 
 /*********** INHERITED FUNCTIONS ***********/
@@ -29,6 +31,9 @@ Periodic::Periodic(unsigned int id) : Dispatcher(id) {
 
 void Periodic::dispatch() {
   struct timespec rem;
+  
+
+
   // #if _INFO==1
   //     cout << "Inside Periodic::dispatch " << endl;// @t=" << TimeUtil::getTimeUSec() << "\n";
   //     cout << "period is: " << TimeUtil::convert_ms(period) << endl;
@@ -37,7 +42,8 @@ void Periodic::dispatch() {
       cout << "Dispatcher error: cmi is null!\n";
       return;
     }
-      
+  struct timespec now = TimeUtil::getTime();
+
   while (Processor::isRunning()) {
 
     // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
@@ -49,8 +55,10 @@ void Periodic::dispatch() {
       Task* t = createNewTask();
       processor->newJob(t, TASK_TYPE);
     
-
-      nanosleep(&period, &rem);
+      rem = now + period;
+      sem_timedwait(&dispatch_sem, &rem);
+      now = rem;
+      // nanosleep(&period, &rem);
   }
 
   #if _INFO == 1

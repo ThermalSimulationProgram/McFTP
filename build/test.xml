@@ -1,15 +1,24 @@
+<?xml version="1.0" ?>
 <experiment name="test">
-
-   <duration value="2" unit="sec"/>
-
-   <processor core_number="2"/>
-
-   <tasks>
-      <task1 name = "ptask" type="busy_wait" periodicity = "periodic">
-         <period value = "100" unit="ms"/>
-         <wcets value = "{40, 40}" unit = "ms"/>
-         <attached_cores value = "{0, 1}"/>
-      </task1>
-   </tasks>
-
+	<duration unit="sec" value="10"/>
+	<save_result value="True"/>
+	<processor core_number="3" fixed_active="False" fixed_frequency="False"/>
+	<tasks>
+		<task0 load_type="busy_wait" name="task0" periodicity="periodic" type="pipelined">
+			<period unit="ms" value="100"/>
+			<wcets unit="ms" value="[60, 60, 60]"/>
+			<attached_core value="0"/>
+		</task0>
+		<task1 load_type="busy_wait" name="task1" periodicity="periodic" type="pipelined">
+			<period unit="ms" value="100"/>
+			<wcets unit="ms" value="[50, 50, 50]"/>
+			<attached_core value="0"/>
+		</task1>
+	</tasks>
+	<thermal_approach>
+		<kernel type="PBOO">
+			<ton unit="ms" value="{100, 100, 100}"/>
+			<toff unit="ms" value="{50, 50, 50}"/>
+		</kernel>
+	</thermal_approach>
 </experiment>

@@ -67,6 +67,7 @@ workers(_workers){
 }
 
 void PowerManager::join(){
+	sem_post(&interrupt_sem); 
 	join2();
 }
 

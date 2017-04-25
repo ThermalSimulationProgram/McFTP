@@ -12,7 +12,7 @@
     ++TASKLOADCOUNTER;                  \
 	if(sem_trywait(&stop_sem) == 0){ 	\
 		TASKLOADSTOPCOUNTER = TASKLOADSTOPCOUNTER>TASKLOADCOUNTER? TASKLOADSTOPCOUNTER: TASKLOADCOUNTER; \
-        return;							\
+        return false;							\
 	}                                      \
     if (TASKLOADCOUNTER >= TASKLOADSTOPCOUNTER){ \
 
@@ -42,15 +42,17 @@ protected:
 
     unsigned long TASKLOADSTOPCOUNTER;
 
+    // bool isInterrupted;
+
 public:
 
 	TaskLoad();
 
 	virtual ~TaskLoad();
 
-    void LoadsInterface(unsigned long _wcet_us);
+    bool LoadsInterface(unsigned long _wcet_us);
 
-	virtual void runLoads(unsigned long _wcet_us);
+	virtual bool runLoads(unsigned long _wcet_us);
 
 	inline void setSuspendPoint(){
     	if (sem_trywait(&suspend_sem) == 0)//successfully read a suspend singal, go to sleep immediately

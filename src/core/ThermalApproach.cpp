@@ -5,7 +5,7 @@
 #include "pthread/Priorities.h"
 #include "utils/Semaphores.h"
 #include "configuration/Scratch.h"
-#include "configuration/Configuration.h"
+#include "configuration/StateTable.h"
 #include "core/Processor.h"
 #include "core/structdef.h"
 #include "utils/TimeUtil.h"
@@ -14,7 +14,7 @@
 
 using namespace std;
 
-#define _INFO 0
+#define _INFO 1
 #define _DEBUG 0;
 
 ThermalApproach::ThermalApproach(CMI* _cmi, unsigned _id, Processor * c, 
@@ -60,6 +60,8 @@ void ThermalApproach::wrapper(){
 	cout << "ThermalApproach: " << id << " waiting for initialization\n";
 	Semaphores::print_sem.post_sem();
   	#endif
+
+  	cout << "ThermalApproach: period: " << TimeUtil::convert_us(period) << " us"<<endl; 
 	
   	//Wait until the simulation is initialized
   	sem_wait(&Processor::init_sem);

@@ -21,27 +21,34 @@
 
 
 class Task {
-private:
-	static long jobCounter;
- 
+
 protected:
  
   /*********** VARIABLES ***********/
   
-  ///Varible describing the task's type of load (busywait, benchmarks, userdefined)
+  ///Varible describing the type of task (pipelined, singlecore)
   _task_type task_type;
+  ///Varible describing the task's type of load (busywait, benchmarks, userdefined)
   _task_load_type task_load_type;
 
-  //The index of this kind of task
+  // The index of this kind of task
   int taskId;
+  // The index of this entity of the task
+  int jobId;
+
+  struct timespec releaseTime;
+
+  struct timespec relativeDeadline;
+
+  struct timespec absoluteDeadline;
 
   // the worker which is currently running this task
   Worker* worker;
 
-  int jobId;
-
+  // task load
   TaskLoad* loads;
 
+  // variable indicating whether this job has finished
   bool finished;
 
 public:
@@ -49,7 +56,8 @@ public:
   /*********** CONSTRUCTOR ***********/
   
   ///Constructor needs its load type
-  Task(_task_type type, _task_load_type  load, int loadId, int _taskId);
+  Task(_task_type type, _task_load_type  load, int loadId, int _taskId,  
+    int JobId, struct timespec _relativeDeadline);
 
   virtual ~Task();
 
@@ -58,7 +66,7 @@ public:
   void setWorker(Worker* w);
 
   ///This function performs one task 
-  virtual void fire();
+  virtual bool fire();
 
   void stop();
 
@@ -75,6 +83,8 @@ public:
   int getTaskId();
 
   bool isFinished();
+
+  int getFinishCoreId();
 
   virtual unsigned long getWCET(int id) ;
 

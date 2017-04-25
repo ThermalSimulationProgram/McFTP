@@ -49,6 +49,8 @@ protected:
 
 	sem_t job_sem;
 
+	sem_t stop_sem;
+
 public:
 	Worker(int, int);
 	~Worker();

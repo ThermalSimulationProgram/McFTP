@@ -5,11 +5,8 @@
 #include "taskloads/BusyWait.h"
 #include "taskloads/Benchmark.h"
 #include "interfaces/UserDefinedLoad.h"
-
-// #include "core/Worker.h"
-
-
-long Task::jobCounter = 0;
+#include "utils/TimeUtil.h"
+#include "utils/Operators.h"
 
 using namespace std;
 
@@ -19,35 +16,40 @@ using namespace std;
 
 /*********** CONSTRUCTOR ***********/
 
-Task::Task(_task_type type, _task_load_type  load, int loadId, int _taskId):taskId(_taskId) {
-  task_load_type = load;
-  task_type = type;
-  jobId = jobCounter;
-  jobCounter++;
-  worker = NULL;
-  finished = false;
+Task::Task(_task_type type, _task_load_type  load, int loadId, int _taskId,
+  int _JobId, struct timespec _relativeDeadline) {
+  
+	task_type = type;
+  	task_load_type = load;
+  	taskId = _taskId;
+  	jobId = _JobId;
+  	
+  	releaseTime = TimeUtil::getTime();
+  	relativeDeadline = _relativeDeadline;
+  	absoluteDeadline = releaseTime + relativeDeadline;
 
-  switch (task_load_type){
-    case busywait:{
-      BusyWait* newload = new BusyWait();
-      loads = (TaskLoad*) newload;
-      break;
-    }
+  	worker = NULL;
+ 	finished = false;
 
-    case benchmark:{
-      Benchmark* newload = new Benchmark();
-      loads = (TaskLoad*) newload;
-      break;
-    }
+  	switch (task_load_type){
+  		case busywait:{
+  			BusyWait* newload = new BusyWait();
+  			loads = (TaskLoad*) newload;
+  			break;
+  		}
 
-    case userdefined:{
-      UserDefinedLoad* newload = new UserDefinedLoad(loadId);
-      loads = (TaskLoad*) newload;
-      break;
-    }
+  		case benchmark:{
+  			Benchmark* newload = new Benchmark();
+  			loads = (TaskLoad*) newload;
+  			break;
+  		}
 
-
-  }
+  		case userdefined:{
+  			UserDefinedLoad* newload = new UserDefinedLoad(loadId);
+  			loads = (TaskLoad*) newload;
+  			break;
+  		}
+}
 
 
 }
@@ -68,8 +70,9 @@ void Task::setLoad(TaskLoad* l){
 
 
 ///This function performs one task
-void Task::fire() {
+bool Task::fire() {
   cout << "Task::fire - This should not print!\n";
+  return false;
 }
 
 unsigned long Task::getWCET(int id){
@@ -108,4 +111,7 @@ bool Task::isFinished(){
   return finished;
 }
 
+int Task::getFinishCoreId(){
+  return worker->getId();
+}
 

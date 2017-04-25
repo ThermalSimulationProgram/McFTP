@@ -61,7 +61,7 @@ void testJobQueue(){
 
 	for (int i = 0; i < n; ++i)
 	{
-		Task* aux = new Task(singlecore, busywait, 1, 9);
+		Task* aux = new Task(singlecore, busywait, 1, 9, i, TimeUtil::Micros(100000));
 		tasks.push_back(aux);
 		j1.insertJob(aux);
 
@@ -108,7 +108,7 @@ void testJobQueue(){
 
 
 
-	Task* aux = new Task(singlecore, busywait, 1, 9);
+	Task* aux = new Task(singlecore, busywait, 1, 9, n+1, TimeUtil::Micros(100000));
 
 	cout << j1.getSize() << endl;
 
@@ -123,7 +123,7 @@ void testJobQueue(){
 
 	j1.insertJobAt(0, aux);
 
-	Task* aux2 = new Task(singlecore, busywait, 1, 9);
+	Task* aux2 = new Task(singlecore, busywait, 1, 9, n+2, TimeUtil::Micros(100000));
 
 	j1.insertJobAt(32, aux2);
 

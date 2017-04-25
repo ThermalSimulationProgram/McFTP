@@ -32,6 +32,7 @@ Worker::Worker(int _workerId, int _id) : Thread(_id){
 	sem_init(&suspend_sem, 0, 0);
 	sem_init(&resume_sem, 0, 0);
 	sem_init(&exetime_sem, 0, 1);
+	sem_init(&stop_sem, 0, 0);
 
 
 	latestSleep = TimeUtil::Millis(0);
@@ -76,8 +77,11 @@ Task * Worker::stopCurrentJob(){
 	Task * ret = NULL;
 	sem_wait(&job_sem);
 	if (current_job != NULL){
-		current_job->resume();
+		current_job->stop();
 		ret = current_job;
+		// wait the worker exits calling task->fire()
+		sem_wait(&stop_sem);
+		current_job = NULL;
 	}
 	sem_post(&job_sem);
 	return ret;
@@ -164,15 +168,25 @@ void Worker::wrapper(){
 	cout << "Worker: " << id << " begining execution \n";
 	Semaphores::print_sem.post_sem();
   	#endif
+
+  	Task* aux;
 	
 	while(Processor::isRunning())
 	{
-		setSuspendPoint();
+		// setSuspendPoint();
 
 		if (current_job == NULL){
+			
+			aux = processor->tryLoadJob(workerId);
+			int value;
+			sem_getvalue(&stop_sem, &value);
+			for (int i = 0; i < value; ++i){
+				sem_trywait(&stop_sem);
+			}
+
 			sem_wait(&job_sem);
-			current_job = processor->tryLoadJob(workerId);
-			sem_post(&job_sem);
+			current_job = aux;
+			sem_post(&job_sem);			
 		}else{
 			current_job->setWorker(this);
 			
@@ -180,9 +194,13 @@ void Worker::wrapper(){
 			latestExecuteJob = TimeUtil::getTime();
 			sem_post(&exetime_sem);
 
-			current_job->fire();			
-			processor->finishedJob(current_job);
-
+			bool isFinished = current_job->fire();	
+			if (isFinished){
+				processor->finishedJob(current_job);
+			}else{
+				sem_post(&stop_sem);
+			}		
+			
 			sem_wait(&job_sem);
 			current_job = NULL;
 			sem_post(&job_sem);
@@ -204,7 +222,7 @@ struct timespec Worker::getLatestSleepTime(){
 	struct timespec ret;
 	sem_wait(&state_sem);
 	ret = latestSleep;
-	sem_wait(&state_sem);
+	sem_post(&state_sem);
 	return ret;
 }
 
@@ -212,7 +230,7 @@ struct timespec Worker::getlatestExecuteJobTime(){
 	struct timespec ret;
 	sem_wait(&exetime_sem);
 	ret = latestExecuteJob;
-	sem_wait(&exetime_sem);
+	sem_post(&exetime_sem);
 	return ret;
 }
 

@@ -16,9 +16,9 @@ class CMI;
 
 typedef void (* online_thermal_approach) (CMI* cmi, const DynamicInfo& p, std::vector<StateTable>& c);
 
-typedef void (* offline_thermal_approach) (std::vector<StateTable>& c);
+typedef void (* offline_thermal_approach) (CMI* cmi, std::vector<StateTable>& c);
 
-typedef int (* online_task_allocator)(int _taskId);
+typedef int (* online_task_allocator)(CMI* cmi, int _taskId);
 
 
 class Processor;
@@ -46,7 +46,7 @@ private:
 	// users can set it before running the experiment
 	std::vector<int> staticTaskAllocator;
 
-	//
+	// semaphore to control the access to staticTaskAllocator
 	sem_t task_allocator_sem;
 protected:
 
@@ -131,6 +131,11 @@ public:
 
 	// Get the current time relative to the start of experiment in unit Microsecond
 	unsigned long getRelativeTimeUsec();
+
+	// Get the number of used cores
+	int getCoreNumber();
+
+	void displayAllQueues();
 
 	/*********Basic Functions Automatically Called During Experiment********/
 

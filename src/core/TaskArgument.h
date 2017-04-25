@@ -14,8 +14,12 @@ public:
 	_task_periodicity _periodicity;
 	_task_load_type _load_type;
 	_task_type _type;
+
 	int taskId;
+
 	std::string name;
+
+	int default_coreId;
 
 
 	// parameters specifying the periodicity, 
@@ -28,6 +32,8 @@ public:
 
 	int benchmark_id;
 
+
+	struct timespec relativeDeadline;
 	std::vector<struct timespec> wcets;
 	std::vector<unsigned long> wcets_us;
 

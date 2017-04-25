@@ -16,14 +16,15 @@
 using namespace std;
 
 
-SingleCore::SingleCore(unsigned long _wcet_us, _task_load_type  load, int loadId, int taskid):
-Task(singlecore, load, loadId, taskid){
+SingleCore::SingleCore(unsigned long _wcet_us, _task_load_type  load, int loadId, 
+	int taskid, int _JobId, struct timespec _relativeDeadline):
+Task(singlecore, load, loadId, taskid, _JobId, _relativeDeadline){
 	wcet_us = _wcet_us;
 
 }
 
 
-void SingleCore::fire(){
-	 loads->runLoads(wcet_us);
-	 finished = true;
+bool SingleCore::fire(){
+	 finished = loads->runLoads(wcet_us);
+	 return finished;
 }

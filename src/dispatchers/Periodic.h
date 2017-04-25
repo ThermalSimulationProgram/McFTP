@@ -2,7 +2,7 @@
 #define _PERIODIC_H
 
 #include "core/Dispatcher.h"
-
+#include <semaphore.h>
 /***************************************
  *        CLASS DECLARATION            * 
  ***************************************/
@@ -15,6 +15,8 @@ class Periodic : public Dispatcher {
 
   ///This timespec hols the Dispatcher's period
   struct timespec period;
+
+  sem_t dispatch_sem;
 
  public:
 

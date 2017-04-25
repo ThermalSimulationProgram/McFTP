@@ -30,7 +30,8 @@ class Pipelined : public Task {
   /*********** CONSTRUCTOR ***********/
 
   ///The constructor requires a pointer
-  Pipelined(const std::vector<unsigned long>& wcet, _task_load_type  load, int loadId, int taskid);
+  Pipelined(const std::vector<unsigned long>& wcet, _task_load_type  load, int loadId, int taskid,
+    int _JobId, struct timespec _relativeDeadline);
 
   ~Pipelined();
 
@@ -39,7 +40,7 @@ class Pipelined : public Task {
   /**** FROM TASK ****/
   
   //This function will perform one task with execution time WCET
-  void fire();
+  bool fire();
 
   int getNextCoreId();
 

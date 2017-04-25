@@ -217,12 +217,12 @@ int JobQueue::getSize() {
 
 
 void JobQueue::print(){
-	cout << "=========BEGIN OF PRINT JOBQUEUE============"<< endl;
+	// cout << "=========BEGIN OF PRINT JOBQUEUE============"<< endl;
 	sem_wait(&queue_sem);
 	if( taskPointers.size() > 0) {
 		for (std::list<Task*>::iterator it = taskPointers.begin(); it != taskPointers.end(); it++)
 		{
-			cout << "JobQueue::print: task with id: "<< (*it)->getId() << ". Pointer: " << *it << endl;
+			cout << "[Task: "<< (*it)->getTaskId() << " Job: " <<  (*it)->getId() << "] " ;
 		}
 	}
   // there is nothing to do
@@ -230,5 +230,5 @@ void JobQueue::print(){
 		cout << "JobQueue::print: empty queue" << endl;
 	}
 	sem_post(&queue_sem);
-	cout << "=========END OF PRINT JOBQUEUE============"<< endl;
+	// cout << "=========END OF PRINT JOBQUEUE============"<< endl;
 }

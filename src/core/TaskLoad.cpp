@@ -14,20 +14,23 @@ TaskLoad::TaskLoad(){
 
     TASKLOADCOUNTER = 0;
     TASKLOADSTOPCOUNTER = 0;
+
+    // isInterrupted = false;
 }
 
 TaskLoad::~TaskLoad(){}
 
-void TaskLoad::LoadsInterface(unsigned long _wcet_us){
+bool TaskLoad::LoadsInterface(unsigned long _wcet_us){
 	initCheckCounter();
 	runLoads(_wcet_us);
+	return true;
 }
 
 
-void TaskLoad::runLoads(unsigned long _wcet_us){
+bool TaskLoad::runLoads(unsigned long _wcet_us){
 
 	std::cout << "TaskLoad::runLoads: This should not print!\n";
-
+	return false;
 }
 
 void TaskLoad::suspend(const struct timespec& _sleepEndTime){

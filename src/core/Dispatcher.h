@@ -39,6 +39,8 @@ class Dispatcher : public Thread {
   _task_type TASK_TYPE;
 
   TaskArgument taskdata;
+
+  int jobCounter;
    
  public:
 

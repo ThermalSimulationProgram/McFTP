@@ -17,7 +17,7 @@ public:
 
 	// void setWCET();
 
-	void runLoads(unsigned long _wcet_us);
+	bool runLoads(unsigned long _wcet_us);
 
 };
 

@@ -38,8 +38,17 @@ CMI::CMI(string xml_path){
 	workerNumber = processor->getWorkerNumber();
 	// The workers are indexed from 0 to workerNumber-1
 	int workerId = 0; //
-	for (int i = 0; i < (int) allTaskIds.size(); ++i){		
-		staticTaskAllocator[allTaskIds[i]] = workerId;
+	vector<TaskArgument> xmlTaskData = Scratch::getTaskData();
+
+	for (int i = 0; i < (int) allTaskIds.size(); ++i){
+		// invalid value or user does not give the core id in xml
+		if (xmlTaskData[i].default_coreId < 0 || 
+			xmlTaskData[i].default_coreId >= workerNumber){
+			staticTaskAllocator[allTaskIds[i]] = workerId;
+		}else{ // valid value
+			staticTaskAllocator[allTaskIds[i]] = xmlTaskData[i].default_coreId;
+		}		
+		
 		++workerId;
 		if ( workerId >= workerNumber){
 			// switch back to the first worker
@@ -212,7 +221,23 @@ unsigned long CMI::getRelativeTimeUsec(){
 	
 }
 
+// Get the number of used cores
+int CMI::getCoreNumber(){
+	return workerNumber;
+}
 
+void CMI::displayAllQueues(){
+	for (int i = 0; i < workerNumber; ++i)
+	{
+		JobQueue* p = processor->getJobQueuePointer(i);
+		if (p!= NULL){
+			cout << "JobQueue: " << i << "    ";
+			p->print();
+			cout << endl << "****************************************" << endl;
+		}
+		
+	}
+}
 
 /*********Basic Functions Automatically Called During Experiment********/
 
@@ -226,7 +251,7 @@ int CMI::getNewJobTargetCore(Task * t, _task_type type){
 
 		return ret;
 	}else{
-		int coreId = taskAllocator(t->getTaskId());
+		int coreId = taskAllocator(this, t->getTaskId());
 		if (coreId < 0 || coreId >= workerNumber){
 			cout << "CMI::getNewJobTargetCore: Given dynamic task allocator returns an invalid core index. "
 			<< "Modify it to 0! " << endl;
@@ -241,7 +266,8 @@ int CMI::getNewJobTargetCore(Task * t, _task_type type){
 // You can modify this function to customize the action
 void CMI::finishedJob(Task* _task){
 	cout << "Task with taskid: " << _task->getTaskId() << " with job id "
-		<< _task->getId() << " finishes at time: " << getRelativeTimeUsec() << endl;
+		<< _task->getId() << " finishes at time: " << getRelativeTimeUsec()/1000
+		<< " on core with id: " << _task->getFinishCoreId() << endl;
 }	
 
 // Below functions are called by the thermal approach thread 
@@ -257,7 +283,7 @@ bool CMI::isOnlineApproach(){
 // run the offline approach, called by the thermal approach thread
 void CMI::runOfflineApproach(std::vector<StateTable>& statetables){
 	if (offlineApproach != NULL){
-		offlineApproach(statetables);
+		offlineApproach(this, statetables);
 	}
 }
 
@@ -279,3 +305,4 @@ bool CMI::checkCoreId(int id){
 void CMI::printAllTaskInfo(){
 	Scratch::printAllTaskInfo();
 }
+
