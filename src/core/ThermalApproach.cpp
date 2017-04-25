@@ -8,17 +8,18 @@
 #include "configuration/Configuration.h"
 #include "core/Processor.h"
 #include "core/structdef.h"
-#include "interfaces/ThermalApproachAPI.h"
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
+
 
 using namespace std;
 
 #define _INFO 0
 #define _DEBUG 0;
 
-ThermalApproach::ThermalApproach(unsigned _id, Processor * c, 
+ThermalApproach::ThermalApproach(CMI* _cmi, unsigned _id, Processor * c, 
 	string _approachName): Thread(_id){
+	cmi = _cmi;
 	///  initialize member vairables
 	processor          = c;
 	thread_type  = _thermal_approach;
@@ -28,11 +29,6 @@ ThermalApproach::ThermalApproach(unsigned _id, Processor * c,
 	period = TimeUtil::Micros(Scratch::getAdaptionPeriod());
 
 	timeExpense.reserve(1000);
-
-	
-	onlineApproach = NULL;	
-	offlineApproach = NULL;
-
 }
 
 ThermalApproach::~ThermalApproach()
@@ -42,7 +38,6 @@ ThermalApproach::~ThermalApproach()
 
  
 void ThermalApproach::init(){
-	ThermalApproachAPI::init(approachName);
 	// all initialized, post the semaphore to signal main thread scheduler is ready
 	Semaphores::rtcinit_sem.post_sem();
 }
@@ -85,24 +80,21 @@ void ThermalApproach::wrapper(){
   	#endif
 
   	
+	vector<StateTable> stables;
+	cmi->runOfflineApproach(stables);
+	processor->updateStateTables(stables);
+  
+	while(Processor::isRunning() && cmi->isOnlineApproach()){
 
-  	if (offlineApproach != NULL ){
-  		Configuration config;
-		offlineApproach(config);
-		processor->updateConfiguration(config);
-  	}
-
-	while(Processor::isRunning() && onlineApproach != NULL){
-
-		DynamicInfo d;
-		processor->getDynamicInfo(d);
+		DynamicInfo dinfo;
+		processor->getDynamicInfo(dinfo);
 
 		struct timespec timein = TimeUtil::getTime();
-		Configuration config;
-		onlineApproach(d, config);
+		vector<StateTable> stables;
+		cmi->runOnlineApproach(dinfo, stables);
 		struct timespec timeout = TimeUtil::getTime();
 		
-		processor->updateConfiguration(config);
+		processor->updateStateTables(stables);
 			
 		timeExpense.push_back(TimeUtil::convert_us(timeout - timein));
 
@@ -124,12 +116,4 @@ vector<double> ThermalApproach::getKernelTime(){
 
 void ThermalApproach::setPeriod(unsigned long period_us){
 	period = TimeUtil::Micros(period_us);
-}
-
-void ThermalApproach::setOnlineApproach(online_thermal_approach newapproach){
-	onlineApproach = newapproach;
-}
-
-void ThermalApproach::setOfflineApproach(offline_thermal_approach newapproach){
-	offlineApproach = newapproach;
 }

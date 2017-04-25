@@ -23,11 +23,6 @@ public:
 	struct timespec jitter;
 	struct timespec release_time;
 
-	
-	// parameters specifying task mapping 
-	std::vector<int> attached_cores;
-
-
 	// parameters specifying task load
 	int user_defined_load_id;
 

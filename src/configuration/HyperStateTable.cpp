@@ -1,14 +1,21 @@
 #include "configuration/HyperStateTable.h"
 
+#include <iostream>
+#include <climits>
+
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
 
-#include <iostream>
+
 HyperStateTable::HyperStateTable():
  statetable(0){
  	rowId = 0;
  	tableSize = 0;
+ 	nextActionTime.tv_sec = LONG_MAX;
+ 	nextActionTime.tv_nsec = 999999999;
+
 }
+
 HyperStateTable::~HyperStateTable(){
 	
 }

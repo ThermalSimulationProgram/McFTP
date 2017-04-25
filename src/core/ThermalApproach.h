@@ -28,12 +28,10 @@ protected:
 
 	std::vector<double> timeExpense;
 
-	online_thermal_approach onlineApproach;
-
-	offline_thermal_approach offlineApproach;
+	CMI* cmi;
 
 public:
-	ThermalApproach(unsigned _id, Processor *c, std::string name);
+	ThermalApproach(CMI* cmi, unsigned _id, Processor *c, std::string name);
 	
 	~ThermalApproach();
 
@@ -48,10 +46,6 @@ public:
 	std::vector<double> getKernelTime();
 
 	void setPeriod(unsigned long period_us);
-
-	void setOnlineApproach(online_thermal_approach newapproach);
-
-	void setOfflineApproach(offline_thermal_approach newapproach);
 
 };
 

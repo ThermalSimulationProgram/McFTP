@@ -1,10 +1,13 @@
 #include "UnitTest/UnitTest.h"
 
+#include <assert.h>
+
 #include "utils/utils.h"
 #include "core/Worker.h"
 #include "core/Task.h"
 #include "utils/Enumerations.h"
 #include "configuration/HyperStateTable.h"
+#include "configuration/JobQueue.h"
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
 
@@ -54,22 +57,84 @@ void testJobQueue(){
 	int n = 20;
 
 	vector<Task*> tasks;
-	JobQueue* j1 = new JobQueue();
+	JobQueue j1 = JobQueue();
 
 	for (int i = 0; i < n; ++i)
 	{
 		Task* aux = new Task(singlecore, busywait, 1, 9);
 		tasks.push_back(aux);
-		j1->insertJob(aux);
+		j1.insertJob(aux);
 
 	}
 
+	vector<Task*> task2 = j1.peekAllTasks();
 
 
-	JobQueue j2 = JobQueue(*j1);
-	delete j1;
+	assert((int)j1.getSize() == n);
 
-	j2.print();
+	for (int i = 0; i < n; ++i)
+	{
+		int v = j1.findJob(tasks[i]);
+		assert(v==i);
+		assert(task2[i] == tasks[i]);
+	}
+
+
+	j1.deleteJob(tasks[0]);
+	for (int i = 1; i < n; ++i)
+	{
+		int v = j1.findJob(tasks[i]);
+		assert(v==i-1);
+	}
+
+	j1.deleteJob(tasks[11]);
+
+	for (int i = 1; i < 11; ++i)
+	{
+		int v = j1.findJob(tasks[i]);
+		assert(v==i-1);
+	}
+
+	for (int i = 12; i < n; ++i)
+	{
+		int v = j1.findJob(tasks[i]);
+		assert(v==i-2);
+	}
+
+	j1.deleteJob(tasks[19]);
+
+	assert((int)j1.getSize() == n-3);
+
+
+
+
+	Task* aux = new Task(singlecore, busywait, 1, 9);
+
+	cout << j1.getSize() << endl;
+
+	bool r = j1.deleteJob(aux);
+	j1.print();
+
+	j1.deleteJobAt(17);
+
+	j1.print();
+
+	cout << r << " "<<j1.getSize() << endl;
+
+	j1.insertJobAt(0, aux);
+
+	Task* aux2 = new Task(singlecore, busywait, 1, 9);
+
+	j1.insertJobAt(32, aux2);
+
+
+	
+
+
+
+
+	delete aux;
+	delete aux2;
 
 
 	for (int i = 0; i < n; ++i)

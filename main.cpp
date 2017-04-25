@@ -1,68 +1,29 @@
 #include <iostream>
-// #include <fstream>
-// #include <stdlib.h>
-// #include <pthread.h>
-// #include <cmath>
-// #include <time.h>
-// #include <unistd.h>
 #include <string>
-// #include <semaphore.h>
-// #include <jni.h>
 #include <vector>
-// #include <exception>
-// #include <algorithm>
 
-// #include "Thread.h"
-// #include "TimeUtil.h"
-// #include "Operators.h"
-// #include "Enumerations.h"
-// #include "Task.h"
-// #include "TimeSim.h"
-// #include "Dispatcher.h"
-// #include "Scheduler.h"
 #include "core/CMI.h"
-// #include "Worker.h"
-// #include "Parser.h"
-// #include "Scratch.h"
-// #include "rtc.h"
-// #include "temperature.h"
-// #include "vectormath.h"
-// #include "APTMKernel.h"
-
-
-// #include "utils.h"
-// #include "FileOperator.h"
-
 #include "UnitTest/UnitTest.h"
+
 using namespace std;
 
 
+void test_online_approach (CMI* cmi, const DynamicInfo& p, std::vector<StateTable>& c){
 
-
-#define _TESTRTC  0
+}
 
 
 void runSimulation(int argc, char** argv);
 
 
 
-
 int main(int argc, char** argv){
 	
 	
-// vector<unsigned long> wcets = {14200, 9000, 3600, 5700};
 
-//   getCoolingCurve(4, wcets);
-
- // testrtc();
 runSimulation( argc, argv);
 // testJobQueue();
-	// testHyperStateTable();
-	// offlineSimulation();
-	// testStringUtils();
-	// testFileOperator();
 
-	//testParser("example.xml");
 }
 
 
@@ -71,7 +32,7 @@ runSimulation( argc, argv);
 void runSimulation(int argc, char** argv){
 
 
-	string *file;
+	string file;
 	int isAppendSaveFile = 0;
 	if (argc > 1){
 
@@ -83,24 +44,30 @@ void runSimulation(int argc, char** argv){
 				i++;
 				isAppendSaveFile = atoi(argv[i]);
 			}else{
-				file = new string(argv[i]);
-				if(file->find(".xml") == string::npos) {
-					*file = *file + ".xml";
+				file = string(argv[i]);
+				if(file.find(".xml") == string::npos) {
+					file = file + ".xml";
 				}
 			}
 		}
 	}else{
-		file = new string("example.xml");
+		file = "example.xml";
 	}
 
-	CMI *p = new CMI(*file);
+	CMI *cmi = new CMI(file);
+
+	cmi->setOnlineThermalApproach(test_online_approach);
+	vector<int> ids = cmi->getAllTaskIds();
+	for (int i = 0; i < (int)ids.size(); ++i)
+	{
+		cmi->setTaskRunningCore(ids[i], 0);
+	}
 	// cout << "begin initialize Pipeline\n";
-	p->startRunning();
+	cmi->startRunning();
 
 	// double temp = p->simulate();
 	// cout << temp << endl;
-	delete p;
-	delete file;
+	delete cmi;
 
 }
 

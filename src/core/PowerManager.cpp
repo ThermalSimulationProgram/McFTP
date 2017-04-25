@@ -38,21 +38,14 @@ workers(_workers){
 	struct timespec duration = TimeUtil::Micros(Scratch::getDuration());
 	nextActionTime = TimeUtil::getTime() + duration; // default: no action 
 
+	isFixedFrequency = Scratch::isFixedFrequency();
 
-	// freqInterface.push_back("/home/long/McFTP/trunk/test/test1");
-	// freqInterface.push_back("/home/long/McFTP/trunk/test/test2");
-	// freqInterface.push_back("/home/long/McFTP/trunk/test/test3");
-	// freqInterface.push_back("/home/long/McFTP/trunk/test/test4");
+	isFixedActive = Scratch::isFixedActive();
 
 	freqInterface.push_back("../test/test1");
 	freqInterface.push_back("../test/test2");
 	freqInterface.push_back("../test/test3");
 	freqInterface.push_back("../test/test4");
-
-
-	isFixedFrequency = Scratch::isFixedFrequency();
-
-	isFixedActive = Scratch::isFixedActive();
 
 	// freqInterface.push_back("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed");
 	// freqInterface.push_back("/sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed");
@@ -64,7 +57,7 @@ workers(_workers){
 	// {
 	// 	FILE* t = fopen(freqInterface[i].c_str(), "w");
 	// 	if (t == NULL){
-	// 		// std::cout << "Failed open file: " << freqInterface[i] << std::endl;
+	// 		// std::cout << "PowerManager::PowerManager: Failed open file: " << freqInterface[i] << std::endl;
 	// 		printf("Failed open file");
 	// 		exit(1);
 	// 	}
@@ -92,7 +85,7 @@ void PowerManager::wrapper(){
 
   	//Wait until the simulation is initialized
   	sem_wait(&Processor::init_sem);
-	// while( !CMI::isInitialized() ){}
+
 	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();
 	std::cout << "PowerManager: " << id << " waiting for simulation start\n";
@@ -101,8 +94,7 @@ void PowerManager::wrapper(){
 
 	///wait for the simulation start
 	sem_wait(&Processor::running_sem);
-	// while(!CMI::isRunning()){}
-
+	
   	#if _INFO == 1
 	Semaphores::print_sem.wait_sem();
 	std::cout << "PowerManager: " << id << " begining execution \n";
@@ -117,10 +109,8 @@ void PowerManager::wrapper(){
 		// wait until next action time, or new tables are given
 		sem_timedwait(&interrupt_sem, &nextActionTime);
 
-		// update next action time
-		sem_wait(&statetable_sem);
 		
-		
+		sem_wait(&statetable_sem);			
 		if (tables.size() > 0){
 			struct timespec now = TimeUtil::getTime();
 			// timein = TimeUtil::convert_us(now);
@@ -131,13 +121,13 @@ void PowerManager::wrapper(){
 			// time1 += TimeUtil::convert_us(TimeUtil::getTime()) - timein;
 			// timein = TimeUtil::convert_us(TimeUtil::getTime());
 			// change the power state of the id
-			changePower(nextCoreId,   f, length);
+			changePower(nextCoreId, f, length);
 			// std::cout << " at time: " << TimeUtil::convert_ms(now) - begin << std::endl;
 			// time2 += TimeUtil::convert_us(TimeUtil::getTime()) - timein;
 
 
 			
-			// update nextActionTime
+			// update next action time
 			nextActionTime = tables[0].peekNextTime();
 			nextCoreId = 0;
 			for (int i = 1; i < (int) tables.size(); ++i){
@@ -147,8 +137,6 @@ void PowerManager::wrapper(){
 					nextCoreId = i;
 				}
 			}
-			
-
 		}
 		sem_post(&statetable_sem);
 
@@ -166,7 +154,6 @@ void PowerManager::changePower(int id, double f, struct timespec length){
 		}
 		
 	}else if (f > EPSILON){
-
 		if (!isFixedActive && !workers[id]->isActive()){
 			workers[id]->activate();
 		}
@@ -178,23 +165,15 @@ void PowerManager::changePower(int id, double f, struct timespec length){
 }
 
 void PowerManager::setFrequency(int id, int f){
-	// ostringstream freq;
-	// freq << f;
-	// system(("echo " + freq.str() + " > " + freqInterface[id]).c_str());
-
-	// printf("PowerManager:set cpu %d frequency %d\n", id, f);
-
 	int fd = open( freqInterface[id].c_str(), O_WRONLY);
 	if (fd == -1){
 		printf("Failed to open file\n");
 		return ;
 	}
 
-
 	char buf[12];
 
 	snprintf(buf, 12, "%d", f);
-
 
 	ssize_t numwrite = write(fd, buf, strlen(buf));
 	if (numwrite < 1) {
@@ -204,29 +183,11 @@ void PowerManager::setFrequency(int id, int f){
 	}
 
 	close(fd);
-
-
-
-
-
-	// FILE* file = fopen(freqInterface[id].c_str(), "w");
-	// 	if (file == NULL){
-	// 		// std::cout << "Failed open file: " << freqInterface[i] << std::endl;
-	// 		printf("Failed open file\n");
-	// 		exit(1);
-	// 	}
-	// if (fprintf(file, "%d", f) < 0) { 
-	// 	// std::cout << "failed to write file" << std::endl;
-	// } 
-
-	// fclose(file);
-
 }
 
 
 void PowerManager::setStateTables(const std::vector<StateTable> & newtables){
 	if (newtables.size() != tables.size()){
-		// std::cerr << "PowerManager::setStateTables: incorrect newtables\n";
 		printf("PowerManager::setStateTables: incorrect newtables\n");
 		exit(1);
 	}
@@ -237,8 +198,9 @@ void PowerManager::setStateTables(const std::vector<StateTable> & newtables){
 	for (int i = 0; i < (int)tables.size(); ++i){
 		tables[i].setStateTable(newtables[i], now);
 	}
-	// default: next action core is the first one
+	// default: next action time is now
 	nextActionTime = now;
+	// default: next action core is the first one
 	nextCoreId = 0;
 	sem_post(&statetable_sem);
 
@@ -246,5 +208,23 @@ void PowerManager::setStateTables(const std::vector<StateTable> & newtables){
 	sem_post(&interrupt_sem); 
 }
 
+void PowerManager::setStateTable(const StateTable & t){
+	int coreId = t.getTargetCoreId();
+	if (coreId < 0 || coreId >= (int)tables.size()){
+		return;
+	}
+	sem_wait(&statetable_sem);
+	// read time after get the semaphore
+	struct timespec now = TimeUtil::getTime();	
+	tables[coreId].setStateTable(t, now);
+	//next action time
+	nextActionTime = now;
+	nextCoreId = coreId;
+	sem_post(&statetable_sem);
+
+	//unblock power manager 
+	sem_post(&interrupt_sem); 
+
+}
 
 

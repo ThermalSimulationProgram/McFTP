@@ -16,235 +16,262 @@ using namespace std;
 /*********** CONSTRUCTOR ***********/
 ///Contructor needs nothing
 JobQueue::JobQueue() {
+	size = 0;
 	head = NULL;
 	tail = NULL;
-	size = 0;
-
   	sem_init(&queue_sem, 0, 1); //mutex semaphore
-}
+  }
 
-JobQueue::JobQueue(const JobQueue& j){
-	if (j.head == NULL){
-		tail = NULL;
-		size = 0;
+  JobQueue::JobQueue(const JobQueue& j){
+  	sem_init(&queue_sem, 0, 1);
+  	size = 0;
+  	head = NULL;
+  	tail = NULL;
 
-	}else{
-		Node* copy = (Node*) malloc(sizeof(Node));;
-		copy->r = j.head->r;
-		copy->next = NULL;
+  	Node* p = j.head;
+  	while (p != NULL){
+  		insertJob(p.task);
+  		p = p.next;
+  	}
+  }
 
-		head = copy;
-
-		Node* current = j.head->next;
-		
-		while (current != NULL){
-
-			copy->next = (Node*) malloc(sizeof(Node));
-			copy = copy->next;
-			copy->r = current->r;
-			copy->next = NULL;
-
-			current = current->next;
-
-		}
-
-		tail = copy;
-
-		size = j.size;
-	}
-	sem_init(&queue_sem, 0, 1);
-}
-
-///destructor delete the link list
-JobQueue::~JobQueue(){
+///destructor
+  JobQueue::~JobQueue(){
 	// if the link list is not empty
-	if(head != NULL){
-		Node* current = head;
-		Node* next;
+  	if(head != NULL){
+  		Node* current = head;
+  		Node* next;
 
-		while (current != NULL){
-			next = current->next;
-			delete(current);
-			current = next;
+  		while (current != NULL){
+  			next = current->next;
+  			delete(current);
+  			current = next;
+  		}
+  	}
+  }
+
+bool findJobInfo(Task* _task, Node* theNode, int* position){
+	bool ret;
+	sem_wait(&queue_sem);
+	//if head is NULL, there is nothing to do
+	if (head == NULL){
+		ret = false;
+	}else{
+		//If task is the head, delete the head
+		if(head->task = _task) {
+			theNode = head;
+			ret = true;
+		}else{
+			//iterate to find task and delete it
+			Node *aux = head->next, *prev = head;
+			ret = false; 
+			while(aux != NULL) {
+				if(aux->task = _task) {
+					theNode = aux;
+					ret = true ;
+					break;
+				}
+				prev = aux;
+				aux = aux->next;
+			}
 		}
 	}
 
+	sem_post(&queue_sem);
+	return ret;
 }
 
-/*********** PROTECTED MEMBER FUNCTIONS ***********/
 
-///This function removes the queue's pointer to the Task with the specified type and id. 
-///returns true if the task was found, false otherwise
-bool JobQueue::protectedDeleteJob(_task_type type, int id) {
-	if(head!=NULL) {
-    //If task is the head, delete the head
-		if(head->r->getId()==id && head->r->getType()==type) {
+
+/*********** PUBLIC MEMBER FUNCTIONS ***********/
+
+bool JobQueue::deleteJob(Task* _task) {
+	bool ret;
+	sem_wait(&queue_sem);
+
+	//if head is NULL, there is nothing to do
+	if (head == NULL){
+		ret = false;
+	}else{
+		//If task is the head, delete the head
+		if(head->task = _task) {
 			Node *aux = head;
 			head = head->next;
 			delete(aux);
 
 			size--;
-			return true;
-		}
-	}
-  //if head is NULL, there is nothing to do
-	else {
-		return false;
-	}
-
-	Node *aux = head->next, *prev=head;
-
-  //iterate to find task and delete it
-	while(aux!=NULL) {
-		if(aux->r->getId() == id && aux->r->getType()==type) {
-			if(aux == tail) {
-				tail = prev;
+			ret = true;
+		}else{
+		//iterate to find task and delete it
+			Node *aux = head->next, *prev = head;
+			ret = false; 
+			while(aux != NULL) {
+				if(aux->task = _task) {
+					if(aux == tail) {
+						tail = prev;
+					}
+					prev->next = aux->next;
+					delete(aux);
+					size--;
+					ret = true ;
+				}
+				prev = aux;
+				aux = aux->next;
 			}
-			prev->next = aux->next;
-			delete(aux);
-			size--;
-			return true ;
 		}
-		prev = aux;
-		aux = aux->next;
 	}
 
-	return false;  
-}
-
-///This function inserts the new task in the queue 
-bool JobQueue::protectedInsertJob(Task* newTask) {
-    //increase the size counter
-	size++;
-
-  #if _INFO==1
-	cout << "JobQueue::protectedInsertRunnable() - size is now: " << size << endl;
-  #endif
-
-  //Base case, the list was empty. The task is now head and tail of queue
-	if (head == NULL) {
-		head = (Node*) malloc(sizeof(Node));
-		head->r = newTask;
-		tail = head;
-		tail->next = NULL;
-
-    #if _DEBUG==1
-		cout << "New Head1: " << newTask->getId() << endl;
-    #endif
-		return true;
-	}else{
-  	//create new node
-		Node* newNode = (Node*) malloc(sizeof(Node));
-		newNode->r = newTask;
-		newNode->next = NULL;
-
-    //link the old tail to the new node
-		tail->next = newNode;
-    //move the tail
-		tail = newNode;
-
-    #if _DEBUG==1
-		cout << "New tail: " << newTask->getId() << endl;
-    #endif
-		return false;
-	}
-
-}
-
-/*********** PUBLIC MEMBER FUNCTIONS ***********/
-
-///This function is a public wrapper to the protectedDeleteRunnable function
-bool JobQueue::deleteJob(_task_type type, int id) {
-	bool ret;
-
-	sem_wait(&queue_sem);
-	ret = protectedDeleteJob(type, id);
 	sem_post(&queue_sem);
-
 	return ret;
 }
 
-///This function is a public wrapper to the protectedInsertRunnable function
-bool JobQueue::insertJob(Task* newTask) {
-	bool ret;
 
-	if(newTask == NULL) {
-		cout << "JobQueue::insertJob() - newTask is null!\n";
-		return false;
+///This function is a public wrapper to the protectedInsertRunnable function
+ void JobQueue::insertJob(Task* newTask) {
+
+
+  	if(newTask == NULL) {
+  		cout << "JobQueue::insertJob() - newTask is null!\n";
+  		return;
+  	}
+  	sem_wait(&queue_sem);
+
+	//increase the size counter
+  	size++;
+  	#if _INFO==1
+  	cout << "JobQueue::insertJob() - size is now: " << size << endl;
+  	#endif
+
+  	//Base case, the list was empty. The task is now head and tail of queue
+  	if (head == NULL) {
+  		head = (Node*) malloc(sizeof(Node));
+  		head->task = newTask;
+  		tail = head;
+  		tail->next = NULL;
+
+    	#if _DEBUG==1
+  		cout << "New Head1: " << newTask->getId() << endl;
+    	#endif
+  	}else{
+  		//create new node
+  		Node* newNode = (Node*) malloc(sizeof(Node));
+  		newNode->task = newTask;
+  		newNode->next = NULL;
+
+    	//link the old tail to the new node
+  		tail->next = newNode;
+    	//move the tail
+  		tail = newNode;
+
+    	#if _DEBUG==1
+  		cout << "New tail: " << newTask->getId() << endl;
+    	#endif
+  	}
+  	sem_post(&queue_sem); 
+  }
+
+void JobQueue::insertJobAt(int position, Task* newTask){
+	if (position < 0){
+		return;
 	}
-	#if _DEBUG==1
-	cout << "waiting queue" << endl;
-	#endif
+	if(newTask == NULL) {
+  		cout << "JobQueue::insertJobAt() - newTask is null!\n";
+  		return;
+  	}
+  	// create the new node
+	Node* newNode = (Node* ) malloc(sizeof(Node));
+	newNode->task = newTask;
+	newNode->next = NULL;
+
 	sem_wait(&queue_sem);
-    //Clear the queue of any nodes with this task 
-    #if _DEBUG==1
-    cout << "deleting" << endl;  
-    #endif        
-	protectedDeleteJob(newTask->getType(), newTask->getId());
-    //Insert into the queue
-    #if _DEBUG==1
-    cout << "inserting" << endl;
-    #endif
-	ret = protectedInsertJob(newTask);
-    //cout << size << endl;
+	if (size == 0){
+		head = newNode;
+		tail = head;
+	}else{
+			// insert at head
+		if (position == 0){
+			// link to the old head
+			newNode->next = head;
+			head = newNode;
+		}else{
+			// traverse the linked list
+			Node* current = head, *prev = NULL;
+			int counter = 1;
+
+			while(current != NULL && counter != position){
+				prev = current;
+				current = current->next;
+				counter++;
+			}
+			// if reach the tail
+			if (prev == tail){
+				tail = newNode;
+			}
+
+			prev.next = newNode;
+			newNode.next = current;
+		}
+
+	}
+	size++;
 	sem_post(&queue_sem);
-	return ret;  
+}
+
+
+int findJob(Task* task){
+
 }
 
 ///This function reads the tail of the queue (non-destructive read), 
 ///and returns the pointer to the task
 Task* JobQueue::peek_back() {
-	if(tail==NULL)
-		return NULL;
+  	if(getSize() == 0)
+  		return NULL;
 
-	return tail->r;
-}
+  	return tail.task;
+  }
 
 ///This function reads the head of the queue (non-destructive read) 
 ///and returns a pointer to the task
 Task* JobQueue::peek_front() {
-	if(head==NULL)
-		return NULL;
+  	if(getSize() == 0)
+  		return NULL;
 
-	return head->r;
-}
+  	return head.task;
+  }
 
 ///This function reads the head of the queue, erases it from the JobQueue, 
 ///and returns the head pointer
 Task* JobQueue::pop_front() {
-	if(head==NULL)
-		return NULL;
-
-	Task* aux = head->r;
-
-	deleteJob(aux->getType(), aux->getId());
-
-	return aux;
-}
+  	Task* ret;
+  	if(getSize() == 0)
+  		return NULL;
+  	sem_wait(&queue_sem);
+  	ret = head.task;
+  	deleteJob(ret);
+  	sem_post(&queue_sem);
+  	return ret;
+  }
 
 /*********** GETTER FUNCTIONS ***********/
 
 ///This function returns the size of the JobQueue
-int JobQueue::getSize() {
-	return size;
-}
+  int JobQueue::getSize() {
+  	return (int)taskPointers.size();
+  }
 
 
-void JobQueue::print(){
+  void JobQueue::print(){
 
-	if(head!=NULL) {
-		Node* current = head;
-		Node* next;
-
-		while (current != NULL){
-			next = current->next;
-			cout << "JobQueue::print: task with id: "<< current->r->getId() << endl;
-			current = next;
-		}
-	}
+  	if(getSize()>0) {
+  		for (int i = 0; i < getSize(); ++i)
+  		{
+  			cout << "JobQueue::print: task with id: "<< taskPointers[i]->getId() << endl;
+  		}
+  	}
   //if head is NULL, there is nothing to do
-	else {
-		cout << "JobQueue::print: empty queue" << endl;
-	}
+  	else {
+  		cout << "JobQueue::print: empty queue" << endl;
+  	}
 
-}
+  }

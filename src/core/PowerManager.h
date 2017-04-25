@@ -47,9 +47,9 @@ public:
 	///The created thread in the object starts execution by invoking this function 
 	void wrapper();
 
-	// void updateNextTime();
-
 	void setStateTables(const std::vector<StateTable> &);
+
+	void setStateTable(const StateTable & t);
 
 	void changePower(int id, double f, struct timespec);
 

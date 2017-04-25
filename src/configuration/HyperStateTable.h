@@ -10,7 +10,6 @@ class HyperStateTable {
 
 private:
 	StateTable statetable;
-	// std::vector<struct timespec> stateEndTimes;
 
 	struct timespec nextActionTime;
 

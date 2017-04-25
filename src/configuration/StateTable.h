@@ -16,9 +16,6 @@ protected:
 
 	int coreId;
 
-	// // auxiliary varible representing current state id.
-	// int stateRowId;
-
 public:
 	StateTable(int);
 
@@ -32,9 +29,9 @@ public:
 
 	unsigned long getLength(int id);
 
-	// void setStateId(int);
-
 	unsigned getSize();
+
+	int getTargetCoreId() const;
 
 
 };

@@ -5,8 +5,11 @@
 
 using namespace std;
 
-StateTable::StateTable(int _coreId):frequencies(),lengths(),
-	coreId(_coreId){
+StateTable::StateTable(int _coreId):frequencies(),lengths(){
+	if (_coreId < 0){
+		cout << "StateTable::StateTable: input core index must be nonnegative" << endl;
+		exit(1);
+	}
 	frequencies.reserve(100);
 	lengths.reserve(100);
 }
@@ -18,18 +21,15 @@ void StateTable::pushState(double f, unsigned long l){
 		cerr << "StateTable::pushState: input frequency must be nonnegative" << endl;
 		exit(1);
 	}
+	// minimal interval length: 100 microseconds
 	if (l > 100){
 		frequencies.push_back(f);
 		lengths.push_back(l);
 	}
-
-	
-
 }
 
 
 void StateTable::getState(int id, double& f, unsigned long& l){
-
 	f = getFrequency(id);
 	l = getLength(id);
 }
@@ -52,14 +52,9 @@ unsigned long StateTable::getLength(int id){
 	return lengths[id];
 }
 
-// void StateTable::setStateId(int id){
-// 	if (id >= lengths.size() || id < 0){
-// 		id = 0;
-// 	}
-
-// 	stateRowId = id;
-// }
-
+int StateTable::getTargetCoreId() const {
+	return coreId;
+}
 
 unsigned StateTable::getSize(){
 	return lengths.size();
