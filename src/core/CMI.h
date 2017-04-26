@@ -113,7 +113,7 @@ public:
 
 	// Advances the task at the position taskPosition in job queue with id queueId
 	// by n jobs position. When n > taskPosition, the task is moved to the front
-	void advanceTaskInQueue(int queueId, int taskPosition, int n);
+	void advanceJobInQueue(int queueId, int taskPosition, int n);
 
 	// Recede the task at the position taskPosition in job queue with id queueId
 	// by n jobs position. When n > QueueSize - taskPosition, the task id moved
