@@ -12,10 +12,12 @@
 	
 using namespace std;
 
-CMI::CMI(string xml_path){
+CMI::CMI(string xml_path):CMI(xml_path, 0){}
+
+CMI::CMI(string xml_path, int isAppendSaveFile){
 	// construct the prcessor, including all workers, dispatchers, 
 	// power manager, temperature watcher, etc.
-	processor = new Processor(this, xml_path);
+	processor = new Processor(this, xml_path, isAppendSaveFile);
 
 	// default: no offline thermal approach
 	offlineApproach = NULL;
@@ -265,9 +267,9 @@ int CMI::getNewJobTargetCore(Task * t, _task_type type){
 // This function is called by the work when a job is finished.
 // You can modify this function to customize the action
 void CMI::finishedJob(Task* _task){
-	cout << "Task with taskid: " << _task->getTaskId() << " with job id "
+	cout << "Job with taskid: " << _task->getTaskId() << " with job id "
 		<< _task->getId() << " finishes at time: " << getRelativeTimeUsec()/1000
-		<< " on core with id: " << _task->getFinishCoreId() << endl;
+		<< " ms on core with id: " << _task->getFinishCoreId() << endl;
 }	
 
 // Below functions are called by the thermal approach thread 

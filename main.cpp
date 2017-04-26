@@ -20,21 +20,6 @@ void displayAllQueues(std::vector<std::vector<Task*> > queues){
 }
 
 void test_online_approach1 (CMI* cmi, const DynamicInfo& p, std::vector<StateTable>& c){
-	// if (p.tasksInQueue[0].size() > 10){
-	// 	cmi->displayAllQueues();
-	// 	cout << "task move"<<endl;
-	// 	cmi->moveTaskToAnotherQueue(0, 2, 1, 2);
-	// 	cmi->moveTaskToAnotherQueue(0, 4, 2, 3);
-	// 	cmi->displayAllQueues();
-	// }
-
-	// if (p.tasksInQueue[0].size() > 10){
-	// 	cmi->displayAllQueues();
-	// 	cout << "task advance"<<endl;
-	// 	cmi->advanceTaskInQueue(0, 8, 9);
-	// 	cmi->advanceTaskInQueue(2, 4, 2);
-	// 	cmi->displayAllQueues();
-	// }
 	unsigned long t = cmi->getRelativeTimeUsec();
 	if (t > 3000000){
 		if (p.coreinfos[0].onGoJobId > 0){
@@ -68,43 +53,22 @@ void test_online_approach3 (CMI* cmi, const DynamicInfo& p, std::vector<StateTab
 
 
 int  test_online_task_allocator (CMI* cmi, int _taskId){
-	// unsigned long t = cmi->getRelativeTimeUsec();
-	// int ncores = cmi->getCoreNumber();
-	// if (t < 1000*1000){
-	// 	return _taskId;
-	// }else{
-	// 	return 1;
-	// }
 	return _taskId;
 }
 
 
-void runSimulation(int argc, char** argv);
-
 
 
 int main(int argc, char** argv){
-	
-	
-
-runSimulation( argc, argv);
-// testJobQueue();
-
-}
-
-
-
-
-void runSimulation(int argc, char** argv){
-
+	/******************* PARSE INPUT ARGUMENTS *******************/
 
 	string file;
+
 	int isAppendSaveFile = 0;
 	if (argc > 1){
-
 		for(int i=1; i<=argc; i++){
 			if(argv[i] == NULL)
-			    continue;
+				continue;
 
 			if (argv[i] == string("-a")){
 				i++;
@@ -120,25 +84,40 @@ void runSimulation(int argc, char** argv){
 		file = "example.xml";
 	}
 
-	CMI *cmi = new CMI(file);
+	// create the experiment
+	CMI *cmi = new CMI(file, isAppendSaveFile);
 
-	cmi->setOnlineThermalApproach(test_online_approach1);
-	vector<int> ids = cmi->getAllTaskIds();
-	for (int i = 0; i < (int)ids.size(); ++i)
-	{
-		cmi->setTaskRunningCore(ids[i], 0);
-	}
 
-	cmi->setOnlineThermalApproachPeriod(200000);
+	/******************* SETTINGS ABOUT THE EXPERIMENT *******************/
+	// Modify below functions to customize the experiment
+
+	/* Set dynamic thermal approach*/
+	// cmi->setOnlineThermalApproach(test_online_approach1);
+	
+	/* Set the period of online thermal approach*/
+	// cmi->setOnlineThermalApproachPeriod(200000);
+
+	/* Statically set the cores that tasks should be executed*/
+	// vector<int> ids = cmi->getAllTaskIds();
+	// for (int i = 0; i < (int)ids.size(); ++i)
+	// {
+	// 	cmi->setTaskRunningCore(ids[i], 0);
+	// }
+
+	/* Or define an online task allocator to replace the static task allocator*/
 	cmi->setOnlineTaskAllocator(test_online_task_allocator);
-	// cout << "begin initialize Pipeline\n";
+
+
+
+	/******************* START THE EXPERIMENT *******************/
 	cmi->startRunning();
 
-	// double temp = p->simulate();
-	// cout << temp << endl;
 	delete cmi;
 
 }
+
+
+
 
 
 

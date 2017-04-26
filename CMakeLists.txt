@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(Demo)
+project(McFTP)
 
 INCLUDE_DIRECTORIES(./src/)
 SET( CMAKE_CXX_FLAGS "-Wall -std=c++11 -g -O3")
@@ -20,7 +20,7 @@ add_subdirectory(./src/tasks)
 add_subdirectory(./src/taskloads)
 add_subdirectory(./src/utils)
 
-add_executable(demo main.cpp)
+add_executable(mcftp main.cpp)
 
 
-target_link_libraries(demo UnitTest core interfaces configuration  dispatchers pthread results tasks taskloads utils benchmarks)
+target_link_libraries(mcftp UnitTest core interfaces configuration  dispatchers pthread results tasks taskloads utils benchmarks)

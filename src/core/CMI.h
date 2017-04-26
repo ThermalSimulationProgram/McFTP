@@ -56,6 +56,8 @@ public:
 	// Constructor needs the path to the xml file
 	CMI(std::string);
 
+	CMI(std::string, int isAppendSaveFile);
+
 	// Destructor
 	~CMI();
 
