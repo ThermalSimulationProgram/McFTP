@@ -118,7 +118,7 @@ public:
 	// Recede the task at the position taskPosition in job queue with id queueId
 	// by n jobs position. When n > QueueSize - taskPosition, the task id moved
 	// to the back.
-	void recedeTaskInQueue(int queueId, int taskPosition, int n);
+	void recedeJobInQueue(int queueId, int taskPosition, int n);
 
 	// Preempt the currently running job on core coreId with the job at the
 	// front of the job queue.
@@ -128,7 +128,7 @@ public:
 	// the position source_task_position in job queue with id source_queue_id
 	// to
 	// the position target_task_position in job queue with id target_queue_id
-	void moveTaskToAnotherQueue(int source_queue_id, int source_task_position,
+	void moveJobToAnotherQueue(int source_queue_id, int source_task_position,
 			int target_queue_id, int target_task_position);
 
 	// Get the current time relative to the start of experiment in unit Microsecond

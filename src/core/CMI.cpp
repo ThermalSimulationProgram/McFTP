@@ -156,9 +156,9 @@ void CMI::taskMigrate(int source_core_id, int target_core_id){
 
 }
 
-// Advances the task at the position taskPosition in job queue with id queueId
+// Advances the job at the position taskPosition in job queue with id queueId
 // by n jobs position. When n > taskPosition, the task is moved to the front
-void CMI::advanceTaskInQueue(int queueId, int taskPosition, int n){
+void CMI::advanceJobInQueue(int queueId, int taskPosition, int n){
 	if (n == 0){
 		return;
 	}
@@ -176,10 +176,10 @@ void CMI::advanceTaskInQueue(int queueId, int taskPosition, int n){
 	}
 }
 
-// Recede the task at the position taskPosition in job queue with id queueId
+// Recede the job at the position taskPosition in job queue with id queueId
 // by n jobs position. When n > QueueSize - taskPosition, the task id moved
 // to the back.
-void CMI::recedeTaskInQueue(int queueId, int taskPosition, int n){
+void CMI::recedeJobInQueue(int queueId, int taskPosition, int n){
 	advanceTaskInQueue(queueId, taskPosition, -n);
 }
 
@@ -189,11 +189,11 @@ void CMI::preemptCurrentJobOnCore(int coreId){
 	processor->preemptCurrentJobOnCore(coreId);	
 }
 
-// Move a task at 
+// Move a job at 
 // the position source_task_position in job queue with id source_queue_id
 // to
 // the position target_task_position in job queue with id target_queue_id
-void CMI::moveTaskToAnotherQueue(int source_queue_id, int source_task_position,
+void CMI::moveJobToAnotherQueue(int source_queue_id, int source_task_position,
 			int target_queue_id, int target_task_position){
 	if (!checkCoreId(source_queue_id) || !checkCoreId(target_queue_id)){
 		return;
