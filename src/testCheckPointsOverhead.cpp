@@ -23,13 +23,13 @@ if (TASKLOADCOUNTER >= TASKLOADSTOPCOUNTER){ \
 
 
 
-volatile sem_t suspend_sem;
+ sem_t suspend_sem;
 
 
-volatile sem_t resume_sem;
+sem_t resume_sem;
 
 
-volatile sem_t test_sem;
+ sem_t test_sem;
 
 unsigned long reallength = 0;
 
