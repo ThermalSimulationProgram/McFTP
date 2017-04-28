@@ -23,13 +23,13 @@ if (TASKLOADCOUNTER >= TASKLOADSTOPCOUNTER){ \
 
 
 
-sem_t suspend_sem;
+volatile sem_t suspend_sem;
 
 
-sem_t resume_sem;
+volatile sem_t resume_sem;
 
 
-sem_t test_sem;
+volatile sem_t test_sem;
 
 unsigned long reallength = 0;
 
@@ -87,12 +87,12 @@ int main(int argc, char** argv){
 	sem_init(&resume_sem, 0, 0);
 	sem_init(&test_sem, 0, 0);
 
-	
-int TASKLOADCOUNTER = 0;
-int TASKLOADSTOPCOUNTER = 0;
+
+	int TASKLOADCOUNTER = 0;
+	int TASKLOADSTOPCOUNTER = 0;
 
 
-	int slice = 20;
+	int slice = 2000;
 	if (argc > 1){
 		for(int i=1; i<=argc; i++){
 			if(argv[i] == NULL)
@@ -108,20 +108,16 @@ int TASKLOADSTOPCOUNTER = 0;
 
 
 
-	int total_time = 1000*1000*10;
+	
 
-
-	int loop_num2 = total_time / slice;
-	int time2 = 0;
+	
 
 	unsigned long timein = TimeUtil::convert_us(TimeUtil::getTime());
-	for (int i = 0; i < loop_num2; ++i)
+	for (int i = 0; i < slice; ++i)
 	{	
 		setSuspendPoint();
 		setCheckBlockBegin();
 
-
-		time2 += busy_wait((unsigned long)slice);
 		setCheckBlockEnd();
 	}
 
@@ -129,14 +125,45 @@ int TASKLOADSTOPCOUNTER = 0;
 	unsigned long time1 = TimeUtil::convert_us(TimeUtil::getTime()) - timein;
 
 
-	cout << "time1: " << time1 ;
+	cout << "time1: " << time1 << endl;
 
-	cout << "  time2: " << time2 ;
-	cout << "  overhead percent: " << (double)(100*(time1 - time2))/time1 << endl;
 
-	vector<double> data{(double)slice, (double)time1, (double)time2, (double)(100*(time1 - time2))/time2};
+	vector<double> data{(double)slice, (double)time1};
 
 	appendToFile("check_points_overhead.csv", data);
+
+
+
+
+	// int total_time = 1000*1000*10;
+
+
+	// int loop_num2 = total_time / slice;
+	// int time2 = 0;
+
+	// unsigned long timein = TimeUtil::convert_us(TimeUtil::getTime());
+	// for (int i = 0; i < loop_num2; ++i)
+	// {	
+	// 	setSuspendPoint();
+	// 	setCheckBlockBegin();
+
+
+	// 	time2 += busy_wait((unsigned long)slice);
+	// 	setCheckBlockEnd();
+	// }
+
+
+	// unsigned long time1 = TimeUtil::convert_us(TimeUtil::getTime()) - timein;
+
+
+	// cout << "time1: " << time1 ;
+
+	// cout << "  time2: " << time2 ;
+	// cout << "  overhead percent: " << (double)(100*(time1 - time2))/time1 << endl;
+
+	// vector<double> data{(double)slice, (double)time1, (double)time2, (double)(100*(time1 - time2))/time2};
+
+	// appendToFile("check_points_overhead.csv", data);
 
 	
 
