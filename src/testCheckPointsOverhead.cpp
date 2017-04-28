@@ -11,7 +11,7 @@
     ++TASKLOADCOUNTER;                  \
 	if(sem_trywait(&test_sem) == 0){ 	\
 		TASKLOADSTOPCOUNTER = TASKLOADSTOPCOUNTER>TASKLOADCOUNTER? TASKLOADSTOPCOUNTER: TASKLOADCOUNTER; \
-        return ;							\
+        return 1;							\
 	}                                      \
     if (TASKLOADCOUNTER >= TASKLOADSTOPCOUNTER){ \
 
@@ -68,17 +68,17 @@ inline unsigned long busy_wait(unsigned long wcet_us){
 }
 
 
-void stress_cpu(unsigned long nloop)
-{
+// void stress_cpu(unsigned long nloop)
+// {
 
-	setSuspendPoint();
-	setCheckBlockBegin();
+// 	setSuspendPoint();
+// 	setCheckBlockBegin();
 
 
-	reallength += busy_wait(nloop);
-	setCheckBlockEnd();
+// 	reallength += busy_wait(nloop);
+// 	setCheckBlockEnd();
 	
-}
+// }
 
 
 
@@ -89,23 +89,30 @@ int main(){
 	sem_init(&resume_sem, 0, 0);
 	sem_init(&test_sem, 0, 0);
 
-	int total_time = 1000*1000*4;
+	int total_time = 1000*1000*10;
 
-	for (unsigned long slice = 10; slice <= 200; slice+=10)
+	for (unsigned long slice = 10; slice <= 50; slice+=2)
 	{	
 		int loop_num2 = total_time / slice;
+		int time2 = 0;
+		volatile int x = 0;
 
 		unsigned long timein = TimeUtil::convert_us(TimeUtil::getTime());
 		for (int i = 0; i < loop_num2; ++i)
-		{
-			stress_cpu(slice);
+		{	
+			x = i;
+			setSuspendPoint();
+			setCheckBlockBegin();
+
+
+			time2 += busy_wait(slice);
+			setCheckBlockEnd();
 		}
 
 
 		unsigned long time1 = TimeUtil::convert_us(TimeUtil::getTime()) - timein;
 
-		unsigned long time2 = reallength;
-		reallength = 0;
+		
 		cout << "time1: " << time1 ;
 
 		cout << "  time2: " << time2 ;
