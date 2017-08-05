@@ -16,8 +16,10 @@ hardware: The CPU should have built-in temperature sensors
 ### Installation:
 #### go to the program build directory
 a. cd build
-#### compile the program using cmake
+#### cmake
 b. cmake ..
+#### compile the program 
+c. make
 
 ### run the program:
 #### first we must change the cpu frquency governor as userspace
