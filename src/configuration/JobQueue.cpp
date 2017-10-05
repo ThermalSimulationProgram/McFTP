@@ -21,10 +21,13 @@ JobQueue::JobQueue(){
 	sem_init(&queue_sem, 0, 1); 
 }
 
-
+/// Copy constructor
 JobQueue::JobQueue(const JobQueue& j){
+	// reset the semaphore
 	sem_init(&queue_sem, 0, 1);
+	// reset the linked list
 	taskPointers.clear();
+	// copy all the task pointers
 	std::list<Task*>::const_iterator it = j.taskPointers.begin();
 	for (; it != j.taskPointers.end(); it++)
 	{
@@ -35,40 +38,53 @@ JobQueue::JobQueue(const JobQueue& j){
 
 
 ///destructor
-JobQueue::~JobQueue(){}
+JobQueue::~JobQueue(){
+
+}
 
 /*********** PROTECTED MEMBER FUNCTIONS ***********/
+// get the iterator of the job at given position
 std::list<Task*>::iterator JobQueue::protectedGetIteratorAt(int position){
+	// start from the begin 
 	std::list<Task*>::iterator it = taskPointers.begin();
+	// truncate the inputed position if it is larger than the size
 	if (position > (int) taskPointers.size() ){
-		position = (int)taskPointers.size();
+		position = (int) taskPointers.size();
 	}
+	// advance the iterator
 	std::advance(it, position);
 	return it;
 }
 
 /*********** PUBLIC MEMBER FUNCTIONS ***********/
+///This function removes the queue's pointer to the job with the specified task pointer. 
+///returns true if the task was found, false otherwise	
 bool JobQueue::deleteJob(Task* _task){
 	bool ret = false;
+	// lock the list
 	sem_wait(&queue_sem);
 	std::list<Task*>::iterator it = std::find(taskPointers.begin(), 
 		taskPointers.end(), _task);
+	// if find the _task, erase it
 	if (it != taskPointers.end()){
 		taskPointers.erase(it);
 		ret = true;
-	}
-	
+	}	
+	// unlock
 	sem_post(&queue_sem);
 	return ret;
 }
 
 
-
+///This function removes the queue's pointer to the job stored at given position.
+///The position of a node equals the distance between itself and the begin node.
 bool JobQueue::deleteJobAt(int position){
+	// invalid input
 	if (position < 0 || position >= (int) taskPointers.size()){
 		return false;
 	}
 	sem_wait(&queue_sem);
+	// get the iterator
 	std::list<Task*>::iterator it = protectedGetIteratorAt(position);
 	taskPointers.erase(it);
 	sem_post(&queue_sem);
@@ -76,10 +92,12 @@ bool JobQueue::deleteJobAt(int position){
 }
 
 
-///This function is a public wrapper to the protectedInsertRunnable function
+///This function inserts new job in the queue at the tail
 void JobQueue::insertJob(Task* newTask){
 	if(newTask == NULL){
+		#if _DEBUG == 1
 		cout << "JobQueue::insertJob() - newTask is null!\n";
+		#endif
 		return;
 	}
 	sem_wait(&queue_sem);
@@ -87,13 +105,16 @@ void JobQueue::insertJob(Task* newTask){
 	sem_post(&queue_sem);
 }
 
-
+///This function inserts new job in the queue at given position
 void JobQueue::insertJobAt(int position, Task* newTask){
 	if (position < 0){
 		return;
 	}
 	if(newTask == NULL) {
+		#if _DEBUG == 1
 		cout << "JobQueue::insertJobAt() - newTask is null!\n";
+		#endif
+
 		return;
 	}
 
@@ -103,13 +124,15 @@ void JobQueue::insertJobAt(int position, Task* newTask){
 	sem_post(&queue_sem);
 }
 
-
+///This function find the position pointed by task, returns the distance to 
+// the begin node if found, -1 otherwise.
 int JobQueue::findJob(Task* _task){
 	int ret;
 	sem_wait(&queue_sem);
 	std::list<Task*>::iterator it = std::find(taskPointers.begin(), 
 		taskPointers.end(), _task);
 	ret = (int) std::distance(taskPointers.begin(), it);
+	// not found
 	if (ret >= (int)taskPointers.size()){
 		ret = -1;
 	}
@@ -117,10 +140,12 @@ int JobQueue::findJob(Task* _task){
 	return ret;
 }
 
+// This function copies all the task pointers and saves them in a vector
 std::vector<Task*> JobQueue::peekAllTasks(){
 	vector<Task*> ret;
 	sem_wait(&queue_sem);
 	ret.reserve(taskPointers.size());
+	// iterate all the items
 	for (std::list<Task*>::iterator it = taskPointers.begin(); 
 	 		it != taskPointers.end() ; it++)
 	{
@@ -131,9 +156,12 @@ std::vector<Task*> JobQueue::peekAllTasks(){
 	return ret;
 }
 
+///This function reads the given position of the queue (non-destructive read), 
+///and returns the pointer to the task
 Task* JobQueue::peek_at(int position){
 	Task* ret = NULL;
 	sem_wait(&queue_sem);
+	// sanity check
 	if (position >= 0 && position < (int)taskPointers.size()){
 		std::list<Task*>::iterator it = protectedGetIteratorAt(position);
 		ret = *it;
@@ -144,9 +172,12 @@ Task* JobQueue::peek_at(int position){
 
 }
 
+///This function reads the given position of the queue, erases it from the JobQueue,
+///and returns the pointer to the task
 Task* JobQueue::pop_at(int position){
 	Task* ret = NULL;
 	sem_wait(&queue_sem);
+	// sanity check 
 	if (position >= 0 && position < (int)taskPointers.size()){
 		std::list<Task*>::iterator it = protectedGetIteratorAt(position);
 		ret = *it;
@@ -159,8 +190,8 @@ Task* JobQueue::pop_at(int position){
 }
 
 
-///This function reads the tail of the queue (non-destructive read), 
-///and returns the pointer to the task
+///This function reads the head of the queue (non-destructive read) 
+///and returns a pointer to the task
 Task* JobQueue::peek_back() {
 	Task* ret;
 	sem_wait(&queue_sem);

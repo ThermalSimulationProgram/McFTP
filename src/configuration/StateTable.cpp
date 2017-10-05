@@ -3,6 +3,9 @@
 #include <iostream>
 #include <cstdlib>
 
+#define DEFAULTTABLESIZE 10
+#define MINIINTERVALLENGTH 100
+
 using namespace std;
 
 StateTable::StateTable(int _coreId):frequencies(),lengths(){
@@ -10,8 +13,8 @@ StateTable::StateTable(int _coreId):frequencies(),lengths(){
 		cout << "StateTable::StateTable: input core index must be nonnegative" << endl;
 		exit(1);
 	}
-	frequencies.reserve(100);
-	lengths.reserve(100);
+	frequencies.reserve(DEFAULTTABLESIZE);
+	lengths.reserve(DEFAULTTABLESIZE);
 }
 
 StateTable::~StateTable(){}
@@ -22,10 +25,11 @@ void StateTable::pushState(double f, unsigned long l){
 		exit(1);
 	}
 	// minimal interval length: 100 microseconds
-	if (l > 100){
-		frequencies.push_back(f);
-		lengths.push_back(l);
+	if (l > MINIINTERVALLENGTH){
+		l = MINIINTERVALLENGTH;
 	}
+	frequencies.push_back(f);
+	lengths.push_back(l);
 }
 
 

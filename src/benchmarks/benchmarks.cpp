@@ -1273,8 +1273,9 @@ HOT OPTIMIZE3 void stress_cpu_all(const char *name)
 }
 
 
-
+// Constructor needs nothing
 CPUStressor::CPUStressor(){
+	// count the number of benchmarks
 	for (int i = 0; i < 100; ++i)
 	{
 		if(!methods[i].func){
@@ -1282,6 +1283,8 @@ CPUStressor::CPUStressor(){
 			break;
 		}
 	}
+
+	// start from the first benchmark
 	index = 1;
 }
 
@@ -1298,6 +1301,7 @@ std::string CPUStressor::getBenchmarkName(int id){
 	return ret;
 }
 
+// run the benchmarks one by one
 void CPUStressor::stressOnce(){
 	const char* name = "";
 	methods[index].func(name);
@@ -1306,9 +1310,14 @@ void CPUStressor::stressOnce(){
 		index = 1;
 }
 
+// run the benchmark specified by index
+void CPUStressor::stressWithBenchmark(int _index){
 
-void CPUStressor::stressWithBenchmark(int index){
+	if (_index < 1 || _index > numberStressor){
+		return;
+	}
+
 	const char* name = "";
-	methods[index].func(name);
+	methods[_index].func(name);
 }
 

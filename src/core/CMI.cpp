@@ -180,7 +180,7 @@ void CMI::advanceJobInQueue(int queueId, int taskPosition, int n){
 // by n jobs position. When n > QueueSize - taskPosition, the task id moved
 // to the back.
 void CMI::recedeJobInQueue(int queueId, int taskPosition, int n){
-	advanceTaskInQueue(queueId, taskPosition, -n);
+	advanceJobInQueue(queueId, taskPosition, -n);
 }
 
 // Preempt the currently running job on core coreId with the job at the

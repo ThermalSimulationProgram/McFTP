@@ -8,62 +8,90 @@
 
 using namespace std;
 
-
+/*****************BASIC EXPERIMENT SETTINGS*******************/
+// The name of the experiment
 string 						Scratch::name;
-int 						Scratch::nstage;
+// The number of used cores
+int 						Scratch::nCores;
+// The duration of the experiment, in microsecond
 unsigned long 				Scratch::duration;
-unsigned long 				Scratch::adaption_period;
-sem_t 						Scratch::access_sem;
+// Whether to save the results
 bool 						Scratch::isSave;
-string 						Scratch::benchmark;
+// This semaphore protects the access to internal members
+sem_t 						Scratch::access_sem;
+	
+// This variable indicates if the clock frequency of the core is fixed
+bool 						Scratch::fixedFrequency;
+// This variable indicates if the cores will always be active
+bool 						Scratch::fixedActive;
+// This variable indicates if the tested approach is static
+bool 						Scratch::is_staticApproach;
+
+
+/*****************TASK SETTINGS*******************/
+// This vector stores the periodicity of all tasks	
 vector<_task_periodicity> 	Scratch::periodicities;
+// This vector stores the types of all tasks
 vector<_task_type> 			Scratch::task_types;
-vector<TaskArgument>  			Scratch::all_task_data;
+// This vector stores the auxiliary data of all tasks
+vector<TaskArgument>  		Scratch::all_task_data;
 
-vector<struct timespec> 	Scratch::WCETS;
-
-bool 					Scratch::fixedFrequency;
-bool 					Scratch::fixedActive;
-bool 					Scratch::is_staticApproach;
+	
+/*****************AUXILIARY VARIABLES*******************/
+// The tons and toffs for all the cores, if the user want to periodically switch
+// the cores to idle state
 vector<struct timespec> 	Scratch::PBOO_tons;
 vector<struct timespec> 	Scratch::PBOO_toffs;
+// the adaption period for an online approach
+unsigned long 				Scratch::adaption_period;
+// the name of the executed benchmark
+string 						Scratch::benchmark;
+// The worst-case execution times of the task on every core, if the
+// pipelined architecture is adopted
+vector<struct timespec> 	Scratch::WCETS;
 
 
-void Scratch::initialize(int _nstage,
+// This function initialize all the members, it needs the name of the experiment,
+// the number of used cores and experiment duration
+void Scratch::initialize(int _nCores,
 	unsigned long _duration,
 	string _name){
-
-	nstage 			= _nstage;
-	duration 		= _duration;
-	name            = _name;
+	// one second in microsecond
 	unsigned long onesecond = 1000000;
-	adaption_period = 1*onesecond;
-	isSave 			= true;
-	benchmark 		= "default";
-	fixedFrequency  = false;
-	fixedActive 	= false;
-	is_staticApproach= true;
+	// we directly set the vairables and do not check whether they
+	// are valid, because Scratch is only for storing data
+	nCores            = _nCores;
+	duration          = _duration;
+	name              = _name;
+	
+	// set to defaults
+	adaption_period   = 1*onesecond;
+	isSave            = true;
+	benchmark         = "default";
+	fixedFrequency    = false;
+	fixedActive       = false;
+	is_staticApproach = true;
+	WCETS             = vector<struct timespec> (nCores, TimeUtil::Micros(50000));
+	PBOO_tons         = vector<struct timespec> (nCores, TimeUtil::Micros(100000));
+	PBOO_toffs        = vector<struct timespec> (nCores, TimeUtil::Micros(10000));
 
-
-	WCETS = vector<struct timespec> (nstage, TimeUtil::Micros(50000));
-	PBOO_tons = vector<struct timespec> (nstage, TimeUtil::Micros(100000));
-	PBOO_toffs = vector<struct timespec> (nstage, TimeUtil::Micros(10000));
-
+	// mutex semaphore
 	sem_init(&access_sem, 0, 1);
 }
 
+// This function prints the content of all members
 void Scratch::print(){
-	cout << "nstage \t\t\t= " << nstage << endl;
-	cout << "duration \t\t= " << duration << endl;
-	cout << "name \t\t\t= " << name << endl;
-	cout << "adaption_period \t= " << adaption_period << endl;
-	cout << "fixedFrequency \t= " << fixedFrequency << endl;
-	cout << "fixedActive \t= " << fixedActive << endl;
+	cout << "nCores 			= " << nCores << endl;
+	cout << "duration 			= " << duration << endl;
+	cout << "name 				= " << name << endl;
+	cout << "adaption_period 	= " << adaption_period << endl;
+	cout << "fixedFrequency 	= " << fixedFrequency << endl;
+	cout << "fixedActive 		= " << fixedActive << endl;
 	displayvector(TimeUtil::convert_us(PBOO_tons) , "PBOO_tons");
 	displayvector(TimeUtil::convert_us(PBOO_toffs), "PBOO_toffs");
 	printAllTaskInfo();
 }
-
+// This function prints the information of all tasks
 void Scratch::printAllTaskInfo(){
 	for (int i = 0; i < (int)all_task_data.size(); ++i)
 	{	
@@ -71,31 +99,7 @@ void Scratch::printAllTaskInfo(){
 	}
 }
 
-void Scratch::addTask(_task_type type, _task_periodicity p, TaskArgument data){
-	task_types.push_back(type);
-	periodicities.push_back(p);
-	all_task_data.push_back(data);
-}
-
-void Scratch::setBenchmark(const string& name){
-	sem_wait(&access_sem);
-	benchmark = name;
-	sem_post(&access_sem);
-}
-
-
-void Scratch::setSavingFile(bool f){
-	sem_wait(&access_sem);
-	isSave = f;
-	sem_post(&access_sem);
-}
-
-bool Scratch::isSaveFile(){
-	sem_wait(&access_sem);
-	bool ret = isSave;
-	sem_post(&access_sem);
-	return ret;
-}
+/*********************SET FUNCTIONS****************************/
 
 void Scratch::setName(string newname){
 	sem_wait(&access_sem);
@@ -103,18 +107,11 @@ void Scratch::setName(string newname){
 	sem_post(&access_sem);
 }
 
-void Scratch::setAdaptionPeriod(unsigned long p){
+void Scratch::setSavingFile(bool f){
 	sem_wait(&access_sem);
-	adaption_period = p;
+	isSave = f;
 	sem_post(&access_sem);
 }
-
-void Scratch::setWCETs(vector<struct timespec> wcets){
-	sem_wait(&access_sem);
-	WCETS = wcets;
-	sem_post(&access_sem);
-}
-
 
 void Scratch::setFixedFrequency(bool ff){
 	sem_wait(&access_sem);
@@ -131,6 +128,14 @@ void Scratch::setStaticApproach(bool sa){
 	is_staticApproach = sa;
 	sem_post(&access_sem);
 }
+
+// Add a task with its information
+void Scratch::addTask(_task_type type, _task_periodicity p, TaskArgument data){
+	task_types.push_back(type);
+	periodicities.push_back(p);
+	all_task_data.push_back(data);
+}
+
 void Scratch::setPBOOTons(std::vector<struct timespec> tons){
 	sem_wait(&access_sem);
 	PBOO_tons = tons;
@@ -142,7 +147,53 @@ void Scratch::setPBOOToffs(std::vector<struct timespec> toffs){
 	sem_post(&access_sem);
 }
 
+void Scratch::setAdaptionPeriod(unsigned long p){
+	sem_wait(&access_sem);
+	adaption_period = p;
+	sem_post(&access_sem);
+}
 
+void Scratch::setBenchmark(const string& name){
+	sem_wait(&access_sem);
+	benchmark = name;
+	sem_post(&access_sem);
+}
+
+void Scratch::setWCETs(vector<struct timespec> wcets){
+	sem_wait(&access_sem);
+	WCETS = wcets;
+	sem_post(&access_sem);
+}
+
+
+/*********************GET FUNCTIONS****************************/
+
+string Scratch::getName(){
+	sem_wait(&access_sem);
+	string ret = name;
+	sem_post(&access_sem);
+	return ret;
+}
+int Scratch::getNcores(){
+	sem_wait(&access_sem);
+	int ret = nCores;
+	sem_post(&access_sem);
+	return ret;
+}
+
+unsigned long Scratch::getDuration(){
+	sem_wait(&access_sem);
+	unsigned long ret = duration;
+	sem_post(&access_sem);
+	return ret;
+}
+
+bool Scratch::isSaveFile(){
+	sem_wait(&access_sem);
+	bool ret = isSave;
+	sem_post(&access_sem);
+	return ret;
+}
 
 bool Scratch::isFixedFrequency(){
 	sem_wait(&access_sem);
@@ -163,41 +214,30 @@ bool Scratch::isStaticApproach(){
 	return ret;
 }
 
-std::vector<struct timespec> Scratch::getPBOOTons(){
-	sem_wait(&access_sem);
-	vector<struct timespec> ret = PBOO_tons;
-	sem_post(&access_sem);
-	return ret;
-}
-std::vector<struct timespec> Scratch::getPBOOToffs(){
-	sem_wait(&access_sem);
-	vector<struct timespec> ret = PBOO_toffs;
-	sem_post(&access_sem);
-	return ret;
-}
 
-
-
-vector<struct timespec> Scratch::getWCETs(){
-	sem_wait(&access_sem);
-	vector<struct timespec> ret = WCETS;
-	sem_post(&access_sem);
-	return ret;
-}
-
-
-vector<_task_type>	Scratch::getAllTaskTypes(){
-	return task_types;
-}
 vector<_task_periodicity> 	Scratch::getAllTaskPeriodicity(){
 	// vector<_task_periodicity> ret;
-	return periodicities;
+	sem_wait(&access_sem);
+	vector<_task_periodicity> ret = periodicities;
+	sem_post(&access_sem);
+	return ret;
+}
+
+vector<_task_type>	Scratch::getAllTaskTypes(){
+	sem_wait(&access_sem);
+	vector<_task_type> ret = task_types;
+	sem_post(&access_sem);
+	return ret;
 }
 
 vector<TaskArgument>  Scratch::getTaskData(){
-	return all_task_data;
+	sem_wait(&access_sem);
+	vector<TaskArgument> ret = all_task_data;
+	sem_post(&access_sem);
+	return ret;
 }
 
+// Get the TaskArgument of the task whose id is taskid
 TaskArgument  Scratch::getTaskData(int taskid){
 	int id = 0;
 	bool found = false;
@@ -217,17 +257,17 @@ TaskArgument  Scratch::getTaskData(int taskid){
 }
 
 
-std::string  Scratch::getApproachName(){
-	return "test";
-}
-
-
-string Scratch::getBenchmarkName(){
+std::vector<struct timespec> Scratch::getPBOOTons(){
 	sem_wait(&access_sem);
-	string ret = benchmark;
+	vector<struct timespec> ret = PBOO_tons;
 	sem_post(&access_sem);
 	return ret;
-
+}
+std::vector<struct timespec> Scratch::getPBOOToffs(){
+	sem_wait(&access_sem);
+	vector<struct timespec> ret = PBOO_toffs;
+	sem_post(&access_sem);
+	return ret;
 }
 
 unsigned long Scratch::getAdaptionPeriod(){
@@ -238,26 +278,20 @@ unsigned long Scratch::getAdaptionPeriod(){
 
 }
 
-
-
-string Scratch::getName(){
+vector<struct timespec> Scratch::getWCETs(){
 	sem_wait(&access_sem);
-	string ret = name;
-	sem_post(&access_sem);
-	return ret;
-}
-int Scratch::getNcores(){
-	sem_wait(&access_sem);
-	int ret = nstage;
+	vector<struct timespec> ret = WCETS;
 	sem_post(&access_sem);
 	return ret;
 }
 
-unsigned long Scratch::getDuration(){
+string Scratch::getBenchmarkName(){
 	sem_wait(&access_sem);
-	unsigned long ret = duration;
+	string ret = benchmark;
 	sem_post(&access_sem);
 	return ret;
 }
 
-
+std::string  Scratch::getApproachName(){
+	return "test";
+}

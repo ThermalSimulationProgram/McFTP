@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string>
 
+/* 33 benchmarks are defined for cpu stress test*/
 
 #include "benchmarks/MWC.h"
 
