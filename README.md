@@ -1,7 +1,7 @@
 # McFTP
 Multicore Fast Thermal Prototyping framework
 
-This is the very first version. I am currently working on debugging, writing 
+This is the first version. I am currently working on debugging, writing 
 comments and tutorials of this program. So, there may be bugs in the code...
 
 ## Very simple instruction of installation:  
@@ -28,7 +28,7 @@ a. sudo cpupower -c all frequency-set -g userspace
 b. cd build
 #### run the program 
 c. sudo ./demo XMLFILENAME  
-The XMLFILENAME should specify the path to the xml file which describe the settings of
+The XMLFILENAME should specify the path to the xml file which describes the settings of
 the experiment.
 
 
