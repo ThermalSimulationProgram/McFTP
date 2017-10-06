@@ -30,6 +30,13 @@ typedef struct{
 }DynamicInfo;
 
 
+typedef struct 
+{
+	std::string counterName;
+	double coefA;
+	double coefB;
+}SoftTemperatureSensorConfig;
+
 
 
 #endif

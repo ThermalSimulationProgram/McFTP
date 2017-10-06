@@ -17,6 +17,10 @@ int 						Scratch::nCores;
 unsigned long 				Scratch::duration;
 // Whether to save the results
 bool 						Scratch::isSave;
+// Whether to use hardware temperature sensors
+bool 						Scratch::useHardwareTempSensor;
+// Whether to use soft temperature sensors
+bool 						Scratch::useSoftTempSensor;
 // This semaphore protects the access to internal members
 sem_t 						Scratch::access_sem;
 	
@@ -27,6 +31,8 @@ bool 						Scratch::fixedActive;
 // This variable indicates if the tested approach is static
 bool 						Scratch::is_staticApproach;
 
+
+vector<SoftTemperatureSensorConfig> Scratch::soft_sensors;
 
 /*****************TASK SETTINGS*******************/
 // This vector stores the periodicity of all tasks	
@@ -55,25 +61,27 @@ vector<struct timespec> 	Scratch::WCETS;
 // the number of used cores and experiment duration
 void Scratch::initialize(int _nCores,
 	unsigned long _duration,
-	string _name){
+	string _name, bool _useHardwareTempSensor, bool _useSoftTempSensor){
 	// one second in microsecond
 	unsigned long onesecond = 1000000;
 	// we directly set the vairables and do not check whether they
 	// are valid, because Scratch is only for storing data
-	nCores            = _nCores;
-	duration          = _duration;
-	name              = _name;
+	nCores                = _nCores;
+	duration              = _duration;
+	name                  = _name;
+	useHardwareTempSensor = _useHardwareTempSensor;
+	useSoftTempSensor     = _useSoftTempSensor;
 	
 	// set to defaults
-	adaption_period   = 1*onesecond;
-	isSave            = true;
-	benchmark         = "default";
-	fixedFrequency    = false;
-	fixedActive       = false;
-	is_staticApproach = true;
-	WCETS             = vector<struct timespec> (nCores, TimeUtil::Micros(50000));
-	PBOO_tons         = vector<struct timespec> (nCores, TimeUtil::Micros(100000));
-	PBOO_toffs        = vector<struct timespec> (nCores, TimeUtil::Micros(10000));
+	adaption_period       = 1*onesecond;
+	isSave                = true;
+	benchmark             = "default";
+	fixedFrequency        = false;
+	fixedActive           = false;
+	is_staticApproach     = true;
+	WCETS                 = vector<struct timespec> (nCores, TimeUtil::Micros(50000));
+	PBOO_tons             = vector<struct timespec> (nCores, TimeUtil::Micros(100000));
+	PBOO_toffs            = vector<struct timespec> (nCores, TimeUtil::Micros(10000));
 
 	// mutex semaphore
 	sem_init(&access_sem, 0, 1);
@@ -166,6 +174,14 @@ void Scratch::setWCETs(vector<struct timespec> wcets){
 }
 
 
+void Scratch::addSoftTempSensor(string name, double _coefA, double _coefB){
+	SoftTemperatureSensorConfig temp;
+	temp.counterName = name;
+	temp.coefA = _coefA;
+	temp.coefB = _coefB;
+	soft_sensors.push_back(temp);
+}
+
 /*********************GET FUNCTIONS****************************/
 
 string Scratch::getName(){
@@ -186,6 +202,13 @@ unsigned long Scratch::getDuration(){
 	unsigned long ret = duration;
 	sem_post(&access_sem);
 	return ret;
+}
+
+bool Scratch::isUsingHardwareTempSensor(){
+	return useHardwareTempSensor;
+}
+bool Scratch::isUsingSoftTempSensor(){
+	return useSoftTempSensor;
 }
 
 bool Scratch::isSaveFile(){
@@ -295,3 +318,8 @@ string Scratch::getBenchmarkName(){
 std::string  Scratch::getApproachName(){
 	return "test";
 }
+
+
+// std::vector<SoftTemperatureSensorConfig> Scratch::getSoftTempSensorsConfig(){
+// 	return soft_sensors;
+// }

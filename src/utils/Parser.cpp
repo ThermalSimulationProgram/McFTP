@@ -17,6 +17,8 @@
 #include "utils/FileOperator.h"
 #include "core/structdef.h"
 
+#include "performance_counter/PerformanceCounters.h"
+
 
 
 using namespace pugi;
@@ -33,6 +35,11 @@ bool string2bool(string s){
 	}
 }
 
+void ParserPAPITest(int argc, char** argv){
+	PerformanceCounters::PAPI_test(argc, argv);
+}
+
+
 Parser::Parser(string _xml_path){
 	xml_path = _xml_path;
 }
@@ -40,6 +47,7 @@ Parser::Parser(string _xml_path){
 // This function parse the file pointed by xml_path, and then 
 // save all necessary data required by the simulation in Scratch class.
 int Parser::parseFile(){
+	
 	int ret = 0;
 
 	// load the xml file
@@ -54,7 +62,22 @@ int Parser::parseFile(){
 	// get experiment name and duration
 	xml_node sim_node      = doc.child("experiment");
 	string name            = sim_node.attribute("name").value();
+	xml_node TempSensors   = sim_node.child("temperature_sensors");
 
+	bool useHardwareTempSensor;
+	bool useSoftTempSensor;
+	for (xml_node sensor = TempSensors.first_child(); sensor; sensor = sensor.next_sibling())
+	{
+		string sensor_type = sensor.attribute("type").as_string();
+		if (sensor_type == "soft"){
+			useSoftTempSensor = true;
+		}else if (sensor_type == "hardware"){
+			useHardwareTempSensor = true;
+		}
+
+	}
+	
+	
 
 	// save the duration in microsecond unit
 	unsigned long duration = parseTimeMircroSecond(sim_node.child("duration"));
@@ -64,7 +87,7 @@ int Parser::parseFile(){
 	int ncores             = (int) stoul(processor.attribute("core_number").value(), NULL, 0);
 
 	// put all the necessary input parameters in scratch
-	Scratch::initialize(ncores, duration, name);
+	Scratch::initialize(ncores, duration, name, useHardwareTempSensor, useSoftTempSensor);
 
 	string fixed_frequency = processor.attribute("fixed_frequency").as_string();
 	string fixed_active = processor.attribute("fixed_active").as_string();
@@ -107,6 +130,20 @@ int Parser::parseFile(){
 			Scratch::setSavingFile(true);
 		}else{
 			cout << "Parser warning: parameter of saving result error! set to default TRUE value\n";
+		}
+	}
+
+	
+	if (useSoftTempSensor){
+		xml_node softSensors 	= sim_node.child("soft_temperature_sensor_counters");
+
+		for (xml_node counter = softSensors.first_child(); counter; counter = counter.next_sibling()){
+
+			string name = counter.attribute("name").as_string();
+
+			double coef_a = counter.attribute("coefficient_a").as_double();
+			double coef_b = counter.attribute("coefficient_b").as_double();
+			Scratch::addSoftTempSensor(name, coef_a, coef_b);
 		}
 	}
 

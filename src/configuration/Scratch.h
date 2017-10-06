@@ -18,7 +18,7 @@ class Scratch{
 public:
 	// This function initialize all the members, it needs the name of the experiment,
 	// the number of used cores and experiment duration
-	static void 					initialize(int, unsigned long, std::string);
+	static void 					initialize(int, unsigned long, std::string, bool, bool);
 	// This function prints the content of all members
 	static void 					print();
 	// This function prints the information of all tasks
@@ -38,12 +38,16 @@ public:
 	static void 					setAdaptionPeriod(unsigned long);	
 	static void 					setBenchmark(const std::string&);
 	static void 					setWCETs(std::vector<struct timespec>);
+
+	static void 					addSoftTempSensor(std::string name, double _coefA, double _coefB);
 	
 	
 	/*********************GET FUNCTIONS****************************/
 	static std::string 				getName();
 	static int 						getNcores();
 	static unsigned long 			getDuration();
+	static bool 					isUsingHardwareTempSensor();
+	static bool 					isUsingSoftTempSensor();
 	static bool 					isSaveFile();
 	static bool 					isFixedFrequency();
 	static bool 					isFixedActive();
@@ -62,6 +66,10 @@ public:
 	static std::vector<struct timespec>	getWCETs();
 	static std::string 					getBenchmarkName();
 	static std::string 					getApproachName();
+
+	static std::vector<SoftTemperatureSensorConfig> soft_sensors;
+
+	// static std::vector<SoftTemperatureSensorConfig> getSoftTempSensorsConfig();
 	
 	
 private:
@@ -74,6 +82,10 @@ private:
 	static unsigned long 			duration;
 	// Whether to save the results
 	static bool 					isSave;
+	// Whether to use hardware temperature sensors
+	static bool 					useHardwareTempSensor;
+	// Whether to use soft temperature sensors
+	static bool 					useSoftTempSensor;
 	// This semaphore protects the access to internal members
 	static sem_t 					access_sem;
 
@@ -84,6 +96,8 @@ private:
 	// This variable indicates if the tested approach is static
 	static bool 					is_staticApproach;
 
+
+	
 
 	/*****************TASK SETTINGS*******************/
 	// This vector stores the periodicity of all tasks

@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "core/TaskArgument.h"
+
 #include "utils/pugixml.hpp"
 
 #include "utils/utils.h"
@@ -32,6 +33,7 @@ public:
 	
 };
 
+void ParserPAPITest(int argc, char** argv);
 
 template<typename T> T formatTimeMicros(double v, const std::string& unit){
 	T r;

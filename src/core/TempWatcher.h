@@ -13,6 +13,7 @@
 #include <time.h>
 
 #include "pthread/Thread.h"
+#include "performance_counter/PerformanceCounters.h"
 
 #define SENSORS_ERR_WILDCARDS	1 /* Wildcard found in chip name */
 #define SENSORS_ERR_NO_ENTRY	2 /* No such subfeature known */
@@ -147,17 +148,39 @@ typedef enum sensors_subfeature_type {
 class TempWatcher: public Thread{
 
 protected:
-	std::vector<std::vector<double> > tempTrace;
-	std::vector<double> curTemp;
+	std::vector<std::vector<double> > hardwareTempTrace;
 
+	std::vector<std::vector<double> > softTempTrace;
 
+	std::vector<double> curHardwareTemp;
+
+	std::vector<double> curSoftTemp;
+
+	bool useHardwareSensor;
+
+	bool useSoftSensor;
+
+	PerformanceCounters temperatureCounters;
+
+	std::vector<double> coefAVector;
+
+	std::vector<double> coefBVector;
+	
 	struct timespec samplingPeriod;
 
 	sem_t temp_sem;
 
 
+	static double			   calcMaxTemp(std::vector<std::vector<double> > temp);
+	static double			   calcMeanMaxTemp(std::vector<std::vector<double> > temp);
+	static std::vector<double> calcMeanTemp(std::vector<std::vector<double> > temp);
+
+
 public:
 	TempWatcher(unsigned, unsigned);
+
+	TempWatcher(unsigned, unsigned, bool, bool);
+
 	~TempWatcher();
 	
 	void activate();
@@ -167,7 +190,9 @@ public:
 
 	void wrapper();
 
-	static std::vector<double> get_cpu_temperature();
+	std::vector<double> get_cpu_temperature();
+
+	std::vector<double> get_soft_cpu_temperature();
 
 	std::vector<double> getCurTemp();
 
@@ -178,6 +203,15 @@ public:
 	std::vector<double> getMeanTemp();
 
 	std::vector<std::vector<double> > getAllTempTrace();
+
+	double getMaxSoftSensorTemp();
+
+	double getMeanMaxSoftSensorTemp();
+
+	std::vector<double> getMeanSoftSensorTemp();
+
+	std::vector<std::vector<double> > getAllSoftSensorTempTrace();
+
 };
 
 
