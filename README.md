@@ -27,7 +27,7 @@ a. sudo cpupower -c all frequency-set -g userspace
 #### then go to the program directory
 b. cd build
 #### run the program 
-c. sudo ./demo XMLFILENAME  
+c. sudo ./mcftp XMLFILENAME  
 The XMLFILENAME should specify the path to the xml file which describes the settings of
 the experiment.
 
