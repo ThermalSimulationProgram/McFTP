@@ -14,6 +14,7 @@
 
 #include "pthread/Thread.h"
 #include "performance_counter/PerformanceCounters.h"
+#include "CMIFunctionPointerDefs.h"
 
 #define SENSORS_ERR_WILDCARDS	1 /* Wildcard found in chip name */
 #define SENSORS_ERR_NO_ENTRY	2 /* No such subfeature known */
@@ -170,6 +171,13 @@ protected:
 
 	sem_t temp_sem;
 
+	// In the case of using soft temperature sensor,
+	// mcftp will call the default linear soft temperature calculator to get the temperature
+	// for each given performance counter, if this variable is set to NULL
+	// Otherwise, this function will be called to obtain the temperatures according to
+	// the values of the performance counters
+	user_defined_soft_temperature_sensor softSensor;
+
 
 	static double			   calcMaxTemp(std::vector<std::vector<double> > temp);
 	static double			   calcMeanMaxTemp(std::vector<std::vector<double> > temp);
@@ -189,6 +197,10 @@ public:
 	void join();
 
 	void wrapper();
+
+	bool isSoftSensorEnabled();
+
+	bool addSoftLinearTemperatureSensor(std::string, double a, double b);
 
 	std::vector<double> get_cpu_temperature();
 

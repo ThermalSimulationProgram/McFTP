@@ -5,7 +5,7 @@
 #include <cstring>
 
 extern "C" {
-#include "../../lib/papi-5.5.1/src/testlib/papi_test.h"
+#include "../../third_party_lib/papi-5.5.1/src/testlib/papi_test.h"
 }
 
 

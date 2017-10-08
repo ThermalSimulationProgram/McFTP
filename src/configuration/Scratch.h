@@ -11,6 +11,7 @@
 #include "utils/TimeUtil.h"
 #include "core/structdef.h"
 #include "core/TaskArgument.h"
+#include "CMIFunctionPointerDefs.h"
 
 // This class stores global parameters of the experiment
 
@@ -70,7 +71,13 @@ public:
 	static std::vector<SoftTemperatureSensorConfig> soft_sensors;
 
 	// static std::vector<SoftTemperatureSensorConfig> getSoftTempSensorsConfig();
-	
+	// Whether to use hardware temperature sensors
+	static bool 					useHardwareTempSensor;
+	// Whether to use soft temperature sensors
+	static bool 					useSoftTempSensor;
+
+	static int 						isAppendSaveFile;
+	static user_defined_soft_temperature_sensor softSensor;
 	
 private:
 	/*****************BASIC EXPERIMENT SETTINGS*******************/
@@ -82,10 +89,7 @@ private:
 	static unsigned long 			duration;
 	// Whether to save the results
 	static bool 					isSave;
-	// Whether to use hardware temperature sensors
-	static bool 					useHardwareTempSensor;
-	// Whether to use soft temperature sensors
-	static bool 					useSoftTempSensor;
+	
 	// This semaphore protects the access to internal members
 	static sem_t 					access_sem;
 

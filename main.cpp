@@ -2,7 +2,9 @@
 #include <string>
 #include <vector>
 
-#include "core/CMI.h"
+#include "CMI.h"
+//#include "performance_counter/PerformanceCounters.h"
+#include "utils/Parser.h"
 #include "UnitTest/UnitTest.h"
 
 using namespace std;
@@ -35,8 +37,8 @@ void test_online_approach2 (CMI* cmi, const DynamicInfo& p, std::vector<StateTab
 	if (p.tasksInQueue[0].size() > 10){
 		cmi->displayAllQueues();
 		cout << "task move"<<endl;
-		cmi->moveTaskToAnotherQueue(0, 2, 1, 2);
-		cmi->moveTaskToAnotherQueue(0, 4, 2, 3);
+		cmi->moveJobToAnotherQueue(0, 2, 1, 2);
+		cmi->moveJobToAnotherQueue(0, 4, 2, 3);
 		cmi->displayAllQueues();
 	}
 }
@@ -45,8 +47,8 @@ void test_online_approach3 (CMI* cmi, const DynamicInfo& p, std::vector<StateTab
 	if (p.tasksInQueue[0].size() > 10){
 		cmi->displayAllQueues();
 		cout << "task advance"<<endl;
-		cmi->advanceTaskInQueue(0, 8, 9);
-		cmi->advanceTaskInQueue(2, 4, 2);
+		cmi->advanceJobInQueue(0, 8, 9);
+		cmi->advanceJobInQueue(2, 4, 2);
 		cmi->displayAllQueues();
 	}	
 }
@@ -57,10 +59,21 @@ int  test_online_task_allocator (CMI* cmi, int _taskId){
 }
 
 
+void runExperiment(int argc, char** argv);
 
 
 int main(int argc, char** argv){
-	/******************* PARSE INPUT ARGUMENTS *******************/
+	//PerformanceCounters::printCounterInfo();
+	//ParserPAPITest(argc, argv);
+	runExperiment(argc, argv);
+	
+}
+
+
+
+
+void runExperiment(int argc, char** argv){
+/******************* PARSE INPUT ARGUMENTS *******************/
 
 	string file;
 
@@ -115,11 +128,6 @@ int main(int argc, char** argv){
 	delete cmi;
 
 }
-
-
-
-
-
 
 
 

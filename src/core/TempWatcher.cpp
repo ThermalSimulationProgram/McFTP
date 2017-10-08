@@ -62,15 +62,11 @@ TempWatcher::TempWatcher(unsigned period, unsigned _id, bool useHardware, bool u
 
     if (useSoftSensor){
         temperatureCounters.initialize();
+        softSensor = Scratch::softSensor;
         for (int i = 0; i < (int) Scratch::soft_sensors.size(); ++i)
         {
-           if (! temperatureCounters.addCounter(Scratch::soft_sensors[i].counterName) ) {
-                printf("Warning: TempWatcher::TempWatcher failed to add performance counter %s\n", 
-                    Scratch::soft_sensors[i].counterName);
-           }else{
-                coefAVector.push_back(Scratch::soft_sensors[i].coefA);
-                coefBVector.push_back(Scratch::soft_sensors[i].coefB);
-           }
+            addSoftLinearTemperatureSensor(Scratch::soft_sensors[i].counterName,
+                Scratch::soft_sensors[i].coefA, Scratch::soft_sensors[i].coefB); 
         }
     }
 }
@@ -136,8 +132,29 @@ void TempWatcher::wrapper(){
     #endif
 }
 
+bool TempWatcher::isSoftSensorEnabled(){
+    return useSoftSensor;
+}
 
+bool TempWatcher::addSoftLinearTemperatureSensor(std::string counterName, double a, double b){
+    if (useSoftSensor){
+        temperatureCounters.initialize();
 
+        if (! temperatureCounters.addCounter(counterName) ) {
+            printf("Warning: TempWatcher::addSoftLinearTemperatureSensor failed to add performance counter %s\n", 
+                counterName);
+            return false;
+        }else{
+            coefAVector.push_back(a);
+            coefBVector.push_back(b);
+            return true;
+        }
+    }else{
+        printf("Warning: TempWatcher::addSoftLinearTemperatureSensor failed to add soft sensor %s because soft temperature sensor is not enabled!\n",
+            counterName);
+        return false;
+    }
+}
 vector<double> TempWatcher::getCurTemp(){
     vector<double> ret;
     sem_wait(&temp_sem);
@@ -212,13 +229,23 @@ std::vector<double> TempWatcher::get_soft_cpu_temperature(){
     std::vector<double> ret;
     if (useSoftSensor){
         temperatureCounters.readAllValues();
-        for (int i = 0; i < temperatureCounters.getCounterNumber(); ++i)
-        {
-            long long v = temperatureCounters.getCounterValue(i);
-            double temp = coefAVector[i] * v + coefBVector[i];
-            ret.push_back(temp);
-        }
 
+        if (softSensor == NULL){
+            for (int i = 0; i < temperatureCounters.getCounterNumber(); ++i)
+            {
+                long long v = temperatureCounters.getCounterValue(i);
+                double temp = coefAVector[i] * v + coefBVector[i];
+                ret.push_back(temp);
+            } 
+        }else{
+            vector<long long> values;
+            for (int i = 0; i < temperatureCounters.getCounterNumber(); ++i)
+            {
+                values.push_back(temperatureCounters.getCounterValue(i));  
+            } 
+
+            ret = softSensor(values);
+        }
     }
 
     return ret;

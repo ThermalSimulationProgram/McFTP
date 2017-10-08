@@ -31,6 +31,10 @@ bool 						Scratch::fixedActive;
 // This variable indicates if the tested approach is static
 bool 						Scratch::is_staticApproach;
 
+int 						Scratch::isAppendSaveFile;
+
+user_defined_soft_temperature_sensor Scratch::softSensor;
+
 
 vector<SoftTemperatureSensorConfig> Scratch::soft_sensors;
 
@@ -71,7 +75,9 @@ void Scratch::initialize(int _nCores,
 	name                  = _name;
 	useHardwareTempSensor = _useHardwareTempSensor;
 	useSoftTempSensor     = _useSoftTempSensor;
-	
+	isAppendSaveFile	  = 0;
+
+
 	// set to defaults
 	adaption_period       = 1*onesecond;
 	isSave                = true;

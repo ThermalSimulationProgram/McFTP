@@ -8,7 +8,7 @@
 #include <semaphore.h>
 
 #include "pthread/Thread.h"
-#include "core/CMI.h"
+#include "CMI.h"
 
 
 
@@ -48,9 +48,6 @@ public:
 	void setPeriod(unsigned long period_us);
 
 };
-
-
-
 
 
 

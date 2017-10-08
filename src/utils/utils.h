@@ -95,10 +95,12 @@ template<typename T>
 std::string vectorTostring(const std::vector<T>& data){
 	std::stringstream out;
 	for(int i = 0; i < (int)data.size(); i++) {
-		if ( i != (int)data.size()-1 )
-			out << (double)data[i] << ", " ;
-		else
-			out << (double)data[i];
+		out << (double)data[i];
+		if ( i != (int)data.size()-1 ){
+			out << ", " ;
+		}
+		
+			
 	}
 	return out.str();
 }
