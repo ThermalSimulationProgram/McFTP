@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <experiment name="soft_temperature_sensor_test">
-	<duration unit="sec" value="100"/>
+	<duration unit="sec" value="20"/>
 	<save_result value="True"/>
 	<processor core_number="2" fixed_active="False" fixed_frequency="True"/>
 	<temperature_sensors>
