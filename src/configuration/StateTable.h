@@ -42,6 +42,8 @@ public:
 	// get the index of the core
 	int getTargetCoreId() const;
 
+	void print();
+
 
 };
 

@@ -24,7 +24,7 @@ using namespace std;
 
 
 #define _INFO 0
-#define _DEBUG 0
+#define _DEBUG 1
 
 
 
@@ -236,7 +236,7 @@ std::vector<double> TempWatcher::get_soft_cpu_temperature(){
             for (int i = 0; i < temperatureCounters.getCounterNumber(); ++i)
             {
                 long long v = temperatureCounters.getCounterValue(i);
-                cout << "debug: performanc counter value: " << v << endl;
+                //cout << "debug: performanc counter value: " << v << endl;
                 double temp = coefAVector[i] * v + coefBVector[i];
                 ret.push_back(temp);
             } 

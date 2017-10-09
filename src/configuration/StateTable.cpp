@@ -25,7 +25,7 @@ void StateTable::pushState(double f, unsigned long l){
 		exit(1);
 	}
 	// minimal interval length: 100 microseconds
-	if (l > MINIINTERVALLENGTH){
+	if (l < MINIINTERVALLENGTH){
 		l = MINIINTERVALLENGTH;
 	}
 	frequencies.push_back(f);
@@ -65,4 +65,12 @@ int StateTable::getTargetCoreId() const {
 
 unsigned StateTable::getSize(){
 	return lengths.size();
+}
+
+void StateTable::print(){
+	cout << "		frequency 		duration" << endl;
+	for (int i = 0; i < frequencies.size(); ++i)
+	{
+		cout << i << "\t\t" << frequencies[i] << "\t\t" << lengths[i] << endl;  
+	}
 }

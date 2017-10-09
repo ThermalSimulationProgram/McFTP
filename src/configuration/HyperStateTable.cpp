@@ -72,3 +72,7 @@ double HyperStateTable::getState(const  struct timespec& now, struct timespec& l
 struct timespec HyperStateTable::peekNextTime(){
 	return nextActionTime;
 }
+
+void HyperStateTable::print(){
+	statetable.print();
+}

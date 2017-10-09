@@ -42,7 +42,7 @@ public:
 	// will be updated.
 	double getState(const struct timespec& now, struct timespec& length);
 
-	
+	void print();
 
 };
 

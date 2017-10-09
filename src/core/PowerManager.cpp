@@ -198,6 +198,7 @@ void PowerManager::setStateTables(const std::vector<StateTable> & newtables){
 	struct timespec now = TimeUtil::getTime();
 	for (int i = 0; i < (int)tables.size(); ++i){
 		tables[i].setStateTable(newtables[i], now);
+		tables[i].print();
 	}
 	// default: next action time is now
 	nextActionTime = now;

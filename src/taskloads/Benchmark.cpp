@@ -83,7 +83,7 @@ RND(), cpuStressor(){
 
 bool Benchmark::runLoads(unsigned long wcet_us){
 	// get start time
-	unsigned long timeIn = TimeUtil::convert_us(TimeUtil::getTime());
+	unsigned long timeIn;
 	// record the real executed time
 	unsigned long realLength = 0;
 
@@ -94,6 +94,7 @@ bool Benchmark::runLoads(unsigned long wcet_us){
 			setSuspendPoint(); // set a suspend point here. When recieves a suspend signal, pause execution here
 			setCheckBlockBegin();
 
+			timeIn = TimeUtil::convert_us(TimeUtil::getTime());
 			for (int i = 0; i < 3000; ++i){
 				sqrt(RND.mwc32());
 			}
@@ -110,6 +111,7 @@ bool Benchmark::runLoads(unsigned long wcet_us){
 			setSuspendPoint(); // set a suspend point here. When recieves a suspend signal, pause execution here
 			setCheckBlockBegin();
 
+			timeIn = TimeUtil::convert_us(TimeUtil::getTime());
 			cpuStressor.stressWithBenchmark(benchmarkId);
 			timeEnd = TimeUtil::convert_us(TimeUtil::getTime());
 			realLength += timeEnd - timeIn;
