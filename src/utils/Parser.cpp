@@ -64,8 +64,8 @@ int Parser::parseFile(){
 	string name            = sim_node.attribute("name").value();
 	xml_node TempSensors   = sim_node.child("temperature_sensors");
 
-	bool useHardwareTempSensor;
-	bool useSoftTempSensor;
+	bool useHardwareTempSensor = false;
+	bool useSoftTempSensor = false;
 	for (xml_node sensor = TempSensors.first_child(); sensor; sensor = sensor.next_sibling())
 	{
 		string sensor_type = sensor.attribute("type").as_string();

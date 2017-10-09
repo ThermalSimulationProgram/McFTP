@@ -333,7 +333,10 @@ void CMI::runOfflineApproach(std::vector<StateTable>& statetables){
 
 // run the online approach, called by the thermal approach thread 
 void CMI::runOnlineApproach(const DynamicInfo& dinfo, std::vector<StateTable>& statetables){
-	onlineApproach(this, dinfo, statetables);
+	if (onlineApproach != NULL){
+		onlineApproach(this, dinfo, statetables);
+	}
+	
 }
 
 
