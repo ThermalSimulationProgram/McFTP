@@ -172,6 +172,8 @@ public:
 	// in the simulation
 	void getDynamicInfo(DynamicInfo& p);
 
+	bool isOfflineApproach();
+
 	// check whether an online approach is given
 	bool isOnlineApproach();
 	

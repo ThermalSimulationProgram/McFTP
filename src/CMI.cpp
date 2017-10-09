@@ -16,6 +16,23 @@
 	
 using namespace std;
 
+
+void PeriodicThermalManagement(CMI* cmi, std::vector<StateTable>& c){
+	vector<struct timespec> tons = Scratch::getPBOOTons();
+	vector<struct timespec> toffs = Scratch::getPBOOToffs();
+
+	c.clear();
+
+	for (int i = 0; i < (int) tons.size(); ++i)
+	{
+		StateTable temp = StateTable(i);
+		temp.pushState(3200, TimeUtil::convert_us(tons[i]) );
+		temp.pushState(0, TimeUtil::convert_us(toffs[i])) ;
+		c.push_back(temp);
+	}
+}
+
+
 CMI::CMI(string _xml_path):CMI(xml_path, 0){}
 
 CMI::CMI(string _xml_path, int isAppendSaveFile){
@@ -148,6 +165,13 @@ vector<int> CMI::getAllTaskIds(){
 // After setting all the configurations, call this method to initialize all
 // the components needed for the experiment
 void CMI::initializeComponents(){
+
+	if (onlineApproach == NULL && offlineApproach == NULL){
+		vector<struct timespec> tons = Scratch::getPBOOTons();
+		if (tons.size() > 0){
+			offlineApproach =  PeriodicThermalManagement;
+		}
+	}
 	// construct the prcessor, including all workers, dispatchers, 
 	// power manager, temperature watcher, etc.
 	processor = new Processor(this, Scratch::isAppendSaveFile);
@@ -319,6 +343,10 @@ void CMI::finishedJob(Task* _task){
 // in the simulation
 void CMI::getDynamicInfo(DynamicInfo& p){
 	processor->getDynamicInfo(p);
+}
+
+bool CMI::isOfflineApproach(){
+	return offlineApproach != NULL;
 }
 
 bool CMI::isOnlineApproach(){
