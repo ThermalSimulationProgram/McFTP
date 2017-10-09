@@ -2,7 +2,7 @@
 <experiment name="soft_temperature_sensor_test">
 	<duration unit="sec" value="20"/>
 	<save_result value="True"/>
-	<processor core_number="2" fixed_active="False" fixed_frequency="True"/>
+	<processor core_number="6" fixed_active="False" fixed_frequency="True"/>
 	<temperature_sensors>
 		<sensor0 type = "hardware" />
 		<sensor1 type = "soft" />

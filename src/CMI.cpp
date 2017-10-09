@@ -323,7 +323,7 @@ int CMI::getNewJobTargetCore(Task * t, _task_type type){
 		int coreId = taskAllocator(this, t->getTaskId());
 		if (coreId < 0 || coreId >= workerNumber){
 			cout << "CMI::getNewJobTargetCore: Given dynamic task allocator returns an invalid core index. "
-			<< "Modify it to 0! " << endl;
+			<< "It will be modified to default 0! " << endl;
 			coreId = 0;
 		}
 		return coreId;
