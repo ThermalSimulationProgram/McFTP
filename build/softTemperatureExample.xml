@@ -22,8 +22,29 @@
 		<task1 load_type="benchmark" name="task1" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[950]"/>
-			<attached_core value="2"/>
+			<attached_core value="1"/>
 		</task1>
+		<task2 load_type="benchmark" name="task0" periodicity="periodic" type="singlecore">
+			<period unit="ms" value="1000"/>
+			<wcets unit="ms" value="[960]"/>
+			<attached_core value="2"/>
+		</task2>
+		<task3 load_type="benchmark" name="task1" periodicity="periodic" type="singlecore">
+			<period unit="ms" value="1000"/>
+			<wcets unit="ms" value="[950]"/>
+			<attached_core value="3"/>
+		</task3>
+		
+		<task4 load_type="benchmark" name="task0" periodicity="periodic" type="singlecore">
+			<period unit="ms" value="1000"/>
+			<wcets unit="ms" value="[960]"/>
+			<attached_core value="4"/>
+		</task4>
+		<task5 load_type="benchmark" name="task1" periodicity="periodic" type="singlecore">
+			<period unit="ms" value="1000"/>
+			<wcets unit="ms" value="[950]"/>
+			<attached_core value="5"/>
+		</task5>
 	</tasks>
 
 	
