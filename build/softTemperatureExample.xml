@@ -14,12 +14,12 @@
 		<sensor2 name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS:k=0" coefficient_a="1" coefficient_b = "0" />
 	</soft_temperature_sensor_counters>
 	<tasks>
-		<task0 load_type="busy_wait" name="task0" periodicity="periodic" type="singlecore">
+		<task0 load_type="benchmark" name="task0" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[960]"/>
 			<attached_core value="0"/>
 		</task0>
-		<task1 load_type="busy_wait" name="task1" periodicity="periodic" type="singlecore">
+		<task1 load_type="benchmark" name="task1" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[950]"/>
 			<attached_core value="2"/>
