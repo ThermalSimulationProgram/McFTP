@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <experiment name="soft_temperature_sensor_test">
-	<duration unit="sec" value="10"/>
+	<duration unit="sec" value="100"/>
 	<save_result value="True"/>
 	<processor core_number="2" fixed_active="False" fixed_frequency="True"/>
 	<temperature_sensors>
@@ -30,8 +30,8 @@
 	
 	<thermal_approach>
 		<kernel type="PBOO">
-			<ton unit="ms" value="{100, 100}"/>
-			<toff unit="ms" value="{50, 50}"/>
+			<ton unit="ms" value="{2000, 2000}"/>
+			<toff unit="ms" value="{1000, 1000}"/>
 		</kernel>
 	</thermal_approach>
 </experiment>
