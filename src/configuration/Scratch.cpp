@@ -266,6 +266,18 @@ vector<TaskArgument>  Scratch::getTaskData(){
 	return ret;
 }
 
+std::vector<int> 	Scratch::getAllTaskIds(){
+	vector<int> ret;
+	sem_wait(&access_sem);
+	for (int i = 0; i < all_task_data.size(); ++i)
+	{
+		ret.push_back(all_task_data[i].taskId);
+	}
+	sem_post(&access_sem);
+	return ret;
+}
+
+
 // Get the TaskArgument of the task whose id is taskid
 TaskArgument  Scratch::getTaskData(int taskid){
 	int id = 0;

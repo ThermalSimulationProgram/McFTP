@@ -59,7 +59,7 @@ public:
 	static std::vector<_task_type>			getAllTaskTypes();
 	static std::vector<TaskArgument>  		getTaskData();
 	static TaskArgument  					getTaskData(int taskid);
-
+	static std::vector<int> 				getAllTaskIds();
 
 	static std::vector<struct timespec> getPBOOTons();
 	static std::vector<struct timespec> getPBOOToffs();	

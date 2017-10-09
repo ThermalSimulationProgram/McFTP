@@ -46,14 +46,14 @@ CMI::CMI(string _xml_path, int isAppendSaveFile){
 
 	/** create the static task allocator **/
 	// firstly, get all the task indexes
-	vector<int> allTaskIds = processor->getAllTaskIds();
+	vector<int> allTaskIds = Scratch::getAllTaskIds();
 	// then, find the maximal task index, use it as the size of the static task allocator
 	int maxTaskId = maxElement(allTaskIds);
 	// create the static task allocator, default value -1 means invalid task index
 	staticTaskAllocator = vector<int>(maxTaskId+1, -1);
 	// set default task allocator
 	// The tasks are allocated in a circular manner 
-	workerNumber = processor->getWorkerNumber();
+	workerNumber = Scratch::getNcores();
 	// The workers are indexed from 0 to workerNumber-1
 	int workerId = 0; //
 	vector<TaskArgument> xmlTaskData = Scratch::getTaskData();
