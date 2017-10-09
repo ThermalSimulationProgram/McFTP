@@ -175,15 +175,15 @@ std::vector<double> TempWatcher::get_cpu_temperature(){
         int value;
         int TEMP_IDX_MAX = 4;
 
-    // const char* n[] = {  "/sys/class/hwmon/hwmon1/temp2_input",
-    // "/sys/class/hwmon/hwmon1/temp3_input",
-    // "/sys/class/hwmon/hwmon1/temp4_input",
-    // "/sys/class/hwmon/hwmon1/temp5_input"};
+    const char* n[] = {  "/sys/class/hwmon/hwmon1/temp2_input",
+    "/sys/class/hwmon/hwmon1/temp3_input",
+    "/sys/class/hwmon/hwmon1/temp4_input",
+    "/sys/class/hwmon/hwmon1/temp5_input"};
 
-        const char* n[] = { "/home/long/test/test1",
-        "/home/long/test/test2",
-        "/home/long/test/test3",
-        "/home/long/test/test4"};
+        // const char* n[] = { "/home/long/test/test1",
+        // "/home/long/test/test2",
+        // "/home/long/test/test3",
+        // "/home/long/test/test4"};
 
 
 
