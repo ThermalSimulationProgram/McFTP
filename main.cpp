@@ -123,6 +123,7 @@ void runExperiment(int argc, char** argv){
 
 
 	/******************* START THE EXPERIMENT *******************/
+	cmi->initializeComponents();
 	cmi->startRunning();
 
 	delete cmi;

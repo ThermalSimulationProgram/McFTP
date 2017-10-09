@@ -472,13 +472,15 @@ void Processor::saveResults(){
 		}else{
 			saveContentToNewFile(tempSaveName, beginOfData);
 		}
-		
-		appendToFile(tempSaveName, tempwatcher->getMeanTemp());
-		double maxTemp = tempwatcher->getMaxTemp();
-		appendToFile(tempSaveName, vector<double>(1, maxTemp));
+		if (Scratch::isUsingHardwareTempSensor()){
+			appendToFile(tempSaveName, tempwatcher->getMeanTemp());
+			double maxTemp = tempwatcher->getMaxTemp();
+			appendToFile(tempSaveName, vector<double>(1, maxTemp));
 
-		 double MeanMaxTemp = tempwatcher->getMeanMaxTemp();
-		appendToFile(tempSaveName, vector<double>(1, MeanMaxTemp));
+			double MeanMaxTemp = tempwatcher->getMeanMaxTemp();
+			appendToFile(tempSaveName, vector<double>(1, MeanMaxTemp));
+		}
+		
 
 		// appendToFile(tempSaveName, scheduler->getKernelTime());
 
@@ -486,8 +488,9 @@ void Processor::saveResults(){
 		appendToFile(tempSaveName, vector<float>(1, total_cpu_usage));
 
 		// appendContentToFile(tempSaveName, Statistics::getAllMissedDeadline());
-
-		appendToFile(tempSaveName, tempwatcher->getAllTempTrace());
+		if (Scratch::isUsingHardwareTempSensor()){
+			appendToFile(tempSaveName, tempwatcher->getAllTempTrace());
+		}
 
 		vector<string> endOfData = vector<string>(1, "999999999999999999999999999999");
 		appendContentToFile(tempSaveName, endOfData);
@@ -507,7 +510,8 @@ void Processor::saveResults(){
 
 			double MeanMaxTemp = tempwatcher->getMeanMaxSoftSensorTemp();
 			appendToFile(softTempSaveName, vector<double>(1, MeanMaxTemp));
-
+			appendToFile(softTempSaveName, tempwatcher->getAllSoftSensorTempTrace());
+			appendContentToFile(softTempSaveName, endOfData);
 		}
 	}
 }
