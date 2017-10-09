@@ -10,7 +10,7 @@
 
 	<soft_temperature_sensor_counters>
 		<sensor0 name="perf::PERF_COUNT_HW_CPU_CYCLES:k=0" coefficient_a="1" coefficient_b = "0" />
-		<sensor1 name="ARITH" coefficient_a="1" coefficient_b = "0" />
+		<sensor1 name="PAPI_L2_DCA" coefficient_a="1" coefficient_b = "0" />
 		<sensor2 name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS:k=0" coefficient_a="1" coefficient_b = "0" />
 	</soft_temperature_sensor_counters>
 	<tasks>
