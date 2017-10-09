@@ -1,0 +1,14 @@
+<experiment name="test">
+
+   <duration value="2" unit="sec"/>
+
+   <processor core_number="2"/>
+
+   <tasks>
+      <task1 name = "ptask" type="busy_wait" periodicity = "periodic">
+         <period value = "100" unit="ms"/>
+         <attached_cores value = "{0, 1}">
+      </task1>
+   </tasks>
+
+</experiment>
