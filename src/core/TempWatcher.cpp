@@ -141,8 +141,7 @@ bool TempWatcher::addSoftLinearTemperatureSensor(std::string counterName, double
         temperatureCounters.initialize();
 
         if (! temperatureCounters.addCounter(counterName) ) {
-            printf("Warning: TempWatcher::addSoftLinearTemperatureSensor failed to add performance counter %s\n", 
-                counterName);
+            printf("Warning: TempWatcher::addSoftLinearTemperatureSensor failed to add performance counter \n");
             return false;
         }else{
             coefAVector.push_back(a);
@@ -150,8 +149,7 @@ bool TempWatcher::addSoftLinearTemperatureSensor(std::string counterName, double
             return true;
         }
     }else{
-        printf("Warning: TempWatcher::addSoftLinearTemperatureSensor failed to add soft sensor %s because soft temperature sensor is not enabled!\n",
-            counterName);
+        printf("Warning: TempWatcher::addSoftLinearTemperatureSensor failed to add soft sensor because soft temperature sensor is not enabled!\n");
         return false;
     }
 }

@@ -49,7 +49,7 @@ MANDIR	  = ${prefix}/man
 MISCHDRS = 
 MISCOBJS = $(MISCSRCS:.c=.o)
 MISCSRCS =  x86_cpuid_info.c
-MPICC = 
+MPICC = mpicc
 NOOPT = 
 NOTLS     = -DUSE_COMPILER_TLS
 OMPCFLGS = -fopenmp
