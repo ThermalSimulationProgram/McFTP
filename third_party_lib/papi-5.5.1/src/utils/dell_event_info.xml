@@ -1,0 +1,1260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventinfo>
+<hardware>
+  <vendor string="GenuineIntel"/>
+  <vendorCode value="1"/>
+  <model string="Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz"/>
+  <modelCode value="60"/>
+  <cpuRevision value="3.000000"/>
+  <cpuID>
+    <family value="6"/>
+    <model value="60"/>
+    <stepping value="3"/>
+  </cpuID>
+  <cpuMaxMegahertz value="3401"/>
+  <cpuMinMegahertz value="800"/>
+  <threads value="2"/>
+  <cores value="4"/>
+  <sockets value="1"/>
+  <nodes value="1"/>
+  <cpuPerNode value="8"/>
+  <totalCPUs value="8"/>
+</hardware>
+<component index="0" type="CPU" id="perf_event">
+  <eventset type="NATIVE">
+    <event index="0" name="ix86arch::UNHALTED_CORE_CYCLES" desc="count core clock cycles whenever the clock signal on the specific core is running (not halted)">
+        <modifier name="ix86arch::UNHALTED_CORE_CYCLES:e=0" desc="count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="ix86arch::UNHALTED_CORE_CYCLES:i=0" desc="count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:invert"> </modifier>
+        <modifier name="ix86arch::UNHALTED_CORE_CYCLES:c=0" desc="count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="ix86arch::UNHALTED_CORE_CYCLES:t=0" desc="count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:measure any thread"> </modifier>
+    </event>
+    <event index="1" name="ix86arch::INSTRUCTION_RETIRED" desc="count the number of instructions at retirement. For instructions that consists of multiple micro-ops, this event counts the retirement of the last micro-op of the instruction">
+        <modifier name="ix86arch::INSTRUCTION_RETIRED:e=0" desc="count the number of instructions at retirement. For instructions that consists of multiple micro-ops, this event counts the retirement of the last micro-op of the instruction, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="ix86arch::INSTRUCTION_RETIRED:i=0" desc="count the number of instructions at retirement. For instructions that consists of multiple micro-ops, this event counts the retirement of the last micro-op of the instruction, masks:invert"> </modifier>
+        <modifier name="ix86arch::INSTRUCTION_RETIRED:c=0" desc="count the number of instructions at retirement. For instructions that consists of multiple micro-ops, this event counts the retirement of the last micro-op of the instruction, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="ix86arch::INSTRUCTION_RETIRED:t=0" desc="count the number of instructions at retirement. For instructions that consists of multiple micro-ops, this event counts the retirement of the last micro-op of the instruction, masks:measure any thread"> </modifier>
+    </event>
+    <event index="2" name="ix86arch::UNHALTED_REFERENCE_CYCLES" desc="count reference clock cycles while the clock signal on the specific core is running. The reference clock operates at a fixed frequency, irrespective of core frequency changes due to performance state transitions">
+        <modifier name="ix86arch::UNHALTED_REFERENCE_CYCLES:e=0" desc="count reference clock cycles while the clock signal on the specific core is running. The reference clock operates at a fixed frequency, irrespective of core frequency changes due to performance state transitions, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="ix86arch::UNHALTED_REFERENCE_CYCLES:i=0" desc="count reference clock cycles while the clock signal on the specific core is running. The reference clock operates at a fixed frequency, irrespective of core frequency changes due to performance state transitions, masks:invert"> </modifier>
+        <modifier name="ix86arch::UNHALTED_REFERENCE_CYCLES:c=0" desc="count reference clock cycles while the clock signal on the specific core is running. The reference clock operates at a fixed frequency, irrespective of core frequency changes due to performance state transitions, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="ix86arch::UNHALTED_REFERENCE_CYCLES:t=0" desc="count reference clock cycles while the clock signal on the specific core is running. The reference clock operates at a fixed frequency, irrespective of core frequency changes due to performance state transitions, masks:measure any thread"> </modifier>
+    </event>
+    <event index="3" name="ix86arch::LLC_REFERENCES" desc="count each request originating from the core to reference a cache line in the last level cache. The count may include speculation, but excludes cache line fills due to hardware prefetch">
+        <modifier name="ix86arch::LLC_REFERENCES:e=0" desc="count each request originating from the core to reference a cache line in the last level cache. The count may include speculation, but excludes cache line fills due to hardware prefetch, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="ix86arch::LLC_REFERENCES:i=0" desc="count each request originating from the core to reference a cache line in the last level cache. The count may include speculation, but excludes cache line fills due to hardware prefetch, masks:invert"> </modifier>
+        <modifier name="ix86arch::LLC_REFERENCES:c=0" desc="count each request originating from the core to reference a cache line in the last level cache. The count may include speculation, but excludes cache line fills due to hardware prefetch, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="ix86arch::LLC_REFERENCES:t=0" desc="count each request originating from the core to reference a cache line in the last level cache. The count may include speculation, but excludes cache line fills due to hardware prefetch, masks:measure any thread"> </modifier>
+    </event>
+    <event index="4" name="ix86arch::LLC_MISSES" desc="count each cache miss condition for references to the last level cache. The event count may include speculation, but excludes cache line fills due to hardware prefetch">
+        <modifier name="ix86arch::LLC_MISSES:e=0" desc="count each cache miss condition for references to the last level cache. The event count may include speculation, but excludes cache line fills due to hardware prefetch, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="ix86arch::LLC_MISSES:i=0" desc="count each cache miss condition for references to the last level cache. The event count may include speculation, but excludes cache line fills due to hardware prefetch, masks:invert"> </modifier>
+        <modifier name="ix86arch::LLC_MISSES:c=0" desc="count each cache miss condition for references to the last level cache. The event count may include speculation, but excludes cache line fills due to hardware prefetch, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="ix86arch::LLC_MISSES:t=0" desc="count each cache miss condition for references to the last level cache. The event count may include speculation, but excludes cache line fills due to hardware prefetch, masks:measure any thread"> </modifier>
+    </event>
+    <event index="5" name="ix86arch::BRANCH_INSTRUCTIONS_RETIRED" desc="count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction">
+        <modifier name="ix86arch::BRANCH_INSTRUCTIONS_RETIRED:e=0" desc="count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="ix86arch::BRANCH_INSTRUCTIONS_RETIRED:i=0" desc="count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:invert"> </modifier>
+        <modifier name="ix86arch::BRANCH_INSTRUCTIONS_RETIRED:c=0" desc="count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="ix86arch::BRANCH_INSTRUCTIONS_RETIRED:t=0" desc="count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:measure any thread"> </modifier>
+    </event>
+    <event index="6" name="ix86arch::MISPREDICTED_BRANCH_RETIRED" desc="count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware">
+        <modifier name="ix86arch::MISPREDICTED_BRANCH_RETIRED:e=0" desc="count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="ix86arch::MISPREDICTED_BRANCH_RETIRED:i=0" desc="count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:invert"> </modifier>
+        <modifier name="ix86arch::MISPREDICTED_BRANCH_RETIRED:c=0" desc="count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="ix86arch::MISPREDICTED_BRANCH_RETIRED:t=0" desc="count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:measure any thread"> </modifier>
+    </event>
+    <event index="7" name="perf::PERF_COUNT_HW_CPU_CYCLES" desc="PERF_COUNT_HW_CPU_CYCLES">
+        <modifier name="perf::PERF_COUNT_HW_CPU_CYCLES:u=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CPU_CYCLES:k=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="8" name="perf::CYCLES" desc="PERF_COUNT_HW_CPU_CYCLES">
+        <modifier name="perf::CYCLES:u=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CYCLES:k=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="9" name="perf::CPU-CYCLES" desc="PERF_COUNT_HW_CPU_CYCLES">
+        <modifier name="perf::CPU-CYCLES:u=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CPU-CYCLES:k=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="10" name="perf::PERF_COUNT_HW_INSTRUCTIONS" desc="PERF_COUNT_HW_INSTRUCTIONS">
+        <modifier name="perf::PERF_COUNT_HW_INSTRUCTIONS:u=0" desc="PERF_COUNT_HW_INSTRUCTIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_INSTRUCTIONS:k=0" desc="PERF_COUNT_HW_INSTRUCTIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="11" name="perf::INSTRUCTIONS" desc="PERF_COUNT_HW_INSTRUCTIONS">
+        <modifier name="perf::INSTRUCTIONS:u=0" desc="PERF_COUNT_HW_INSTRUCTIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::INSTRUCTIONS:k=0" desc="PERF_COUNT_HW_INSTRUCTIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="12" name="perf::PERF_COUNT_HW_CACHE_REFERENCES" desc="PERF_COUNT_HW_CACHE_REFERENCES">
+        <modifier name="perf::PERF_COUNT_HW_CACHE_REFERENCES:u=0" desc="PERF_COUNT_HW_CACHE_REFERENCES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_REFERENCES:k=0" desc="PERF_COUNT_HW_CACHE_REFERENCES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="13" name="perf::CACHE-REFERENCES" desc="PERF_COUNT_HW_CACHE_REFERENCES">
+        <modifier name="perf::CACHE-REFERENCES:u=0" desc="PERF_COUNT_HW_CACHE_REFERENCES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CACHE-REFERENCES:k=0" desc="PERF_COUNT_HW_CACHE_REFERENCES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="14" name="perf::PERF_COUNT_HW_CACHE_MISSES" desc="PERF_COUNT_HW_CACHE_MISSES">
+        <modifier name="perf::PERF_COUNT_HW_CACHE_MISSES:u=0" desc="PERF_COUNT_HW_CACHE_MISSES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_MISSES:k=0" desc="PERF_COUNT_HW_CACHE_MISSES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="15" name="perf::CACHE-MISSES" desc="PERF_COUNT_HW_CACHE_MISSES">
+        <modifier name="perf::CACHE-MISSES:u=0" desc="PERF_COUNT_HW_CACHE_MISSES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CACHE-MISSES:k=0" desc="PERF_COUNT_HW_CACHE_MISSES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="16" name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS">
+        <modifier name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS:u=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS:k=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="17" name="perf::BRANCH-INSTRUCTIONS" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS">
+        <modifier name="perf::BRANCH-INSTRUCTIONS:u=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::BRANCH-INSTRUCTIONS:k=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="18" name="perf::BRANCHES" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS">
+        <modifier name="perf::BRANCHES:u=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::BRANCHES:k=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="19" name="perf::PERF_COUNT_HW_BRANCH_MISSES" desc="PERF_COUNT_HW_BRANCH_MISSES">
+        <modifier name="perf::PERF_COUNT_HW_BRANCH_MISSES:u=0" desc="PERF_COUNT_HW_BRANCH_MISSES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_BRANCH_MISSES:k=0" desc="PERF_COUNT_HW_BRANCH_MISSES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="20" name="perf::BRANCH-MISSES" desc="PERF_COUNT_HW_BRANCH_MISSES">
+        <modifier name="perf::BRANCH-MISSES:u=0" desc="PERF_COUNT_HW_BRANCH_MISSES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::BRANCH-MISSES:k=0" desc="PERF_COUNT_HW_BRANCH_MISSES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="21" name="perf::PERF_COUNT_HW_BUS_CYCLES" desc="PERF_COUNT_HW_BUS_CYCLES">
+        <modifier name="perf::PERF_COUNT_HW_BUS_CYCLES:u=0" desc="PERF_COUNT_HW_BUS_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_BUS_CYCLES:k=0" desc="PERF_COUNT_HW_BUS_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="22" name="perf::BUS-CYCLES" desc="PERF_COUNT_HW_BUS_CYCLES">
+        <modifier name="perf::BUS-CYCLES:u=0" desc="PERF_COUNT_HW_BUS_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::BUS-CYCLES:k=0" desc="PERF_COUNT_HW_BUS_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="29" name="perf::PERF_COUNT_HW_REF_CPU_CYCLES" desc="PERF_COUNT_HW_REF_CPU_CYCLES">
+        <modifier name="perf::PERF_COUNT_HW_REF_CPU_CYCLES:u=0" desc="PERF_COUNT_HW_REF_CPU_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_REF_CPU_CYCLES:k=0" desc="PERF_COUNT_HW_REF_CPU_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="30" name="perf::REF-CYCLES" desc="PERF_COUNT_HW_REF_CPU_CYCLES">
+        <modifier name="perf::REF-CYCLES:u=0" desc="PERF_COUNT_HW_REF_CPU_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::REF-CYCLES:k=0" desc="PERF_COUNT_HW_REF_CPU_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="31" name="perf::PERF_COUNT_SW_CPU_CLOCK" desc="PERF_COUNT_SW_CPU_CLOCK">
+        <modifier name="perf::PERF_COUNT_SW_CPU_CLOCK:u=0" desc="PERF_COUNT_SW_CPU_CLOCK, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_CPU_CLOCK:k=0" desc="PERF_COUNT_SW_CPU_CLOCK, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="32" name="perf::CPU-CLOCK" desc="PERF_COUNT_SW_CPU_CLOCK">
+        <modifier name="perf::CPU-CLOCK:u=0" desc="PERF_COUNT_SW_CPU_CLOCK, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CPU-CLOCK:k=0" desc="PERF_COUNT_SW_CPU_CLOCK, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="33" name="perf::PERF_COUNT_SW_TASK_CLOCK" desc="PERF_COUNT_SW_TASK_CLOCK">
+        <modifier name="perf::PERF_COUNT_SW_TASK_CLOCK:u=0" desc="PERF_COUNT_SW_TASK_CLOCK, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_TASK_CLOCK:k=0" desc="PERF_COUNT_SW_TASK_CLOCK, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="34" name="perf::TASK-CLOCK" desc="PERF_COUNT_SW_TASK_CLOCK">
+        <modifier name="perf::TASK-CLOCK:u=0" desc="PERF_COUNT_SW_TASK_CLOCK, masks:monitor at user level"> </modifier>
+        <modifier name="perf::TASK-CLOCK:k=0" desc="PERF_COUNT_SW_TASK_CLOCK, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="35" name="perf::PERF_COUNT_SW_PAGE_FAULTS" desc="PERF_COUNT_SW_PAGE_FAULTS">
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="36" name="perf::PAGE-FAULTS" desc="PERF_COUNT_SW_PAGE_FAULTS">
+        <modifier name="perf::PAGE-FAULTS:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PAGE-FAULTS:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="37" name="perf::FAULTS" desc="PERF_COUNT_SW_PAGE_FAULTS">
+        <modifier name="perf::FAULTS:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::FAULTS:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="38" name="perf::PERF_COUNT_SW_CONTEXT_SWITCHES" desc="PERF_COUNT_SW_CONTEXT_SWITCHES">
+        <modifier name="perf::PERF_COUNT_SW_CONTEXT_SWITCHES:u=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_CONTEXT_SWITCHES:k=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="39" name="perf::CONTEXT-SWITCHES" desc="PERF_COUNT_SW_CONTEXT_SWITCHES">
+        <modifier name="perf::CONTEXT-SWITCHES:u=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CONTEXT-SWITCHES:k=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="40" name="perf::CS" desc="PERF_COUNT_SW_CONTEXT_SWITCHES">
+        <modifier name="perf::CS:u=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CS:k=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="41" name="perf::PERF_COUNT_SW_CPU_MIGRATIONS" desc="PERF_COUNT_SW_CPU_MIGRATIONS">
+        <modifier name="perf::PERF_COUNT_SW_CPU_MIGRATIONS:u=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_CPU_MIGRATIONS:k=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="42" name="perf::CPU-MIGRATIONS" desc="PERF_COUNT_SW_CPU_MIGRATIONS">
+        <modifier name="perf::CPU-MIGRATIONS:u=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CPU-MIGRATIONS:k=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="43" name="perf::MIGRATIONS" desc="PERF_COUNT_SW_CPU_MIGRATIONS">
+        <modifier name="perf::MIGRATIONS:u=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::MIGRATIONS:k=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="44" name="perf::PERF_COUNT_SW_PAGE_FAULTS_MIN" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN">
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS_MIN:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS_MIN:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="45" name="perf::MINOR-FAULTS" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN">
+        <modifier name="perf::MINOR-FAULTS:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN, masks:monitor at user level"> </modifier>
+        <modifier name="perf::MINOR-FAULTS:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="46" name="perf::PERF_COUNT_SW_PAGE_FAULTS_MAJ" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ">
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS_MAJ:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS_MAJ:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="47" name="perf::MAJOR-FAULTS" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ">
+        <modifier name="perf::MAJOR-FAULTS:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ, masks:monitor at user level"> </modifier>
+        <modifier name="perf::MAJOR-FAULTS:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="48" name="perf::PERF_COUNT_HW_CACHE_L1D" desc="L1 data cache">
+        <modifier name="perf::PERF_COUNT_HW_CACHE_L1D:READ" desc="L1 data cache, masks:read access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_L1D:WRITE" desc="L1 data cache, masks:write access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_L1D:PREFETCH" desc="L1 data cache, masks:prefetch access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_L1D:ACCESS" desc="L1 data cache, masks:hit access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_L1D:MISS" desc="L1 data cache, masks:miss access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_L1D:u=0" desc="L1 data cache, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_L1D:k=0" desc="L1 data cache, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="49" name="perf::L1-DCACHE-LOADS" desc="L1 cache load accesses">
+        <modifier name="perf::L1-DCACHE-LOADS:u=0" desc="L1 cache load accesses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::L1-DCACHE-LOADS:k=0" desc="L1 cache load accesses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="50" name="perf::L1-DCACHE-LOAD-MISSES" desc="L1 cache load misses">
+        <modifier name="perf::L1-DCACHE-LOAD-MISSES:u=0" desc="L1 cache load misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::L1-DCACHE-LOAD-MISSES:k=0" desc="L1 cache load misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="51" name="perf::L1-DCACHE-STORES" desc="L1 cache store accesses">
+        <modifier name="perf::L1-DCACHE-STORES:u=0" desc="L1 cache store accesses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::L1-DCACHE-STORES:k=0" desc="L1 cache store accesses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="52" name="perf::L1-DCACHE-STORE-MISSES" desc="L1 cache store misses">
+        <modifier name="perf::L1-DCACHE-STORE-MISSES:u=0" desc="L1 cache store misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::L1-DCACHE-STORE-MISSES:k=0" desc="L1 cache store misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="54" name="perf::L1-DCACHE-PREFETCH-MISSES" desc="L1 cache prefetch misses">
+        <modifier name="perf::L1-DCACHE-PREFETCH-MISSES:u=0" desc="L1 cache prefetch misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::L1-DCACHE-PREFETCH-MISSES:k=0" desc="L1 cache prefetch misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="55" name="perf::PERF_COUNT_HW_CACHE_L1I" desc="L1 instruction cache">
+        <modifier name="perf::PERF_COUNT_HW_CACHE_L1I:READ" desc="L1 instruction cache, masks:read access"> </modifier>
+    </event>
+    <event index="57" name="perf::L1-ICACHE-LOAD-MISSES" desc="L1I cache load misses">
+        <modifier name="perf::L1-ICACHE-LOAD-MISSES:u=0" desc="L1I cache load misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::L1-ICACHE-LOAD-MISSES:k=0" desc="L1I cache load misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="61" name="perf::LLC-LOADS" desc="Last level cache load accesses">
+        <modifier name="perf::LLC-LOADS:u=0" desc="Last level cache load accesses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::LLC-LOADS:k=0" desc="Last level cache load accesses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="63" name="perf::LLC-STORES" desc="Last level cache store accesses">
+        <modifier name="perf::LLC-STORES:u=0" desc="Last level cache store accesses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::LLC-STORES:k=0" desc="Last level cache store accesses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="65" name="perf::LLC-PREFETCHES" desc="Last level cache prefetch accesses">
+        <modifier name="perf::LLC-PREFETCHES:u=0" desc="Last level cache prefetch accesses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::LLC-PREFETCHES:k=0" desc="Last level cache prefetch accesses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="67" name="perf::PERF_COUNT_HW_CACHE_DTLB" desc="Data Translation Lookaside Buffer">
+        <modifier name="perf::PERF_COUNT_HW_CACHE_DTLB:READ" desc="Data Translation Lookaside Buffer, masks:read access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_DTLB:WRITE" desc="Data Translation Lookaside Buffer, masks:write access"> </modifier>
+    </event>
+    <event index="68" name="perf::DTLB-LOADS" desc="Data TLB load accesses">
+        <modifier name="perf::DTLB-LOADS:u=0" desc="Data TLB load accesses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::DTLB-LOADS:k=0" desc="Data TLB load accesses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="69" name="perf::DTLB-LOAD-MISSES" desc="Data TLB load misses">
+        <modifier name="perf::DTLB-LOAD-MISSES:u=0" desc="Data TLB load misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::DTLB-LOAD-MISSES:k=0" desc="Data TLB load misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="70" name="perf::DTLB-STORES" desc="Data TLB store accesses">
+        <modifier name="perf::DTLB-STORES:u=0" desc="Data TLB store accesses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::DTLB-STORES:k=0" desc="Data TLB store accesses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="71" name="perf::DTLB-STORE-MISSES" desc="Data TLB store misses">
+        <modifier name="perf::DTLB-STORE-MISSES:u=0" desc="Data TLB store misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::DTLB-STORE-MISSES:k=0" desc="Data TLB store misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="74" name="perf::PERF_COUNT_HW_CACHE_ITLB" desc="Instruction Translation Lookaside Buffer">
+        <modifier name="perf::PERF_COUNT_HW_CACHE_ITLB:READ" desc="Instruction Translation Lookaside Buffer, masks:read access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_ITLB:ACCESS" desc="Instruction Translation Lookaside Buffer, masks:hit access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_ITLB:MISS" desc="Instruction Translation Lookaside Buffer, masks:miss access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_ITLB:u=0" desc="Instruction Translation Lookaside Buffer, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_ITLB:k=0" desc="Instruction Translation Lookaside Buffer, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="75" name="perf::ITLB-LOADS" desc="Instruction TLB load accesses">
+        <modifier name="perf::ITLB-LOADS:u=0" desc="Instruction TLB load accesses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::ITLB-LOADS:k=0" desc="Instruction TLB load accesses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="76" name="perf::ITLB-LOAD-MISSES" desc="Instruction TLB load misses">
+        <modifier name="perf::ITLB-LOAD-MISSES:u=0" desc="Instruction TLB load misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::ITLB-LOAD-MISSES:k=0" desc="Instruction TLB load misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="77" name="perf::PERF_COUNT_HW_CACHE_BPU" desc="Branch Prediction Unit">
+        <modifier name="perf::PERF_COUNT_HW_CACHE_BPU:READ" desc="Branch Prediction Unit, masks:read access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_BPU:ACCESS" desc="Branch Prediction Unit, masks:hit access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_BPU:MISS" desc="Branch Prediction Unit, masks:miss access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_BPU:u=0" desc="Branch Prediction Unit, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_BPU:k=0" desc="Branch Prediction Unit, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="78" name="perf::BRANCH-LOADS" desc="Branch  load accesses">
+        <modifier name="perf::BRANCH-LOADS:u=0" desc="Branch  load accesses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::BRANCH-LOADS:k=0" desc="Branch  load accesses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="79" name="perf::BRANCH-LOAD-MISSES" desc="Branch  load misses">
+        <modifier name="perf::BRANCH-LOAD-MISSES:u=0" desc="Branch  load misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::BRANCH-LOAD-MISSES:k=0" desc="Branch  load misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="87" name="UNHALTED_CORE_CYCLES" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted)">
+        <modifier name="UNHALTED_CORE_CYCLES:e=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="UNHALTED_CORE_CYCLES:i=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:invert"> </modifier>
+        <modifier name="UNHALTED_CORE_CYCLES:c=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="UNHALTED_CORE_CYCLES:t=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:measure any thread"> </modifier>
+        <modifier name="UNHALTED_CORE_CYCLES:intx=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="UNHALTED_CORE_CYCLES:intxcp=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="UNHALTED_CORE_CYCLES:u=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:monitor at user level"> </modifier>
+        <modifier name="UNHALTED_CORE_CYCLES:k=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="88" name="UNHALTED_REFERENCE_CYCLES" desc="Unhalted reference cycles">
+        <modifier name="UNHALTED_REFERENCE_CYCLES:t=0" desc="Unhalted reference cycles, masks:measure any thread"> </modifier>
+        <modifier name="UNHALTED_REFERENCE_CYCLES:u=0" desc="Unhalted reference cycles, masks:monitor at user level"> </modifier>
+        <modifier name="UNHALTED_REFERENCE_CYCLES:k=0" desc="Unhalted reference cycles, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="89" name="INSTRUCTION_RETIRED" desc="Number of instructions at retirement">
+        <modifier name="INSTRUCTION_RETIRED:e=0" desc="Number of instructions at retirement, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="INSTRUCTION_RETIRED:i=0" desc="Number of instructions at retirement, masks:invert"> </modifier>
+        <modifier name="INSTRUCTION_RETIRED:c=0" desc="Number of instructions at retirement, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="INSTRUCTION_RETIRED:t=0" desc="Number of instructions at retirement, masks:measure any thread"> </modifier>
+        <modifier name="INSTRUCTION_RETIRED:intx=0" desc="Number of instructions at retirement, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="INSTRUCTION_RETIRED:intxcp=0" desc="Number of instructions at retirement, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="INSTRUCTION_RETIRED:u=0" desc="Number of instructions at retirement, masks:monitor at user level"> </modifier>
+        <modifier name="INSTRUCTION_RETIRED:k=0" desc="Number of instructions at retirement, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="90" name="INSTRUCTIONS_RETIRED" desc="This is an alias for INSTRUCTION_RETIRED">
+        <modifier name="INSTRUCTIONS_RETIRED:e=0" desc="This is an alias for INSTRUCTION_RETIRED, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="INSTRUCTIONS_RETIRED:i=0" desc="This is an alias for INSTRUCTION_RETIRED, masks:invert"> </modifier>
+        <modifier name="INSTRUCTIONS_RETIRED:c=0" desc="This is an alias for INSTRUCTION_RETIRED, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="INSTRUCTIONS_RETIRED:t=0" desc="This is an alias for INSTRUCTION_RETIRED, masks:measure any thread"> </modifier>
+        <modifier name="INSTRUCTIONS_RETIRED:intx=0" desc="This is an alias for INSTRUCTION_RETIRED, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="INSTRUCTIONS_RETIRED:intxcp=0" desc="This is an alias for INSTRUCTION_RETIRED, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="INSTRUCTIONS_RETIRED:u=0" desc="This is an alias for INSTRUCTION_RETIRED, masks:monitor at user level"> </modifier>
+        <modifier name="INSTRUCTIONS_RETIRED:k=0" desc="This is an alias for INSTRUCTION_RETIRED, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="91" name="BRANCH_INSTRUCTIONS_RETIRED" desc="Count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction">
+        <modifier name="BRANCH_INSTRUCTIONS_RETIRED:e=0" desc="Count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="BRANCH_INSTRUCTIONS_RETIRED:i=0" desc="Count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:invert"> </modifier>
+        <modifier name="BRANCH_INSTRUCTIONS_RETIRED:c=0" desc="Count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="BRANCH_INSTRUCTIONS_RETIRED:t=0" desc="Count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:measure any thread"> </modifier>
+        <modifier name="BRANCH_INSTRUCTIONS_RETIRED:intx=0" desc="Count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="BRANCH_INSTRUCTIONS_RETIRED:intxcp=0" desc="Count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="BRANCH_INSTRUCTIONS_RETIRED:u=0" desc="Count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:monitor at user level"> </modifier>
+        <modifier name="BRANCH_INSTRUCTIONS_RETIRED:k=0" desc="Count branch instructions at retirement. Specifically, this event counts the retirement of the last micro-op of a branch instruction, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="92" name="MISPREDICTED_BRANCH_RETIRED" desc="Count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware">
+        <modifier name="MISPREDICTED_BRANCH_RETIRED:e=0" desc="Count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="MISPREDICTED_BRANCH_RETIRED:i=0" desc="Count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:invert"> </modifier>
+        <modifier name="MISPREDICTED_BRANCH_RETIRED:c=0" desc="Count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="MISPREDICTED_BRANCH_RETIRED:t=0" desc="Count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:measure any thread"> </modifier>
+        <modifier name="MISPREDICTED_BRANCH_RETIRED:intx=0" desc="Count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="MISPREDICTED_BRANCH_RETIRED:intxcp=0" desc="Count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="MISPREDICTED_BRANCH_RETIRED:u=0" desc="Count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:monitor at user level"> </modifier>
+        <modifier name="MISPREDICTED_BRANCH_RETIRED:k=0" desc="Count mispredicted branch instructions at retirement. Specifically, this event counts at retirement of the last micro-op of a branch instruction in the architectural path of the execution and experienced misprediction in the branch prediction hardware, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="93" name="BACLEARS" desc="Branch re-steered">
+        <modifier name="BACLEARS:ANY" desc="Branch re-steered, masks:Counts the number of times the front end is re-steered, mainly when the BPU cannot provide a correct prediction and this is corrected by other branch handling mechanisms at the front end"> </modifier>
+        <modifier name="BACLEARS:e=0" desc="Branch re-steered, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="BACLEARS:i=0" desc="Branch re-steered, masks:invert"> </modifier>
+        <modifier name="BACLEARS:c=0" desc="Branch re-steered, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="BACLEARS:t=0" desc="Branch re-steered, masks:measure any thread"> </modifier>
+        <modifier name="BACLEARS:intx=0" desc="Branch re-steered, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="BACLEARS:intxcp=0" desc="Branch re-steered, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="BACLEARS:u=0" desc="Branch re-steered, masks:monitor at user level"> </modifier>
+        <modifier name="BACLEARS:k=0" desc="Branch re-steered, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="94" name="BR_INST_EXEC" desc="Branch instructions executed">
+        <modifier name="BR_INST_EXEC:NONTAKEN_CONDITIONAL" desc="Branch instructions executed, masks:All macro conditional nontaken branch instructions"> </modifier>
+        <modifier name="BR_INST_EXEC:NONTAKEN_COND" desc="Branch instructions executed, masks:All macro conditional nontaken branch instructions"> </modifier>
+        <modifier name="BR_INST_EXEC:TAKEN_CONDITIONAL" desc="Branch instructions executed, masks:Taken speculative and retired macro-conditional branches"> </modifier>
+        <modifier name="BR_INST_EXEC:TAKEN_COND" desc="Branch instructions executed, masks:Taken speculative and retired macro-conditional branches"> </modifier>
+        <modifier name="BR_INST_EXEC:TAKEN_DIRECT_JUMP" desc="Branch instructions executed, masks:Taken speculative and retired macro-conditional branch instructions excluding calls and indirects"> </modifier>
+        <modifier name="BR_INST_EXEC:TAKEN_INDIRECT_JUMP_NON_CALL_RET" desc="Branch instructions executed, masks:Taken speculative and retired indirect branches excluding calls and returns"> </modifier>
+        <modifier name="BR_INST_EXEC:TAKEN_INDIRECT_NEAR_RETURN" desc="Branch instructions executed, masks:Taken speculative and retired indirect branches with return mnemonic"> </modifier>
+        <modifier name="BR_INST_EXEC:TAKEN_DIRECT_NEAR_CALL" desc="Branch instructions executed, masks:Taken speculative and retired direct near calls"> </modifier>
+        <modifier name="BR_INST_EXEC:ALL_CONDITIONAL" desc="Branch instructions executed, masks:Speculative and retired macro-conditional branches"> </modifier>
+        <modifier name="BR_INST_EXEC:ALL_COND" desc="Branch instructions executed, masks:Speculative and retired macro-conditional branches"> </modifier>
+        <modifier name="BR_INST_EXEC:ANY_COND" desc="Branch instructions executed, masks:Speculative and retired macro-conditional branches"> </modifier>
+        <modifier name="BR_INST_EXEC:ALL_DIRECT_JMP" desc="Branch instructions executed, masks:Speculative and retired macro-unconditional branches excluding calls and indirects"> </modifier>
+        <modifier name="BR_INST_EXEC:ALL_INDIRECT_JUMP_NON_CALL_RET" desc="Branch instructions executed, masks:Speculative and retired indirect branches excluding calls and returns"> </modifier>
+        <modifier name="BR_INST_EXEC:ALL_INDIRECT_NEAR_RETURN" desc="Branch instructions executed, masks:Speculative and retired indirect return branches"> </modifier>
+        <modifier name="BR_INST_EXEC:ALL_DIRECT_NEAR_CALL" desc="Branch instructions executed, masks:Speculative and retired direct near calls"> </modifier>
+        <modifier name="BR_INST_EXEC:TAKEN_INDIRECT_NEAR_CALL" desc="Branch instructions executed, masks:All indirect calls, including both register and memory indirect"> </modifier>
+        <modifier name="BR_INST_EXEC:ALL_BRANCHES" desc="Branch instructions executed, masks:All branch instructions executed"> </modifier>
+        <modifier name="BR_INST_EXEC:e=0" desc="Branch instructions executed, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="BR_INST_EXEC:i=0" desc="Branch instructions executed, masks:invert"> </modifier>
+        <modifier name="BR_INST_EXEC:c=0" desc="Branch instructions executed, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="BR_INST_EXEC:t=0" desc="Branch instructions executed, masks:measure any thread"> </modifier>
+        <modifier name="BR_INST_EXEC:intx=0" desc="Branch instructions executed, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="BR_INST_EXEC:intxcp=0" desc="Branch instructions executed, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="BR_INST_EXEC:u=0" desc="Branch instructions executed, masks:monitor at user level"> </modifier>
+        <modifier name="BR_INST_EXEC:k=0" desc="Branch instructions executed, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="95" name="BR_INST_RETIRED" desc="Branch instructions retired (Precise Event)">
+        <modifier name="BR_INST_RETIRED:CONDITIONAL" desc="Branch instructions retired (Precise Event), masks:Counts all taken and not taken macro conditional branch instructions"> </modifier>
+        <modifier name="BR_INST_RETIRED:COND" desc="Branch instructions retired (Precise Event), masks:Counts all taken and not taken macro conditional branch instructions"> </modifier>
+        <modifier name="BR_INST_RETIRED:NEAR_CALL" desc="Branch instructions retired (Precise Event), masks:Counts all macro direct and indirect near calls"> </modifier>
+        <modifier name="BR_INST_RETIRED:ALL_BRANCHES" desc="Branch instructions retired (Precise Event), masks:Counts all taken and not taken macro branches including far branches (architectural event)"> </modifier>
+        <modifier name="BR_INST_RETIRED:NEAR_RETURN" desc="Branch instructions retired (Precise Event), masks:Counts the number of near ret instructions retired"> </modifier>
+        <modifier name="BR_INST_RETIRED:NOT_TAKEN" desc="Branch instructions retired (Precise Event), masks:Counts all not taken macro branch instructions retired"> </modifier>
+        <modifier name="BR_INST_RETIRED:NEAR_TAKEN" desc="Branch instructions retired (Precise Event), masks:Counts the number of near branch taken instructions retired"> </modifier>
+        <modifier name="BR_INST_RETIRED:FAR_BRANCH" desc="Branch instructions retired (Precise Event), masks:Counts the number of far branch instructions retired"> </modifier>
+        <modifier name="BR_INST_RETIRED:e=0" desc="Branch instructions retired (Precise Event), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="BR_INST_RETIRED:i=0" desc="Branch instructions retired (Precise Event), masks:invert"> </modifier>
+        <modifier name="BR_INST_RETIRED:c=0" desc="Branch instructions retired (Precise Event), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="BR_INST_RETIRED:t=0" desc="Branch instructions retired (Precise Event), masks:measure any thread"> </modifier>
+        <modifier name="BR_INST_RETIRED:intx=0" desc="Branch instructions retired (Precise Event), masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="BR_INST_RETIRED:intxcp=0" desc="Branch instructions retired (Precise Event), masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="BR_INST_RETIRED:u=0" desc="Branch instructions retired (Precise Event), masks:monitor at user level"> </modifier>
+        <modifier name="BR_INST_RETIRED:k=0" desc="Branch instructions retired (Precise Event), masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="96" name="BR_MISP_EXEC" desc="Mispredicted branches executed">
+        <modifier name="BR_MISP_EXEC:NONTAKEN_CONDITIONAL" desc="Mispredicted branches executed, masks:Not taken speculative and retired mispredicted macro conditional branches"> </modifier>
+        <modifier name="BR_MISP_EXEC:NONTAKEN_COND" desc="Mispredicted branches executed, masks:Not taken speculative and retired mispredicted macro conditional branches"> </modifier>
+        <modifier name="BR_MISP_EXEC:TAKEN_CONDITIONAL" desc="Mispredicted branches executed, masks:Taken speculative and retired mispredicted macro conditional branches"> </modifier>
+        <modifier name="BR_MISP_EXEC:TAKEN_COND" desc="Mispredicted branches executed, masks:Taken speculative and retired mispredicted macro conditional branches"> </modifier>
+        <modifier name="BR_MISP_EXEC:TAKEN_INDIRECT_JUMP_NON_CALL_RET" desc="Mispredicted branches executed, masks:Taken speculative and retired mispredicted indirect branches excluding calls and returns"> </modifier>
+        <modifier name="BR_MISP_EXEC:TAKEN_RETURN_NEAR" desc="Mispredicted branches executed, masks:Taken speculative and retired mispredicted indirect branches with return mnemonic"> </modifier>
+        <modifier name="BR_MISP_EXEC:ALL_CONDITIONAL" desc="Mispredicted branches executed, masks:Speculative and retired mispredicted macro conditional branches"> </modifier>
+        <modifier name="BR_MISP_EXEC:ANY_COND" desc="Mispredicted branches executed, masks:Speculative and retired mispredicted macro conditional branches"> </modifier>
+        <modifier name="BR_MISP_EXEC:ALL_INDIRECT_JUMP_NON_CALL_RET" desc="Mispredicted branches executed, masks:All mispredicted indirect branches that are not calls nor returns"> </modifier>
+        <modifier name="BR_MISP_EXEC:ALL_BRANCHES" desc="Mispredicted branches executed, masks:Speculative and retired mispredicted macro conditional branches"> </modifier>
+        <modifier name="BR_MISP_EXEC:TAKEN_INDIRECT_NEAR_CALL" desc="Mispredicted branches executed, masks:Taken speculative and retired mispredicted indirect calls"> </modifier>
+        <modifier name="BR_MISP_EXEC:e=0" desc="Mispredicted branches executed, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="BR_MISP_EXEC:i=0" desc="Mispredicted branches executed, masks:invert"> </modifier>
+        <modifier name="BR_MISP_EXEC:c=0" desc="Mispredicted branches executed, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="BR_MISP_EXEC:t=0" desc="Mispredicted branches executed, masks:measure any thread"> </modifier>
+        <modifier name="BR_MISP_EXEC:intx=0" desc="Mispredicted branches executed, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="BR_MISP_EXEC:intxcp=0" desc="Mispredicted branches executed, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="BR_MISP_EXEC:u=0" desc="Mispredicted branches executed, masks:monitor at user level"> </modifier>
+        <modifier name="BR_MISP_EXEC:k=0" desc="Mispredicted branches executed, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="97" name="BR_MISP_RETIRED" desc="Mispredicted retired branches (Precise Event)">
+        <modifier name="BR_MISP_RETIRED:CONDITIONAL" desc="Mispredicted retired branches (Precise Event), masks:All mispredicted macro conditional branch instructions"> </modifier>
+        <modifier name="BR_MISP_RETIRED:COND" desc="Mispredicted retired branches (Precise Event), masks:All mispredicted macro conditional branch instructions"> </modifier>
+        <modifier name="BR_MISP_RETIRED:ALL_BRANCHES" desc="Mispredicted retired branches (Precise Event), masks:All mispredicted macro branches (architectural event)"> </modifier>
+        <modifier name="BR_MISP_RETIRED:NEAR_TAKEN" desc="Mispredicted retired branches (Precise Event), masks:number of near branch instructions retired that were mispredicted and taken"> </modifier>
+        <modifier name="BR_MISP_RETIRED:e=0" desc="Mispredicted retired branches (Precise Event), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="BR_MISP_RETIRED:i=0" desc="Mispredicted retired branches (Precise Event), masks:invert"> </modifier>
+        <modifier name="BR_MISP_RETIRED:c=0" desc="Mispredicted retired branches (Precise Event), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="BR_MISP_RETIRED:t=0" desc="Mispredicted retired branches (Precise Event), masks:measure any thread"> </modifier>
+        <modifier name="BR_MISP_RETIRED:intx=0" desc="Mispredicted retired branches (Precise Event), masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="BR_MISP_RETIRED:intxcp=0" desc="Mispredicted retired branches (Precise Event), masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="BR_MISP_RETIRED:u=0" desc="Mispredicted retired branches (Precise Event), masks:monitor at user level"> </modifier>
+        <modifier name="BR_MISP_RETIRED:k=0" desc="Mispredicted retired branches (Precise Event), masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="98" name="CPL_CYCLES" desc="Unhalted core cycles at a specific ring level">
+        <modifier name="CPL_CYCLES:RING0" desc="Unhalted core cycles at a specific ring level, masks:Unhalted core cycles when the thread is in ring 0"> </modifier>
+        <modifier name="CPL_CYCLES:RING123" desc="Unhalted core cycles at a specific ring level, masks:Unhalted core cycles when thread is in rings 1, 2, or 3"> </modifier>
+        <modifier name="CPL_CYCLES:RING0_TRANS" desc="Unhalted core cycles at a specific ring level, masks:Number of intervals between processor halts while thread is in ring 0"> </modifier>
+    </event>
+    <event index="99" name="CPU_CLK_THREAD_UNHALTED" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted)">
+        <modifier name="CPU_CLK_THREAD_UNHALTED:REF_XCLK" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:Count Xclk pulses (100Mhz) when the core is unhalted"> </modifier>
+    </event>
+    <event index="100" name="CPU_CLK_UNHALTED" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted)">
+        <modifier name="CPU_CLK_UNHALTED:e=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="CPU_CLK_UNHALTED:i=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:invert"> </modifier>
+        <modifier name="CPU_CLK_UNHALTED:c=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="CPU_CLK_UNHALTED:t=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:measure any thread"> </modifier>
+        <modifier name="CPU_CLK_UNHALTED:intx=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="CPU_CLK_UNHALTED:intxcp=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="CPU_CLK_UNHALTED:u=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:monitor at user level"> </modifier>
+        <modifier name="CPU_CLK_UNHALTED:k=0" desc="Count core clock cycles whenever the clock signal on the specific core is running (not halted), masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="101" name="CYCLE_ACTIVITY" desc="Stalled cycles">
+        <modifier name="CYCLE_ACTIVITY:CYCLES_L2_PENDING" desc="Stalled cycles, masks:Cycles with pending L2 miss loads (must use with HT off only)"> </modifier>
+        <modifier name="CYCLE_ACTIVITY:CYCLES_LDM_PENDING" desc="Stalled cycles, masks:Cycles with pending memory loads"> </modifier>
+        <modifier name="CYCLE_ACTIVITY:CYCLES_L1D_PENDING" desc="Stalled cycles, masks:Cycles with pending L1D load cache misses"> </modifier>
+        <modifier name="CYCLE_ACTIVITY:STALLS_L1D_PENDING" desc="Stalled cycles, masks:Executions stalls due to pending L1D load cache misses"> </modifier>
+        <modifier name="CYCLE_ACTIVITY:STALLS_L2_PENDING" desc="Stalled cycles, masks:Execution stalls due to L2 pending loads (must use with HT off only)"> </modifier>
+        <modifier name="CYCLE_ACTIVITY:STALLS_LDM_PENDING" desc="Stalled cycles, masks:Execution stalls due to memory subsystem"> </modifier>
+        <modifier name="CYCLE_ACTIVITY:CYCLES_NO_EXECUTE" desc="Stalled cycles, masks:Cycles during which no instructions were executed in the execution stage of the pipeline"> </modifier>
+    </event>
+    <event index="102" name="DTLB_LOAD_MISSES" desc="Data TLB load misses">
+        <modifier name="DTLB_LOAD_MISSES:MISS_CAUSES_A_WALK" desc="Data TLB load misses, masks:Misses in all DTLB levels that cause page walks"> </modifier>
+        <modifier name="DTLB_LOAD_MISSES:WALK_COMPLETED_4K" desc="Data TLB load misses, masks:Misses in all TLB levels causes a page walk that completes (4K)"> </modifier>
+        <modifier name="DTLB_LOAD_MISSES:WALK_COMPLETED_2M_4M" desc="Data TLB load misses, masks:Misses in all TLB levels causes a page walk that completes (2M/4M)"> </modifier>
+        <modifier name="DTLB_LOAD_MISSES:WALK_COMPLETED" desc="Data TLB load misses, masks:Misses in all TLB levels causes a page walk of any page size that completes"> </modifier>
+        <modifier name="DTLB_LOAD_MISSES:WALK_DURATION" desc="Data TLB load misses, masks:Cycles when PMH is busy with page walks"> </modifier>
+        <modifier name="DTLB_LOAD_MISSES:STLB_HIT_4K" desc="Data TLB load misses, masks:Misses that miss the DTLB and hit the STLB (4K)"> </modifier>
+        <modifier name="DTLB_LOAD_MISSES:STLB_HIT_2M" desc="Data TLB load misses, masks:Misses that miss the DTLB and hit the STLB (2M)"> </modifier>
+        <modifier name="DTLB_LOAD_MISSES:STLB_HIT" desc="Data TLB load misses, masks:Number of cache load STLB hits. No page walk"> </modifier>
+        <modifier name="DTLB_LOAD_MISSES:PDE_CACHE_MISS" desc="Data TLB load misses, masks:DTLB misses with low part of linear-to-physical address translation missed"> </modifier>
+    </event>
+    <event index="103" name="DTLB_STORE_MISSES" desc="Data TLB store misses">
+        <modifier name="DTLB_STORE_MISSES:MISS_CAUSES_A_WALK" desc="Data TLB store misses, masks:Misses in all DTLB levels that cause page walks"> </modifier>
+        <modifier name="DTLB_STORE_MISSES:WALK_COMPLETED_4K" desc="Data TLB store misses, masks:Misses in all TLB levels causes a page walk that completes (4K)"> </modifier>
+        <modifier name="DTLB_STORE_MISSES:WALK_COMPLETED_2M_4M" desc="Data TLB store misses, masks:Misses in all TLB levels causes a page walk that completes (2M/4M)"> </modifier>
+        <modifier name="DTLB_STORE_MISSES:WALK_COMPLETED" desc="Data TLB store misses, masks:Misses in all TLB levels causes a page walk of any page size that completes"> </modifier>
+        <modifier name="DTLB_STORE_MISSES:WALK_DURATION" desc="Data TLB store misses, masks:Cycles when PMH is busy with page walks"> </modifier>
+        <modifier name="DTLB_STORE_MISSES:STLB_HIT_4K" desc="Data TLB store misses, masks:Misses that miss the DTLB and hit the STLB (4K)"> </modifier>
+        <modifier name="DTLB_STORE_MISSES:STLB_HIT_2M" desc="Data TLB store misses, masks:Misses that miss the DTLB and hit the STLB (2M)"> </modifier>
+        <modifier name="DTLB_STORE_MISSES:STLB_HIT" desc="Data TLB store misses, masks:Number of cache load STLB hits. No page walk"> </modifier>
+        <modifier name="DTLB_STORE_MISSES:PDE_CACHE_MISS" desc="Data TLB store misses, masks:DTLB misses with low part of linear-to-physical address translation missed"> </modifier>
+    </event>
+    <event index="104" name="FP_ASSIST" desc="X87 floating-point assists">
+        <modifier name="FP_ASSIST:X87_OUTPUT" desc="X87 floating-point assists, masks:Number of X87 FP assists due to output values"> </modifier>
+        <modifier name="FP_ASSIST:X87_INPUT" desc="X87 floating-point assists, masks:Number of X87 FP assists due to input values"> </modifier>
+        <modifier name="FP_ASSIST:SIMD_OUTPUT" desc="X87 floating-point assists, masks:Number of SIMD FP assists due to output values"> </modifier>
+        <modifier name="FP_ASSIST:SIMD_INPUT" desc="X87 floating-point assists, masks:Number of SIMD FP assists due to input values"> </modifier>
+        <modifier name="FP_ASSIST:ANY" desc="X87 floating-point assists, masks:Cycles with any input/output SEE or FP assists"> </modifier>
+        <modifier name="FP_ASSIST:ALL" desc="X87 floating-point assists, masks:Cycles with any input and output SSE or FP assist"> </modifier>
+    </event>
+    <event index="105" name="HLE_RETIRED" desc="HLE execution (Precise Event)">
+        <modifier name="HLE_RETIRED:START" desc="HLE execution (Precise Event), masks:Number of times an HLE execution started"> </modifier>
+        <modifier name="HLE_RETIRED:COMMIT" desc="HLE execution (Precise Event), masks:Number of times an HLE execution successfully committed"> </modifier>
+        <modifier name="HLE_RETIRED:ABORTED" desc="HLE execution (Precise Event), masks:Number of times an HLE execution aborted due to any reasons (multiple categories may count as one) (Precise Event)"> </modifier>
+        <modifier name="HLE_RETIRED:ABORTED_MISC1" desc="HLE execution (Precise Event), masks:Number of times an HLE execution aborted due to various memory events"> </modifier>
+        <modifier name="HLE_RETIRED:ABORTED_MISC2" desc="HLE execution (Precise Event), masks:Number of times an HLE execution aborted due to uncommon conditions"> </modifier>
+        <modifier name="HLE_RETIRED:ABORTED_MISC3" desc="HLE execution (Precise Event), masks:Number of times an HLE execution aborted due to HLE-unfriendly instructions"> </modifier>
+        <modifier name="HLE_RETIRED:ABORTED_MISC4" desc="HLE execution (Precise Event), masks:Number of times an HLE execution aborted due to incompatible memory type"> </modifier>
+        <modifier name="HLE_RETIRED:ABORTED_MISC5" desc="HLE execution (Precise Event), masks:Number of times an HLE execution aborted due to none of the other 4 reasons (e.g., interrupt)"> </modifier>
+        <modifier name="HLE_RETIRED:e=0" desc="HLE execution (Precise Event), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="HLE_RETIRED:i=0" desc="HLE execution (Precise Event), masks:invert"> </modifier>
+        <modifier name="HLE_RETIRED:c=0" desc="HLE execution (Precise Event), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="HLE_RETIRED:t=0" desc="HLE execution (Precise Event), masks:measure any thread"> </modifier>
+        <modifier name="HLE_RETIRED:intx=0" desc="HLE execution (Precise Event), masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="HLE_RETIRED:intxcp=0" desc="HLE execution (Precise Event), masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="HLE_RETIRED:u=0" desc="HLE execution (Precise Event), masks:monitor at user level"> </modifier>
+        <modifier name="HLE_RETIRED:k=0" desc="HLE execution (Precise Event), masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="106" name="ICACHE" desc="Instruction Cache">
+        <modifier name="ICACHE:MISSES" desc="Instruction Cache, masks:Number of Instruction Cache, Streaming Buffer and Victim Cache Misses. Includes Uncacheable accesses"> </modifier>
+        <modifier name="ICACHE:HIT" desc="Instruction Cache, masks:Number of Instruction Cache, Streaming Buffer and Victim Cache Reads. Includes cacheable and uncacheable accesses and uncacheable fetches"> </modifier>
+        <modifier name="ICACHE:IFETCH_STALL" desc="Instruction Cache, masks:Number of cycles where a code-fetch stalled due to L1 instruction cache miss or an iTLB miss"> </modifier>
+    </event>
+    <event index="107" name="IDQ" desc="IDQ operations">
+        <modifier name="IDQ:EMPTY" desc="IDQ operations, masks:Cycles the Instruction Decode Queue (IDQ) is empty"> </modifier>
+        <modifier name="IDQ:MITE_UOPS" desc="IDQ operations, masks:Number of uops delivered to Instruction Decode Queue (IDQ) from MITE path"> </modifier>
+        <modifier name="IDQ:DSB_UOPS" desc="IDQ operations, masks:Number of uops delivered to Instruction Decode Queue (IDQ) from Decode Stream Buffer (DSB) path"> </modifier>
+        <modifier name="IDQ:MS_DSB_UOPS" desc="IDQ operations, masks:Uops initiated by Decode Stream Buffer (DSB) that are being delivered to Instruction Decode Queue (IDQ) while Microcode Sequencer (MS) is busy"> </modifier>
+        <modifier name="IDQ:MS_MITE_UOPS" desc="IDQ operations, masks:Uops initiated by MITE and delivered to Instruction Decode Queue (IDQ) while Microcode Sequencer (MS) is busy"> </modifier>
+        <modifier name="IDQ:MS_UOPS" desc="IDQ operations, masks:Number of Uops were delivered into Instruction Decode Queue (IDQ) from MS, initiated by Decode Stream Buffer (DSB) or MITE"> </modifier>
+        <modifier name="IDQ:MS_UOPS_CYCLES" desc="IDQ operations, masks:Number of cycles that Uops were delivered into Instruction Decode Queue (IDQ) when MS_Busy, initiated by Decode Stream Buffer (DSB) or MITE"> </modifier>
+        <modifier name="IDQ:MS_SWITCHES" desc="IDQ operations, masks:Number of cycles that Uops were delivered into Instruction Decode Queue (IDQ) when MS_Busy, initiated by Decode Stream Buffer (DSB) or MITE"> </modifier>
+        <modifier name="IDQ:MITE_UOPS_CYCLES" desc="IDQ operations, masks:Cycles when uops are being delivered to Instruction Decode Queue (IDQ) from MITE path"> </modifier>
+        <modifier name="IDQ:DSB_UOPS_CYCLES" desc="IDQ operations, masks:Cycles when uops are being delivered to Instruction Decode Queue (IDQ) from Decode Stream Buffer (DSB) path"> </modifier>
+        <modifier name="IDQ:MS_DSB_UOPS_CYCLES" desc="IDQ operations, masks:Cycles when uops initiated by Decode Stream Buffer (DSB) are being delivered to Instruction Decode Queue (IDQ) while Microcode Sequencer (MS) is busy"> </modifier>
+        <modifier name="IDQ:MS_DSB_OCCUR" desc="IDQ operations, masks:Deliveries to Instruction Decode Queue (IDQ) initiated by Decode Stream Buffer (DSB) while Microcode Sequencer (MS) is busy"> </modifier>
+        <modifier name="IDQ:ALL_DSB_CYCLES_4_UOPS" desc="IDQ operations, masks:Cycles Decode Stream Buffer (DSB) is delivering 4 Uops"> </modifier>
+        <modifier name="IDQ:ALL_DSB_CYCLES_ANY_UOPS" desc="IDQ operations, masks:Cycles Decode Stream Buffer (DSB) is delivering any Uop"> </modifier>
+        <modifier name="IDQ:ALL_MITE_CYCLES_4_UOPS" desc="IDQ operations, masks:Cycles MITE is delivering 4 Uops"> </modifier>
+        <modifier name="IDQ:ALL_MITE_CYCLES_ANY_UOPS" desc="IDQ operations, masks:Cycles MITE is delivering any Uop"> </modifier>
+        <modifier name="IDQ:ALL_MITE_UOPS" desc="IDQ operations, masks:Number of uops delivered to Instruction Decode Queue (IDQ) from any path"> </modifier>
+    </event>
+    <event index="108" name="IDQ_UOPS_NOT_DELIVERED" desc="Uops not delivered">
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:CORE" desc="Uops not delivered, masks:Count number of non-delivered uops to Resource Allocation Table (RAT)"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:CYCLES_0_UOPS_DELIV_CORE" desc="Uops not delivered, masks:Cycles per thread when 4 or more uops are not delivered to the Resource Allocation Table (RAT) when backend is not stalled"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:CYCLES_LE_1_UOP_DELIV_CORE" desc="Uops not delivered, masks:Cycles per thread when 3 or more uops are not delivered to the Resource Allocation Table (RAT) when backend is not stalled"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:CYCLES_LE_2_UOP_DELIV_CORE" desc="Uops not delivered, masks:Cycles with less than 2 uops delivered by the front end"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:CYCLES_LE_3_UOP_DELIV_CORE" desc="Uops not delivered, masks:Cycles with less than 3 uops delivered by the front end"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:CYCLES_FE_WAS_OK" desc="Uops not delivered, masks:Cycles Front-End (FE) delivered 4 uops or Resource Allocation Table (RAT) was stalling FE"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:e=0" desc="Uops not delivered, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:i=0" desc="Uops not delivered, masks:invert"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:c=0" desc="Uops not delivered, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:t=0" desc="Uops not delivered, masks:measure any thread"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:intx=0" desc="Uops not delivered, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:intxcp=0" desc="Uops not delivered, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:u=0" desc="Uops not delivered, masks:monitor at user level"> </modifier>
+        <modifier name="IDQ_UOPS_NOT_DELIVERED:k=0" desc="Uops not delivered, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="109" name="INST_RETIRED" desc="Number of instructions retired (Precise Event)">
+        <modifier name="INST_RETIRED:ANY_P" desc="Number of instructions retired (Precise Event), masks:Number of instructions retired. General Counter - architectural event"> </modifier>
+        <modifier name="INST_RETIRED:ALL" desc="Number of instructions retired (Precise Event), masks:Precise instruction retired event with HW to reduce effect of PEBS shadow in IP distribution (Precise Event)"> </modifier>
+        <modifier name="INST_RETIRED:TOTAL_CYCLES" desc="Number of instructions retired (Precise Event), masks:Number of cycles using always true condition"> </modifier>
+        <modifier name="INST_RETIRED:PREC_DIST" desc="Number of instructions retired (Precise Event), masks:Precise instruction retired event with HW to reduce effect of PEBS shadow in IP distribution"> </modifier>
+        <modifier name="INST_RETIRED:X87" desc="Number of instructions retired (Precise Event), masks:X87 FP operations retired with no exceptions. Also counts flows that have several X87 or flows that use X87 uops in the exception handling"> </modifier>
+        <modifier name="INST_RETIRED:e=0" desc="Number of instructions retired (Precise Event), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="INST_RETIRED:i=0" desc="Number of instructions retired (Precise Event), masks:invert"> </modifier>
+        <modifier name="INST_RETIRED:c=0" desc="Number of instructions retired (Precise Event), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="INST_RETIRED:t=0" desc="Number of instructions retired (Precise Event), masks:measure any thread"> </modifier>
+        <modifier name="INST_RETIRED:intx=0" desc="Number of instructions retired (Precise Event), masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="INST_RETIRED:intxcp=0" desc="Number of instructions retired (Precise Event), masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="INST_RETIRED:u=0" desc="Number of instructions retired (Precise Event), masks:monitor at user level"> </modifier>
+        <modifier name="INST_RETIRED:k=0" desc="Number of instructions retired (Precise Event), masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="110" name="INT_MISC" desc="Miscellaneous interruptions">
+        <modifier name="INT_MISC:RECOVERY_CYCLES" desc="Miscellaneous interruptions, masks:Cycles waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc...)"> </modifier>
+    </event>
+    <event index="111" name="ITLB" desc="Instruction TLB">
+        <modifier name="ITLB:ITLB_FLUSH" desc="Instruction TLB, masks:Flushing of the Instruction TLB (ITLB) pages independent of page size"> </modifier>
+        <modifier name="ITLB:e=0" desc="Instruction TLB, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="ITLB:i=0" desc="Instruction TLB, masks:invert"> </modifier>
+        <modifier name="ITLB:c=0" desc="Instruction TLB, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="ITLB:t=0" desc="Instruction TLB, masks:measure any thread"> </modifier>
+        <modifier name="ITLB:intx=0" desc="Instruction TLB, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="ITLB:intxcp=0" desc="Instruction TLB, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="ITLB:u=0" desc="Instruction TLB, masks:monitor at user level"> </modifier>
+        <modifier name="ITLB:k=0" desc="Instruction TLB, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="112" name="ITLB_MISSES" desc="Instruction TLB misses">
+        <modifier name="ITLB_MISSES:MISS_CAUSES_A_WALK" desc="Instruction TLB misses, masks:Misses in all DTLB levels that cause page walks"> </modifier>
+        <modifier name="ITLB_MISSES:WALK_COMPLETED_4K" desc="Instruction TLB misses, masks:Misses in all TLB levels causes a page walk that completes (4K)"> </modifier>
+        <modifier name="ITLB_MISSES:WALK_COMPLETED_2M_4M" desc="Instruction TLB misses, masks:Misses in all TLB levels causes a page walk that completes (2M/4M)"> </modifier>
+        <modifier name="ITLB_MISSES:WALK_COMPLETED" desc="Instruction TLB misses, masks:Misses in all TLB levels causes a page walk of any page size that completes"> </modifier>
+        <modifier name="ITLB_MISSES:WALK_DURATION" desc="Instruction TLB misses, masks:Cycles when PMH is busy with page walks"> </modifier>
+        <modifier name="ITLB_MISSES:STLB_HIT_4K" desc="Instruction TLB misses, masks:Misses that miss the DTLB and hit the STLB (4K)"> </modifier>
+        <modifier name="ITLB_MISSES:STLB_HIT_2M" desc="Instruction TLB misses, masks:Misses that miss the DTLB and hit the STLB (2M)"> </modifier>
+        <modifier name="ITLB_MISSES:STLB_HIT" desc="Instruction TLB misses, masks:Number of cache load STLB hits. No page walk"> </modifier>
+    </event>
+    <event index="113" name="L1D" desc="L1D cache">
+        <modifier name="L1D:REPLACEMENT" desc="L1D cache, masks:L1D Data line replacements"> </modifier>
+        <modifier name="L1D:e=0" desc="L1D cache, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="L1D:i=0" desc="L1D cache, masks:invert"> </modifier>
+        <modifier name="L1D:c=0" desc="L1D cache, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="L1D:t=0" desc="L1D cache, masks:measure any thread"> </modifier>
+        <modifier name="L1D:intx=0" desc="L1D cache, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="L1D:intxcp=0" desc="L1D cache, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="L1D:u=0" desc="L1D cache, masks:monitor at user level"> </modifier>
+        <modifier name="L1D:k=0" desc="L1D cache, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="114" name="L1D_PEND_MISS" desc="L1D pending misses">
+        <modifier name="L1D_PEND_MISS:PENDING" desc="L1D pending misses, masks:Cycles with L1D load misses outstanding"> </modifier>
+        <modifier name="L1D_PEND_MISS:PENDING_CYCLES" desc="L1D pending misses, masks:Cycles with L1D load misses outstanding"> </modifier>
+        <modifier name="L1D_PEND_MISS:OCCURRENCES" desc="L1D pending misses, masks:Number L1D miss outstanding"> </modifier>
+        <modifier name="L1D_PEND_MISS:EDGE" desc="L1D pending misses, masks:Number L1D miss outstanding"> </modifier>
+        <modifier name="L1D_PEND_MISS:REQUEST_FB_FULL" desc="L1D pending misses, masks:Number of times a demand request was blocked due to Fill Buffer (FB) unavailability"> </modifier>
+        <modifier name="L1D_PEND_MISS:FB_FULL" desc="L1D pending misses, masks:Number of cycles a demand request was blocked due to Fill Buffer (FB) unavailability"> </modifier>
+        <modifier name="L1D_PEND_MISS:e=0" desc="L1D pending misses, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="L1D_PEND_MISS:i=0" desc="L1D pending misses, masks:invert"> </modifier>
+        <modifier name="L1D_PEND_MISS:c=0" desc="L1D pending misses, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="L1D_PEND_MISS:t=0" desc="L1D pending misses, masks:measure any thread"> </modifier>
+        <modifier name="L1D_PEND_MISS:intx=0" desc="L1D pending misses, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="L1D_PEND_MISS:intxcp=0" desc="L1D pending misses, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="L1D_PEND_MISS:u=0" desc="L1D pending misses, masks:monitor at user level"> </modifier>
+        <modifier name="L1D_PEND_MISS:k=0" desc="L1D pending misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="115" name="L2_DEMAND_RQSTS" desc="Demand Data Read requests to L2">
+        <modifier name="L2_DEMAND_RQSTS:WB_HIT" desc="Demand Data Read requests to L2, masks:WB requests that hit L2 cache"> </modifier>
+        <modifier name="L2_DEMAND_RQSTS:e=0" desc="Demand Data Read requests to L2, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="L2_DEMAND_RQSTS:i=0" desc="Demand Data Read requests to L2, masks:invert"> </modifier>
+        <modifier name="L2_DEMAND_RQSTS:c=0" desc="Demand Data Read requests to L2, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="L2_DEMAND_RQSTS:t=0" desc="Demand Data Read requests to L2, masks:measure any thread"> </modifier>
+        <modifier name="L2_DEMAND_RQSTS:intx=0" desc="Demand Data Read requests to L2, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="L2_DEMAND_RQSTS:intxcp=0" desc="Demand Data Read requests to L2, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="L2_DEMAND_RQSTS:u=0" desc="Demand Data Read requests to L2, masks:monitor at user level"> </modifier>
+        <modifier name="L2_DEMAND_RQSTS:k=0" desc="Demand Data Read requests to L2, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="116" name="L2_LINES_IN" desc="L2 lines allocated">
+        <modifier name="L2_LINES_IN:I" desc="L2 lines allocated, masks:L2 cache lines in I state filling L2"> </modifier>
+        <modifier name="L2_LINES_IN:S" desc="L2 lines allocated, masks:L2 cache lines in S state filling L2"> </modifier>
+        <modifier name="L2_LINES_IN:E" desc="L2 lines allocated, masks:L2 cache lines in E state filling L2"> </modifier>
+        <modifier name="L2_LINES_IN:ALL" desc="L2 lines allocated, masks:L2 cache lines filling L2"> </modifier>
+        <modifier name="L2_LINES_IN:ANY" desc="L2 lines allocated, masks:L2 cache lines filling L2"> </modifier>
+        <modifier name="L2_LINES_IN:e=0" desc="L2 lines allocated, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="L2_LINES_IN:i=0" desc="L2 lines allocated, masks:invert"> </modifier>
+        <modifier name="L2_LINES_IN:c=0" desc="L2 lines allocated, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="L2_LINES_IN:t=0" desc="L2 lines allocated, masks:measure any thread"> </modifier>
+        <modifier name="L2_LINES_IN:intx=0" desc="L2 lines allocated, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="L2_LINES_IN:intxcp=0" desc="L2 lines allocated, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="L2_LINES_IN:u=0" desc="L2 lines allocated, masks:monitor at user level"> </modifier>
+        <modifier name="L2_LINES_IN:k=0" desc="L2 lines allocated, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="117" name="L2_LINES_OUT" desc="L2 lines evicted">
+        <modifier name="L2_LINES_OUT:DEMAND_CLEAN" desc="L2 lines evicted, masks:Number of clean L2 cachelines evicted by demand"> </modifier>
+        <modifier name="L2_LINES_OUT:DEMAND_DIRTY" desc="L2 lines evicted, masks:Number of dirty L2 cachelines evicted by demand"> </modifier>
+    </event>
+    <event index="118" name="L2_RQSTS" desc="L2 requests">
+        <modifier name="L2_RQSTS:DEMAND_DATA_RD_MISS" desc="L2 requests, masks:Demand Data Read requests that miss L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:DEMAND_DATA_RD_HIT" desc="L2 requests, masks:Demand Data Read requests that hit L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:DEMAND_RFO_MISS" desc="L2 requests, masks:RFO requests that miss L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:RFO_MISS" desc="L2 requests, masks:RFO requests that miss L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:DEMAND_RFO_HIT" desc="L2 requests, masks:RFO requests that hit L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:RFO_HIT" desc="L2 requests, masks:RFO requests that hit L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:CODE_RD_MISS" desc="L2 requests, masks:L2 cache misses when fetching instructions"> </modifier>
+        <modifier name="L2_RQSTS:ALL_DEMAND_MISS" desc="L2 requests, masks:All demand requests that miss the L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:CODE_RD_HIT" desc="L2 requests, masks:L2 cache hits when fetching instructions, code reads"> </modifier>
+        <modifier name="L2_RQSTS:L2_PF_MISS" desc="L2 requests, masks:Requests from the L2 hardware prefetchers that miss L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:PF_MISS" desc="L2 requests, masks:Requests from the L1/L2/L3 hardware prefetchers or Load software prefetches that miss L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:MISS" desc="L2 requests, masks:All requests that miss the L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:L2_PF_HIT" desc="L2 requests, masks:Requests from the L2 hardware prefetchers that hit L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:PF_HIT" desc="L2 requests, masks:Requests from the L2 hardware prefetchers that hit L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:ALL_DEMAND_DATA_RD" desc="L2 requests, masks:Any data read request to L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:ALL_RFO" desc="L2 requests, masks:Any data RFO request to L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:ALL_CODE_RD" desc="L2 requests, masks:Any code read request to L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:ALL_DEMAND_REFERENCES" desc="L2 requests, masks:All demand requests to L2 cache "> </modifier>
+        <modifier name="L2_RQSTS:ALL_PF" desc="L2 requests, masks:Any L2 HW prefetch request to L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:REFERENCES" desc="L2 requests, masks:All requests to L2 cache"> </modifier>
+        <modifier name="L2_RQSTS:e=0" desc="L2 requests, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="L2_RQSTS:i=0" desc="L2 requests, masks:invert"> </modifier>
+        <modifier name="L2_RQSTS:c=0" desc="L2 requests, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="L2_RQSTS:t=0" desc="L2 requests, masks:measure any thread"> </modifier>
+        <modifier name="L2_RQSTS:intx=0" desc="L2 requests, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="L2_RQSTS:intxcp=0" desc="L2 requests, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="L2_RQSTS:u=0" desc="L2 requests, masks:monitor at user level"> </modifier>
+        <modifier name="L2_RQSTS:k=0" desc="L2 requests, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="119" name="L2_TRANS" desc="L2 transactions">
+        <modifier name="L2_TRANS:DEMAND_DATA_RD" desc="L2 transactions, masks:Demand Data Read requests that access L2 cache"> </modifier>
+        <modifier name="L2_TRANS:RFO" desc="L2 transactions, masks:RFO requests that access L2 cache"> </modifier>
+        <modifier name="L2_TRANS:CODE_RD" desc="L2 transactions, masks:L2 cache accesses when fetching instructions"> </modifier>
+        <modifier name="L2_TRANS:ALL_PF" desc="L2 transactions, masks:L2 or L3 HW prefetches that access L2 cache, including rejects"> </modifier>
+        <modifier name="L2_TRANS:L1D_WB" desc="L2 transactions, masks:L1D writebacks that access L2 cache"> </modifier>
+        <modifier name="L2_TRANS:L2_FILL" desc="L2 transactions, masks:L2 fill requests that access L2 cache"> </modifier>
+        <modifier name="L2_TRANS:L2_WB" desc="L2 transactions, masks:L2 writebacks that access L2 cache"> </modifier>
+        <modifier name="L2_TRANS:ALL_REQUESTS" desc="L2 transactions, masks:Transactions accessing L2 pipe"> </modifier>
+        <modifier name="L2_TRANS:e=0" desc="L2 transactions, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="L2_TRANS:i=0" desc="L2 transactions, masks:invert"> </modifier>
+        <modifier name="L2_TRANS:c=0" desc="L2 transactions, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="L2_TRANS:t=0" desc="L2 transactions, masks:measure any thread"> </modifier>
+        <modifier name="L2_TRANS:intx=0" desc="L2 transactions, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="L2_TRANS:intxcp=0" desc="L2 transactions, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="L2_TRANS:u=0" desc="L2 transactions, masks:monitor at user level"> </modifier>
+        <modifier name="L2_TRANS:k=0" desc="L2 transactions, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="120" name="LD_BLOCKS" desc="Blocking loads">
+        <modifier name="LD_BLOCKS:STORE_FORWARD" desc="Blocking loads, masks:Counts the number of loads blocked by overlapping with store buffer entries that cannot be forwarded"> </modifier>
+        <modifier name="LD_BLOCKS:NO_SR" desc="Blocking loads, masks:number of times that split load operations are temporarily blocked because all resources for handling the split accesses are in use"> </modifier>
+    </event>
+    <event index="121" name="LD_BLOCKS_PARTIAL" desc="Partial load blocks">
+        <modifier name="LD_BLOCKS_PARTIAL:ADDRESS_ALIAS" desc="Partial load blocks, masks:False dependencies in MOB due to partial compare on address"> </modifier>
+        <modifier name="LD_BLOCKS_PARTIAL:e=0" desc="Partial load blocks, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="LD_BLOCKS_PARTIAL:i=0" desc="Partial load blocks, masks:invert"> </modifier>
+        <modifier name="LD_BLOCKS_PARTIAL:c=0" desc="Partial load blocks, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="LD_BLOCKS_PARTIAL:t=0" desc="Partial load blocks, masks:measure any thread"> </modifier>
+        <modifier name="LD_BLOCKS_PARTIAL:intx=0" desc="Partial load blocks, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="LD_BLOCKS_PARTIAL:intxcp=0" desc="Partial load blocks, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="LD_BLOCKS_PARTIAL:u=0" desc="Partial load blocks, masks:monitor at user level"> </modifier>
+        <modifier name="LD_BLOCKS_PARTIAL:k=0" desc="Partial load blocks, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="122" name="LOAD_HIT_PRE" desc="Load dispatches">
+        <modifier name="LOAD_HIT_PRE:SW_PF" desc="Load dispatches, masks:Non software-prefetch load dispatches that hit FB allocated for software prefetch"> </modifier>
+        <modifier name="LOAD_HIT_PRE:HW_PF" desc="Load dispatches, masks:Non software-prefetch load dispatches that hit FB allocated for hardware prefetch"> </modifier>
+    </event>
+    <event index="123" name="LOCK_CYCLES" desc="Locked cycles in L1D and L2">
+        <modifier name="LOCK_CYCLES:SPLIT_LOCK_UC_LOCK_DURATION" desc="Locked cycles in L1D and L2, masks:Cycles in which the L1D and L2 are locked, due to a UC lock or split lock"> </modifier>
+        <modifier name="LOCK_CYCLES:CACHE_LOCK_DURATION" desc="Locked cycles in L1D and L2, masks:cycles that the L1D is locked"> </modifier>
+    </event>
+    <event index="124" name="LONGEST_LAT_CACHE" desc="L3 cache">
+        <modifier name="LONGEST_LAT_CACHE:MISS" desc="L3 cache, masks:Core-originated cacheable demand requests missed LLC - architectural event"> </modifier>
+        <modifier name="LONGEST_LAT_CACHE:REFERENCE" desc="L3 cache, masks:Core-originated cacheable demand requests that refer to LLC - architectural event"> </modifier>
+    </event>
+    <event index="125" name="MACHINE_CLEARS" desc="Machine clear asserted">
+        <modifier name="MACHINE_CLEARS:CYCLES" desc="Machine clear asserted, masks:Cycles there was a Nuke. Account for both thread-specific and All Thread Nukes"> </modifier>
+        <modifier name="MACHINE_CLEARS:MEMORY_ORDERING" desc="Machine clear asserted, masks:Number of Memory Ordering Machine Clears detected"> </modifier>
+        <modifier name="MACHINE_CLEARS:SMC" desc="Machine clear asserted, masks:Number of Self-modifying code (SMC) Machine Clears detected"> </modifier>
+        <modifier name="MACHINE_CLEARS:MASKMOV" desc="Machine clear asserted, masks:This event counts the number of executed Intel AVX masked load operations that refer to an illegal address range with the mask bits set to 0"> </modifier>
+        <modifier name="MACHINE_CLEARS:COUNT" desc="Machine clear asserted, masks:Number of machine clears (nukes) of any type"> </modifier>
+    </event>
+    <event index="126" name="MEM_LOAD_UOPS_L3_HIT_RETIRED" desc="L3 hit load uops retired (Precise Event)">
+        <modifier name="MEM_LOAD_UOPS_L3_HIT_RETIRED:XSNP_MISS" desc="L3 hit load uops retired (Precise Event), masks:Retired load uops which data sources were L3 hit and cross-core snoop missed in on-pkg core cache"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_HIT_RETIRED:XSNP_HIT" desc="L3 hit load uops retired (Precise Event), masks:Retired load uops which data sources were L3 and cross-core snoop hits in on-pkg core cache"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_HIT_RETIRED:XSNP_HITM" desc="L3 hit load uops retired (Precise Event), masks:Load had HitM Response from a core on same socket (shared L3). (Non PEBS"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_HIT_RETIRED:XSNP_NONE" desc="L3 hit load uops retired (Precise Event), masks:Retired load uops which data sources were hits in L3 without snoops required"> </modifier>
+    </event>
+    <event index="127" name="MEM_LOAD_UOPS_LLC_HIT_RETIRED" desc="L3 hit load uops retired (Precise Event)">
+        <modifier name="MEM_LOAD_UOPS_LLC_HIT_RETIRED:XSNP_MISS" desc="L3 hit load uops retired (Precise Event), masks:Retired load uops which data sources were L3 hit and cross-core snoop missed in on-pkg core cache"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_HIT_RETIRED:XSNP_HIT" desc="L3 hit load uops retired (Precise Event), masks:Retired load uops which data sources were L3 and cross-core snoop hits in on-pkg core cache"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_HIT_RETIRED:XSNP_HITM" desc="L3 hit load uops retired (Precise Event), masks:Load had HitM Response from a core on same socket (shared L3). (Non PEBS"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_HIT_RETIRED:XSNP_NONE" desc="L3 hit load uops retired (Precise Event), masks:Retired load uops which data sources were hits in L3 without snoops required"> </modifier>
+    </event>
+    <event index="128" name="MEM_LOAD_UOPS_L3_MISS_RETIRED" desc="Load uops retired that missed the L3 (Precise Event)">
+        <modifier name="MEM_LOAD_UOPS_L3_MISS_RETIRED:LOCAL_DRAM" desc="Load uops retired that missed the L3 (Precise Event), masks:Retired load uops missing L3 cache but hitting local memory"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_MISS_RETIRED:e=0" desc="Load uops retired that missed the L3 (Precise Event), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_MISS_RETIRED:i=0" desc="Load uops retired that missed the L3 (Precise Event), masks:invert"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_MISS_RETIRED:c=0" desc="Load uops retired that missed the L3 (Precise Event), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_MISS_RETIRED:t=0" desc="Load uops retired that missed the L3 (Precise Event), masks:measure any thread"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_MISS_RETIRED:intx=0" desc="Load uops retired that missed the L3 (Precise Event), masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_MISS_RETIRED:intxcp=0" desc="Load uops retired that missed the L3 (Precise Event), masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_MISS_RETIRED:u=0" desc="Load uops retired that missed the L3 (Precise Event), masks:monitor at user level"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_L3_MISS_RETIRED:k=0" desc="Load uops retired that missed the L3 (Precise Event), masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="129" name="MEM_LOAD_UOPS_LLC_MISS_RETIRED" desc="Load uops retired that missed the L3 (Precise Event)">
+        <modifier name="MEM_LOAD_UOPS_LLC_MISS_RETIRED:LOCAL_DRAM" desc="Load uops retired that missed the L3 (Precise Event), masks:Retired load uops missing L3 cache but hitting local memory"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_MISS_RETIRED:e=0" desc="Load uops retired that missed the L3 (Precise Event), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_MISS_RETIRED:i=0" desc="Load uops retired that missed the L3 (Precise Event), masks:invert"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_MISS_RETIRED:c=0" desc="Load uops retired that missed the L3 (Precise Event), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_MISS_RETIRED:t=0" desc="Load uops retired that missed the L3 (Precise Event), masks:measure any thread"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_MISS_RETIRED:intx=0" desc="Load uops retired that missed the L3 (Precise Event), masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_MISS_RETIRED:intxcp=0" desc="Load uops retired that missed the L3 (Precise Event), masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_MISS_RETIRED:u=0" desc="Load uops retired that missed the L3 (Precise Event), masks:monitor at user level"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_LLC_MISS_RETIRED:k=0" desc="Load uops retired that missed the L3 (Precise Event), masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="130" name="MEM_LOAD_UOPS_RETIRED" desc="Retired load uops (Precise Event)">
+        <modifier name="MEM_LOAD_UOPS_RETIRED:L1_HIT" desc="Retired load uops (Precise Event), masks:Retired load uops with L1 cache hits as data source"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_RETIRED:L2_HIT" desc="Retired load uops (Precise Event), masks:Retired load uops with L2 cache hits as data source"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_RETIRED:L3_HIT" desc="Retired load uops (Precise Event), masks:Retired load uops with L3 cache hits as data source"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_RETIRED:L1_MISS" desc="Retired load uops (Precise Event), masks:Retired load uops which missed the L1D"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_RETIRED:L2_MISS" desc="Retired load uops (Precise Event), masks:Retired load uops which missed the L2. Unknown data source excluded"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_RETIRED:L3_MISS" desc="Retired load uops (Precise Event), masks:Retired load uops which missed the L3"> </modifier>
+        <modifier name="MEM_LOAD_UOPS_RETIRED:HIT_LFB" desc="Retired load uops (Precise Event), masks:Retired load uops which missed L1 but hit line fill buffer (LFB)"> </modifier>
+    </event>
+    <event index="131" name="MEM_TRANS_RETIRED" desc="Memory transactions retired (Precise Event)">
+        <modifier name="MEM_TRANS_RETIRED:LOAD_LATENCY" desc="Memory transactions retired (Precise Event), masks:Memory load instructions retired above programmed clocks, minimum threshold value is 3 (Precise Event and ldlat required)"> </modifier>
+        <modifier name="MEM_TRANS_RETIRED:LATENCY_ABOVE_THRESHOLD" desc="Memory transactions retired (Precise Event), masks:Memory load instructions retired above programmed clocks, minimum threshold value is 3 (Precise Event and ldlat required)"> </modifier>
+        <modifier name="MEM_TRANS_RETIRED:e=0" desc="Memory transactions retired (Precise Event), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="MEM_TRANS_RETIRED:i=0" desc="Memory transactions retired (Precise Event), masks:invert"> </modifier>
+        <modifier name="MEM_TRANS_RETIRED:c=0" desc="Memory transactions retired (Precise Event), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="MEM_TRANS_RETIRED:t=0" desc="Memory transactions retired (Precise Event), masks:measure any thread"> </modifier>
+    </event>
+    <event index="132" name="MEM_UOPS_RETIRED" desc="Memory uops retired (Precise Event)">
+        <modifier name="MEM_UOPS_RETIRED:STLB_MISS_LOADS" desc="Memory uops retired (Precise Event), masks:Load uops with true STLB miss retired to architected path"> </modifier>
+        <modifier name="MEM_UOPS_RETIRED:STLB_MISS_STORES" desc="Memory uops retired (Precise Event), masks:Store uops with true STLB miss retired to architected path"> </modifier>
+        <modifier name="MEM_UOPS_RETIRED:LOCK_LOADS" desc="Memory uops retired (Precise Event), masks:Load uops with locked access retired"> </modifier>
+        <modifier name="MEM_UOPS_RETIRED:SPLIT_LOADS" desc="Memory uops retired (Precise Event), masks:Line-splitted load uops retired"> </modifier>
+        <modifier name="MEM_UOPS_RETIRED:SPLIT_STORES" desc="Memory uops retired (Precise Event), masks:Line-splitted store uops retired"> </modifier>
+        <modifier name="MEM_UOPS_RETIRED:ALL_LOADS" desc="Memory uops retired (Precise Event), masks:All load uops retired"> </modifier>
+        <modifier name="MEM_UOPS_RETIRED:ALL_STORES" desc="Memory uops retired (Precise Event), masks:All store uops retired"> </modifier>
+    </event>
+    <event index="133" name="MISALIGN_MEM_REF" desc="Misaligned memory references">
+        <modifier name="MISALIGN_MEM_REF:LOADS" desc="Misaligned memory references, masks:Speculative cache-line split load uops dispatched to the L1D"> </modifier>
+        <modifier name="MISALIGN_MEM_REF:STORES" desc="Misaligned memory references, masks:Speculative cache-line split store-address uops dispatched to L1D"> </modifier>
+    </event>
+    <event index="134" name="MOVE_ELIMINATION" desc="Move Elimination">
+        <modifier name="MOVE_ELIMINATION:INT_ELIMINATED" desc="Move Elimination, masks:Number of integer Move Elimination candidate uops that were eliminated"> </modifier>
+        <modifier name="MOVE_ELIMINATION:SIMD_ELIMINATED" desc="Move Elimination, masks:Number of SIMD Move Elimination candidate uops that were eliminated"> </modifier>
+        <modifier name="MOVE_ELIMINATION:INT_NOT_ELIMINATED" desc="Move Elimination, masks:Number of integer Move Elimination candidate uops that were not eliminated"> </modifier>
+        <modifier name="MOVE_ELIMINATION:SIMD_NOT_ELIMINATED" desc="Move Elimination, masks:Number of SIMD Move Elimination candidate uops that were not eliminated"> </modifier>
+    </event>
+    <event index="135" name="OFFCORE_REQUESTS" desc="Demand Data Read requests sent to uncore">
+        <modifier name="OFFCORE_REQUESTS:DEMAND_DATA_RD" desc="Demand Data Read requests sent to uncore, masks:Demand data read requests sent to uncore (use with HT off only)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS:DEMAND_CODE_RD" desc="Demand Data Read requests sent to uncore, masks:Demand code read requests sent to uncore (use with HT off only)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS:DEMAND_RFO" desc="Demand Data Read requests sent to uncore, masks:Demand RFOs requests sent to uncore (use with HT off only)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS:ALL_DATA_RD" desc="Demand Data Read requests sent to uncore, masks:Data read requests sent to uncore (use with HT off only)"> </modifier>
+    </event>
+    <event index="136" name="OTHER_ASSISTS" desc="Software assist">
+        <modifier name="OTHER_ASSISTS:AVX_TO_SSE" desc="Software assist, masks:Number of transitions from AVX-256 to legacy SSE when penalty applicable"> </modifier>
+        <modifier name="OTHER_ASSISTS:SSE_TO_AVX" desc="Software assist, masks:Number of transitions from legacy SSE to AVX-256 when penalty applicable"> </modifier>
+        <modifier name="OTHER_ASSISTS:ANY_WB_ASSIST" desc="Software assist, masks:Number of times any microcode assist is invoked by HW upon uop writeback"> </modifier>
+    </event>
+    <event index="137" name="RESOURCE_STALLS" desc="Cycles Allocation is stalled due to Resource Related reason">
+        <modifier name="RESOURCE_STALLS:ANY" desc="Cycles Allocation is stalled due to Resource Related reason, masks:Cycles Allocation is stalled due to Resource Related reason"> </modifier>
+        <modifier name="RESOURCE_STALLS:ALL" desc="Cycles Allocation is stalled due to Resource Related reason, masks:Cycles Allocation is stalled due to Resource Related reason"> </modifier>
+        <modifier name="RESOURCE_STALLS:RS" desc="Cycles Allocation is stalled due to Resource Related reason, masks:Stall cycles caused by absence of eligible entries in Reservation Station (RS)"> </modifier>
+        <modifier name="RESOURCE_STALLS:SB" desc="Cycles Allocation is stalled due to Resource Related reason, masks:Cycles Allocator is stalled due to Store Buffer full (not including draining from synch)"> </modifier>
+        <modifier name="RESOURCE_STALLS:ROB" desc="Cycles Allocation is stalled due to Resource Related reason, masks:ROB full stall cycles"> </modifier>
+        <modifier name="RESOURCE_STALLS:e=0" desc="Cycles Allocation is stalled due to Resource Related reason, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="RESOURCE_STALLS:i=0" desc="Cycles Allocation is stalled due to Resource Related reason, masks:invert"> </modifier>
+        <modifier name="RESOURCE_STALLS:c=0" desc="Cycles Allocation is stalled due to Resource Related reason, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="RESOURCE_STALLS:t=0" desc="Cycles Allocation is stalled due to Resource Related reason, masks:measure any thread"> </modifier>
+        <modifier name="RESOURCE_STALLS:intx=0" desc="Cycles Allocation is stalled due to Resource Related reason, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="RESOURCE_STALLS:intxcp=0" desc="Cycles Allocation is stalled due to Resource Related reason, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="RESOURCE_STALLS:u=0" desc="Cycles Allocation is stalled due to Resource Related reason, masks:monitor at user level"> </modifier>
+        <modifier name="RESOURCE_STALLS:k=0" desc="Cycles Allocation is stalled due to Resource Related reason, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="138" name="ROB_MISC_EVENTS" desc="ROB miscellaneous events">
+        <modifier name="ROB_MISC_EVENTS:LBR_INSERTS" desc="ROB miscellaneous events, masks:Count each time an new Last Branch Record (LBR) is inserted"> </modifier>
+        <modifier name="ROB_MISC_EVENTS:e=0" desc="ROB miscellaneous events, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="ROB_MISC_EVENTS:i=0" desc="ROB miscellaneous events, masks:invert"> </modifier>
+        <modifier name="ROB_MISC_EVENTS:c=0" desc="ROB miscellaneous events, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="ROB_MISC_EVENTS:t=0" desc="ROB miscellaneous events, masks:measure any thread"> </modifier>
+        <modifier name="ROB_MISC_EVENTS:intx=0" desc="ROB miscellaneous events, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="ROB_MISC_EVENTS:intxcp=0" desc="ROB miscellaneous events, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="ROB_MISC_EVENTS:u=0" desc="ROB miscellaneous events, masks:monitor at user level"> </modifier>
+        <modifier name="ROB_MISC_EVENTS:k=0" desc="ROB miscellaneous events, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="139" name="RS_EVENTS" desc="Reservation Station">
+        <modifier name="RS_EVENTS:EMPTY_CYCLES" desc="Reservation Station, masks:Cycles the Reservation Station (RS) is empty for this thread"> </modifier>
+        <modifier name="RS_EVENTS:EMPTY_END" desc="Reservation Station, masks:Counts number of time the Reservation Station (RS) goes from empty to non-empty"> </modifier>
+        <modifier name="RS_EVENTS:e=0" desc="Reservation Station, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="RS_EVENTS:i=0" desc="Reservation Station, masks:invert"> </modifier>
+        <modifier name="RS_EVENTS:c=0" desc="Reservation Station, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="RS_EVENTS:t=0" desc="Reservation Station, masks:measure any thread"> </modifier>
+        <modifier name="RS_EVENTS:intx=0" desc="Reservation Station, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="RS_EVENTS:intxcp=0" desc="Reservation Station, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="RS_EVENTS:u=0" desc="Reservation Station, masks:monitor at user level"> </modifier>
+        <modifier name="RS_EVENTS:k=0" desc="Reservation Station, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="140" name="RTM_RETIRED" desc="Restricted Transaction Memory execution (Precise Event)">
+        <modifier name="RTM_RETIRED:START" desc="Restricted Transaction Memory execution (Precise Event), masks:Number of times an RTM execution started"> </modifier>
+        <modifier name="RTM_RETIRED:COMMIT" desc="Restricted Transaction Memory execution (Precise Event), masks:Number of times an RTM execution successfully committed"> </modifier>
+        <modifier name="RTM_RETIRED:ABORTED" desc="Restricted Transaction Memory execution (Precise Event), masks:Number of times an RTM execution aborted due to any reasons (multiple categories may count as one) (Precise Event)"> </modifier>
+        <modifier name="RTM_RETIRED:ABORTED_MISC1" desc="Restricted Transaction Memory execution (Precise Event), masks:Number of times an RTM execution aborted due to various memory events"> </modifier>
+        <modifier name="RTM_RETIRED:ABORTED_MISC2" desc="Restricted Transaction Memory execution (Precise Event), masks:Number of times an RTM execution aborted due to uncommon conditions"> </modifier>
+        <modifier name="RTM_RETIRED:ABORTED_MISC3" desc="Restricted Transaction Memory execution (Precise Event), masks:Number of times an RTM execution aborted due to RTM-unfriendly instructions"> </modifier>
+        <modifier name="RTM_RETIRED:ABORTED_MISC4" desc="Restricted Transaction Memory execution (Precise Event), masks:Number of times an RTM execution aborted due to incompatible memory type"> </modifier>
+        <modifier name="RTM_RETIRED:ABORTED_MISC5" desc="Restricted Transaction Memory execution (Precise Event), masks:Number of times an RTM execution aborted due to none of the other 4 reasons (e.g., interrupt)"> </modifier>
+        <modifier name="RTM_RETIRED:e=0" desc="Restricted Transaction Memory execution (Precise Event), masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="RTM_RETIRED:i=0" desc="Restricted Transaction Memory execution (Precise Event), masks:invert"> </modifier>
+        <modifier name="RTM_RETIRED:c=0" desc="Restricted Transaction Memory execution (Precise Event), masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="RTM_RETIRED:t=0" desc="Restricted Transaction Memory execution (Precise Event), masks:measure any thread"> </modifier>
+        <modifier name="RTM_RETIRED:intx=0" desc="Restricted Transaction Memory execution (Precise Event), masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="RTM_RETIRED:intxcp=0" desc="Restricted Transaction Memory execution (Precise Event), masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="RTM_RETIRED:u=0" desc="Restricted Transaction Memory execution (Precise Event), masks:monitor at user level"> </modifier>
+        <modifier name="RTM_RETIRED:k=0" desc="Restricted Transaction Memory execution (Precise Event), masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="141" name="TLB_FLUSH" desc="TLB flushes">
+        <modifier name="TLB_FLUSH:DTLB_THREAD" desc="TLB flushes, masks:Count number of DTLB flushes of thread-specific entries"> </modifier>
+        <modifier name="TLB_FLUSH:STLB_ANY" desc="TLB flushes, masks:Count number of any STLB flushes"> </modifier>
+    </event>
+    <event index="142" name="UOPS_EXECUTED" desc="Uops executed">
+        <modifier name="UOPS_EXECUTED:CORE" desc="Uops executed, masks:Number of uops executed from any thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:STALL_CYCLES" desc="Uops executed, masks:Number of cycles with no uops executed"> </modifier>
+        <modifier name="UOPS_EXECUTED:CYCLES_GE_1_UOP_EXEC" desc="Uops executed, masks:Cycles where at least 1 uop was executed per thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:CYCLES_GE_2_UOPS_EXEC" desc="Uops executed, masks:Cycles where at least 2 uops were executed per thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:CYCLES_GE_3_UOPS_EXEC" desc="Uops executed, masks:Cycles where at least 3 uops were executed per thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:CYCLES_GE_4_UOPS_EXEC" desc="Uops executed, masks:Cycles where at least 4 uops were executed per thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:CORE_CYCLES_GE_1" desc="Uops executed, masks:Cycles where at least 1 uop was executed from any thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:CORE_CYCLES_GE_2" desc="Uops executed, masks:Cycles where at least 2 uops were executed from any thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:CORE_CYCLES_GE_3" desc="Uops executed, masks:Cycles where at least 3 uops were executed from any thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:CORE_CYCLES_GE_4" desc="Uops executed, masks:Cycles where at least 4 uops were executed from any thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:CORE_CYCLES_NONE" desc="Uops executed, masks:Cycles where no uop is executed on any thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:e=0" desc="Uops executed, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="UOPS_EXECUTED:i=0" desc="Uops executed, masks:invert"> </modifier>
+        <modifier name="UOPS_EXECUTED:c=0" desc="Uops executed, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="UOPS_EXECUTED:t=0" desc="Uops executed, masks:measure any thread"> </modifier>
+        <modifier name="UOPS_EXECUTED:intx=0" desc="Uops executed, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="UOPS_EXECUTED:intxcp=0" desc="Uops executed, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="UOPS_EXECUTED:u=0" desc="Uops executed, masks:monitor at user level"> </modifier>
+        <modifier name="UOPS_EXECUTED:k=0" desc="Uops executed, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="143" name="LSD" desc="Loop stream detector">
+        <modifier name="LSD:UOPS" desc="Loop stream detector, masks:Number of uops delivered by the Loop Stream Detector (LSD)"> </modifier>
+        <modifier name="LSD:ACTIVE" desc="Loop stream detector, masks:Cycles with uops delivered by the LSD but which did not come from decoder"> </modifier>
+        <modifier name="LSD:CYCLES_4_UOPS" desc="Loop stream detector, masks:Cycles with 4 uops delivered by the LSD but which did not come from decoder"> </modifier>
+        <modifier name="LSD:e=0" desc="Loop stream detector, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="LSD:i=0" desc="Loop stream detector, masks:invert"> </modifier>
+        <modifier name="LSD:c=0" desc="Loop stream detector, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="LSD:t=0" desc="Loop stream detector, masks:measure any thread"> </modifier>
+        <modifier name="LSD:intx=0" desc="Loop stream detector, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="LSD:intxcp=0" desc="Loop stream detector, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="LSD:u=0" desc="Loop stream detector, masks:monitor at user level"> </modifier>
+        <modifier name="LSD:k=0" desc="Loop stream detector, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="144" name="UOPS_EXECUTED_PORT" desc="Uops dispatched to specific ports">
+        <modifier name="UOPS_EXECUTED_PORT:PORT_0" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 0"> </modifier>
+        <modifier name="UOPS_EXECUTED_PORT:PORT_1" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 1"> </modifier>
+        <modifier name="UOPS_EXECUTED_PORT:PORT_2" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 2"> </modifier>
+        <modifier name="UOPS_EXECUTED_PORT:PORT_3" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 3"> </modifier>
+        <modifier name="UOPS_EXECUTED_PORT:PORT_4" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 4"> </modifier>
+        <modifier name="UOPS_EXECUTED_PORT:PORT_5" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 5"> </modifier>
+        <modifier name="UOPS_EXECUTED_PORT:PORT_6" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 6"> </modifier>
+        <modifier name="UOPS_EXECUTED_PORT:PORT_7" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 7"> </modifier>
+    </event>
+    <event index="145" name="UOPS_DISPATCHED_PORT" desc="Uops dispatched to specific ports">
+        <modifier name="UOPS_DISPATCHED_PORT:PORT_0" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 0"> </modifier>
+        <modifier name="UOPS_DISPATCHED_PORT:PORT_1" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 1"> </modifier>
+        <modifier name="UOPS_DISPATCHED_PORT:PORT_2" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 2"> </modifier>
+        <modifier name="UOPS_DISPATCHED_PORT:PORT_3" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 3"> </modifier>
+        <modifier name="UOPS_DISPATCHED_PORT:PORT_4" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 4"> </modifier>
+        <modifier name="UOPS_DISPATCHED_PORT:PORT_5" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 5"> </modifier>
+        <modifier name="UOPS_DISPATCHED_PORT:PORT_6" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 6"> </modifier>
+        <modifier name="UOPS_DISPATCHED_PORT:PORT_7" desc="Uops dispatched to specific ports, masks:Cycles which a Uop is executed on port 7"> </modifier>
+    </event>
+    <event index="146" name="UOPS_ISSUED" desc="Uops issued">
+        <modifier name="UOPS_ISSUED:ANY" desc="Uops issued, masks:Number of Uops issued by the Resource Allocation Table (RAT) to the Reservation Station (RS)"> </modifier>
+        <modifier name="UOPS_ISSUED:ALL" desc="Uops issued, masks:Number of Uops issued by the Resource Allocation Table (RAT) to the Reservation Station (RS)"> </modifier>
+        <modifier name="UOPS_ISSUED:FLAGS_MERGE" desc="Uops issued, masks:Number of flags-merge uops being allocated. Such uops adds delay"> </modifier>
+        <modifier name="UOPS_ISSUED:SLOW_LEA" desc="Uops issued, masks:Number of slow LEA or similar uops allocated. Such uop has 3 sources regardless if result of LEA instruction or not"> </modifier>
+        <modifier name="UOPS_ISSUED:SINGLE_MUL" desc="Uops issued, masks:Number of Multiply packed/scalar single precision uops allocated"> </modifier>
+        <modifier name="UOPS_ISSUED:STALL_CYCLES" desc="Uops issued, masks:Counts the number of cycles no uops issued by this thread"> </modifier>
+    </event>
+    <event index="147" name="UOPS_RETIRED" desc="Uops retired (Precise Event)">
+        <modifier name="UOPS_RETIRED:ALL" desc="Uops retired (Precise Event), masks:All uops that actually retired"> </modifier>
+        <modifier name="UOPS_RETIRED:ANY" desc="Uops retired (Precise Event), masks:All uops that actually retired"> </modifier>
+        <modifier name="UOPS_RETIRED:RETIRE_SLOTS" desc="Uops retired (Precise Event), masks:number of retirement slots used non PEBS"> </modifier>
+        <modifier name="UOPS_RETIRED:STALL_CYCLES" desc="Uops retired (Precise Event), masks:Cycles no executable uops retired (Precise Event)"> </modifier>
+        <modifier name="UOPS_RETIRED:TOTAL_CYCLES" desc="Uops retired (Precise Event), masks:Number of cycles using always true condition applied to PEBS uops retired event"> </modifier>
+    </event>
+    <event index="148" name="TX_MEM" desc="Transactional memory aborts">
+        <modifier name="TX_MEM:ABORT_CONFLICT" desc="Transactional memory aborts, masks:Number of times a transactional abort was signaled due to data conflict on a transactionally accessed address"> </modifier>
+        <modifier name="TX_MEM:ABORT_CAPACITY_WRITE" desc="Transactional memory aborts, masks:Number of times a transactional abort was signaled due to data capacity limitation for transactional writes"> </modifier>
+        <modifier name="TX_MEM:ABORT_HLE_STORE_TO_ELIDED_LOCK" desc="Transactional memory aborts, masks:Number of times a HLE transactional execution aborted due to a non xrelease prefixed instruction writing to an elided lock in the elision buffer"> </modifier>
+        <modifier name="TX_MEM:ABORT_HLE_ELISION_BUFFER_NOT_EMPTY" desc="Transactional memory aborts, masks:Number of times a HLE transactional execution aborted due to NoAllocatedElisionBuffer being non-zero"> </modifier>
+        <modifier name="TX_MEM:ABORT_HLE_ELISION_BUFFER_MISMATCH" desc="Transactional memory aborts, masks:Number of times a HLE transaction execution aborted due to xrelease lock not satisfying the address and value requirements in the elision buffer"> </modifier>
+        <modifier name="TX_MEM:ABORT_HLE_ELISION_BUFFER_UNSUPPORTED_ALIGNMENT" desc="Transactional memory aborts, masks:Number of times a HLE transaction execution aborted due to an unsupported read alignment from the elision buffer"> </modifier>
+        <modifier name="TX_MEM:ABORT_HLE_ELISION_BUFFER_FULL" desc="Transactional memory aborts, masks:Number of times a HLE clock could not be elided due to ElisionBufferAvailable being zero"> </modifier>
+    </event>
+    <event index="149" name="TX_EXEC" desc="Transactional execution">
+        <modifier name="TX_EXEC:MISC1" desc="Transactional execution, masks:Number of times a class of instructions that may cause a transactional abort was executed. Since this is the count of execution, it may not always cause a transactional abort"> </modifier>
+        <modifier name="TX_EXEC:MISC2" desc="Transactional execution, masks:Number of times a class of instructions that may cause a transactional abort was executed inside a transactional region"> </modifier>
+        <modifier name="TX_EXEC:MISC3" desc="Transactional execution, masks:Number of times an instruction execution caused the supported nest count to be exceeded"> </modifier>
+        <modifier name="TX_EXEC:MISC4" desc="Transactional execution, masks:Number of times an instruction with HLE xbegin prefix was executed inside a RTM transactional region"> </modifier>
+        <modifier name="TX_EXEC:MISC5" desc="Transactional execution, masks:Number of times an instruction with HLE xacquire prefix was executed inside a RTM transactional region"> </modifier>
+    </event>
+    <event index="150" name="OFFCORE_REQUESTS_OUTSTANDING" desc="Outstanding offcore requests">
+        <modifier name="OFFCORE_REQUESTS_OUTSTANDING:ALL_DATA_RD_CYCLES" desc="Outstanding offcore requests, masks:Cycles with cacheable data read transactions in the superQ (use with HT off only)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_OUTSTANDING:DEMAND_CODE_RD_CYCLES" desc="Outstanding offcore requests, masks:Cycles with demand code reads transactions in the superQ (use with HT off only)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_OUTSTANDING:DEMAND_DATA_RD_CYCLES" desc="Outstanding offcore requests, masks:Cycles with demand data read transactions in the superQ (use with HT off only)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_OUTSTANDING:ALL_DATA_RD" desc="Outstanding offcore requests, masks:Cacheable data read transactions in the superQ every cycle (use with HT off only)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_OUTSTANDING:DEMAND_CODE_RD" desc="Outstanding offcore requests, masks:Code read transactions in the superQ every cycle (use with HT off only)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_OUTSTANDING:DEMAND_DATA_RD" desc="Outstanding offcore requests, masks:Demand data read transactions in the superQ every cycle (use with HT off only)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_OUTSTANDING:DEMAND_DATA_RD_GE_6" desc="Outstanding offcore requests, masks:Cycles with at lesat 6 offcore outstanding demand data read requests in the uncore queue"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_OUTSTANDING:DEMAND_RFO" desc="Outstanding offcore requests, masks:Outstanding RFO (store) transactions in the superQ every cycle (use with HT off only)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_OUTSTANDING:DEMAND_RFO_CYCLES" desc="Outstanding offcore requests, masks:Cycles with outstanding RFO (store) transactions in the superQ (use with HT off only)"> </modifier>
+    </event>
+    <event index="151" name="ILD_STALL" desc="Instruction Length Decoder stalls">
+        <modifier name="ILD_STALL:LCP" desc="Instruction Length Decoder stalls, masks:Stall caused by changing prefix length of the instruction"> </modifier>
+        <modifier name="ILD_STALL:IQ_FULL" desc="Instruction Length Decoder stalls, masks:Stall cycles due to IQ full"> </modifier>
+    </event>
+    <event index="152" name="PAGE_WALKER_LOADS" desc="Page walker loads">
+        <modifier name="PAGE_WALKER_LOADS:DTLB_L1" desc="Page walker loads, masks:Number of DTLB page walker loads that hit in the L1D and line fill buffer"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:ITLB_L1" desc="Page walker loads, masks:Number of ITLB page walker loads that hit in the L1I and line fill buffer"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:DTLB_L2" desc="Page walker loads, masks:Number of DTLB page walker loads that hit in the L2"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:ITLB_L2" desc="Page walker loads, masks:Number of ITLB page walker loads that hit in the L2"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:DTLB_L3" desc="Page walker loads, masks:Number of DTLB page walker loads that hit in the L3"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:ITLB_L3" desc="Page walker loads, masks:Number of ITLB page walker loads that hit in the L3"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:EPT_DTLB_L1" desc="Page walker loads, masks:Number of extended page table walks from the DTLB that hit in the L1D and line fill buffer"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:EPT_ITLB_L1" desc="Page walker loads, masks:Number of extended page table walks from the ITLB that hit in the L1D and line fill buffer"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:EPT_DTLB_L2" desc="Page walker loads, masks:Number of extended page table walks from the DTLB that hit in the L2"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:EPT_ITLB_L2" desc="Page walker loads, masks:Number of extended page table walks from the ITLB that hit in the L2"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:EPT_DTLB_L3" desc="Page walker loads, masks:Number of extended page table walks from the DTLB that hit in the L3"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:EPT_ITLB_L3" desc="Page walker loads, masks:Number of extended page table walks from the ITLB that hit in the L3"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:DTLB_MEMORY" desc="Page walker loads, masks:Number of DTLB page walker loads that hit memory"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:ITLB_MEMORY" desc="Page walker loads, masks:Number of ITLB page walker loads that hit memory"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:EPT_DTLB_MEMORY" desc="Page walker loads, masks:Number of extended page table walks from the DTLB that hit memory"> </modifier>
+        <modifier name="PAGE_WALKER_LOADS:EPT_ITLB_MEMORY" desc="Page walker loads, masks:Number of extended page table walks from the ITLB that hit memory"> </modifier>
+    </event>
+    <event index="153" name="DSB2MITE_SWITCHES" desc="Number of DSB to MITE switches">
+        <modifier name="DSB2MITE_SWITCHES:PENALTY_CYCLES" desc="Number of DSB to MITE switches, masks:Number of DSB to MITE switch true penalty cycles"> </modifier>
+        <modifier name="DSB2MITE_SWITCHES:e=0" desc="Number of DSB to MITE switches, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="DSB2MITE_SWITCHES:i=0" desc="Number of DSB to MITE switches, masks:invert"> </modifier>
+        <modifier name="DSB2MITE_SWITCHES:c=0" desc="Number of DSB to MITE switches, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="DSB2MITE_SWITCHES:t=0" desc="Number of DSB to MITE switches, masks:measure any thread"> </modifier>
+        <modifier name="DSB2MITE_SWITCHES:intx=0" desc="Number of DSB to MITE switches, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="DSB2MITE_SWITCHES:intxcp=0" desc="Number of DSB to MITE switches, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="DSB2MITE_SWITCHES:u=0" desc="Number of DSB to MITE switches, masks:monitor at user level"> </modifier>
+        <modifier name="DSB2MITE_SWITCHES:k=0" desc="Number of DSB to MITE switches, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="154" name="EPT" desc="Extended page table">
+        <modifier name="EPT:WALK_CYCLES" desc="Extended page table, masks:Cycles for an extended page table walk"> </modifier>
+        <modifier name="EPT:e=0" desc="Extended page table, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="EPT:i=0" desc="Extended page table, masks:invert"> </modifier>
+        <modifier name="EPT:c=0" desc="Extended page table, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="EPT:t=0" desc="Extended page table, masks:measure any thread"> </modifier>
+        <modifier name="EPT:intx=0" desc="Extended page table, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="EPT:intxcp=0" desc="Extended page table, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="EPT:u=0" desc="Extended page table, masks:monitor at user level"> </modifier>
+        <modifier name="EPT:k=0" desc="Extended page table, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="155" name="ARITH" desc="Counts arithmetic multiply operations">
+        <modifier name="ARITH:DIVIDER_UOPS" desc="Counts arithmetic multiply operations, masks:Number of uops executed by divider"> </modifier>
+        <modifier name="ARITH:e=0" desc="Counts arithmetic multiply operations, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="ARITH:i=0" desc="Counts arithmetic multiply operations, masks:invert"> </modifier>
+        <modifier name="ARITH:c=0" desc="Counts arithmetic multiply operations, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="ARITH:t=0" desc="Counts arithmetic multiply operations, masks:measure any thread"> </modifier>
+        <modifier name="ARITH:intx=0" desc="Counts arithmetic multiply operations, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="ARITH:intxcp=0" desc="Counts arithmetic multiply operations, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="ARITH:u=0" desc="Counts arithmetic multiply operations, masks:monitor at user level"> </modifier>
+        <modifier name="ARITH:k=0" desc="Counts arithmetic multiply operations, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="156" name="AVX" desc="Counts AVX instructions">
+        <modifier name="AVX:ALL" desc="Counts AVX instructions, masks:Approximate counts of AVX and AVX2 256-bit instructions, including non-arithmetic instructions, loads, and stores. May count non-AVX instructions using 256-bit operations"> </modifier>
+        <modifier name="AVX:e=0" desc="Counts AVX instructions, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="AVX:i=0" desc="Counts AVX instructions, masks:invert"> </modifier>
+        <modifier name="AVX:c=0" desc="Counts AVX instructions, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="AVX:t=0" desc="Counts AVX instructions, masks:measure any thread"> </modifier>
+        <modifier name="AVX:intx=0" desc="Counts AVX instructions, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="AVX:intxcp=0" desc="Counts AVX instructions, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="AVX:u=0" desc="Counts AVX instructions, masks:monitor at user level"> </modifier>
+        <modifier name="AVX:k=0" desc="Counts AVX instructions, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="157" name="SQ_MISC" desc="SuperQueue miscellaneous">
+        <modifier name="SQ_MISC:SPLIT_LOCK" desc="SuperQueue miscellaneous, masks:Number of split locks in the super queue (SQ)"> </modifier>
+        <modifier name="SQ_MISC:e=0" desc="SuperQueue miscellaneous, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="SQ_MISC:i=0" desc="SuperQueue miscellaneous, masks:invert"> </modifier>
+        <modifier name="SQ_MISC:c=0" desc="SuperQueue miscellaneous, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="SQ_MISC:t=0" desc="SuperQueue miscellaneous, masks:measure any thread"> </modifier>
+        <modifier name="SQ_MISC:intx=0" desc="SuperQueue miscellaneous, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="SQ_MISC:intxcp=0" desc="SuperQueue miscellaneous, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="SQ_MISC:u=0" desc="SuperQueue miscellaneous, masks:monitor at user level"> </modifier>
+        <modifier name="SQ_MISC:k=0" desc="SuperQueue miscellaneous, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="158" name="OFFCORE_REQUESTS_BUFFER" desc="Offcore reqest buffer">
+        <modifier name="OFFCORE_REQUESTS_BUFFER:SQ_FULL" desc="Offcore reqest buffer, masks:Number of cycles the offcore requests buffer is full"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_BUFFER:e=0" desc="Offcore reqest buffer, masks:edge level (may require counter-mask &gt;= 1)"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_BUFFER:i=0" desc="Offcore reqest buffer, masks:invert"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_BUFFER:c=0" desc="Offcore reqest buffer, masks:counter-mask in range [0-255]"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_BUFFER:t=0" desc="Offcore reqest buffer, masks:measure any thread"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_BUFFER:intx=0" desc="Offcore reqest buffer, masks:monitor only inside transactional memory region"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_BUFFER:intxcp=0" desc="Offcore reqest buffer, masks:do not count occurrences inside aborted transactional memory region"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_BUFFER:u=0" desc="Offcore reqest buffer, masks:monitor at user level"> </modifier>
+        <modifier name="OFFCORE_REQUESTS_BUFFER:k=0" desc="Offcore reqest buffer, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="159" name="OFFCORE_RESPONSE_0" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop)">
+        <modifier name="OFFCORE_RESPONSE_0:DMND_DATA_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of demand and DCU prefetch data reads of full and partial cachelines as well as demand data page table entry cacheline reads. Does not count L2 data read prefetches or instruction fetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:DMND_RFO" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of demand and DCU prefetch reads for ownership (RFO) requests generated by a write to data cacheline. Does not count L2 RFO prefetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:DMND_CODE_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of demand and DCU prefetch instruction cacheline reads. Does not count L2 code read prefetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:DMND_IFETCH" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of demand and DCU prefetch instruction cacheline reads. Does not count L2 code read prefetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:WB" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of writebacks (modified to exclusive) transactions"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:PF_DATA_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of data cacheline reads generated by L2 prefetchers"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:PF_RFO" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of RFO requests generated by L2 prefetchers"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:PF_CODE_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of code reads generated by L2 prefetchers"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:PF_IFETCH" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of code reads generated by L2 prefetchers"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:PF_L3_DATA_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of L2 prefetcher requests to L3 for loads"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:PF_L3_RFO" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of RFO requests generated by L2 prefetcher"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:PF_L3_CODE_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of L2 prefetcher requests to L3 for instruction fetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:PF_L3_IFETCH" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of L2 prefetcher requests to L3 for instruction fetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:SPLIT_LOCK_UC_LOCK" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of bus lock and split lock requests"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:BUS_LOCKS" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of bus lock and split lock requests"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:STRM_ST" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of streaming store requests"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:OTHER" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: counts one of the following transaction types, including L3 invalidate, I/O, full or partial writes, WC or non-temporal stores, CLFLUSH, Fences, lock, unlock, split lock"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:ANY_CODE_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: combination of PF_CODE_RD | DMND_CODE_RD | PF_L3_CODE_RD"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:ANY_IFETCH" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: combination of PF_CODE_RD | PF_L3_CODE_RD"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:ANY_REQUEST" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: combination of all request umasks"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:ANY_DATA" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: combination of DMND_DATA | PF_DATA_RD | PF_L3_DATA_RD"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:ANY_RFO" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: combination of DMND_RFO | PF_RFO | PF_L3_RFO"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:ANY_RESPONSE" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Response: count any response type"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:NO_SUPP" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts number of times supplier information is not available"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:L3_HITM" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 hits in M-state (initial lookup)"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:L3_HITE" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 hits in E-state"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:L3_HITS" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 hits in S-state"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:L3_HIT" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 hits in any state (M, E, S)"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:L3_MISS_LOCAL" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 misses to local DRAM"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_0:L3_MISS" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 misses to local DRAM"> </modifier>
+    </event>
+    <event index="160" name="OFFCORE_RESPONSE_1" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop)">
+        <modifier name="OFFCORE_RESPONSE_1:DMND_DATA_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of demand and DCU prefetch data reads of full and partial cachelines as well as demand data page table entry cacheline reads. Does not count L2 data read prefetches or instruction fetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:DMND_RFO" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of demand and DCU prefetch reads for ownership (RFO) requests generated by a write to data cacheline. Does not count L2 RFO prefetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:DMND_CODE_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of demand and DCU prefetch instruction cacheline reads. Does not count L2 code read prefetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:DMND_IFETCH" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of demand and DCU prefetch instruction cacheline reads. Does not count L2 code read prefetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:WB" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of writebacks (modified to exclusive) transactions"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:PF_DATA_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of data cacheline reads generated by L2 prefetchers"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:PF_RFO" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of RFO requests generated by L2 prefetchers"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:PF_CODE_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of code reads generated by L2 prefetchers"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:PF_IFETCH" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of code reads generated by L2 prefetchers"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:PF_L3_DATA_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of L2 prefetcher requests to L3 for loads"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:PF_L3_RFO" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of RFO requests generated by L2 prefetcher"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:PF_L3_CODE_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of L2 prefetcher requests to L3 for instruction fetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:PF_L3_IFETCH" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of L2 prefetcher requests to L3 for instruction fetches"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:SPLIT_LOCK_UC_LOCK" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of bus lock and split lock requests"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:BUS_LOCKS" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of bus lock and split lock requests"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:STRM_ST" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: number of streaming store requests"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:OTHER" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: counts one of the following transaction types, including L3 invalidate, I/O, full or partial writes, WC or non-temporal stores, CLFLUSH, Fences, lock, unlock, split lock"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:ANY_CODE_RD" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: combination of PF_CODE_RD | DMND_CODE_RD | PF_L3_CODE_RD"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:ANY_IFETCH" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: combination of PF_CODE_RD | PF_L3_CODE_RD"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:ANY_REQUEST" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: combination of all request umasks"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:ANY_DATA" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: combination of DMND_DATA | PF_DATA_RD | PF_L3_DATA_RD"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:ANY_RFO" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Request: combination of DMND_RFO | PF_RFO | PF_L3_RFO"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:ANY_RESPONSE" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Response: count any response type"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:NO_SUPP" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts number of times supplier information is not available"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:L3_HITM" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 hits in M-state (initial lookup)"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:L3_HITE" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 hits in E-state"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:L3_HITS" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 hits in S-state"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:L3_HIT" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 hits in any state (M, E, S)"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:L3_MISS_LOCAL" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 misses to local DRAM"> </modifier>
+        <modifier name="OFFCORE_RESPONSE_1:L3_MISS" desc="Offcore response event (must provide at least one request type and either any_response or any combination of supplier + snoop), masks:Supplier: counts L3 misses to local DRAM"> </modifier>
+    </event>
+    <event index="161" name="perf_raw::r0000" desc="perf_events raw event syntax: r[0-9a-fA-F]+">
+        <modifier name="perf_raw::r0000:u=0" desc="perf_events raw event syntax: r[0-9a-fA-F]+, masks:monitor at user level"> </modifier>
+        <modifier name="perf_raw::r0000:k=0" desc="perf_events raw event syntax: r[0-9a-fA-F]+, masks:monitor at kernel level"> </modifier>
+        <modifier name="perf_raw::r0000:h=0" desc="perf_events raw event syntax: r[0-9a-fA-F]+, masks:monitor at hypervisor level"> </modifier>
+    </event>
+  </eventset>
+  <eventset type="PRESET">
+    <event index="0" name="PAPI_L1_DCM" desc="Level 1 data cache misses">
+    </event>
+    <event index="1" name="PAPI_L1_ICM" desc="Level 1 instruction cache misses">
+    </event>
+    <event index="2" name="PAPI_L2_DCM" desc="Level 2 data cache misses">
+    </event>
+    <event index="3" name="PAPI_L2_ICM" desc="Level 2 instruction cache misses">
+    </event>
+    <event index="6" name="PAPI_L1_TCM" desc="Level 1 cache misses">
+    </event>
+    <event index="7" name="PAPI_L2_TCM" desc="Level 2 cache misses">
+    </event>
+    <event index="8" name="PAPI_L3_TCM" desc="Level 3 cache misses">
+    </event>
+    <event index="9" name="PAPI_CA_SNP" desc="Requests for a snoop">
+    </event>
+    <event index="10" name="PAPI_CA_SHR" desc="Requests for exclusive access to shared cache line">
+    </event>
+    <event index="11" name="PAPI_CA_CLN" desc="Requests for exclusive access to clean cache line">
+    </event>
+    <event index="12" name="PAPI_CA_INV" desc="Requests for cache line invalidation">
+    </event>
+    <event index="13" name="PAPI_CA_ITV" desc="Requests for cache line intervention">
+    </event>
+    <event index="14" name="PAPI_L3_LDM" desc="Level 3 load misses">
+    </event>
+    <event index="20" name="PAPI_TLB_DM" desc="Data translation lookaside buffer misses">
+    </event>
+    <event index="21" name="PAPI_TLB_IM" desc="Instruction translation lookaside buffer misses">
+    </event>
+    <event index="23" name="PAPI_L1_LDM" desc="Level 1 load misses">
+    </event>
+    <event index="24" name="PAPI_L1_STM" desc="Level 1 store misses">
+    </event>
+    <event index="25" name="PAPI_L2_LDM" desc="Level 2 load misses">
+    </event>
+    <event index="26" name="PAPI_L2_STM" desc="Level 2 store misses">
+    </event>
+    <event index="28" name="PAPI_PRF_DM" desc="Data prefetch cache misses">
+    </event>
+    <event index="36" name="PAPI_MEM_WCY" desc="Cycles Stalled Waiting for memory writes">
+    </event>
+    <event index="37" name="PAPI_STL_ICY" desc="Cycles with no instruction issue">
+    </event>
+    <event index="38" name="PAPI_FUL_ICY" desc="Cycles with maximum instruction issue">
+    </event>
+    <event index="39" name="PAPI_STL_CCY" desc="Cycles with no instructions completed">
+    </event>
+    <event index="40" name="PAPI_FUL_CCY" desc="Cycles with maximum instructions completed">
+    </event>
+    <event index="42" name="PAPI_BR_UCN" desc="Unconditional branch instructions">
+    </event>
+    <event index="43" name="PAPI_BR_CN" desc="Conditional branch instructions">
+    </event>
+    <event index="44" name="PAPI_BR_TKN" desc="Conditional branch instructions taken">
+    </event>
+    <event index="45" name="PAPI_BR_NTK" desc="Conditional branch instructions not taken">
+    </event>
+    <event index="46" name="PAPI_BR_MSP" desc="Conditional branch instructions mispredicted">
+    </event>
+    <event index="47" name="PAPI_BR_PRC" desc="Conditional branch instructions correctly predicted">
+    </event>
+    <event index="50" name="PAPI_TOT_INS" desc="Instructions completed">
+    </event>
+    <event index="53" name="PAPI_LD_INS" desc="Load instructions">
+    </event>
+    <event index="54" name="PAPI_SR_INS" desc="Store instructions">
+    </event>
+    <event index="55" name="PAPI_BR_INS" desc="Branch instructions">
+    </event>
+    <event index="57" name="PAPI_RES_STL" desc="Cycles stalled on any resource">
+    </event>
+    <event index="59" name="PAPI_TOT_CYC" desc="Total cycles">
+    </event>
+    <event index="60" name="PAPI_LST_INS" desc="Load/store instructions completed">
+    </event>
+    <event index="65" name="PAPI_L2_DCA" desc="Level 2 data cache accesses">
+    </event>
+    <event index="66" name="PAPI_L3_DCA" desc="Level 3 data cache accesses">
+    </event>
+    <event index="68" name="PAPI_L2_DCR" desc="Level 2 data cache reads">
+    </event>
+    <event index="69" name="PAPI_L3_DCR" desc="Level 3 data cache reads">
+    </event>
+    <event index="71" name="PAPI_L2_DCW" desc="Level 2 data cache writes">
+    </event>
+    <event index="72" name="PAPI_L3_DCW" desc="Level 3 data cache writes">
+    </event>
+    <event index="74" name="PAPI_L2_ICH" desc="Level 2 instruction cache hits">
+    </event>
+    <event index="77" name="PAPI_L2_ICA" desc="Level 2 instruction cache accesses">
+    </event>
+    <event index="78" name="PAPI_L3_ICA" desc="Level 3 instruction cache accesses">
+    </event>
+    <event index="80" name="PAPI_L2_ICR" desc="Level 2 instruction cache reads">
+    </event>
+    <event index="81" name="PAPI_L3_ICR" desc="Level 3 instruction cache reads">
+    </event>
+    <event index="89" name="PAPI_L2_TCA" desc="Level 2 total cache accesses">
+    </event>
+    <event index="90" name="PAPI_L3_TCA" desc="Level 3 total cache accesses">
+    </event>
+    <event index="92" name="PAPI_L2_TCR" desc="Level 2 total cache reads">
+    </event>
+    <event index="93" name="PAPI_L3_TCR" desc="Level 3 total cache reads">
+    </event>
+    <event index="95" name="PAPI_L2_TCW" desc="Level 2 total cache writes">
+    </event>
+    <event index="96" name="PAPI_L3_TCW" desc="Level 3 total cache writes">
+    </event>
+    <event index="107" name="PAPI_REF_CYC" desc="Reference clock cycles">
+    </event>
+  </eventset>
+</component>
+<component index="1" type="Unknown" id="perf_event_uncore">
+  <eventset type="NATIVE">
+  </eventset>
+  <eventset type="PRESET">
+  </eventset>
+</component>
+</eventinfo>
