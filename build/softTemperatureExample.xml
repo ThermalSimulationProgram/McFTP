@@ -8,7 +8,7 @@
 	</temperature_sensors>
 
 	<soft_temperature_sensor_counters>
-		<sensor0 name="perf" coefficient_a="0.0000014" coefficient_b = "44.413" />
+		<sensor0 name="perf::PERF_COUNT_HW_CACHE_L1D" coefficient_a="0.0000014" coefficient_b = "44.413" />
 	</soft_temperature_sensor_counters>
 	<tasks>
 		<task0 load_type="busy_wait" name="task0" periodicity="periodic" type="singlecore">
