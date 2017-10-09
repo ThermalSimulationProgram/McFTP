@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventinfo>
+<hardware>
+  <vendor string="GenuineIntel"/>
+  <vendorCode value="1"/>
+  <model string="Intel(R) Pentium(R) D CPU 3.20GHz"/>
+  <modelCode value="4"/>
+  <cpuRevision value="4.000000"/>
+  <cpuID>
+    <family value="15"/>
+    <model value="4"/>
+    <stepping value="4"/>
+  </cpuID>
+  <cpuMaxMegahertz value="3192"/>
+  <cpuMinMegahertz value="3192"/>
+  <threads value="1"/>
+  <cores value="2"/>
+  <sockets value="1"/>
+  <nodes value="1"/>
+  <cpuPerNode value="2"/>
+  <totalCPUs value="2"/>
+</hardware>
+<component index="0" type="CPU" id="perf_event">
+  <eventset type="NATIVE">
+    <event index="0" name="TC_deliver_mode" desc="The duration (in clock cycles) of the operating modes of the trace cache and decode engine in the processor package">
+        <modifier name="TC_deliver_mode:DD" desc="The duration (in clock cycles) of the operating modes of the trace cache and decode engine in the processor package, masks:Both logical CPUs in deliver mode"> </modifier>
+        <modifier name="TC_deliver_mode:DB" desc="The duration (in clock cycles) of the operating modes of the trace cache and decode engine in the processor package, masks:Logical CPU 0 in deliver mode and logical CPU 1 in build mode"> </modifier>
+        <modifier name="TC_deliver_mode:DI" desc="The duration (in clock cycles) of the operating modes of the trace cache and decode engine in the processor package, masks:Logical CPU 0 in deliver mode and logical CPU 1 either halted, under machine clear condition, or transitioning to a long microcode flow"> </modifier>
+        <modifier name="TC_deliver_mode:BD" desc="The duration (in clock cycles) of the operating modes of the trace cache and decode engine in the processor package, masks:Logical CPU 0 in build mode and logical CPU 1 is in deliver mode"> </modifier>
+        <modifier name="TC_deliver_mode:BB" desc="The duration (in clock cycles) of the operating modes of the trace cache and decode engine in the processor package, masks:Both logical CPUs in build mode"> </modifier>
+        <modifier name="TC_deliver_mode:BI" desc="The duration (in clock cycles) of the operating modes of the trace cache and decode engine in the processor package, masks:Logical CPU 0 in build mode and logical CPU 1 either halted, under machine clear condition, or transitioning to a long microcode flow"> </modifier>
+        <modifier name="TC_deliver_mode:ID" desc="The duration (in clock cycles) of the operating modes of the trace cache and decode engine in the processor package, masks:Logical CPU 0 either halted, under machine clear condition, or transitioning to a long microcode flow, and logical CPU 1 in deliver mode"> </modifier>
+    </event>
+    <event index="3" name="memory_cancel" desc="Canceling of various types of requests in the Data cache Address Control unit (DAC)">
+        <modifier name="memory_cancel:ST_RB_FULL" desc="Canceling of various types of requests in the Data cache Address Control unit (DAC), masks:Replayed because no store request buffer is available"> </modifier>
+        <modifier name="memory_cancel:64K_CONF" desc="Canceling of various types of requests in the Data cache Address Control unit (DAC), masks:Conflicts due to 64K aliasing"> </modifier>
+    </event>
+    <event index="4" name="memory_complete" desc="Completions of a load split, store split, uncacheable (UC) split, or UC load">
+        <modifier name="memory_complete:LSC" desc="Completions of a load split, store split, uncacheable (UC) split, or UC load, masks:Load split completed, excluding UC/WC loads"> </modifier>
+        <modifier name="memory_complete:SSC" desc="Completions of a load split, store split, uncacheable (UC) split, or UC load, masks:Any split stores completed"> </modifier>
+    </event>
+    <event index="5" name="load_port_replay" desc="Replayed events at the load port">
+        <modifier name="load_port_replay:SPLIT_LD" desc="Replayed events at the load port, masks:Split load"> </modifier>
+        <modifier name="load_port_replay:cmpl=0" desc="Replayed events at the load port, masks:complement"> </modifier>
+        <modifier name="load_port_replay:e=0" desc="Replayed events at the load port, masks:edge"> </modifier>
+        <modifier name="load_port_replay:thr=0" desc="Replayed events at the load port, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="load_port_replay:u=0" desc="Replayed events at the load port, masks:monitor at user level"> </modifier>
+        <modifier name="load_port_replay:k=0" desc="Replayed events at the load port, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="6" name="store_port_replay" desc="Replayed events at the store port">
+        <modifier name="store_port_replay:SPLIT_ST" desc="Replayed events at the store port, masks:Split store"> </modifier>
+        <modifier name="store_port_replay:cmpl=0" desc="Replayed events at the store port, masks:complement"> </modifier>
+        <modifier name="store_port_replay:e=0" desc="Replayed events at the store port, masks:edge"> </modifier>
+        <modifier name="store_port_replay:thr=0" desc="Replayed events at the store port, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="store_port_replay:u=0" desc="Replayed events at the store port, masks:monitor at user level"> </modifier>
+        <modifier name="store_port_replay:k=0" desc="Replayed events at the store port, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="11" name="IOQ_active_entries" desc="Number of entries (clipped at 15) in the IOQ that are active. An allocated entry can be a sector (64 bytes) or a chunk of 8 bytes. This event must be programmed in conjunction with IOQ_allocation. All &apos;TYPE_BIT*&apos; event-masks together are treated as a single 5-bit value">
+        <modifier name="IOQ_active_entries:TYPE_BIT0" desc="Number of entries (clipped at 15) in the IOQ that are active. An allocated entry can be a sector (64 bytes) or a chunk of 8 bytes. This event must be programmed in conjunction with IOQ_allocation. All &apos;TYPE_BIT*&apos; event-masks together are treated as a single 5-bit value, masks:Bus request type (bit 0)"> </modifier>
+    </event>
+    <event index="14" name="BSQ_active_entries" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation">
+        <modifier name="BSQ_active_entries:REQ_TYPE0" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Along with REQ_TYPE1, request type encodings are: 0 - Read (excludes read invalidate), 1 - Read invalidate, 2 - Write (other than writebacks), 3 - Writeback (evicted from cache)"> </modifier>
+        <modifier name="BSQ_active_entries:REQ_TYPE1" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Along with REQ_TYPE0, request type encodings are: 0 - Read (excludes read invalidate), 1 - Read invalidate, 2 - Write (other than writebacks), 3 - Writeback (evicted from cache)"> </modifier>
+        <modifier name="BSQ_active_entries:REQ_LEN0" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Along with REQ_LEN1, request length encodings are: 0 - zero chunks, 1 - one chunk, 3 - eight chunks"> </modifier>
+        <modifier name="BSQ_active_entries:REQ_LEN1" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Along with REQ_LEN0, request length encodings are: 0 - zero chunks, 1 - one chunk, 3 - eight chunks"> </modifier>
+        <modifier name="BSQ_active_entries:REQ_IO_TYPE" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Request type is input or output"> </modifier>
+        <modifier name="BSQ_active_entries:REQ_LOCK_TYPE" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Request type is bus lock"> </modifier>
+        <modifier name="BSQ_active_entries:REQ_CACHE_TYPE" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Request type is cacheable"> </modifier>
+        <modifier name="BSQ_active_entries:REQ_SPLIT_TYPE" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Request type is a bus 8-byte chunk split across an 8-byte boundary"> </modifier>
+        <modifier name="BSQ_active_entries:REQ_DEM_TYPE" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:0: Request type is HW.SW prefetch. 1: Request type is a demand"> </modifier>
+        <modifier name="BSQ_active_entries:REQ_ORD_TYPE" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Request is an ordered type"> </modifier>
+        <modifier name="BSQ_active_entries:MEM_TYPE0" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Along with MEM_TYPE1 and MEM_TYPE2, memory type encodings are: 0 - UC, 1 - USWC, 4- WT, 5 - WP, 6 - WB"> </modifier>
+        <modifier name="BSQ_active_entries:MEM_TYPE1" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Along with MEM_TYPE0 and MEM_TYPE2, memory type encodings are: 0 - UC, 1 - USWC, 4- WT, 5 - WP, 6 - WB"> </modifier>
+        <modifier name="BSQ_active_entries:MEM_TYPE2" desc="Number of BSQ entries (clipped at 15) currently active (valid) which meet the subevent mask criteria during allocation in the BSQ. Active request entries are allocated on the BSQ until de-allocated. De-allocation of an entry does not necessarily imply the request is filled. This event must be programmed in conjunction with BSQ_allocation, masks:Along with MEM_TYPE0 and MEM_TYPE1, memory type encodings are: 0 - UC, 1 - USWC, 4- WT, 5 - WP, 6 - WB"> </modifier>
+    </event>
+    <event index="15" name="SSE_input_assist" desc="Number of times an assist is requested to handle problems with input operands for SSE/SSE2/SSE3 operations; most notably denormal source operands when the DAZ bit isn&apos;t set">
+        <modifier name="SSE_input_assist:ALL" desc="Number of times an assist is requested to handle problems with input operands for SSE/SSE2/SSE3 operations; most notably denormal source operands when the DAZ bit isn&apos;t set, masks:Count assists for SSE/SSE2/SSE3 uops"> </modifier>
+        <modifier name="SSE_input_assist:cmpl=0" desc="Number of times an assist is requested to handle problems with input operands for SSE/SSE2/SSE3 operations; most notably denormal source operands when the DAZ bit isn&apos;t set, masks:complement"> </modifier>
+        <modifier name="SSE_input_assist:e=0" desc="Number of times an assist is requested to handle problems with input operands for SSE/SSE2/SSE3 operations; most notably denormal source operands when the DAZ bit isn&apos;t set, masks:edge"> </modifier>
+        <modifier name="SSE_input_assist:thr=0" desc="Number of times an assist is requested to handle problems with input operands for SSE/SSE2/SSE3 operations; most notably denormal source operands when the DAZ bit isn&apos;t set, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="SSE_input_assist:u=0" desc="Number of times an assist is requested to handle problems with input operands for SSE/SSE2/SSE3 operations; most notably denormal source operands when the DAZ bit isn&apos;t set, masks:monitor at user level"> </modifier>
+        <modifier name="SSE_input_assist:k=0" desc="Number of times an assist is requested to handle problems with input operands for SSE/SSE2/SSE3 operations; most notably denormal source operands when the DAZ bit isn&apos;t set, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="16" name="packed_SP_uop" desc="Number of packed single-precision uops">
+        <modifier name="packed_SP_uop:ALL" desc="Number of packed single-precision uops, masks:Count all uops operating on packed single-precisions operands"> </modifier>
+        <modifier name="packed_SP_uop:TAG0" desc="Number of packed single-precision uops, masks:Tag this event with tag bit 0 for retirement counting with execution_event"> </modifier>
+        <modifier name="packed_SP_uop:TAG1" desc="Number of packed single-precision uops, masks:Tag this event with tag bit 1 for retirement counting with execution_event"> </modifier>
+        <modifier name="packed_SP_uop:TAG2" desc="Number of packed single-precision uops, masks:Tag this event with tag bit 2 for retirement counting with execution_event"> </modifier>
+        <modifier name="packed_SP_uop:TAG3" desc="Number of packed single-precision uops, masks:Tag this event with tag bit 3 for retirement counting with execution_event"> </modifier>
+        <modifier name="packed_SP_uop:cmpl=0" desc="Number of packed single-precision uops, masks:complement"> </modifier>
+        <modifier name="packed_SP_uop:e=0" desc="Number of packed single-precision uops, masks:edge"> </modifier>
+        <modifier name="packed_SP_uop:thr=0" desc="Number of packed single-precision uops, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="packed_SP_uop:u=0" desc="Number of packed single-precision uops, masks:monitor at user level"> </modifier>
+        <modifier name="packed_SP_uop:k=0" desc="Number of packed single-precision uops, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="17" name="packed_DP_uop" desc="Number of packed double-precision uops">
+        <modifier name="packed_DP_uop:ALL" desc="Number of packed double-precision uops, masks:Count all uops operating on packed double-precisions operands"> </modifier>
+        <modifier name="packed_DP_uop:TAG0" desc="Number of packed double-precision uops, masks:Tag this event with tag bit 0 for retirement counting with execution_event"> </modifier>
+        <modifier name="packed_DP_uop:TAG1" desc="Number of packed double-precision uops, masks:Tag this event with tag bit 1 for retirement counting with execution_event"> </modifier>
+        <modifier name="packed_DP_uop:TAG2" desc="Number of packed double-precision uops, masks:Tag this event with tag bit 2 for retirement counting with execution_event"> </modifier>
+        <modifier name="packed_DP_uop:TAG3" desc="Number of packed double-precision uops, masks:Tag this event with tag bit 3 for retirement counting with execution_event"> </modifier>
+        <modifier name="packed_DP_uop:cmpl=0" desc="Number of packed double-precision uops, masks:complement"> </modifier>
+        <modifier name="packed_DP_uop:e=0" desc="Number of packed double-precision uops, masks:edge"> </modifier>
+        <modifier name="packed_DP_uop:thr=0" desc="Number of packed double-precision uops, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="packed_DP_uop:u=0" desc="Number of packed double-precision uops, masks:monitor at user level"> </modifier>
+        <modifier name="packed_DP_uop:k=0" desc="Number of packed double-precision uops, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="18" name="scalar_SP_uop" desc="Number of scalar single-precision uops">
+        <modifier name="scalar_SP_uop:ALL" desc="Number of scalar single-precision uops, masks:Count all uops operating on scalar single-precisions operands"> </modifier>
+        <modifier name="scalar_SP_uop:TAG0" desc="Number of scalar single-precision uops, masks:Tag this event with tag bit 0 for retirement counting with execution_event"> </modifier>
+        <modifier name="scalar_SP_uop:TAG1" desc="Number of scalar single-precision uops, masks:Tag this event with tag bit 1 for retirement counting with execution_event"> </modifier>
+        <modifier name="scalar_SP_uop:TAG2" desc="Number of scalar single-precision uops, masks:Tag this event with tag bit 2 for retirement counting with execution_event"> </modifier>
+        <modifier name="scalar_SP_uop:TAG3" desc="Number of scalar single-precision uops, masks:Tag this event with tag bit 3 for retirement counting with execution_event"> </modifier>
+        <modifier name="scalar_SP_uop:cmpl=0" desc="Number of scalar single-precision uops, masks:complement"> </modifier>
+        <modifier name="scalar_SP_uop:e=0" desc="Number of scalar single-precision uops, masks:edge"> </modifier>
+        <modifier name="scalar_SP_uop:thr=0" desc="Number of scalar single-precision uops, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="scalar_SP_uop:u=0" desc="Number of scalar single-precision uops, masks:monitor at user level"> </modifier>
+        <modifier name="scalar_SP_uop:k=0" desc="Number of scalar single-precision uops, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="19" name="scalar_DP_uop" desc="Number of scalar double-precision uops">
+        <modifier name="scalar_DP_uop:ALL" desc="Number of scalar double-precision uops, masks:Count all uops operating on scalar double-precisions operands"> </modifier>
+        <modifier name="scalar_DP_uop:TAG0" desc="Number of scalar double-precision uops, masks:Tag this event with tag bit 0 for retirement counting with execution_event"> </modifier>
+        <modifier name="scalar_DP_uop:TAG1" desc="Number of scalar double-precision uops, masks:Tag this event with tag bit 1 for retirement counting with execution_event"> </modifier>
+        <modifier name="scalar_DP_uop:TAG2" desc="Number of scalar double-precision uops, masks:Tag this event with tag bit 2 for retirement counting with execution_event"> </modifier>
+        <modifier name="scalar_DP_uop:TAG3" desc="Number of scalar double-precision uops, masks:Tag this event with tag bit 3 for retirement counting with execution_event"> </modifier>
+        <modifier name="scalar_DP_uop:cmpl=0" desc="Number of scalar double-precision uops, masks:complement"> </modifier>
+        <modifier name="scalar_DP_uop:e=0" desc="Number of scalar double-precision uops, masks:edge"> </modifier>
+        <modifier name="scalar_DP_uop:thr=0" desc="Number of scalar double-precision uops, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="scalar_DP_uop:u=0" desc="Number of scalar double-precision uops, masks:monitor at user level"> </modifier>
+        <modifier name="scalar_DP_uop:k=0" desc="Number of scalar double-precision uops, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="20" name="64bit_MMX_uop" desc="Number of MMX instructions which operate on 64-bit SIMD operands">
+        <modifier name="64bit_MMX_uop:ALL" desc="Number of MMX instructions which operate on 64-bit SIMD operands, masks:Count all uops operating on 64-bit SIMD integer operands in memory or MMX registers"> </modifier>
+        <modifier name="64bit_MMX_uop:TAG0" desc="Number of MMX instructions which operate on 64-bit SIMD operands, masks:Tag this event with tag bit 0 for retirement counting with execution_event"> </modifier>
+        <modifier name="64bit_MMX_uop:TAG1" desc="Number of MMX instructions which operate on 64-bit SIMD operands, masks:Tag this event with tag bit 1 for retirement counting with execution_event"> </modifier>
+        <modifier name="64bit_MMX_uop:TAG2" desc="Number of MMX instructions which operate on 64-bit SIMD operands, masks:Tag this event with tag bit 2 for retirement counting with execution_event"> </modifier>
+        <modifier name="64bit_MMX_uop:TAG3" desc="Number of MMX instructions which operate on 64-bit SIMD operands, masks:Tag this event with tag bit 3 for retirement counting with execution_event"> </modifier>
+        <modifier name="64bit_MMX_uop:cmpl=0" desc="Number of MMX instructions which operate on 64-bit SIMD operands, masks:complement"> </modifier>
+        <modifier name="64bit_MMX_uop:e=0" desc="Number of MMX instructions which operate on 64-bit SIMD operands, masks:edge"> </modifier>
+        <modifier name="64bit_MMX_uop:thr=0" desc="Number of MMX instructions which operate on 64-bit SIMD operands, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="64bit_MMX_uop:u=0" desc="Number of MMX instructions which operate on 64-bit SIMD operands, masks:monitor at user level"> </modifier>
+        <modifier name="64bit_MMX_uop:k=0" desc="Number of MMX instructions which operate on 64-bit SIMD operands, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="21" name="128bit_MMX_uop" desc="Number of MMX instructions which operate on 128-bit SIMD operands">
+        <modifier name="128bit_MMX_uop:ALL" desc="Number of MMX instructions which operate on 128-bit SIMD operands, masks:Count all uops operating on 128-bit SIMD integer operands in memory or MMX registers"> </modifier>
+        <modifier name="128bit_MMX_uop:TAG0" desc="Number of MMX instructions which operate on 128-bit SIMD operands, masks:Tag this event with tag bit 0 for retirement counting with execution_event"> </modifier>
+        <modifier name="128bit_MMX_uop:TAG1" desc="Number of MMX instructions which operate on 128-bit SIMD operands, masks:Tag this event with tag bit 1 for retirement counting with execution_event"> </modifier>
+        <modifier name="128bit_MMX_uop:TAG2" desc="Number of MMX instructions which operate on 128-bit SIMD operands, masks:Tag this event with tag bit 2 for retirement counting with execution_event"> </modifier>
+        <modifier name="128bit_MMX_uop:TAG3" desc="Number of MMX instructions which operate on 128-bit SIMD operands, masks:Tag this event with tag bit 3 for retirement counting with execution_event"> </modifier>
+        <modifier name="128bit_MMX_uop:cmpl=0" desc="Number of MMX instructions which operate on 128-bit SIMD operands, masks:complement"> </modifier>
+        <modifier name="128bit_MMX_uop:e=0" desc="Number of MMX instructions which operate on 128-bit SIMD operands, masks:edge"> </modifier>
+        <modifier name="128bit_MMX_uop:thr=0" desc="Number of MMX instructions which operate on 128-bit SIMD operands, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="128bit_MMX_uop:u=0" desc="Number of MMX instructions which operate on 128-bit SIMD operands, masks:monitor at user level"> </modifier>
+        <modifier name="128bit_MMX_uop:k=0" desc="Number of MMX instructions which operate on 128-bit SIMD operands, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="22" name="x87_FP_uop" desc="Number of x87 floating-point uops">
+        <modifier name="x87_FP_uop:ALL" desc="Number of x87 floating-point uops, masks:Count all x87 FP uops"> </modifier>
+        <modifier name="x87_FP_uop:TAG0" desc="Number of x87 floating-point uops, masks:Tag this event with tag bit 0 for retirement counting with execution_event"> </modifier>
+        <modifier name="x87_FP_uop:TAG1" desc="Number of x87 floating-point uops, masks:Tag this event with tag bit 1 for retirement counting with execution_event"> </modifier>
+        <modifier name="x87_FP_uop:TAG2" desc="Number of x87 floating-point uops, masks:Tag this event with tag bit 2 for retirement counting with execution_event"> </modifier>
+        <modifier name="x87_FP_uop:TAG3" desc="Number of x87 floating-point uops, masks:Tag this event with tag bit 3 for retirement counting with execution_event"> </modifier>
+        <modifier name="x87_FP_uop:cmpl=0" desc="Number of x87 floating-point uops, masks:complement"> </modifier>
+        <modifier name="x87_FP_uop:e=0" desc="Number of x87 floating-point uops, masks:edge"> </modifier>
+        <modifier name="x87_FP_uop:thr=0" desc="Number of x87 floating-point uops, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="x87_FP_uop:u=0" desc="Number of x87 floating-point uops, masks:monitor at user level"> </modifier>
+        <modifier name="x87_FP_uop:k=0" desc="Number of x87 floating-point uops, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="23" name="TC_misc" desc="Miscellaneous events detected by the TC. The counter will count twice for each occurrence">
+        <modifier name="TC_misc:FLUSH" desc="Miscellaneous events detected by the TC. The counter will count twice for each occurrence, masks:Number of flushes"> </modifier>
+        <modifier name="TC_misc:cmpl=0" desc="Miscellaneous events detected by the TC. The counter will count twice for each occurrence, masks:complement"> </modifier>
+        <modifier name="TC_misc:e=0" desc="Miscellaneous events detected by the TC. The counter will count twice for each occurrence, masks:edge"> </modifier>
+        <modifier name="TC_misc:thr=0" desc="Miscellaneous events detected by the TC. The counter will count twice for each occurrence, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="TC_misc:u=0" desc="Miscellaneous events detected by the TC. The counter will count twice for each occurrence, masks:monitor at user level"> </modifier>
+        <modifier name="TC_misc:k=0" desc="Miscellaneous events detected by the TC. The counter will count twice for each occurrence, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="25" name="tc_ms_xfer" desc="Number of times that uop delivery changed from TC to MS ROM">
+        <modifier name="tc_ms_xfer:CISC" desc="Number of times that uop delivery changed from TC to MS ROM, masks:A TC to MS transfer occurred"> </modifier>
+        <modifier name="tc_ms_xfer:cmpl=0" desc="Number of times that uop delivery changed from TC to MS ROM, masks:complement"> </modifier>
+        <modifier name="tc_ms_xfer:e=0" desc="Number of times that uop delivery changed from TC to MS ROM, masks:edge"> </modifier>
+        <modifier name="tc_ms_xfer:thr=0" desc="Number of times that uop delivery changed from TC to MS ROM, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="tc_ms_xfer:u=0" desc="Number of times that uop delivery changed from TC to MS ROM, masks:monitor at user level"> </modifier>
+        <modifier name="tc_ms_xfer:k=0" desc="Number of times that uop delivery changed from TC to MS ROM, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="26" name="uop_queue_writes" desc="Number of valid uops written to the uop queue">
+        <modifier name="uop_queue_writes:FROM_TC_BUILD" desc="Number of valid uops written to the uop queue, masks:The uops being written are from TC build mode"> </modifier>
+        <modifier name="uop_queue_writes:FROM_TC_DELIVER" desc="Number of valid uops written to the uop queue, masks:The uops being written are from TC deliver mode"> </modifier>
+        <modifier name="uop_queue_writes:FROM_ROM" desc="Number of valid uops written to the uop queue, masks:The uops being written are from microcode ROM"> </modifier>
+    </event>
+    <event index="27" name="retired_mispred_branch_type" desc="Number of retiring mispredicted branches by type">
+        <modifier name="retired_mispred_branch_type:CONDITIONAL" desc="Number of retiring mispredicted branches by type, masks:Conditional jumps"> </modifier>
+        <modifier name="retired_mispred_branch_type:CALL" desc="Number of retiring mispredicted branches by type, masks:Indirect call branches"> </modifier>
+        <modifier name="retired_mispred_branch_type:RETURN" desc="Number of retiring mispredicted branches by type, masks:Return branches"> </modifier>
+        <modifier name="retired_mispred_branch_type:INDIRECT" desc="Number of retiring mispredicted branches by type, masks:Returns, indirect calls, or indirect jumps"> </modifier>
+    </event>
+    <event index="28" name="retired_branch_type" desc="Number of retiring branches by type">
+        <modifier name="retired_branch_type:CONDITIONAL" desc="Number of retiring branches by type, masks:Conditional jumps"> </modifier>
+        <modifier name="retired_branch_type:CALL" desc="Number of retiring branches by type, masks:Indirect call branches"> </modifier>
+        <modifier name="retired_branch_type:RETURN" desc="Number of retiring branches by type, masks:Return branches"> </modifier>
+        <modifier name="retired_branch_type:INDIRECT" desc="Number of retiring branches by type, masks:Returns, indirect calls, or indirect jumps"> </modifier>
+    </event>
+    <event index="29" name="resource_stall" desc="Occurrences of latency or stalls in the Allocator">
+        <modifier name="resource_stall:SBFULL" desc="Occurrences of latency or stalls in the Allocator, masks:A stall due to lack of store buffers"> </modifier>
+        <modifier name="resource_stall:cmpl=0" desc="Occurrences of latency or stalls in the Allocator, masks:complement"> </modifier>
+        <modifier name="resource_stall:e=0" desc="Occurrences of latency or stalls in the Allocator, masks:edge"> </modifier>
+        <modifier name="resource_stall:thr=0" desc="Occurrences of latency or stalls in the Allocator, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="resource_stall:u=0" desc="Occurrences of latency or stalls in the Allocator, masks:monitor at user level"> </modifier>
+        <modifier name="resource_stall:k=0" desc="Occurrences of latency or stalls in the Allocator, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="30" name="WC_Buffer" desc="Number of Write Combining Buffer operations">
+        <modifier name="WC_Buffer:WCB_EVICTS" desc="Number of Write Combining Buffer operations, masks:WC Buffer evictions of all causes"> </modifier>
+        <modifier name="WC_Buffer:WCB_FULL_EVICT" desc="Number of Write Combining Buffer operations, masks:WC Buffer eviction; no WC buffer is available"> </modifier>
+    </event>
+    <event index="35" name="front_end_event" desc="Number of retirements of tagged uops which are specified through the front-end tagging mechanism">
+        <modifier name="front_end_event:NBOGUS" desc="Number of retirements of tagged uops which are specified through the front-end tagging mechanism, masks:The marked uops are not bogus"> </modifier>
+        <modifier name="front_end_event:BOGUS" desc="Number of retirements of tagged uops which are specified through the front-end tagging mechanism, masks:The marked uops are bogus"> </modifier>
+    </event>
+    <event index="36" name="execution_event" desc="Number of retirements of tagged uops which are specified through the execution tagging mechanism. The event-mask allows from one to four types of uops to be tagged">
+        <modifier name="execution_event:NBOGUS0" desc="Number of retirements of tagged uops which are specified through the execution tagging mechanism. The event-mask allows from one to four types of uops to be tagged, masks:The marked uops are not bogus"> </modifier>
+        <modifier name="execution_event:NBOGUS1" desc="Number of retirements of tagged uops which are specified through the execution tagging mechanism. The event-mask allows from one to four types of uops to be tagged, masks:The marked uops are not bogus"> </modifier>
+        <modifier name="execution_event:NBOGUS2" desc="Number of retirements of tagged uops which are specified through the execution tagging mechanism. The event-mask allows from one to four types of uops to be tagged, masks:The marked uops are not bogus"> </modifier>
+        <modifier name="execution_event:NBOGUS3" desc="Number of retirements of tagged uops which are specified through the execution tagging mechanism. The event-mask allows from one to four types of uops to be tagged, masks:The marked uops are not bogus"> </modifier>
+        <modifier name="execution_event:BOGUS0" desc="Number of retirements of tagged uops which are specified through the execution tagging mechanism. The event-mask allows from one to four types of uops to be tagged, masks:The marked uops are bogus"> </modifier>
+        <modifier name="execution_event:BOGUS1" desc="Number of retirements of tagged uops which are specified through the execution tagging mechanism. The event-mask allows from one to four types of uops to be tagged, masks:The marked uops are bogus"> </modifier>
+        <modifier name="execution_event:BOGUS2" desc="Number of retirements of tagged uops which are specified through the execution tagging mechanism. The event-mask allows from one to four types of uops to be tagged, masks:The marked uops are bogus"> </modifier>
+        <modifier name="execution_event:BOGUS3" desc="Number of retirements of tagged uops which are specified through the execution tagging mechanism. The event-mask allows from one to four types of uops to be tagged, masks:The marked uops are bogus"> </modifier>
+    </event>
+    <event index="37" name="replay_event" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism">
+        <modifier name="replay_event:NBOGUS" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:The marked uops are not bogus"> </modifier>
+        <modifier name="replay_event:BOGUS" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:The marked uops are bogus"> </modifier>
+        <modifier name="replay_event:L1_LD_MISS" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:Virtual mask for L1 cache load miss replays"> </modifier>
+        <modifier name="replay_event:L2_LD_MISS" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:Virtual mask for L2 cache load miss replays"> </modifier>
+        <modifier name="replay_event:DTLB_LD_MISS" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:Virtual mask for DTLB load miss replays"> </modifier>
+        <modifier name="replay_event:DTLB_ST_MISS" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:Virtual mask for DTLB store miss replays"> </modifier>
+        <modifier name="replay_event:DTLB_ALL_MISS" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:Virtual mask for all DTLB miss replays"> </modifier>
+        <modifier name="replay_event:BR_MSP" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:Virtual mask for tagged mispredicted branch replays"> </modifier>
+        <modifier name="replay_event:MOB_LD_REPLAY" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:Virtual mask for MOB load replays"> </modifier>
+        <modifier name="replay_event:SP_LD_RET" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:Virtual mask for split load replays. Use with load_port_replay event"> </modifier>
+        <modifier name="replay_event:SP_ST_RET" desc="Number of retirements of tagged uops which are specified through the replay tagging mechanism, masks:Virtual mask for split store replays. Use with store_port_replay event"> </modifier>
+    </event>
+    <event index="38" name="instr_retired" desc="Number of instructions retired during a clock cycle">
+        <modifier name="instr_retired:NBOGUSNTAG" desc="Number of instructions retired during a clock cycle, masks:Non-bogus instructions that are not tagged"> </modifier>
+        <modifier name="instr_retired:NBOGUSTAG" desc="Number of instructions retired during a clock cycle, masks:Non-bogus instructions that are tagged"> </modifier>
+        <modifier name="instr_retired:BOGUSNTAG" desc="Number of instructions retired during a clock cycle, masks:Bogus instructions that are not tagged"> </modifier>
+        <modifier name="instr_retired:BOGUSTAG" desc="Number of instructions retired during a clock cycle, masks:Bogus instructions that are tagged"> </modifier>
+    </event>
+    <event index="39" name="uops_retired" desc="Number of uops retired during a clock cycle">
+        <modifier name="uops_retired:NBOGUS" desc="Number of uops retired during a clock cycle, masks:The marked uops are not bogus"> </modifier>
+        <modifier name="uops_retired:BOGUS" desc="Number of uops retired during a clock cycle, masks:The marked uops are bogus"> </modifier>
+    </event>
+    <event index="40" name="uops_type" desc="This event is used in conjunction with with the front-end mechanism to tag load and store uops">
+        <modifier name="uops_type:TAGLOADS" desc="This event is used in conjunction with with the front-end mechanism to tag load and store uops, masks:The uop is a load operation"> </modifier>
+        <modifier name="uops_type:TAGSTORES" desc="This event is used in conjunction with with the front-end mechanism to tag load and store uops, masks:The uop is a store operation"> </modifier>
+    </event>
+    <event index="41" name="branch_retired" desc="Number of retirements of a branch">
+        <modifier name="branch_retired:MMNP" desc="Number of retirements of a branch, masks:Branch not-taken predicted"> </modifier>
+        <modifier name="branch_retired:MMNM" desc="Number of retirements of a branch, masks:Branch not-taken mispredicted"> </modifier>
+        <modifier name="branch_retired:MMTP" desc="Number of retirements of a branch, masks:Branch taken predicted"> </modifier>
+        <modifier name="branch_retired:MMTM" desc="Number of retirements of a branch, masks:Branch taken mispredicted"> </modifier>
+    </event>
+    <event index="42" name="mispred_branch_retired" desc="Number of retirements of mispredicted IA-32 branch instructions">
+        <modifier name="mispred_branch_retired:BOGUS" desc="Number of retirements of mispredicted IA-32 branch instructions, masks:The retired instruction is not bogus"> </modifier>
+        <modifier name="mispred_branch_retired:cmpl=0" desc="Number of retirements of mispredicted IA-32 branch instructions, masks:complement"> </modifier>
+        <modifier name="mispred_branch_retired:e=0" desc="Number of retirements of mispredicted IA-32 branch instructions, masks:edge"> </modifier>
+        <modifier name="mispred_branch_retired:thr=0" desc="Number of retirements of mispredicted IA-32 branch instructions, masks:event threshold in range [0-15]"> </modifier>
+        <modifier name="mispred_branch_retired:u=0" desc="Number of retirements of mispredicted IA-32 branch instructions, masks:monitor at user level"> </modifier>
+        <modifier name="mispred_branch_retired:k=0" desc="Number of retirements of mispredicted IA-32 branch instructions, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="43" name="x87_assist" desc="Number of retirements of x87 instructions that required special handling">
+        <modifier name="x87_assist:FPSU" desc="Number of retirements of x87 instructions that required special handling, masks:Handle FP stack underflow"> </modifier>
+        <modifier name="x87_assist:FPSO" desc="Number of retirements of x87 instructions that required special handling, masks:Handle FP stack overflow"> </modifier>
+        <modifier name="x87_assist:POAO" desc="Number of retirements of x87 instructions that required special handling, masks:Handle x87 output overflow"> </modifier>
+        <modifier name="x87_assist:POAU" desc="Number of retirements of x87 instructions that required special handling, masks:Handle x87 output underflow"> </modifier>
+        <modifier name="x87_assist:PREA" desc="Number of retirements of x87 instructions that required special handling, masks:Handle x87 input assist"> </modifier>
+    </event>
+    <event index="44" name="machine_clear" desc="Number of occurrences when the entire pipeline of the machine is cleared">
+        <modifier name="machine_clear:CLEAR" desc="Number of occurrences when the entire pipeline of the machine is cleared, masks:Counts for a portion of the many cycles while the machine is cleared for any cause. Use edge-triggering for this bit only to get a count of occurrences versus a duration"> </modifier>
+        <modifier name="machine_clear:MOCLEAR" desc="Number of occurrences when the entire pipeline of the machine is cleared, masks:Increments each time the machine is cleared due to memory ordering issues"> </modifier>
+    </event>
+    <event index="45" name="instr_completed" desc="Instructions that have completed and retired during a clock cycle (models 3, 4, 6 only)">
+        <modifier name="instr_completed:NBOGUS" desc="Instructions that have completed and retired during a clock cycle (models 3, 4, 6 only), masks:Non-bogus instructions"> </modifier>
+        <modifier name="instr_completed:BOGUS" desc="Instructions that have completed and retired during a clock cycle (models 3, 4, 6 only), masks:Bogus instructions"> </modifier>
+    </event>
+    <event index="46" name="perf::PERF_COUNT_HW_CPU_CYCLES" desc="PERF_COUNT_HW_CPU_CYCLES">
+        <modifier name="perf::PERF_COUNT_HW_CPU_CYCLES:u=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CPU_CYCLES:k=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="47" name="perf::CYCLES" desc="PERF_COUNT_HW_CPU_CYCLES">
+        <modifier name="perf::CYCLES:u=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CYCLES:k=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="48" name="perf::CPU-CYCLES" desc="PERF_COUNT_HW_CPU_CYCLES">
+        <modifier name="perf::CPU-CYCLES:u=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CPU-CYCLES:k=0" desc="PERF_COUNT_HW_CPU_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="49" name="perf::PERF_COUNT_HW_INSTRUCTIONS" desc="PERF_COUNT_HW_INSTRUCTIONS">
+        <modifier name="perf::PERF_COUNT_HW_INSTRUCTIONS:u=0" desc="PERF_COUNT_HW_INSTRUCTIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_INSTRUCTIONS:k=0" desc="PERF_COUNT_HW_INSTRUCTIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="50" name="perf::INSTRUCTIONS" desc="PERF_COUNT_HW_INSTRUCTIONS">
+        <modifier name="perf::INSTRUCTIONS:u=0" desc="PERF_COUNT_HW_INSTRUCTIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::INSTRUCTIONS:k=0" desc="PERF_COUNT_HW_INSTRUCTIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="55" name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS">
+        <modifier name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS:u=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS:k=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="56" name="perf::BRANCH-INSTRUCTIONS" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS">
+        <modifier name="perf::BRANCH-INSTRUCTIONS:u=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::BRANCH-INSTRUCTIONS:k=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="57" name="perf::BRANCHES" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS">
+        <modifier name="perf::BRANCHES:u=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::BRANCHES:k=0" desc="PERF_COUNT_HW_BRANCH_INSTRUCTIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="58" name="perf::PERF_COUNT_HW_BRANCH_MISSES" desc="PERF_COUNT_HW_BRANCH_MISSES">
+        <modifier name="perf::PERF_COUNT_HW_BRANCH_MISSES:u=0" desc="PERF_COUNT_HW_BRANCH_MISSES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_BRANCH_MISSES:k=0" desc="PERF_COUNT_HW_BRANCH_MISSES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="59" name="perf::BRANCH-MISSES" desc="PERF_COUNT_HW_BRANCH_MISSES">
+        <modifier name="perf::BRANCH-MISSES:u=0" desc="PERF_COUNT_HW_BRANCH_MISSES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::BRANCH-MISSES:k=0" desc="PERF_COUNT_HW_BRANCH_MISSES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="62" name="perf::PERF_COUNT_HW_STALLED_CYCLES_FRONTEND" desc="PERF_COUNT_HW_STALLED_CYCLES_FRONTEND">
+        <modifier name="perf::PERF_COUNT_HW_STALLED_CYCLES_FRONTEND:u=0" desc="PERF_COUNT_HW_STALLED_CYCLES_FRONTEND, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_STALLED_CYCLES_FRONTEND:k=0" desc="PERF_COUNT_HW_STALLED_CYCLES_FRONTEND, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="63" name="perf::STALLED-CYCLES-FRONTEND" desc="PERF_COUNT_HW_STALLED_CYCLES_FRONTEND">
+        <modifier name="perf::STALLED-CYCLES-FRONTEND:u=0" desc="PERF_COUNT_HW_STALLED_CYCLES_FRONTEND, masks:monitor at user level"> </modifier>
+        <modifier name="perf::STALLED-CYCLES-FRONTEND:k=0" desc="PERF_COUNT_HW_STALLED_CYCLES_FRONTEND, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="64" name="perf::IDLE-CYCLES-FRONTEND" desc="PERF_COUNT_HW_STALLED_CYCLES_FRONTEND">
+        <modifier name="perf::IDLE-CYCLES-FRONTEND:u=0" desc="PERF_COUNT_HW_STALLED_CYCLES_FRONTEND, masks:monitor at user level"> </modifier>
+        <modifier name="perf::IDLE-CYCLES-FRONTEND:k=0" desc="PERF_COUNT_HW_STALLED_CYCLES_FRONTEND, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="65" name="perf::PERF_COUNT_HW_STALLED_CYCLES_BACKEND" desc="PERF_COUNT_HW_STALLED_CYCLES_BACKEND">
+        <modifier name="perf::PERF_COUNT_HW_STALLED_CYCLES_BACKEND:u=0" desc="PERF_COUNT_HW_STALLED_CYCLES_BACKEND, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_STALLED_CYCLES_BACKEND:k=0" desc="PERF_COUNT_HW_STALLED_CYCLES_BACKEND, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="66" name="perf::STALLED-CYCLES-BACKEND" desc="PERF_COUNT_HW_STALLED_CYCLES_BACKEND">
+        <modifier name="perf::STALLED-CYCLES-BACKEND:u=0" desc="PERF_COUNT_HW_STALLED_CYCLES_BACKEND, masks:monitor at user level"> </modifier>
+        <modifier name="perf::STALLED-CYCLES-BACKEND:k=0" desc="PERF_COUNT_HW_STALLED_CYCLES_BACKEND, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="67" name="perf::IDLE-CYCLES-BACKEND" desc="PERF_COUNT_HW_STALLED_CYCLES_BACKEND">
+        <modifier name="perf::IDLE-CYCLES-BACKEND:u=0" desc="PERF_COUNT_HW_STALLED_CYCLES_BACKEND, masks:monitor at user level"> </modifier>
+        <modifier name="perf::IDLE-CYCLES-BACKEND:k=0" desc="PERF_COUNT_HW_STALLED_CYCLES_BACKEND, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="68" name="perf::PERF_COUNT_HW_REF_CPU_CYCLES" desc="PERF_COUNT_HW_REF_CPU_CYCLES">
+        <modifier name="perf::PERF_COUNT_HW_REF_CPU_CYCLES:u=0" desc="PERF_COUNT_HW_REF_CPU_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_REF_CPU_CYCLES:k=0" desc="PERF_COUNT_HW_REF_CPU_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="69" name="perf::REF-CYCLES" desc="PERF_COUNT_HW_REF_CPU_CYCLES">
+        <modifier name="perf::REF-CYCLES:u=0" desc="PERF_COUNT_HW_REF_CPU_CYCLES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::REF-CYCLES:k=0" desc="PERF_COUNT_HW_REF_CPU_CYCLES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="70" name="perf::PERF_COUNT_SW_CPU_CLOCK" desc="PERF_COUNT_SW_CPU_CLOCK">
+        <modifier name="perf::PERF_COUNT_SW_CPU_CLOCK:u=0" desc="PERF_COUNT_SW_CPU_CLOCK, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_CPU_CLOCK:k=0" desc="PERF_COUNT_SW_CPU_CLOCK, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="71" name="perf::CPU-CLOCK" desc="PERF_COUNT_SW_CPU_CLOCK">
+        <modifier name="perf::CPU-CLOCK:u=0" desc="PERF_COUNT_SW_CPU_CLOCK, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CPU-CLOCK:k=0" desc="PERF_COUNT_SW_CPU_CLOCK, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="72" name="perf::PERF_COUNT_SW_TASK_CLOCK" desc="PERF_COUNT_SW_TASK_CLOCK">
+        <modifier name="perf::PERF_COUNT_SW_TASK_CLOCK:u=0" desc="PERF_COUNT_SW_TASK_CLOCK, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_TASK_CLOCK:k=0" desc="PERF_COUNT_SW_TASK_CLOCK, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="73" name="perf::TASK-CLOCK" desc="PERF_COUNT_SW_TASK_CLOCK">
+        <modifier name="perf::TASK-CLOCK:u=0" desc="PERF_COUNT_SW_TASK_CLOCK, masks:monitor at user level"> </modifier>
+        <modifier name="perf::TASK-CLOCK:k=0" desc="PERF_COUNT_SW_TASK_CLOCK, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="74" name="perf::PERF_COUNT_SW_PAGE_FAULTS" desc="PERF_COUNT_SW_PAGE_FAULTS">
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="75" name="perf::PAGE-FAULTS" desc="PERF_COUNT_SW_PAGE_FAULTS">
+        <modifier name="perf::PAGE-FAULTS:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PAGE-FAULTS:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="76" name="perf::FAULTS" desc="PERF_COUNT_SW_PAGE_FAULTS">
+        <modifier name="perf::FAULTS:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::FAULTS:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="77" name="perf::PERF_COUNT_SW_CONTEXT_SWITCHES" desc="PERF_COUNT_SW_CONTEXT_SWITCHES">
+        <modifier name="perf::PERF_COUNT_SW_CONTEXT_SWITCHES:u=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_CONTEXT_SWITCHES:k=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="78" name="perf::CONTEXT-SWITCHES" desc="PERF_COUNT_SW_CONTEXT_SWITCHES">
+        <modifier name="perf::CONTEXT-SWITCHES:u=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CONTEXT-SWITCHES:k=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="79" name="perf::CS" desc="PERF_COUNT_SW_CONTEXT_SWITCHES">
+        <modifier name="perf::CS:u=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CS:k=0" desc="PERF_COUNT_SW_CONTEXT_SWITCHES, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="80" name="perf::PERF_COUNT_SW_CPU_MIGRATIONS" desc="PERF_COUNT_SW_CPU_MIGRATIONS">
+        <modifier name="perf::PERF_COUNT_SW_CPU_MIGRATIONS:u=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_CPU_MIGRATIONS:k=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="81" name="perf::CPU-MIGRATIONS" desc="PERF_COUNT_SW_CPU_MIGRATIONS">
+        <modifier name="perf::CPU-MIGRATIONS:u=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::CPU-MIGRATIONS:k=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="82" name="perf::MIGRATIONS" desc="PERF_COUNT_SW_CPU_MIGRATIONS">
+        <modifier name="perf::MIGRATIONS:u=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at user level"> </modifier>
+        <modifier name="perf::MIGRATIONS:k=0" desc="PERF_COUNT_SW_CPU_MIGRATIONS, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="83" name="perf::PERF_COUNT_SW_PAGE_FAULTS_MIN" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN">
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS_MIN:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS_MIN:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="84" name="perf::MINOR-FAULTS" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN">
+        <modifier name="perf::MINOR-FAULTS:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN, masks:monitor at user level"> </modifier>
+        <modifier name="perf::MINOR-FAULTS:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MIN, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="85" name="perf::PERF_COUNT_SW_PAGE_FAULTS_MAJ" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ">
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS_MAJ:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ, masks:monitor at user level"> </modifier>
+        <modifier name="perf::PERF_COUNT_SW_PAGE_FAULTS_MAJ:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="86" name="perf::MAJOR-FAULTS" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ">
+        <modifier name="perf::MAJOR-FAULTS:u=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ, masks:monitor at user level"> </modifier>
+        <modifier name="perf::MAJOR-FAULTS:k=0" desc="PERF_COUNT_SW_PAGE_FAULTS_MAJ, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="87" name="perf::PERF_COUNT_HW_CACHE_L1D" desc="L1 data cache">
+        <modifier name="perf::PERF_COUNT_HW_CACHE_L1D:READ" desc="L1 data cache, masks:read access"> </modifier>
+    </event>
+    <event index="89" name="perf::L1-DCACHE-LOAD-MISSES" desc="L1 cache load misses">
+        <modifier name="perf::L1-DCACHE-LOAD-MISSES:u=0" desc="L1 cache load misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::L1-DCACHE-LOAD-MISSES:k=0" desc="L1 cache load misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="99" name="perf::PERF_COUNT_HW_CACHE_LL" desc="Last level cache">
+        <modifier name="perf::PERF_COUNT_HW_CACHE_LL:READ" desc="Last level cache, masks:read access"> </modifier>
+    </event>
+    <event index="101" name="perf::LLC-LOAD-MISSES" desc="Last level cache load misses">
+        <modifier name="perf::LLC-LOAD-MISSES:u=0" desc="Last level cache load misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::LLC-LOAD-MISSES:k=0" desc="Last level cache load misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="106" name="perf::PERF_COUNT_HW_CACHE_DTLB" desc="Data Translation Lookaside Buffer">
+        <modifier name="perf::PERF_COUNT_HW_CACHE_DTLB:READ" desc="Data Translation Lookaside Buffer, masks:read access"> </modifier>
+        <modifier name="perf::PERF_COUNT_HW_CACHE_DTLB:WRITE" desc="Data Translation Lookaside Buffer, masks:write access"> </modifier>
+    </event>
+    <event index="108" name="perf::DTLB-LOAD-MISSES" desc="Data TLB load misses">
+        <modifier name="perf::DTLB-LOAD-MISSES:u=0" desc="Data TLB load misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::DTLB-LOAD-MISSES:k=0" desc="Data TLB load misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="110" name="perf::DTLB-STORE-MISSES" desc="Data TLB store misses">
+        <modifier name="perf::DTLB-STORE-MISSES:u=0" desc="Data TLB store misses, masks:monitor at user level"> </modifier>
+        <modifier name="perf::DTLB-STORE-MISSES:k=0" desc="Data TLB store misses, masks:monitor at kernel level"> </modifier>
+    </event>
+    <event index="126" name="perf_raw::r0000" desc="perf_events raw event syntax: r[0-9a-fA-F]+">
+        <modifier name="perf_raw::r0000:u=0" desc="perf_events raw event syntax: r[0-9a-fA-F]+, masks:monitor at user level"> </modifier>
+        <modifier name="perf_raw::r0000:k=0" desc="perf_events raw event syntax: r[0-9a-fA-F]+, masks:monitor at kernel level"> </modifier>
+        <modifier name="perf_raw::r0000:h=0" desc="perf_events raw event syntax: r[0-9a-fA-F]+, masks:monitor at hypervisor level"> </modifier>
+    </event>
+  </eventset>
+  <eventset type="PRESET">
+    <event index="23" name="PAPI_L1_LDM" desc="Level 1 load misses">
+    </event>
+    <event index="25" name="PAPI_L2_LDM" desc="Level 2 load misses">
+    </event>
+    <event index="44" name="PAPI_BR_TKN" desc="Conditional branch instructions taken">
+    </event>
+    <event index="45" name="PAPI_BR_NTK" desc="Conditional branch instructions not taken">
+    </event>
+    <event index="46" name="PAPI_BR_MSP" desc="Conditional branch instructions mispredicted">
+    </event>
+    <event index="47" name="PAPI_BR_PRC" desc="Conditional branch instructions correctly predicted">
+    </event>
+    <event index="49" name="PAPI_TOT_IIS" desc="Instructions issued">
+    </event>
+    <event index="50" name="PAPI_TOT_INS" desc="Instructions completed">
+    </event>
+    <event index="52" name="PAPI_FP_INS" desc="Floating point instructions">
+    </event>
+    <event index="53" name="PAPI_LD_INS" desc="Load instructions">
+    </event>
+    <event index="54" name="PAPI_SR_INS" desc="Store instructions">
+    </event>
+    <event index="55" name="PAPI_BR_INS" desc="Branch instructions">
+    </event>
+    <event index="57" name="PAPI_RES_STL" desc="Cycles stalled on any resource">
+    </event>
+    <event index="60" name="PAPI_LST_INS" desc="Load/store instructions completed">
+    </event>
+    <event index="76" name="PAPI_L1_ICA" desc="Level 1 instruction cache accesses">
+    </event>
+  </eventset>
+</component>
+<component index="1" type="Unknown" id="perf_event_uncore">
+  <eventset type="NATIVE">
+  </eventset>
+  <eventset type="PRESET">
+  </eventset>
+</component>
+</eventinfo>
