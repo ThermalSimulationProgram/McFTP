@@ -9,9 +9,9 @@
 	</temperature_sensors>
 
 	<soft_temperature_sensor_counters>
-		<sensor0 name="PAPI_L1_DCM" coefficient_a="1" coefficient_b = "0" />
+		<sensor0 name="perf::PERF_COUNT_HW_CPU_CYCLES:u=0" coefficient_a="1" coefficient_b = "0" />
 		<sensor1 name="PAPI_TOT_INS" coefficient_a="1" coefficient_b = "0" />
-		<sensor2 name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS:k=0" coefficient_a="1" coefficient_b = "0" />
+		<sensor2 name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS:u=0" coefficient_a="1" coefficient_b = "0" />
 	</soft_temperature_sensor_counters>
 	<tasks>
 		<task0 load_type="benchmark" name="task0" periodicity="periodic" type="singlecore">
