@@ -14,33 +14,33 @@
 		<sensor2 name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS:k=0" coefficient_a="1" coefficient_b = "0" />
 	</soft_temperature_sensor_counters>
 	<tasks>
-		<task0 load_type="busy_wait" name="task0" periodicity="periodic" type="singlecore">
+		<task0 load_type="benchmark" name="task0" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[999]"/>
 			<attached_core value="0"/>
 		</task0>
-		<task1 load_type="busy_wait" name="task1" periodicity="periodic" type="singlecore">
+		<task1 load_type="benchmark" name="task1" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[999]"/>
 			<attached_core value="1"/>
 		</task1>
-		<task2 load_type="busy_wait" name="task2" periodicity="periodic" type="singlecore">
+		<task2 load_type="benchmark" name="task2" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[999]"/>
 			<attached_core value="2"/>
 		</task2>
-		<task3 load_type="busy_wait" name="task3" periodicity="periodic" type="singlecore">
+		<task3 load_type="benchmark" name="task3" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[999]"/>
 			<attached_core value="3"/>
 		</task3>
 		
-		<task4 load_type="busy_wait" name="task4" periodicity="periodic" type="singlecore">
+		<task4 load_type="benchmark" name="task4" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[999]"/>
 			<attached_core value="4"/>
 		</task4>
-		<task5 load_type="busy_wait" name="task5" periodicity="periodic" type="singlecore">
+		<task5 load_type="benchmark" name="task5" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[999]"/>
 			<attached_core value="5"/>

@@ -39,7 +39,7 @@ Task::Task(_task_type type, _task_load_type  load, int loadId, int _taskId,
   		}
 
   		case benchmark:{
-  			Benchmark* newload = new Benchmark("fft");
+  			Benchmark* newload = new Benchmark("hyperbolic");
   			loads = (TaskLoad*) newload;
   			break;
   		}
