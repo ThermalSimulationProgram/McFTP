@@ -4,11 +4,14 @@
 	<save_result value="True"/>
 	<processor core_number="2" fixed_active="False" fixed_frequency="True"/>
 	<temperature_sensors>
+		<sensor0 type = "hardware" />
 		<sensor1 type = "soft" />
 	</temperature_sensors>
 
 	<soft_temperature_sensor_counters>
-		<sensor0 name="perf::PERF_COUNT_HW_CACHE_L1D" coefficient_a="0.0000014" coefficient_b = "44.413" />
+		<sensor0 name="PAPI_L1_DCM" coefficient_a="1" coefficient_b = "0" />
+		<sensor1 name="PAPI_TOT_INS" coefficient_a="1" coefficient_b = "0" />
+		<sensor2 name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS:k=0" coefficient_a="1" coefficient_b = "0" />
 	</soft_temperature_sensor_counters>
 	<tasks>
 		<task0 load_type="busy_wait" name="task0" periodicity="periodic" type="singlecore">
