@@ -226,12 +226,17 @@ std::vector<double> TempWatcher::get_cpu_temperature(){
 std::vector<double> TempWatcher::get_soft_cpu_temperature(){
     std::vector<double> ret;
     if (useSoftSensor){
-        temperatureCounters.readAllValues();
+        if (!temperatureCounters.readAllValues()){
+            cout << "warning: TempWatcher::get_soft_cpu_temperature: failed to read performance counter values\n";
+
+        }
+        
 
         if (softSensor == NULL){
             for (int i = 0; i < temperatureCounters.getCounterNumber(); ++i)
             {
                 long long v = temperatureCounters.getCounterValue(i);
+                cout << "debug: performanc counter value: " << v << endl;
                 double temp = coefAVector[i] * v + coefBVector[i];
                 ret.push_back(temp);
             } 

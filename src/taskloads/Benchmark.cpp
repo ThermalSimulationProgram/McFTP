@@ -11,6 +11,46 @@
 
 using namespace std;
 
+
+
+
+// { "ackermann",		stress_cpu_ackermann },
+// 	{ "bitops",		stress_cpu_bitops },
+// 	{ "correlate",		stress_cpu_correlate },
+// 	{ "crc16",		stress_cpu_crc16 },
+// 	{ "djb2a",		stress_cpu_djb2a },
+// 	{ "euler",		stress_cpu_euler },
+// 	{ "explog",		stress_cpu_explog },
+// 	{ "fft",		stress_cpu_fft },
+// 	{ "fibonacci",		stress_cpu_fibonacci },
+// 	{ "float", 		stress_cpu_fp },
+// 	{ "fnv1a",		stress_cpu_fnv1a },
+// 	{ "gcd",		stress_cpu_gcd },
+// 	{ "hamming",		stress_cpu_hamming },
+// 	{ "hyperbolic",		stress_cpu_hyperbolic },
+// 	{ "idct",		stress_cpu_idct },
+// 	{ "int", 		stress_cpu_int },
+// 	{ "jenkin",		stress_cpu_jenkin },
+// 	{ "jmp",		stress_cpu_jmp },
+// 	{ "ln2",		stress_cpu_ln2 },
+// 	{ "loop",		stress_cpu_loop },
+// 	{ "matrixprod",		stress_cpu_matrix_prod },
+// 	{ "nsqrt",		stress_cpu_nsqrt },
+// 	{ "omega",		stress_cpu_omega },
+// 	{ "phi",		stress_cpu_phi },
+// 	{ "pi",			stress_cpu_pi },
+// 	{ "pjw",		stress_cpu_pjw },
+// 	{ "prime",		stress_cpu_prime },
+// 	{ "psi",		stress_cpu_psi },
+// 	{ "queens",		stress_cpu_queens },
+// 	{ "rand48",		stress_cpu_rand48 },
+// 	{ "sdbm",		stress_cpu_sdbm },
+// 	{ "sqrt", 		stress_cpu_sqrt },
+// 	{ "trig",		stress_cpu_trig },
+// 	{ "union",		stress_cpu_union },
+
+	
+
 // Constructor uses the default benchmark, sqrt(rand())
 Benchmark::Benchmark():Benchmark("default"){
 	// -1 means the default benchmark

@@ -101,6 +101,17 @@ void Scratch::print(){
 	cout << "adaption_period 	= " << adaption_period << endl;
 	cout << "fixedFrequency 	= " << fixedFrequency << endl;
 	cout << "fixedActive 		= " << fixedActive << endl;
+	cout << "useSoftTempSensor  = " << useSoftTempSensor << endl;
+	cout << "useHardwareTempSensor  = " << useHardwareTempSensor << endl;
+
+	for (int i = 0; i < soft_sensors.size(); ++i)
+	{
+		SoftTemperatureSensorConfig t = soft_sensors[i];
+		cout << "counter name: " << t.counterName << endl;
+		cout << "coef a: " << t.coefA << endl;
+		cout << "coef b: " << t.coefB << endl;
+	}
+
 	displayvector(TimeUtil::convert_us(PBOO_tons) , "PBOO_tons");
 	displayvector(TimeUtil::convert_us(PBOO_toffs), "PBOO_toffs");
 	printAllTaskInfo();
