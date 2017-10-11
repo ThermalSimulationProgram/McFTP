@@ -12,26 +12,26 @@
 		<!-- <sensor0 name="perf::PERF_COUNT_HW_CPU_CYCLES:u=0" coefficient_a="1" coefficient_b = "0" /> -->
 		<!-- <sensor1 name="PAPI_L2_DCA" coefficient_a="1" coefficient_b = "0" /> -->
 		<!-- <sensor2 name="UOPS_EXECUTED" coefficient_a="1" coefficient_b = "0" /> -->
-		<sensor1 coefficient_a="1" coefficient_b="0" name="TC_deliver_mode"/>
-   <sensor2 coefficient_a="1" coefficient_b="0" name="TC_deliver_mode:DD"/>
-   <sensor3 coefficient_a="1" coefficient_b="0" name="TC_deliver_mode:DB"/>
-   <sensor4 coefficient_a="1" coefficient_b="0" name="TC_deliver_mode:DI"/>
-   <sensor5 coefficient_a="1" coefficient_b="0" name="TC_deliver_mode:BD"/>
-   <sensor6 coefficient_a="1" coefficient_b="0" name="TC_deliver_mode:BB"/>
-   <sensor7 coefficient_a="1" coefficient_b="0" name="TC_deliver_mode:BI"/>
-   <sensor8 coefficient_a="1" coefficient_b="0" name="TC_deliver_mode:ID"/>
-   <sensor9 coefficient_a="1" coefficient_b="0" name="memory_cancel"/>
-   <sensor10 coefficient_a="1" coefficient_b="0" name="memory_cancel:ST_RB_FULL"/>
-   <sensor11 coefficient_a="1" coefficient_b="0" name="memory_cancel:64K_CONF"/>
-   <sensor12 coefficient_a="1" coefficient_b="0" name="memory_complete"/>
-   <sensor13 coefficient_a="1" coefficient_b="0" name="memory_complete:LSC"/>
-   <sensor14 coefficient_a="1" coefficient_b="0" name="memory_complete:SSC"/>
-   <sensor15 coefficient_a="1" coefficient_b="0" name="load_port_replay"/>
-   <sensor16 coefficient_a="1" coefficient_b="0" name="load_port_replay:SPLIT_LD"/>
-   <sensor17 coefficient_a="1" coefficient_b="0" name="load_port_replay:cmpl=0"/>
-   <sensor18 coefficient_a="1" coefficient_b="0" name="load_port_replay:e=0"/>
-   <sensor19 coefficient_a="1" coefficient_b="0" name="load_port_replay:thr=0"/>
-   <sensor20 coefficient_a="1" coefficient_b="0" name="load_port_replay:u=0"/>
+		<sensor1 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_CORE_CYCLES"/>
+   <sensor2 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_CORE_CYCLES:e=0"/>
+   <sensor3 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_CORE_CYCLES:i=0"/>
+   <sensor4 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_CORE_CYCLES:c=0"/>
+   <sensor5 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_CORE_CYCLES:t=0"/>
+   <sensor6 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED"/>
+   <sensor7 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED:e=0"/>
+   <sensor8 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED:i=0"/>
+   <sensor9 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED:c=0"/>
+   <sensor10 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED:t=0"/>
+   <sensor11 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES"/>
+   <sensor12 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES:e=0"/>
+   <sensor13 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES:i=0"/>
+   <sensor14 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES:c=0"/>
+   <sensor15 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES:t=0"/>
+   <sensor16 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES"/>
+   <sensor17 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES:e=0"/>
+   <sensor18 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES:i=0"/>
+   <sensor19 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES:c=0"/>
+   <sensor20 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES:t=0"/>
 	</soft_temperature_sensor_counters>
 	<tasks>
 		<task0 load_type="busy_wait" name="task0" periodicity="periodic" type="singlecore">
