@@ -87,7 +87,15 @@ int PerformanceCounters::getCounterNumber(){
 	return counterNumber;
 }
 
+void PerformanceCounters::endAllCounters(){
+	/* Remove all events in the eventset */
+if (PAPI_cleanup_eventset(counters) != PAPI_OK)
+  cout << "Library PAPI: Performance Application Programming Interface failed to clean counters added by user" << endl;
 
+/* Free all memory and data structures, EventSet must be empty. */
+if (PAPI_destroy_eventset(counters) != PAPI_OK)
+  cout << "Library PAPI: Performance Application Programming Interface failed to destroy counters added by user" << endl;
+}	
 
 
 

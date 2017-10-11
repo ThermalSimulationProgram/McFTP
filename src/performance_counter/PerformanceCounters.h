@@ -36,6 +36,8 @@ public:
 	long long getCounterValue(int counterId);
 
 	int getCounterNumber();
+	
+	void endAllCounters();
 
 	static void printCounterInfo();
 
