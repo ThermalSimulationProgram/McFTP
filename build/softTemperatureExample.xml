@@ -13,25 +13,25 @@
 		<!-- <sensor1 name="PAPI_L2_DCA" coefficient_a="1" coefficient_b = "0" /> -->
 		<!-- <sensor2 name="UOPS_EXECUTED" coefficient_a="1" coefficient_b = "0" /> -->
 		<sensor1 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_CORE_CYCLES"/>
-   <sensor2 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_CORE_CYCLES:e=0"/>
-   <sensor3 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_CORE_CYCLES:i=0"/>
-   <sensor4 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_CORE_CYCLES:c=0"/>
-   <sensor5 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_CORE_CYCLES:t=0"/>
-   <sensor6 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED"/>
-   <sensor7 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED:e=0"/>
-   <sensor8 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED:i=0"/>
-   <sensor9 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED:c=0"/>
-   <sensor10 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED:t=0"/>
-   <sensor11 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES"/>
-   <sensor12 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES:e=0"/>
-   <sensor13 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES:i=0"/>
-   <sensor14 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES:c=0"/>
-   <sensor15 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES:t=0"/>
-   <sensor16 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES"/>
-   <sensor17 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES:e=0"/>
-   <sensor18 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES:i=0"/>
-   <sensor19 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES:c=0"/>
-   <sensor20 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES:t=0"/>
+   <sensor2 coefficient_a="1" coefficient_b="0" name="ix86arch::INSTRUCTION_RETIRED"/>
+   <sensor3 coefficient_a="1" coefficient_b="0" name="ix86arch::UNHALTED_REFERENCE_CYCLES"/>
+   <sensor4 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_REFERENCES"/>
+   <sensor5 coefficient_a="1" coefficient_b="0" name="ix86arch::LLC_MISSES"/>
+   <sensor6 coefficient_a="1" coefficient_b="0" name="ix86arch::BRANCH_INSTRUCTIONS_RETIRED"/>
+   <sensor7 coefficient_a="1" coefficient_b="0" name="ix86arch::MISPREDICTED_BRANCH_RETIRED"/>
+   <sensor8 coefficient_a="1" coefficient_b="0" name="perf::PERF_COUNT_HW_CPU_CYCLES"/>
+   <sensor9 coefficient_a="1" coefficient_b="0" name="perf::CYCLES"/>
+   <sensor10 coefficient_a="1" coefficient_b="0" name="perf::CPU-CYCLES"/>
+   <sensor11 coefficient_a="1" coefficient_b="0" name="perf::PERF_COUNT_HW_INSTRUCTIONS"/>
+   <sensor12 coefficient_a="1" coefficient_b="0" name="perf::INSTRUCTIONS"/>
+   <sensor13 coefficient_a="1" coefficient_b="0" name="perf::PERF_COUNT_HW_CACHE_REFERENCES"/>
+   <sensor14 coefficient_a="1" coefficient_b="0" name="perf::CACHE-REFERENCES"/>
+   <sensor15 coefficient_a="1" coefficient_b="0" name="perf::PERF_COUNT_HW_CACHE_MISSES"/>
+   <sensor16 coefficient_a="1" coefficient_b="0" name="perf::CACHE-MISSES"/>
+   <sensor17 coefficient_a="1" coefficient_b="0" name="perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS"/>
+   <sensor18 coefficient_a="1" coefficient_b="0" name="perf::BRANCH-INSTRUCTIONS"/>
+   <sensor19 coefficient_a="1" coefficient_b="0" name="perf::BRANCHES"/>
+   <sensor20 coefficient_a="1" coefficient_b="0" name="perf::PERF_COUNT_HW_BRANCH_MISSES"/>
 	</soft_temperature_sensor_counters>
 	<tasks>
 		<task0 load_type="busy_wait" name="task0" periodicity="periodic" type="singlecore">
