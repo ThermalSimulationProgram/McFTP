@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+volatile double flop_a = 0.5, flop_b = 2.2;
+
 TaskLoad::TaskLoad(){
 	sem_init(&suspend_sem, 0, 0);
 	sem_init(&resume_sem, 0, 0);
@@ -45,4 +47,19 @@ void TaskLoad::resume(){
 
 void TaskLoad::stop(){
 	sem_post(&stop_sem);
+}
+
+void TaskLoad::dummy(void* array){
+	(void) array;
+}
+
+void TaskLoad::do_flops( int n )
+{
+	int i;
+	double c = 0.11;
+
+	for ( i = 0; i < n; i++ ) {
+		c += flop_a * flop_b;
+	}
+	dummy( ( void * ) &c );
 }

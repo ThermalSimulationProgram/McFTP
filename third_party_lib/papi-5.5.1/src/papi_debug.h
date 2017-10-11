@@ -24,6 +24,7 @@
 
 /* Debug Levels */
 
+
 #define DEBUG_SUBSTRATE         0x002
 #define DEBUG_API               0x004
 #define DEBUG_INTERNAL          0x008
@@ -40,7 +41,10 @@
 extern int _papi_hwi_debug;
 extern unsigned long int ( *_papi_hwi_thread_id_fn ) ( void );
 
+
 #ifdef DEBUG
+
+
 
 #ifdef __GNUC__
 #define FUNC __FUNCTION__
@@ -50,10 +54,14 @@ extern unsigned long int ( *_papi_hwi_thread_id_fn ) ( void );
 #define FUNC "?"
 #endif
 
+
+
 #define DEBUGLABEL(a) if (_papi_hwi_thread_id_fn) fprintf(stderr, "%s:%s:%s:%d:%d:%#lx ",a,__FILE__, FUNC, __LINE__,(int)getpid(),_papi_hwi_thread_id_fn()); else fprintf(stderr, "%s:%s:%s:%d:%d ",a,__FILE__, FUNC, __LINE__, (int)getpid())
 #define ISLEVEL(a) (_papi_hwi_debug&a)
 
 #define DEBUGLEVEL(a) ((a&DEBUG_SUBSTRATE)?"SUBSTRATE":(a&DEBUG_API)?"API":(a&DEBUG_INTERNAL)?"INTERNAL":(a&DEBUG_THREADS)?"THREADS":(a&DEBUG_MULTIPLEX)?"MULTIPLEX":(a&DEBUG_OVERFLOW)?"OVERFLOW":(a&DEBUG_PROFILE)?"PROFILE":(a&DEBUG_MEMORY)?"MEMORY":(a&DEBUG_LEAK)?"LEAK":"UNKNOWN")
+
+
 
 #ifndef NO_VARARG_MACRO		 /* Has variable arg macro support */
 #define PAPIDEBUG(level,format, args...) { if(_papi_hwi_debug&level){DEBUGLABEL(DEBUGLEVEL(level));fprintf(stderr,format, ## args);}}
@@ -85,6 +93,8 @@ extern unsigned long int ( *_papi_hwi_thread_id_fn ) ( void );
 #define PAPIDEBUG(level, format, args...) { ; }
 #endif
 #endif
+
+
 
 /*
  * Debug functions for platforms without vararg macro support

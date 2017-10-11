@@ -61,6 +61,8 @@ public:
     		// struct timespec sleepEnd = now + sleepLength;
     		int resumeVal;
 
+            struct timespec rem;
+
       		// make sure the resume semaphore is cleared
     		sem_getvalue(&resume_sem, &resumeVal);
     		for (int i = 0; i < resumeVal; ++i)
@@ -69,7 +71,9 @@ public:
     		}
 
       		// two exit conditions: reach the sleepEnd time, or recieves a resume_sem signal
-    		sem_timedwait(&resume_sem, &sleepEnd);
+    		//sem_timedwait(&resume_sem, &sleepEnd);
+
+            nanosleep(&sleepEnd, &rem);
     	}
 
     };
@@ -84,6 +88,9 @@ public:
 
     void resume();
 
+    void dummy(void* array);
+
+    void do_flops(int n);
 
 
 

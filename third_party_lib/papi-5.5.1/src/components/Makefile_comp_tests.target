@@ -11,7 +11,7 @@ LDFLAGS = -ldl
 CC	= gcc
 F77	= 
 CC_R	= $(CC) -pthread
-CFLAGS	=  -g -DSTATIC_PAPI_EVENTS_TABLE -DPEINCLUDE=\"libpfm4/include/perfmon/perf_event.h\" -D_REENTRANT -D_GNU_SOURCE -DUSE_COMPILER_TLS  -Wall 
+CFLAGS	=  -g -g3 -DSTATIC_PAPI_EVENTS_TABLE -DPEINCLUDE=\"libpfm4/include/perfmon/perf_event.h\" -D_REENTRANT -D_GNU_SOURCE -DUSE_COMPILER_TLS  -Wall 
 OMPCFLGS = -fopenmp
 UTILOBJS = $(TESTLIB)
 

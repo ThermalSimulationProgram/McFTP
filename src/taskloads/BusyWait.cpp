@@ -20,6 +20,7 @@ bool BusyWait::runLoads(unsigned long _wcet_us){
      unsigned long fire_start = TimeUtil::convert_us(TimeUtil::getTime());
      wcet_us = _wcet_us;
      MWC RND = MWC();
+     double ret;
 
      do {
           setSuspendPoint(); // set a suspend point here. When recieves a suspend signal, pause execution here
@@ -30,17 +31,20 @@ bool BusyWait::runLoads(unsigned long _wcet_us){
           while(tmp_count < 200){
                for (int i = 0; i < 3000; ++i)
                {
-                    sqrt(RND.mwc32());
+                    ret += sqrt(RND.mwc32());
                }
+               // do_flops(5000);
                tmp_count = TimeUtil::convert_us(TimeUtil::getTime()) - start;
           }
 
           unsigned long end = TimeUtil::convert_us(TimeUtil::getTime());
+
           count += end - fire_start;
           fire_start = end;
           setCheckBlockEnd();
      } while ( count < wcet_us); 
 
+     dummy((void*) &ret);
      count = 0;
      return true;
 }

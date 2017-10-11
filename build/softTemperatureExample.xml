@@ -1,58 +1,38 @@
 <?xml version="1.0" ?>
 <experiment name="soft_temperature_sensor_test">
-	<duration unit="sec" value="20"/>
+	<duration unit="sec" value="30"/>
 	<save_result value="True"/>
-	<processor core_number="6" fixed_active="False" fixed_frequency="True"/>
+	<processor core_number="2" fixed_active="False" fixed_frequency="True"/>
 	<temperature_sensors>
 		<sensor0 type = "hardware" />
 		<sensor1 type = "soft" />
 	</temperature_sensors>
 
 	<soft_temperature_sensor_counters>
-		<sensor0 name="perf::PERF_COUNT_HW_CPU_CYCLES:k=0" coefficient_a="1" coefficient_b = "0" />
+		<sensor0 name="perf::PERF_COUNT_HW_CPU_CYCLES:u=4" coefficient_a="1" coefficient_b = "0" />
 		<sensor1 name="PAPI_L2_DCA" coefficient_a="1" coefficient_b = "0" />
-		<sensor2 name="perf::CACHE-MISSES" coefficient_a="1" coefficient_b = "0" />
+		<sensor2 name="UOPS_EXECUTED" coefficient_a="1" coefficient_b = "0" />
 	</soft_temperature_sensor_counters>
 	<tasks>
-		<task0 load_type="benchmark" name="task0" periodicity="periodic" type="singlecore">
+		<task0 load_type="busy_wait" name="task0" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[999]"/>
 			<attached_core value="0"/>
 		</task0>
-		<task1 load_type="benchmark" name="task1" periodicity="periodic" type="singlecore">
+		<task1 load_type="busy_wait" name="task1" periodicity="periodic" type="singlecore">
 			<period unit="ms" value="1000"/>
 			<wcets unit="ms" value="[999]"/>
 			<attached_core value="1"/>
 		</task1>
-		<task2 load_type="benchmark" name="task2" periodicity="periodic" type="singlecore">
-			<period unit="ms" value="1000"/>
-			<wcets unit="ms" value="[999]"/>
-			<attached_core value="2"/>
-		</task2>
-		<task3 load_type="benchmark" name="task3" periodicity="periodic" type="singlecore">
-			<period unit="ms" value="1000"/>
-			<wcets unit="ms" value="[999]"/>
-			<attached_core value="3"/>
-		</task3>
 		
-		<task4 load_type="benchmark" name="task4" periodicity="periodic" type="singlecore">
-			<period unit="ms" value="1000"/>
-			<wcets unit="ms" value="[999]"/>
-			<attached_core value="4"/>
-		</task4>
-		<task5 load_type="benchmark" name="task5" periodicity="periodic" type="singlecore">
-			<period unit="ms" value="1000"/>
-			<wcets unit="ms" value="[999]"/>
-			<attached_core value="5"/>
-		</task5>
 	</tasks>
 
 	
 	
 	<thermal_approach>
 		<kernel type="PBOO">
-			<ton unit="ms" value="{10000, 10000, 10000, 10000, 10000, 10000}"/>
-			<toff unit="ms" value="{10000, 10000, 10000, 10000, 10000, 10000}"/>
+			<ton unit="ms" value="{15000, 15000}"/>
+			<toff unit="ms" value="{10000, 10000}"/>
 		</kernel>
 	</thermal_approach>
 </experiment>

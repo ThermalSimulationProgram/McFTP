@@ -88,7 +88,7 @@ Task * Worker::stopCurrentJob(){
 }
 
 void Worker::activate(){
-	// setPriority(Priorities::get_active_pr());
+	 setPriority(Priorities::get_active_pr());
 	sem_wait(&state_sem);
 	state = _active;
 	latestSleep = TimeUtil::Millis(0);
@@ -116,7 +116,7 @@ void Worker::deactivate(const struct timespec& length){
 	sem_post(&suspend_sem);
 	sem_wait(&job_sem);
 	if (current_job != NULL){
-		current_job->suspend(sleepEnd);
+		current_job->suspend(length);
 	}
 	sem_post(&job_sem);
 }
@@ -173,7 +173,8 @@ void Worker::wrapper(){
 	
 	while(Processor::isRunning())
 	{
-		// setSuspendPoint();
+		setSuspendPoint();
+		
 
 		if (current_job == NULL){
 			

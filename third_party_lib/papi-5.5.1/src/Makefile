@@ -17,7 +17,7 @@ BITFLAGS =
 CC	  = gcc
 CC_R = $(CC) -pthread
 CC_SHR = $(CC) -fPIC -DPIC -shared -Wl,-soname -Wl,$(VLIB) -Xlinker "-rpath" -Xlinker "$(LIBDIR)"
-CFLAGS    =  -g -DSTATIC_PAPI_EVENTS_TABLE -DPEINCLUDE=\"libpfm4/include/perfmon/perf_event.h\" -D_REENTRANT -D_GNU_SOURCE -DUSE_COMPILER_TLS  -Wall
+CFLAGS    =  -g -g3 -DSTATIC_PAPI_EVENTS_TABLE -DPEINCLUDE=\"libpfm4/include/perfmon/perf_event.h\" -D_REENTRANT -D_GNU_SOURCE -DUSE_COMPILER_TLS  -Wall
 CPP	  = gcc -E
 CPPFLAGS   =  -Ilibpfm4/include
 COMPONENT_RULES = components/Rules.components components/perf_event/Rules.perf_event components/perf_event_uncore/Rules.perf_event_uncore
@@ -28,7 +28,7 @@ cpu_option =
 CTEST_TARGETS = all
 datarootdir = 
 DATADIR   = ${prefix}/share/${PACKAGE_TARNAME}
-DEBUGFLAGS	= -DPAPI_NO_MEMORY_MANAGEMENT
+DEBUGFLAGS	= -DDEBUG
 DESCR = 
 DOCDIR	  = 
 EPREFIX   = ${prefix}
@@ -53,7 +53,7 @@ MPICC = mpicc
 NOOPT = 
 NOTLS     = -DUSE_COMPILER_TLS
 OMPCFLGS = -fopenmp
-OPTFLAGS = -O2 -DPAPI_NO_MEMORY_MANAGEMENT
+OPTFLAGS = -O0 -DDEBUG
 OSFILESSRC = linux-memory.c linux-timer.c linux-common.c
 OSFILESOBJ = $(OSFILESSRC:.c=.o)
 OSFILESHDR = linux-memory.h linux-timer.h linux-common.h

@@ -35,7 +35,7 @@ main( int argc, char **argv )
 	}
 	Events[1] = PAPI_TOT_CYC;
 	int lastEventId;
-	char lastEventName[] = "ix86arch::LLC_MISSES";
+	char lastEventName[] = "ix86arch::UNHALTED_CORE_CYCLES:e=2";
 	retval = PAPI_event_name_to_code(lastEventName, &lastEventId);
 	if ( retval != PAPI_OK )
 		test_fail( __FILE__, __LINE__, "PAPI_get_event_code", retval );
@@ -71,7 +71,7 @@ main( int argc, char **argv )
 
 	/* Loop 3 */
 	/* Simulated code that should not be counted */
-	do_flops( NUM_FLOPS );
+	do_flops( NUM_FLOPS*2 );
 
 	retval = PAPI_read_counters( dummyvalues, NUM_EVENTS );
 	if ( retval != PAPI_OK )
