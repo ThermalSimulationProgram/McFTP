@@ -9,9 +9,9 @@
 
 using namespace std;
 
-# include "matrix_exponential.hpp"
-# include "c8lib.hpp"
-# include "r8lib.hpp"
+# include "utils/matrix_exponential.hpp"
+# include "utils/c8lib.hpp"
+# include "utils/r8lib.hpp"
 
 //****************************************************************************80
 

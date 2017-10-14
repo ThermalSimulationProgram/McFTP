@@ -1,3 +1,7 @@
+#ifndef R8LIB_R8LIB_H
+#define R8LIB_R8LIB_H 
+
+
 void gamma_values ( int &n_data, double &x, double &fx );
 void gamma_log_values ( int &n_data, double &x, double &fx );
 int i4_log_10 ( int i );
@@ -607,3 +611,7 @@ double *roots_to_r8poly ( int n, double x[] );
 int s_len_trim ( string s );
 void sort_heap_external ( int n, int &indx, int &i, int &j, int isgn );
 void timestamp ( );
+
+
+
+#endif
