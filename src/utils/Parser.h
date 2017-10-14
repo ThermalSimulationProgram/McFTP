@@ -26,7 +26,7 @@ public:
 	int parseFile();
 
 	int parseThermalModel(
-		std::vector<std::vector<double> >& C, 
+		std::vector<std::vector<double> >& INVC, 
 		std::vector<std::vector<double> >& G,
 		std::vector<std::vector<double> >& K,
 		double& ambientT,

@@ -45,7 +45,7 @@ Parser::Parser(string _xml_path){
 }
 
 int Parser::parseThermalModel(
-	std::vector<std::vector<double> >& C, 
+	std::vector<std::vector<double> >& INVC, 
 	std::vector<std::vector<double> >& G,
 	std::vector<std::vector<double> >& K,
 	double& ambientT,
@@ -65,11 +65,11 @@ int Parser::parseThermalModel(
 	xml_node processor = doc.child("processor");
 	xml_node model = processor.child("thermal_model");
 
-	C.clear();
+	INVC.clear();
 	G.clear();
 	K.clear();
 
-	C = loadMatrixFromFile<double>(model.child("parameterC").attribute("path").as_string());
+	INVC = loadMatrixFromFile<double>(model.child("parameterINVC").attribute("path").as_string());
 	G = loadMatrixFromFile<double>(model.child("parameterG").attribute("path").as_string());
 	K = loadMatrixFromFile<double>(model.child("parameterK").attribute("path").as_string());
 
