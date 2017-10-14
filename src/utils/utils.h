@@ -116,5 +116,67 @@ std::vector<std::string> matrixTostring(const std::vector<std::vector<T>>& data)
 	return ret;
 }
 
+template<typename T>
+T* vectorMatrixTo2DArray(const std::vector<std::vector<T>>& data){
+	int m = data.size();
+	int n = 0;
+	if (m > 0){
+		n = data[0].size();
+	}
+	for (int i = 1; i < m; ++i)
+	{
+		if (data[i].size() != n){
+			std::cout << "vectorMatrixTo2DArray: data is not a matrix! " << std::endl;
+			return NULL;
+		}
+	}
+
+	T* ret = new T[m*n];
+
+	for (int i = 0; i < m; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			ret[i + j*m] = data[i][j];
+		}
+	}
+
+	return ret;
+
+}
+
+
+template<typename T>
+std::vector<std::vector<T>>  vector2DArrayToVectorMatrix(T  data[], int m, int n){
+	std::vector<std::vector<T>> ret;
+	ret.reserve(m);
+
+	for (int i = 0; i < m; ++i)
+	{
+		std::vector<T> temp ;
+		temp.reserve(n);
+		for (int j = 0; j < n; ++j)
+		{
+			temp.push_back(data[i + j*m]);
+		}
+		ret.push_back(temp);
+	}
+
+	return ret;
+
+}
+
+
+
+
+void matrixAAndBToWAndV(
+	int N,
+	double A[],
+	double B[],
+	double period,
+	double **W,
+	double **V,
+	int nLoops);
+
 
 #endif

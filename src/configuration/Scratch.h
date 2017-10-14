@@ -78,6 +78,14 @@ public:
 
 	static int 						isAppendSaveFile;
 	static user_defined_soft_temperature_sensor softSensor;
+	static unsigned long 			softSamplingInterval;
+	static unsigned long 			hardSamplineInterval;
+	static std::vector<std::vector<double>> softSensorA;
+	static std::vector<std::vector<double>> softSensorB;
+	static std::vector<double> softSensorK;
+	static std::string 				softSensorCalculator;
+	static soft_temperature_sensor_power_estimator powerEstimator;
+
 	
 private:
 	/*****************BASIC EXPERIMENT SETTINGS*******************/

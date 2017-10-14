@@ -178,6 +178,12 @@ protected:
 	// the values of the performance counters
 	user_defined_soft_temperature_sensor softSensor;
 
+	
+	soft_temperature_sensor_power_estimator powerEstimator;
+
+	double*  softSensorW;
+	double*  softSensorV;
+
 
 	static double			   calcMaxTemp(std::vector<std::vector<double> > temp);
 	static double			   calcMeanMaxTemp(std::vector<std::vector<double> > temp);

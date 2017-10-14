@@ -1,21 +1,23 @@
 #include <iostream>
 #include <string>
 #include <vector>
-# include <cstdlib>
-# include <cmath>
-# include <complex>
+#include <cstdlib>
+#include <cmath>
+#include <complex>
 
 using namespace std;
 
-# include "utils/matrix_exponential.hpp"
-# include "utils/test_matrix_exponential.hpp"
-# include "utils/c8lib.hpp"
-# include "utils/r8lib.hpp"
+#include "utils/matrix_exponential.hpp"
+#include "utils/test_matrix_exponential.hpp"
+#include "utils/c8lib.hpp"
+#include "utils/r8lib.hpp"
 
 
 #include "CMI.h"
 //#include "performance_counter/PerformanceCounters.h"
 #include "utils/Parser.h"
+#include "utils/utils.h"
+#include "utils/FileOperator.h"
 #include "UnitTest/UnitTest.h"
 
 void matrix_exponential_test01 ( );
@@ -73,27 +75,15 @@ int  test_online_task_allocator (CMI* cmi, int _taskId){
 
 void runExperiment(int argc, char** argv);
 
+void testMaxtrixExponential();
+
 
 int main(int argc, char** argv){
 
-  timestamp ( );
-  cout << "\n";
-  cout << "MATRIX_EXPONENTIAL_TEST:\n";
-  cout << "  C++ version\n";
-  cout << "  Test the MATRIX_EXPONENTIAL library.\n";
-  cout << "  The C8LIB and R8LIB libraries are needed.\n";
-  cout << "  This test needs the TEST_MATRIX_EXPONENTIAL library.\n";
+	// vector<vector<double> >  a = {{1,2},{3,4},{5,6}};
 
-  matrix_exponential_test01 ( );
-  matrix_exponential_test02 ( );
-//
-//  Terminate.
-//
-  cout << "\n";
-  cout << "MATRIX_EXPONENTIAL_TEST:\n";
-  cout << "  Normal end of execution.\n";
-  cout << "\n";
-  timestamp ( );
+
+	
 
   return 0;
 
@@ -164,7 +154,26 @@ void runExperiment(int argc, char** argv){
 
 }
 
+void testMaxtrixExponential(){
+	timestamp ( );
+	cout << "\n";
+	cout << "MATRIX_EXPONENTIAL_TEST:\n";
+	cout << "  C++ version\n";
+	cout << "  Test the MATRIX_EXPONENTIAL library.\n";
+	cout << "  The C8LIB and R8LIB libraries are needed.\n";
+	cout << "  This test needs the TEST_MATRIX_EXPONENTIAL library.\n";
 
+	matrix_exponential_test01 ( );
+	matrix_exponential_test02 ( );
+//
+//  Terminate.
+//
+	cout << "\n";
+	cout << "MATRIX_EXPONENTIAL_TEST:\n";
+	cout << "  Normal end of execution.\n";
+	cout << "\n";
+	timestamp ( );
+}
 
 
 

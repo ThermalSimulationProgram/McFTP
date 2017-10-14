@@ -1,6 +1,7 @@
 #ifndef R8LIB_R8LIB_H
 #define R8LIB_R8LIB_H 
 
+#include <string>
 
 void gamma_values ( int &n_data, double &x, double &fx );
 void gamma_log_values ( int &n_data, double &x, double &fx );
@@ -13,15 +14,15 @@ int i4_sign ( int i );
 int i4_uniform_ab ( int a, int b, int &seed );
 int i4_wrap ( int ival, int ilo, int ihi );
 double i4int_to_r8int ( int imin, int imax, int i, double rmin, double rmax );
-void i4mat_print ( int m, int n, int a[], string title );
+void i4mat_print ( int m, int n, int a[], std::string title );
 void i4mat_print_some ( int m, int n, int a[], int ilo, int jlo, int ihi,
-  int jhi, string title );
+  int jhi, std::string title );
 void i4vec_copy ( int n, int a1[], int a2[] );
 int *i4vec_indicator0_new ( int n );
 int *i4vec_indicator1_new ( int n );
 void i4vec_permute ( int n, int p[], int a[] );
-void i4vec_print ( int n, int a[], string title );
-void i4vec_transpose_print ( int n, int a[], string title );
+void i4vec_print ( int n, int a[], std::string title );
+void i4vec_transpose_print ( int n, int a[], std::string title );
 void i4vec_zeros ( int n, int a[] );
 int *i4vec_zeros_new ( int n );
 double *legendre_zeros ( int order );
@@ -93,7 +94,7 @@ double r8_pi ( );
 double r8_pi_sqrt ( );
 double r8_power ( double r, int p );
 double r8_power_fast ( double r, int p, int &mults );
-void r8_print ( double r, string title );
+void r8_print ( double r, std::string title );
 double r8_radians ( double degrees );
 double r8_reverse_bytes ( double x );
 double r8_rise ( double x, int n );
@@ -131,9 +132,9 @@ double r8_walsh_1d ( double x, int digit );
 double r8_wrap ( double r, double rlo, double rhi );
 double r8_zeta ( double p );
 double r82_dist_l2 ( double a1[2], double a2[2] );
-void r82_print ( double a[2], string title );
+void r82_print ( double a[2], std::string title );
 void r82_uniform_ab ( double b, double c, int &seed, double r[] );
-void r82col_print_part ( int n, double a[], int max_print, string title );
+void r82col_print_part ( int n, double a[], int max_print, std::string title );
 void r82poly2_print ( double a, double b, double c, double d, double e, double f );
 int r82poly2_type ( double a, double b, double c, double d, double e, double f );
 void r82poly2_type_print ( int type );
@@ -142,28 +143,28 @@ double *r82row_min ( int n, double a[] );
 int r82row_order_type ( int n, double a[] );
 void r82row_part_quick_a ( int n, double a[], int &l, int &r );
 void r82row_permute ( int n, int p[], double a[] );
-void r82row_print ( int n, double a[], string title );
-void r82row_print_part ( int n, double a[], int max_print, string title );
+void r82row_print ( int n, double a[], std::string title );
+void r82row_print_part ( int n, double a[], int max_print, std::string title );
 int *r82row_sort_heap_index_a ( int n, double a[] );
 void r82row_sort_quick_a ( int n, double a[] );
 double r83_norm ( double x, double y, double z );
-void r83col_print_part ( int n, double a[], int max_print, string title );
+void r83col_print_part ( int n, double a[], int max_print, std::string title );
 double *r83row_max ( int n, double a[] );
 double *r83row_min ( int n, double a[] );
 void r83row_part_quick_a ( int n, double a[], int &l, int &r );
-void r83row_print_part ( int n, double a[], int max_print, string title );
+void r83row_print_part ( int n, double a[], int max_print, std::string title );
 void r83row_sort_quick_a ( int n, double a[] );
 void r8block_delete ( int l, int m, int n, double ***a );
 double *r8block_expand_linear ( int l, int m, int n, double x[], int lfat, int mfat,
   int nfat );
 double ***r8block_new ( int l, int m, int n );
-void r8block_print ( int l, int m, int n, double a[], string title );
+void r8block_print ( int l, int m, int n, double a[], std::string title );
 double *r8block_zeros_new ( int l, int m, int n );
 void r8cmat_delete ( int m, int n, double **a );
 double **r8cmat_new ( int m, int n );
-void r8cmat_print ( int m, int n, double **a, string title );
+void r8cmat_print ( int m, int n, double **a, std::string title );
 void r8cmat_print_some ( int m, int n, double **a, int ilo, int jlo, int ihi,
-  int jhi, string title );
+  int jhi, std::string title );
 double *r8cmat_to_r8mat_new ( int m, int n, double **a );
 double **r8cmat_zeros_new ( int m, int n );
 double r8int_to_r8int ( double rmin, double rmax, double r, double r2min,
@@ -229,7 +230,7 @@ double *r8mat_jac ( int m, int n, double eps,
 double *r8mat_kronecker ( int m1, int n1, double a[], int m2, int n2,
   double b[] );
 double *r8mat_l_inverse ( int n, double a[] );
-void r8mat_l_print ( int m, int n, double a[], string title );
+void r8mat_l_print ( int m, int n, double a[], std::string title );
 double *r8mat_l_solve ( int n, double a[], double b[] );
 double *r8mat_l1_inverse ( int n, double a[] );
 double *r8mat_lt_solve ( int n, double a[], double b[] );
@@ -265,14 +266,14 @@ double *r8mat_normal_01_new ( int m, int n, int &seed );
 double *r8mat_nullspace ( int m, int n, double a[], int nullspace_size );
 int r8mat_nullspace_size ( int m, int n, double a[] );
 double *r8mat_orth_uniform_new ( int n, int &seed );
-void r8mat_plot ( int m, int n, double a[], string title );
+void r8mat_plot ( int m, int n, double a[], std::string title );
 char r8mat_plot_symbol ( double r );
 double *r8mat_poly_char ( int n, double a[] );
 double *r8mat_power ( int n, double a[], int npow );
 void r8mat_power_method ( int n, double a[], double *r, double v[] );
-void r8mat_print ( int m, int n, double a[], string title );
+void r8mat_print ( int m, int n, double a[], std::string title );
 void r8mat_print_some ( int m, int n, double a[], int ilo, int jlo, int ihi,
-  int jhi, string title );
+  int jhi, std::string title );
 void r8mat_ref ( int m, int n, double a[] );
 double r8mat_rms ( int m, int n, double a[] );
 void r8mat_row_copy ( int m, int n, int i, double v[], double a[] );
@@ -292,9 +293,9 @@ double **r8mat_to_r8rmat ( int m, int n, double a[] );
 double r8mat_trace ( int n, double a[] );
 void r8mat_transpose_in_place ( int n, double a[] );
 double *r8mat_transpose_new ( int m, int n, double a[] );
-void r8mat_transpose_print ( int m, int n, double a[], string title );
+void r8mat_transpose_print ( int m, int n, double a[], std::string title );
 void r8mat_transpose_print_some ( int m, int n, double a[], int ilo, int jlo,
-  int ihi, int jhi, string title );
+  int ihi, int jhi, std::string title );
 double *r8mat_u_inverse ( int n, double a[] );
 double *r8mat_u_solve ( int n, double a[], double b[] );
 double *r8mat_u1_inverse ( int n, double a[] );
@@ -328,7 +329,7 @@ void r8poly_lagrange_factor ( int npol, double xpol[], double xval,
 int r8poly_lagrange_val ( int npol, int ipol, double xpol[], double xval,
   double *pval, double *dpdx );
 int r8poly_order ( int na, double a[] );
-void r8poly_print ( int n, double a[], string title );
+void r8poly_print ( int n, double a[], std::string title );
 void r8poly_shift ( double scale, double shift, int n, double poly_cof[] );
 double r8poly_value_horner ( int n, double a[], double x );;
 double *r8poly_values_horner ( int m, double c[], int n, double x[] );
@@ -345,7 +346,7 @@ void r8poly2_val2 ( int ndata, double tdata[],
 void r8pp_delete ( int m, int n, double **a );
 double **r8pp_new ( int m, int n );
 int r8r8_compare ( double x1, double y1, double x2, double y2 );
-void r8r8_print ( double a1, double a2, string title );
+void r8r8_print ( double a1, double a2, std::string title );
 int r8r8r8_compare ( double x1, double y1, double z1, double x2, double y2,
   double z2 );
 void r8r8r8vec_index_insert_unique ( int maxn, int &n, double x[], double y[],
@@ -362,12 +363,12 @@ double **r8rmat_copy_new ( int m, int n, double **a );
 void r8rmat_delete ( int m, int n, double **a );
 double *r8rmat_fs_new ( int n, double **a, double b[] );
 double **r8rmat_new ( int m, int n );
-void r8rmat_print ( int m, int n, double **a, string title );
+void r8rmat_print ( int m, int n, double **a, std::string title );
 void r8rmat_print_some ( int m, int n, double **a, int ilo, int jlo, int ihi,
-  int jhi, string title );
+  int jhi, std::string title );
 double *r8rmat_to_r8mat ( int m, int n, double **a );
 double **r8rmat_zeros ( int m, int n );
-void r8slmat_print ( int m, int n, double a[], string title );
+void r8slmat_print ( int m, int n, double a[], std::string title );
 void r8vec_01_to_ab ( int n, double a[], double amax, double amin );
 void r8vec_ab_to_01 ( int n, double a[] );
 double *r8vec_ab_to_cd ( int n, double a[], double bmin, double bmax );
@@ -487,7 +488,7 @@ double *r8vec_linspace2_new ( int n, double a_lo, double a_hi );
 double *r8vec_linspace3_new ( int n, double a_lo, double a_hi );
 bool r8vec_lt ( int n, double a1[], double a2[] );
 void r8vec_mask_print ( int n, double a[], int mask_num, int mask[],
-  string title );
+  std::string title );
 double r8vec_max ( int n, double r8vec[] );
 int r8vec_max_abs_index ( int n, double a[] );
 int r8vec_max_index ( int n, double a[] );
@@ -528,10 +529,10 @@ void r8vec_permute_uniform ( int n, double a[], int &seed );
 void r8vec_polarize ( int n, double a[], double p[], double a_normal[],
   double a_parallel[] );
 bool r8vec_positive_strict ( int n, double a[] );
-void r8vec_print ( int n, double a[], string title );
-void r8vec_print_16 ( int n, double a[], string title );
-void r8vec_print_part ( int n, double a[], int i_lo, int i_hi, string title );
-void r8vec_print_some ( int n, double a[], int max_print, string title );
+void r8vec_print ( int n, double a[], std::string title );
+void r8vec_print_16 ( int n, double a[], std::string title );
+void r8vec_print_part ( int n, double a[], int i_lo, int i_hi, std::string title );
+void r8vec_print_some ( int n, double a[], int max_print, std::string title );
 double r8vec_product ( int n, double a[] );
 void r8vec_range ( int n, double x[], double xmin, double xmax, double y[],
   double *ymin, double *ymax );
@@ -578,7 +579,7 @@ void r8vec_stutter ( int n, double a[], int m, double am[] );
 double *r8vec_stutter_new ( int n, double a[], int m );
 double r8vec_sum ( int n, double a[] );
 void r8vec_swap ( int n, double a1[], double a2[] );
-void r8vec_transpose_print ( int n, double a[], string title );
+void r8vec_transpose_print ( int n, double a[], std::string title );
 void r8vec_undex ( int x_num, double x_val[], int x_unique_num, double tol,
   int undx[], int xdnu[] );
 void r8vec_uniform_01 ( int n, int &seed, double r[] );
@@ -592,13 +593,13 @@ int r8vec_unique_count ( int n, double a[], double tol );
 int *r8vec_unique_index ( int n, double a[], double tol );
 double r8vec_variance ( int n, double x[] );
 double *r8vec_vector_triple_product ( double v1[3], double v2[3], double v3[3] );
-void r8vec_write ( int n, double r[], string output_file );
+void r8vec_write ( int n, double r[], std::string output_file );
 void r8vec_zeros ( int n, double a1[] );
 double *r8vec_zeros_new ( int n );
 int r8vec2_compare ( int n, double a1[], double a2[], int i, int j );
-void r8vec2_print ( int n, double a1[], double a2[], string title );
+void r8vec2_print ( int n, double a1[], double a2[], std::string title );
 void r8vec2_print_some ( int n, double x1[], double x2[], int max_print,
-  string title );
+  std::string title );
 void r8vec2_sort_a ( int n, double a1[], double a2[] );
 void r8vec2_sort_d ( int n, double a1[], double a2[] );
 int *r8vec2_sort_heap_index_a ( int n, double x[], double y[] );
@@ -606,9 +607,9 @@ void r8vec2_sorted_unique ( int n, double a1[], double a2[], int &unique_num );
 void r8vec2_sorted_unique_index ( int n, double a1[], double a2[],
   int &unique_num, int indx[] );
 int r8vec2_sum_max_index ( int n, double a[], double b[] );
-void r8vec3_print ( int n, double a1[], double a2[], double a3[], string title );
+void r8vec3_print ( int n, double a1[], double a2[], double a3[], std::string title );
 double *roots_to_r8poly ( int n, double x[] );
-int s_len_trim ( string s );
+int s_len_trim ( std::string s );
 void sort_heap_external ( int n, int &indx, int &i, int &j, int isgn );
 void timestamp ( );
 

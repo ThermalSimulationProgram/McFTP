@@ -2,11 +2,11 @@
 #ifndef MATRIX_EXPONENTIAL_H
 #define MATRIX_EXPONENTIAL_H 
 
-
+#include <complex>
 //
 //  Complex functions.
 //
-complex <double> *c8mat_expm1 ( int n, complex <double> a[] );
+std::complex <double> *c8mat_expm1 ( int n, std::complex <double> a[] );
 //
 //  Real functions.
 //

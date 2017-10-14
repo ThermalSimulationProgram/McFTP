@@ -18,6 +18,9 @@
 #include "utils/FileOperator.h"
 #include "utils/TimeUtil.h"
 #include "utils/Enumerations.h"
+#include "utils/utils.h"
+#include "utils/r8lib.hpp"
+#include "utils/matrix_exponential.hpp"
 
 
 using namespace std;
@@ -58,10 +61,97 @@ TempWatcher::TempWatcher(unsigned period, unsigned _id, bool useHardware, bool u
 
     useSoftSensor = useSoft;  
 
+    
+
     temperatureCounters = PerformanceCounters();
 
     if (useSoftSensor){
         temperatureCounters.initialize();
+        if (Scratch::softSensorCalculator == "default"){
+            powerEstimator = Scratch::powerEstimator;
+            if (powerEstimator == NULL){
+                printf("TempWatcher::TempWatcher: Error, power estimator must be given for default soft temperature calculator\n");
+                exit(1);
+            }
+            int N = Scratch::softSensorA.size();
+            if (N <= 0){
+                printf("TempWatcher::TempWatcher: Error, given matrix A is empty!\n");
+                exit(1);
+            }else{
+
+                if (Scratch::softSensorA[0].size() != N){
+                  printf("TempWatcher::TempWatcher: Error, given matrix A must be a square matrix!\n");
+                  exit(1);  
+                }
+
+                if (Scratch::softSensorB.size() != N  || Scratch::softSensorB[0].size() != N ){
+                    printf("TempWatcher::TempWatcher: Error, given matrix B must be a square matrix having same size as A!\n");
+                    exit(1); 
+                }
+
+                if (Scratch::softSensorK.size() != N ){
+                    printf("TempWatcher::TempWatcher: Error, given matrix K must be a vector having %d elements \n", N);
+                    exit(1); 
+                }
+            }
+
+            double  *a, *b;
+            a = vectorMatrixTo2DArray(Scratch::softSensorA);
+            if (a == NULL){
+                printf("TempWatcher::TempWatcher: Error, given A for soft sensor calculator is not a matrix!\n");
+                exit(1); 
+            }
+            b = vectorMatrixTo2DArray(Scratch::softSensorB);
+            if (b == NULL){
+                printf("TempWatcher::TempWatcher: Error, given B for soft sensor calculator is not a matrix!\n");
+                exit(1); 
+            }
+
+            double period = Scratch::softSamplingInterval / 1000000;
+
+            printf("TempWatcher::TempWatcher: start computing matrix W and V \n");
+
+            double * At = r8mat_copy_new(N, N, a);
+
+            r8mat_scale(N, N, period, At);
+
+            double * eAt = r8mat_expm1(N, At);
+
+            softSensorW = r8mat_mm_new ( N, N, N, eAt, b );
+
+            delete [] eAt;
+
+
+
+
+            softSensorV = r8mat_zeros_new(N, N);
+            double * eAtB = r8mat_zeros_new(N, N);
+
+            int integralStepNumber = 1000; // 1000 sub intervals to calculate integral
+            double integralStep = period / integralStepNumber;
+
+            for (int i = 0; i <= integralStepNumber; ++i) 
+            {
+                r8mat_copy(N, N, a, At);
+                double deltaT = i * integralStep;
+                r8mat_scale(N, N, deltaT, At);
+
+                double * eAt = r8mat_expm1(N, At); 
+
+                r8mat_mm(N, N, N, eAt, b, eAtB);
+
+                r8mat_add ( N, N, 1.0, softSensorV, integralStep, eAtB, softSensorV );
+
+
+                delete [] eAt;
+            }
+
+
+
+
+        }
+
+
         softSensor = Scratch::softSensor;
         for (int i = 0; i < (int) Scratch::soft_sensors.size(); ++i)
         {

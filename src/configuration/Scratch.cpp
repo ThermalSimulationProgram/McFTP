@@ -38,6 +38,21 @@ user_defined_soft_temperature_sensor Scratch::softSensor;
 
 vector<SoftTemperatureSensorConfig> Scratch::soft_sensors;
 
+unsigned long 			Scratch::softSamplingInterval;
+
+unsigned long 			Scratch::hardSamplineInterval;
+
+std::vector<std::vector<double>> Scratch::softSensorA;
+
+std::vector<std::vector<double>> Scratch::softSensorB;
+
+std::vector<double> Scratch::softSensorK;
+
+std::string 					Scratch::softSensorCalculator;
+
+soft_temperature_sensor_power_estimator Scratch::powerEstimator;
+
+
 /*****************TASK SETTINGS*******************/
 // This vector stores the periodicity of all tasks	
 vector<_task_periodicity> 	Scratch::periodicities;
@@ -76,6 +91,11 @@ void Scratch::initialize(int _nCores,
 	useHardwareTempSensor = _useHardwareTempSensor;
 	useSoftTempSensor     = _useSoftTempSensor;
 	isAppendSaveFile	  = 0;
+	softSamplingInterval  = 200000;
+	hardSamplineInterval  = 200000;
+	softSensorCalculator  = "default";
+	powerEstimator 		  = NULL;
+
 
 
 	// set to defaults

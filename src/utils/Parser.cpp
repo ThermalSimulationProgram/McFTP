@@ -44,6 +44,40 @@ Parser::Parser(string _xml_path){
 	xml_path = _xml_path;
 }
 
+int Parser::parseThermalModel(
+	std::vector<std::vector<double> >& C, 
+	std::vector<std::vector<double> >& G,
+	std::vector<std::vector<double> >& K,
+	double& ambientT,
+	double& period){
+
+	int ret = 0;
+
+	// load the xml file
+	xml_document doc;
+	if( !doc.load_file(xml_path.data()) ){
+		cout << getexepath() << endl;
+		std::cout << "xml_path: " << xml_path.data() << endl;
+		std::cout << "Could not find file...\n";
+		return -1;
+	}
+
+	xml_node processor = doc.child("processor");
+	xml_node model = processor.child("thermal_model");
+
+	C.clear();
+	G.clear();
+	K.clear();
+
+	C = loadMatrixFromFile<double>(model.child("parameterC").attribute("path").as_string());
+	G = loadMatrixFromFile<double>(model.child("parameterG").attribute("path").as_string());
+	K = loadMatrixFromFile<double>(model.child("parameterK").attribute("path").as_string());
+
+	ambientT = model.child("AmbientT").attribute("value").as_double();
+	period = parseTimeMircroSecond(model.child("period"))/1000000;
+
+	return ret;
+}
 // This function parse the file pointed by xml_path, and then 
 // save all necessary data required by the simulation in Scratch class.
 int Parser::parseFile(){
@@ -66,13 +100,26 @@ int Parser::parseFile(){
 
 	bool useHardwareTempSensor = false;
 	bool useSoftTempSensor = false;
+	string softSensorCalculator;
+	string parameterA, parameterB, parameterK;
+	
+	xml_node softSensorNode;
+	xml_node hardSensorNode;
+
 	for (xml_node sensor = TempSensors.first_child(); sensor; sensor = sensor.next_sibling())
 	{
 		string sensor_type = sensor.attribute("type").as_string();
-		if (sensor_type == "soft"){
+		if (!useSoftTempSensor && sensor_type == "soft"){
 			useSoftTempSensor = true;
-		}else if (sensor_type == "hardware"){
+			softSensorNode = sensor;
+			softSensorCalculator = sensor.attribute("calculator").as_string() ;
+			parameterA = sensor.attribute("parameterA").as_string() ;
+			parameterB = sensor.attribute("parameterB").as_string() ;
+			parameterK = sensor.attribute("parameterK").as_string() ;
+			
+		}else if (!useHardwareTempSensor && sensor_type == "hardware"){
 			useHardwareTempSensor = true;
+			hardSensorNode = sensor;
 		}
 
 	}
@@ -135,6 +182,20 @@ int Parser::parseFile(){
 
 	
 	if (useSoftTempSensor){
+					
+		string parameterA = softSensorNode.attribute("parameterA").as_string() ;
+		string parameterB = softSensorNode.attribute("parameterB").as_string() ;
+		string parameterK = softSensorNode.attribute("parameterK").as_string() ;
+
+		Scratch::softSensorCalculator = softSensorNode.attribute("calculator").as_string() ;
+		Scratch::softSensorA = loadMatrixFromFile<double>(parameterA);
+		Scratch::softSensorB = loadMatrixFromFile<double>(parameterB);
+		Scratch::softSensorK = loadVectorFromFile<double>(parameterK);
+
+		if (softSensorNode.child("period")){
+			Scratch::softSamplingInterval = parseTimeMircroSecond(softSensorNode.child("period"));
+		}
+
 		xml_node softSensors 	= sim_node.child("soft_temperature_sensor_counters");
 
 		for (xml_node counter = softSensors.first_child(); counter; counter = counter.next_sibling()){

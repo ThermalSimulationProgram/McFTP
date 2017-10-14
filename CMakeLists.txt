@@ -16,3 +16,8 @@ add_executable(mcftp main.cpp)
 
 
 target_link_libraries(mcftp  cmi)
+
+
+add_executable(softSensorModel softSensorModelPrecompute.cpp)
+
+target_link_libraries(softSensorModel  cmi)

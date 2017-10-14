@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<processor>
+	<thermal_model>
+		<parameterC  path = "TM_C.csv"/>
+		<parameterG  path = "TM_G.csv"/>
+		<parameterK  path = "TM_K.csv"/>
+		<AmbientT    value = "300"/> 
+		<period  unit= "ms" value = "50"/> 
+	</thermal_model>
+
+</processor>
+
+

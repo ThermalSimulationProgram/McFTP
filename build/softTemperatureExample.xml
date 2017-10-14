@@ -1,11 +1,26 @@
 <?xml version="1.0" ?>
+<processor>
+
+
+</processor>
+
+
 <experiment name="soft_temperature_sensor_test">
 	<duration unit="sec" value="30"/>
 	<save_result value="True"/>
 	<processor core_number="2" fixed_active="False" fixed_frequency="True"/>
 	<temperature_sensors>
 		<sensor0 type = "hardware" />
-		<sensor1 type = "soft" />
+		<sensor1 type = "soft" calculator = "default" parameterW = ""  parameterV = "" parameterK = "">
+			<thermal_model>
+				<parameter name= "C" path = ""/>
+				<parameter name= "G" path = ""/>
+				<parameter name= "K" path = ""/>
+				<parameter name= "ambient temperature" value = ""/> 
+
+			</thermal_model>
+		</sensor1>
+
 	</temperature_sensors>
 
 	<soft_temperature_sensor_counters>

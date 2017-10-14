@@ -25,6 +25,13 @@ public:
 	// save all necessary data required by the simulation in Scratch class.
 	int parseFile();
 
+	int parseThermalModel(
+		std::vector<std::vector<double> >& C, 
+		std::vector<std::vector<double> >& G,
+		std::vector<std::vector<double> >& K,
+		double& ambientT,
+		double& period);
+
 	TaskArgument parseTask(pugi::xml_node task, int taskid);
 
 	struct timespec parseTime(pugi::xml_node n);

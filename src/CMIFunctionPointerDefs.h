@@ -18,5 +18,8 @@ typedef std::vector<double> (* user_defined_soft_temperature_sensor)(
 	std::vector<long long> performanceCounterValues 
 	);
 
+typedef std::vector<double> (* soft_temperature_sensor_power_estimator)(
+	std::vector<long long> performanceCounterValues 
+	);
 
 #endif
