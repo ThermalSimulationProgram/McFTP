@@ -18,7 +18,8 @@ using namespace std;
 #include "utils/Parser.h"
 #include "UnitTest/UnitTest.h"
 
-using namespace std;
+void matrix_exponential_test01 ( );
+void matrix_exponential_test02 ( );
 
 void displayAllQueues(std::vector<std::vector<Task*> > queues){
 	for (int i = 0; i < (int)queues.size(); ++i)
@@ -74,9 +75,31 @@ void runExperiment(int argc, char** argv);
 
 
 int main(int argc, char** argv){
+
+  timestamp ( );
+  cout << "\n";
+  cout << "MATRIX_EXPONENTIAL_TEST:\n";
+  cout << "  C++ version\n";
+  cout << "  Test the MATRIX_EXPONENTIAL library.\n";
+  cout << "  The C8LIB and R8LIB libraries are needed.\n";
+  cout << "  This test needs the TEST_MATRIX_EXPONENTIAL library.\n";
+
+  matrix_exponential_test01 ( );
+  matrix_exponential_test02 ( );
+//
+//  Terminate.
+//
+  cout << "\n";
+  cout << "MATRIX_EXPONENTIAL_TEST:\n";
+  cout << "  Normal end of execution.\n";
+  cout << "\n";
+  timestamp ( );
+
+  return 0;
+
 	//PerformanceCounters::printCounterInfo();
 	//ParserPAPITest(argc, argv);
-	runExperiment(argc, argv);
+	// runExperiment(argc, argv);
 	
 }
 
@@ -144,58 +167,7 @@ void runExperiment(int argc, char** argv){
 
 
 
-int main ( );
-void matrix_exponential_test01 ( );
-void matrix_exponential_test02 ( );
 
-//****************************************************************************80
-
-int main ( )
-
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    MAIN is the main program for MATRIX_EXPONENTIAL_PRB.
-//
-//  Discussion:
-//
-//    MATRIX_EXPONENTIAL_PRB tests the MATRIX_EXPONENTIAL library.
-//
-//  Licensing:
-//
-//    This code is distributed under the GNU LGPL license.
-//
-//  Modified:
-//
-//    05 March 2013
-//
-//  Author:
-//
-//    John Burkardt
-//
-{
-  timestamp ( );
-  cout << "\n";
-  cout << "MATRIX_EXPONENTIAL_TEST:\n";
-  cout << "  C++ version\n";
-  cout << "  Test the MATRIX_EXPONENTIAL library.\n";
-  cout << "  The C8LIB and R8LIB libraries are needed.\n";
-  cout << "  This test needs the TEST_MATRIX_EXPONENTIAL library.\n";
-
-  matrix_exponential_test01 ( );
-  matrix_exponential_test02 ( );
-//
-//  Terminate.
-//
-  cout << "\n";
-  cout << "MATRIX_EXPONENTIAL_TEST:\n";
-  cout << "  Normal end of execution.\n";
-  cout << "\n";
-  timestamp ( );
-
-  return 0;
-}
 //****************************************************************************80
 
 void matrix_exponential_test01 ( )
