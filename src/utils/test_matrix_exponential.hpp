@@ -1,3 +1,7 @@
+#ifndef TEST_MATRIX_EXPONENTIAL_HPP
+#define TEST_MATRIX_EXPONENTIAL_HPP 
+
+
 //
 //  Complex examples.
 //
@@ -14,3 +18,4 @@ double *r8mat_exp_expa ( int test, int n );
 int r8mat_exp_n ( int test );
 void r8mat_exp_story ( int test );
 int r8mat_exp_test_num ( );
+#endif

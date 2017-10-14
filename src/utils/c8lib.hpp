@@ -108,13 +108,13 @@ complex <double>  cartesian_to_c8 ( double x, double y );
 
 complex <double>  polar_to_c8 ( double r, double theta );
 
-double            r8_abs ( double x );
-double            r8_atan ( double y, double x );
+// double            r8_abs ( double x );
+// double            r8_atan ( double y, double x );
 complex <double>  r8_csqrt ( double x );
-double            r8_floor ( double x );
-double            r8_max ( double x, double y );
-double            r8_sign ( double x );
-double            r8_uniform_01 ( int &seed );
+// double            r8_floor ( double x );
+// double            r8_max ( double x, double y );
+// double            r8_sign ( double x );
+// double            r8_uniform_01 ( int &seed );
 void              r8poly2_root ( double a, double b, double c, 
                     complex <double> &r1, complex <double> &r2 );
 void              r8poly3_root ( double a, double b, double c, double d, 
@@ -123,8 +123,8 @@ void              r8poly3_root ( double a, double b, double c, double d,
 void              r8poly4_root ( double a, double b, double c, double d, double e,
                     complex <double> &r1, complex <double> &r2, complex <double> &r3,
                     complex <double> &r4 );
-void              sort_heap_external ( int n, int &indx, int &i, int &j, int isgn );
-void              timestamp ( );
+// void              sort_heap_external ( int n, int &indx, int &i, int &j, int isgn );
+// void              timestamp ( );
 
 
 #endif

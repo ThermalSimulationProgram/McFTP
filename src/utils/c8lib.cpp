@@ -9,7 +9,8 @@
 
 using namespace std;
 
-# include "utils/c8lib.hpp"
+#include "utils/c8lib.hpp"
+#include "utils/r8lib.hpp"
 
 //****************************************************************************80
 
@@ -4703,160 +4704,160 @@ complex <double> polar_to_c8 ( double r, double theta )
 }
 //****************************************************************************80
 
-double r8_abs ( double x )
+// double r8_abs ( double x )
 
+// //****************************************************************************80
+// //
+// //  Purpose:
+// //
+// //    R8_ABS returns the absolute value of an R8.
+// //
+// //  Discussion:
+// //
+// //    The C++ math library provides the function fabs() which is preferred.
+// //
+// //  Licensing:
+// //
+// //    This code is distributed under the GNU LGPL license.
+// //
+// //  Modified:
+// //
+// //    14 November 2006
+// //
+// //  Author:
+// //
+// //    John Burkardt
+// //
+// //  Parameters:
+// //
+// //    Input, double X, the quantity whose absolute value is desired.
+// //
+// //    Output, double R8_ABS, the absolute value of X.
+// //
+// {
+//   double value;
+
+//   if ( 0.0 <= x )
+//   {
+//     value = + x;
+//   }
+//   else
+//   {
+//     value = - x;
+//   }
+//   return value;
+// }
 //****************************************************************************80
-//
-//  Purpose:
-//
-//    R8_ABS returns the absolute value of an R8.
-//
-//  Discussion:
-//
-//    The C++ math library provides the function fabs() which is preferred.
-//
-//  Licensing:
-//
-//    This code is distributed under the GNU LGPL license.
-//
-//  Modified:
-//
-//    14 November 2006
-//
-//  Author:
-//
-//    John Burkardt
-//
-//  Parameters:
-//
-//    Input, double X, the quantity whose absolute value is desired.
-//
-//    Output, double R8_ABS, the absolute value of X.
-//
-{
-  double value;
 
-  if ( 0.0 <= x )
-  {
-    value = + x;
-  }
-  else
-  {
-    value = - x;
-  }
-  return value;
-}
-//****************************************************************************80
+// double r8_atan ( double y, double x )
 
-double r8_atan ( double y, double x )
+// //****************************************************************************80
+// //
+// //  Purpose:
+// //
+// //    R8_ATAN computes the inverse tangent of the ratio Y / X.
+// //
+// //  Discussion:
+// //
+// //    R8_ATAN returns an angle whose tangent is ( Y / X ), a job which
+// //    the built in functions ATAN and ATAN2 already do.
+// //
+// //    However:
+// //
+// //    * R8_ATAN always returns a positive angle, between 0 and 2 PI,
+// //      while ATAN and ATAN2 return angles in the interval [-PI/2,+PI/2]
+// //      and [-PI,+PI] respectively;
+// //
+// //    * R8_ATAN accounts for the signs of X and Y, (as does ATAN2).  The ATAN
+// //     function by contrast always returns an angle in the first or fourth
+// //     quadrants.
+// //
+// //  Licensing:
+// //
+// //    This code is distributed under the GNU LGPL license.
+// //
+// //  Modified:
+// //
+// //    15 August 2008
+// //
+// //  Author:
+// //
+// //    John Burkardt
+// //
+// //  Parameters:
+// //
+// //    Input, double Y, X, two quantities which represent the tangent of
+// //    an angle.  If Y is not zero, then the tangent is (Y/X).
+// //
+// //    Output, double R8_ATAN, an angle between 0 and 2 * PI, whose tangent is
+// //    (Y/X), and which lies in the appropriate quadrant so that the signs
+// //    of its cosine and sine match those of X and Y.
+// //
+// {
+//   double abs_x;
+//   double abs_y;
+//   const double r8_pi = 3.141592653589793;
+//   double theta;
+//   double theta_0;
+// //
+// //  Special cases:
+// //
+//   if ( x == 0.0 )
+//   {
+//     if ( 0.0 < y )
+//     {
+//       theta = r8_pi / 2.0;
+//     }
+//     else if ( y < 0.0 )
+//     {
+//       theta = 3.0 * r8_pi / 2.0;
+//     }
+//     else if ( y == 0.0 )
+//     {
+//       theta = 0.0;
+//     }
+//   }
+//   else if ( y == 0.0 )
+//   {
+//     if ( 0.0 < x )
+//     {
+//       theta = 0.0;
+//     }
+//     else if ( x < 0.0 )
+//     {
+//       theta = r8_pi;
+//     }
+//   }
+// //
+// //  We assume that ATAN2 is correct when both arguments are positive.
+// //
+//   else
+//   {
+//     abs_y = fabs ( y );
+//     abs_x = fabs ( x );
 
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    R8_ATAN computes the inverse tangent of the ratio Y / X.
-//
-//  Discussion:
-//
-//    R8_ATAN returns an angle whose tangent is ( Y / X ), a job which
-//    the built in functions ATAN and ATAN2 already do.
-//
-//    However:
-//
-//    * R8_ATAN always returns a positive angle, between 0 and 2 PI,
-//      while ATAN and ATAN2 return angles in the interval [-PI/2,+PI/2]
-//      and [-PI,+PI] respectively;
-//
-//    * R8_ATAN accounts for the signs of X and Y, (as does ATAN2).  The ATAN
-//     function by contrast always returns an angle in the first or fourth
-//     quadrants.
-//
-//  Licensing:
-//
-//    This code is distributed under the GNU LGPL license.
-//
-//  Modified:
-//
-//    15 August 2008
-//
-//  Author:
-//
-//    John Burkardt
-//
-//  Parameters:
-//
-//    Input, double Y, X, two quantities which represent the tangent of
-//    an angle.  If Y is not zero, then the tangent is (Y/X).
-//
-//    Output, double R8_ATAN, an angle between 0 and 2 * PI, whose tangent is
-//    (Y/X), and which lies in the appropriate quadrant so that the signs
-//    of its cosine and sine match those of X and Y.
-//
-{
-  double abs_x;
-  double abs_y;
-  const double r8_pi = 3.141592653589793;
-  double theta;
-  double theta_0;
-//
-//  Special cases:
-//
-  if ( x == 0.0 )
-  {
-    if ( 0.0 < y )
-    {
-      theta = r8_pi / 2.0;
-    }
-    else if ( y < 0.0 )
-    {
-      theta = 3.0 * r8_pi / 2.0;
-    }
-    else if ( y == 0.0 )
-    {
-      theta = 0.0;
-    }
-  }
-  else if ( y == 0.0 )
-  {
-    if ( 0.0 < x )
-    {
-      theta = 0.0;
-    }
-    else if ( x < 0.0 )
-    {
-      theta = r8_pi;
-    }
-  }
-//
-//  We assume that ATAN2 is correct when both arguments are positive.
-//
-  else
-  {
-    abs_y = fabs ( y );
-    abs_x = fabs ( x );
+//     theta_0 = atan2 ( abs_y, abs_x );
 
-    theta_0 = atan2 ( abs_y, abs_x );
+//     if ( 0.0 < x && 0.0 < y )
+//     {
+//       theta = theta_0;
+//     }
+//     else if ( x < 0.0 && 0.0 < y )
+//     {
+//       theta = r8_pi - theta_0;
+//     }
+//     else if ( x < 0.0 && y < 0.0 )
+//     {
+//       theta = r8_pi + theta_0;
+//     }
+//     else if ( 0.0 < x && y < 0.0 )
+//     {
+//       theta = 2.0 * r8_pi - theta_0;
+//     }
+//   }
 
-    if ( 0.0 < x && 0.0 < y )
-    {
-      theta = theta_0;
-    }
-    else if ( x < 0.0 && 0.0 < y )
-    {
-      theta = r8_pi - theta_0;
-    }
-    else if ( x < 0.0 && y < 0.0 )
-    {
-      theta = r8_pi + theta_0;
-    }
-    else if ( 0.0 < x && y < 0.0 )
-    {
-      theta = 2.0 * r8_pi - theta_0;
-    }
-  }
-
-  return theta;
-}
+//   return theta;
+// }
 //****************************************************************************80
 
 complex <double> r8_csqrt ( double x )
@@ -4916,250 +4917,250 @@ complex <double> r8_csqrt ( double x )
 }
 //****************************************************************************80
 
-double r8_floor ( double x )
+// double r8_floor ( double x )
 
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    R8_FLOOR rounds an R8 down to the nearest integral R8.
-//
-//  Example:
-//
-//    X        R8_FLOOR(X)
-//
-//   -1.1      -2.0
-//   -1.0      -1.0
-//   -0.9      -1.0
-//   -0.1      -1.0
-//    0.0       0.0
-//    0.1       0.0
-//    0.9       0.0
-//    1.0       1.0
-//    1.1       1.0
-//    2.9       2.0
-//    3.0       3.0
-//    3.14159   3.0
-//
-//  Licensing:
-//
-//    This code is distributed under the GNU LGPL license.
-//
-//  Modified:
-//
-//    15 April 2007
-//
-//  Author:
-//
-//    John Burkardt
-//
-//  Parameters:
-//
-//    Input, double X, the number whose floor is desired.
-//
-//    Output, double R8_FLOOR, the floor of X.
-//
-{
-  double value;
+// //****************************************************************************80
+// //
+// //  Purpose:
+// //
+// //    R8_FLOOR rounds an R8 down to the nearest integral R8.
+// //
+// //  Example:
+// //
+// //    X        R8_FLOOR(X)
+// //
+// //   -1.1      -2.0
+// //   -1.0      -1.0
+// //   -0.9      -1.0
+// //   -0.1      -1.0
+// //    0.0       0.0
+// //    0.1       0.0
+// //    0.9       0.0
+// //    1.0       1.0
+// //    1.1       1.0
+// //    2.9       2.0
+// //    3.0       3.0
+// //    3.14159   3.0
+// //
+// //  Licensing:
+// //
+// //    This code is distributed under the GNU LGPL license.
+// //
+// //  Modified:
+// //
+// //    15 April 2007
+// //
+// //  Author:
+// //
+// //    John Burkardt
+// //
+// //  Parameters:
+// //
+// //    Input, double X, the number whose floor is desired.
+// //
+// //    Output, double R8_FLOOR, the floor of X.
+// //
+// {
+//   double value;
 
-  value = ( double ) ( ( int ) x );
+//   value = ( double ) ( ( int ) x );
 
-  if ( x < value )
-  {
-    value = value - 1.0;
-  }
+//   if ( x < value )
+//   {
+//     value = value - 1.0;
+//   }
 
-  return value;
-}
-//****************************************************************************80
-
-double r8_max ( double x, double y )
-
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    R8_MAX returns the maximum of two R8's.
-//
-//  Discussion:
-//
-//    The C++ math library provides the function fmax() which is preferred.
-//
-//  Licensing:
-//
-//    This code is distributed under the GNU LGPL license.
-//
-//  Modified:
-//
-//    18 August 2004
-//
-//  Author:
-//
-//    John Burkardt
-//
-//  Parameters:
-//
-//    Input, double X, Y, the quantities to compare.
-//
-//    Output, double R8_MAX, the maximum of X and Y.
-//
-{
-  double value;
-
-  if ( y < x )
-  {
-    value = x;
-  }
-  else
-  {
-    value = y;
-  }
-  return value;
-}
+//   return value;
+// }
 //****************************************************************************80
 
-double r8_sign ( double x )
+// double r8_max ( double x, double y )
 
+// //****************************************************************************80
+// //
+// //  Purpose:
+// //
+// //    R8_MAX returns the maximum of two R8's.
+// //
+// //  Discussion:
+// //
+// //    The C++ math library provides the function fmax() which is preferred.
+// //
+// //  Licensing:
+// //
+// //    This code is distributed under the GNU LGPL license.
+// //
+// //  Modified:
+// //
+// //    18 August 2004
+// //
+// //  Author:
+// //
+// //    John Burkardt
+// //
+// //  Parameters:
+// //
+// //    Input, double X, Y, the quantities to compare.
+// //
+// //    Output, double R8_MAX, the maximum of X and Y.
+// //
+// {
+//   double value;
+
+//   if ( y < x )
+//   {
+//     value = x;
+//   }
+//   else
+//   {
+//     value = y;
+//   }
+//   return value;
+// }
 //****************************************************************************80
-//
-//  Purpose:
-//
-//    R8_SIGN returns the sign of an R8.
-//
-//  Licensing:
-//
-//    This code is distributed under the GNU LGPL license.
-//
-//  Modified:
-//
-//    18 October 2004
-//
-//  Author:
-//
-//    John Burkardt
-//
-//  Parameters:
-//
-//    Input, double X, the number whose sign is desired.
-//
-//    Output, double R8_SIGN, the sign of X.
-//
-{
-  double value;
 
-  if ( x < 0.0 )
-  {
-    value = -1.0;
-  }
-  else
-  {
-    value = 1.0;
-  }
-  return value;
-}
+// double r8_sign ( double x )
+
+// //****************************************************************************80
+// //
+// //  Purpose:
+// //
+// //    R8_SIGN returns the sign of an R8.
+// //
+// //  Licensing:
+// //
+// //    This code is distributed under the GNU LGPL license.
+// //
+// //  Modified:
+// //
+// //    18 October 2004
+// //
+// //  Author:
+// //
+// //    John Burkardt
+// //
+// //  Parameters:
+// //
+// //    Input, double X, the number whose sign is desired.
+// //
+// //    Output, double R8_SIGN, the sign of X.
+// //
+// {
+//   double value;
+
+//   if ( x < 0.0 )
+//   {
+//     value = -1.0;
+//   }
+//   else
+//   {
+//     value = 1.0;
+//   }
+//   return value;
+// }
 //****************************************************************************80
 
-double r8_uniform_01 ( int &seed )
+// double r8_uniform_01 ( int &seed )
 
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    R8_UNIFORM_01 returns a unit pseudorandom R8.
-//
-//  Discussion:
-//
-//    This routine implements the recursion
-//
-//      seed = ( 16807 * seed ) mod ( 2^31 - 1 )
-//      u = seed / ( 2^31 - 1 )
-//
-//    The integer arithmetic never requires more than 32 bits,
-//    including a sign bit.
-//
-//    If the initial seed is 12345, then the first three computations are
-//
-//      Input     Output      R8_UNIFORM_01
-//      SEED      SEED
-//
-//         12345   207482415  0.096616
-//     207482415  1790989824  0.833995
-//    1790989824  2035175616  0.947702
-//
-//  Licensing:
-//
-//    This code is distributed under the GNU LGPL license. 
-//
-//  Modified:
-//
-//    09 April 2012
-//
-//  Author:
-//
-//    John Burkardt
-//
-//  Reference:
-//
-//    Paul Bratley, Bennett Fox, Linus Schrage,
-//    A Guide to Simulation,
-//    Second Edition,
-//    Springer, 1987,
-//    ISBN: 0387964673,
-//    LC: QA76.9.C65.B73.
-//
-//    Bennett Fox,
-//    Algorithm 647:
-//    Implementation and Relative Efficiency of Quasirandom
-//    Sequence Generators,
-//    ACM Transactions on Mathematical Software,
-//    Volume 12, Number 4, December 1986, pages 362-376.
-//
-//    Pierre L'Ecuyer,
-//    Random Number Generation,
-//    in Handbook of Simulation,
-//    edited by Jerry Banks,
-//    Wiley, 1998,
-//    ISBN: 0471134031,
-//    LC: T57.62.H37.
-//
-//    Peter Lewis, Allen Goodman, James Miller,
-//    A Pseudo-Random Number Generator for the System/360,
-//    IBM Systems Journal,
-//    Volume 8, Number 2, 1969, pages 136-143.
-//
-//  Parameters:
-//
-//    Input/output, int &SEED, the "seed" value.  Normally, this
-//    value should not be 0.  On output, SEED has been updated.
-//
-//    Output, double R8_UNIFORM_01, a new pseudorandom variate, 
-//    strictly between 0 and 1.
-//
-{
-  const int i4_huge = 2147483647;
-  int k;
-  double r;
+// //****************************************************************************80
+// //
+// //  Purpose:
+// //
+// //    R8_UNIFORM_01 returns a unit pseudorandom R8.
+// //
+// //  Discussion:
+// //
+// //    This routine implements the recursion
+// //
+// //      seed = ( 16807 * seed ) mod ( 2^31 - 1 )
+// //      u = seed / ( 2^31 - 1 )
+// //
+// //    The integer arithmetic never requires more than 32 bits,
+// //    including a sign bit.
+// //
+// //    If the initial seed is 12345, then the first three computations are
+// //
+// //      Input     Output      R8_UNIFORM_01
+// //      SEED      SEED
+// //
+// //         12345   207482415  0.096616
+// //     207482415  1790989824  0.833995
+// //    1790989824  2035175616  0.947702
+// //
+// //  Licensing:
+// //
+// //    This code is distributed under the GNU LGPL license. 
+// //
+// //  Modified:
+// //
+// //    09 April 2012
+// //
+// //  Author:
+// //
+// //    John Burkardt
+// //
+// //  Reference:
+// //
+// //    Paul Bratley, Bennett Fox, Linus Schrage,
+// //    A Guide to Simulation,
+// //    Second Edition,
+// //    Springer, 1987,
+// //    ISBN: 0387964673,
+// //    LC: QA76.9.C65.B73.
+// //
+// //    Bennett Fox,
+// //    Algorithm 647:
+// //    Implementation and Relative Efficiency of Quasirandom
+// //    Sequence Generators,
+// //    ACM Transactions on Mathematical Software,
+// //    Volume 12, Number 4, December 1986, pages 362-376.
+// //
+// //    Pierre L'Ecuyer,
+// //    Random Number Generation,
+// //    in Handbook of Simulation,
+// //    edited by Jerry Banks,
+// //    Wiley, 1998,
+// //    ISBN: 0471134031,
+// //    LC: T57.62.H37.
+// //
+// //    Peter Lewis, Allen Goodman, James Miller,
+// //    A Pseudo-Random Number Generator for the System/360,
+// //    IBM Systems Journal,
+// //    Volume 8, Number 2, 1969, pages 136-143.
+// //
+// //  Parameters:
+// //
+// //    Input/output, int &SEED, the "seed" value.  Normally, this
+// //    value should not be 0.  On output, SEED has been updated.
+// //
+// //    Output, double R8_UNIFORM_01, a new pseudorandom variate, 
+// //    strictly between 0 and 1.
+// //
+// {
+//   const int i4_huge = 2147483647;
+//   int k;
+//   double r;
 
-  if ( seed == 0 )
-  {
-    cerr << "\n";
-    cerr << "R8_UNIFORM_01 - Fatal error!\n";
-    cerr << "  Input value of SEED = 0.\n";
-    exit ( 1 );
-  }
+//   if ( seed == 0 )
+//   {
+//     cerr << "\n";
+//     cerr << "R8_UNIFORM_01 - Fatal error!\n";
+//     cerr << "  Input value of SEED = 0.\n";
+//     exit ( 1 );
+//   }
 
-  k = seed / 127773;
+//   k = seed / 127773;
 
-  seed = 16807 * ( seed - k * 127773 ) - k * 2836;
+//   seed = 16807 * ( seed - k * 127773 ) - k * 2836;
 
-  if ( seed < 0 )
-  {
-    seed = seed + i4_huge;
-  }
-  r = ( double ) ( seed ) * 4.656612875E-10;
+//   if ( seed < 0 )
+//   {
+//     seed = seed + i4_huge;
+//   }
+//   r = ( double ) ( seed ) * 4.656612875E-10;
 
-  return r;
-}
+//   return r;
+// }
 //****************************************************************************80
 
 void r8poly2_root ( double a, double b, double c, complex <double> &r1,
@@ -5403,240 +5404,240 @@ void r8poly4_root ( double a, double b, double c, double d, double e,
 }
 //****************************************************************************80
 
-void sort_heap_external ( int n, int &indx, int &i, int &j, int isgn )
+// void sort_heap_external ( int n, int &indx, int &i, int &j, int isgn )
 
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    SORT_HEAP_EXTERNAL externally sorts a list of items into ascending order.
-//
-//  Discussion:
-//
-//    The actual list is not passed to the routine.  Hence it may
-//    consist of integers, reals, numbers, names, etc.  The user,
-//    after each return from the routine, will be asked to compare or
-//    interchange two items.
-//
-//    The current version of this code mimics the FORTRAN version,
-//    so the values of I and J, in particular, are FORTRAN indices.
-//
-//  Licensing:
-//
-//    This code is distributed under the GNU LGPL license.
-//
-//  Modified:
-//
-//    06 January 2013
-//
-//  Author:
-//
-//    Original FORTRAN77 version by Albert Nijenhuis, Herbert Wilf.
-//    C++ version by John Burkardt
-//
-//  Reference:
-//
-//    Albert Nijenhuis, Herbert Wilf,
-//    Combinatorial Algorithms,
-//    Academic Press, 1978, second edition,
-//    ISBN 0-12-519260-6.
-//
-//  Parameters:
-//
-//    Input, int N, the length of the input list.
-//
-//    Input/output, int &INDX.
-//    The user must set INDX to 0 before the first call.
-//    On return,
-//      if INDX is greater than 0, the user must interchange
-//      items I and J and recall the routine.
-//      If INDX is less than 0, the user is to compare items I
-//      and J and return in ISGN a negative value if I is to
-//      precede J, and a positive value otherwise.
-//      If INDX is 0, the sorting is done.
-//
-//    Output, int &I, &J.  On return with INDX positive,
-//    elements I and J of the user's list should be
-//    interchanged.  On return with INDX negative, elements I
-//    and J are to be compared by the user.
-//
-//    Input, int ISGN. On return with INDX negative, the
-//    user should compare elements I and J of the list.  If
-//    item I is to precede item J, set ISGN negative,
-//    otherwise set ISGN positive.
-//
-{
-  static int i_save = 0;
-  static int j_save = 0;
-  static int k = 0;
-  static int k1 = 0;
-  static int n1 = 0;
-//
-//  INDX = 0: This is the first call.
-//
-  if ( indx == 0 )
-  {
+// //****************************************************************************80
+// //
+// //  Purpose:
+// //
+// //    SORT_HEAP_EXTERNAL externally sorts a list of items into ascending order.
+// //
+// //  Discussion:
+// //
+// //    The actual list is not passed to the routine.  Hence it may
+// //    consist of integers, reals, numbers, names, etc.  The user,
+// //    after each return from the routine, will be asked to compare or
+// //    interchange two items.
+// //
+// //    The current version of this code mimics the FORTRAN version,
+// //    so the values of I and J, in particular, are FORTRAN indices.
+// //
+// //  Licensing:
+// //
+// //    This code is distributed under the GNU LGPL license.
+// //
+// //  Modified:
+// //
+// //    06 January 2013
+// //
+// //  Author:
+// //
+// //    Original FORTRAN77 version by Albert Nijenhuis, Herbert Wilf.
+// //    C++ version by John Burkardt
+// //
+// //  Reference:
+// //
+// //    Albert Nijenhuis, Herbert Wilf,
+// //    Combinatorial Algorithms,
+// //    Academic Press, 1978, second edition,
+// //    ISBN 0-12-519260-6.
+// //
+// //  Parameters:
+// //
+// //    Input, int N, the length of the input list.
+// //
+// //    Input/output, int &INDX.
+// //    The user must set INDX to 0 before the first call.
+// //    On return,
+// //      if INDX is greater than 0, the user must interchange
+// //      items I and J and recall the routine.
+// //      If INDX is less than 0, the user is to compare items I
+// //      and J and return in ISGN a negative value if I is to
+// //      precede J, and a positive value otherwise.
+// //      If INDX is 0, the sorting is done.
+// //
+// //    Output, int &I, &J.  On return with INDX positive,
+// //    elements I and J of the user's list should be
+// //    interchanged.  On return with INDX negative, elements I
+// //    and J are to be compared by the user.
+// //
+// //    Input, int ISGN. On return with INDX negative, the
+// //    user should compare elements I and J of the list.  If
+// //    item I is to precede item J, set ISGN negative,
+// //    otherwise set ISGN positive.
+// //
+// {
+//   static int i_save = 0;
+//   static int j_save = 0;
+//   static int k = 0;
+//   static int k1 = 0;
+//   static int n1 = 0;
+// //
+// //  INDX = 0: This is the first call.
+// //
+//   if ( indx == 0 )
+//   {
 
-    i_save = 0;
-    j_save = 0;
-    k = n / 2;
-    k1 = k;
-    n1 = n;
-  }
-//
-//  INDX < 0: The user is returning the results of a comparison.
-//
-  else if ( indx < 0 )
-  {
-    if ( indx == -2 )
-    {
-      if ( isgn < 0 )
-      {
-        i_save = i_save + 1;
-      }
-      j_save = k1;
-      k1 = i_save;
-      indx = -1;
-      i = i_save;
-      j = j_save;
-      return;
-    }
+//     i_save = 0;
+//     j_save = 0;
+//     k = n / 2;
+//     k1 = k;
+//     n1 = n;
+//   }
+// //
+// //  INDX < 0: The user is returning the results of a comparison.
+// //
+//   else if ( indx < 0 )
+//   {
+//     if ( indx == -2 )
+//     {
+//       if ( isgn < 0 )
+//       {
+//         i_save = i_save + 1;
+//       }
+//       j_save = k1;
+//       k1 = i_save;
+//       indx = -1;
+//       i = i_save;
+//       j = j_save;
+//       return;
+//     }
 
-    if ( 0 < isgn )
-    {
-      indx = 2;
-      i = i_save;
-      j = j_save;
-      return;
-    }
+//     if ( 0 < isgn )
+//     {
+//       indx = 2;
+//       i = i_save;
+//       j = j_save;
+//       return;
+//     }
 
-    if ( k <= 1 )
-    {
-      if ( n1 == 1 )
-      {
-        i_save = 0;
-        j_save = 0;
-        indx = 0;
-      }
-      else
-      {
-        i_save = n1;
-        j_save = 1;
-        n1 = n1 - 1;
-        indx = 1;
-      }
-      i = i_save;
-      j = j_save;
-      return;
-    }
-    k = k - 1;
-    k1 = k;
-  }
-//
-//  0 < INDX: the user was asked to make an interchange.
-//
-  else if ( indx == 1 )
-  {
-    k1 = k;
-  }
+//     if ( k <= 1 )
+//     {
+//       if ( n1 == 1 )
+//       {
+//         i_save = 0;
+//         j_save = 0;
+//         indx = 0;
+//       }
+//       else
+//       {
+//         i_save = n1;
+//         j_save = 1;
+//         n1 = n1 - 1;
+//         indx = 1;
+//       }
+//       i = i_save;
+//       j = j_save;
+//       return;
+//     }
+//     k = k - 1;
+//     k1 = k;
+//   }
+// //
+// //  0 < INDX: the user was asked to make an interchange.
+// //
+//   else if ( indx == 1 )
+//   {
+//     k1 = k;
+//   }
 
-  for ( ; ; )
-  {
+//   for ( ; ; )
+//   {
 
-    i_save = 2 * k1;
+//     i_save = 2 * k1;
 
-    if ( i_save == n1 )
-    {
-      j_save = k1;
-      k1 = i_save;
-      indx = -1;
-      i = i_save;
-      j = j_save;
-      return;
-    }
-    else if ( i_save <= n1 )
-    {
-      j_save = i_save + 1;
-      indx = -2;
-      i = i_save;
-      j = j_save;
-      return;
-    }
+//     if ( i_save == n1 )
+//     {
+//       j_save = k1;
+//       k1 = i_save;
+//       indx = -1;
+//       i = i_save;
+//       j = j_save;
+//       return;
+//     }
+//     else if ( i_save <= n1 )
+//     {
+//       j_save = i_save + 1;
+//       indx = -2;
+//       i = i_save;
+//       j = j_save;
+//       return;
+//     }
 
-    if ( k <= 1 )
-    {
-      break;
-    }
+//     if ( k <= 1 )
+//     {
+//       break;
+//     }
 
-    k = k - 1;
-    k1 = k;
-  }
+//     k = k - 1;
+//     k1 = k;
+//   }
 
-  if ( n1 == 1 )
-  {
-    i_save = 0;
-    j_save = 0;
-    indx = 0;
-    i = i_save;
-    j = j_save;
-  }
-  else
-  {
-    i_save = n1;
-    j_save = 1;
-    n1 = n1 - 1;
-    indx = 1;
-    i = i_save;
-    j = j_save;
-  }
+//   if ( n1 == 1 )
+//   {
+//     i_save = 0;
+//     j_save = 0;
+//     indx = 0;
+//     i = i_save;
+//     j = j_save;
+//   }
+//   else
+//   {
+//     i_save = n1;
+//     j_save = 1;
+//     n1 = n1 - 1;
+//     indx = 1;
+//     i = i_save;
+//     j = j_save;
+//   }
 
-  return;
-}
-//****************************************************************************80
+//   return;
+// }
+// //****************************************************************************80
 
-void timestamp ( )
+// void timestamp ( )
 
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    TIMESTAMP prints the current YMDHMS date as a time stamp.
-//
-//  Example:
-//
-//    31 May 2001 09:45:54 AM
-//
-//  Licensing:
-//
-//    This code is distributed under the GNU LGPL license.
-//
-//  Modified:
-//
-//    08 July 2009
-//
-//  Author:
-//
-//    John Burkardt
-//
-//  Parameters:
-//
-//    None
-//
-{
-# define TIME_SIZE 40
+// //****************************************************************************80
+// //
+// //  Purpose:
+// //
+// //    TIMESTAMP prints the current YMDHMS date as a time stamp.
+// //
+// //  Example:
+// //
+// //    31 May 2001 09:45:54 AM
+// //
+// //  Licensing:
+// //
+// //    This code is distributed under the GNU LGPL license.
+// //
+// //  Modified:
+// //
+// //    08 July 2009
+// //
+// //  Author:
+// //
+// //    John Burkardt
+// //
+// //  Parameters:
+// //
+// //    None
+// //
+// {
+// # define TIME_SIZE 40
 
-  static char time_buffer[TIME_SIZE];
-  const struct std::tm *tm_ptr;
-  size_t len;
-  std::time_t now;
+//   static char time_buffer[TIME_SIZE];
+//   const struct std::tm *tm_ptr;
+//   size_t len;
+//   std::time_t now;
 
-  now = std::time ( NULL );
-  tm_ptr = std::localtime ( &now );
+//   now = std::time ( NULL );
+//   tm_ptr = std::localtime ( &now );
 
-  len = std::strftime ( time_buffer, TIME_SIZE, "%d %B %Y %I:%M:%S %p", tm_ptr );
+//   len = std::strftime ( time_buffer, TIME_SIZE, "%d %B %Y %I:%M:%S %p", tm_ptr );
 
-  std::cout << time_buffer << "\n";
+//   std::cout << time_buffer << "\n";
 
-  return;
-# undef TIME_SIZE
-}
+//   return;
+// # undef TIME_SIZE
+// }
