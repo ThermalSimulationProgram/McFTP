@@ -61,6 +61,10 @@ bool PerformanceCounters::readAllValues(){
 	if ( retval != PAPI_OK ){
 		return false;
 	}
+	// retval = PAPI_reset( EventSet ); 
+	// if (retval != PAPI_OK){
+	// 	return false;
+	// }
 	return true;
 }
 

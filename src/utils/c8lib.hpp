@@ -1,3 +1,7 @@
+#ifndef C8LIB_C8LIB_H
+#define C8LIB_C8LIB_H 
+
+
 double            c8_abs ( complex <double> x );
 complex <double>  c8_acos ( complex <double> c1 );
 complex <double>  c8_acosh ( complex <double> c1 );
@@ -121,3 +125,6 @@ void              r8poly4_root ( double a, double b, double c, double d, double 
                     complex <double> &r4 );
 void              sort_heap_external ( int n, int &indx, int &i, int &j, int isgn );
 void              timestamp ( );
+
+
+#endif

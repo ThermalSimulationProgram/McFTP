@@ -9,7 +9,7 @@
 
 using namespace std;
 
-# include "c8lib.hpp"
+# include "utils/c8lib.hpp"
 
 //****************************************************************************80
 

@@ -10,6 +10,7 @@
 */
 
 #include "papi_test.h"
+#include <unistd.h>
 extern int TESTS_QUIET;				   /* Declared in test_utils.c */
 
 int
@@ -35,7 +36,7 @@ main( int argc, char **argv )
 	}
 	Events[1] = PAPI_TOT_CYC;
 	int lastEventId;
-	char lastEventName[] = "ix86arch::UNHALTED_CORE_CYCLES:e=2";
+	char lastEventName[] = "perf::CPU-CLOCK";
 	retval = PAPI_event_name_to_code(lastEventName, &lastEventId);
 	if ( retval != PAPI_OK )
 		test_fail( __FILE__, __LINE__, "PAPI_get_event_code", retval );
@@ -71,7 +72,7 @@ main( int argc, char **argv )
 
 	/* Loop 3 */
 	/* Simulated code that should not be counted */
-	do_flops( NUM_FLOPS*2 );
+	do_flops( NUM_FLOPS );
 
 	retval = PAPI_read_counters( dummyvalues, NUM_EVENTS );
 	if ( retval != PAPI_OK )

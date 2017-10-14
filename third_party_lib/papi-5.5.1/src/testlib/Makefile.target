@@ -5,7 +5,7 @@ INCLUDE = -I. -I${prefix}/include
 CC	= gcc
 F77	= 
 CC_R	= $(CC) -pthread
-CFLAGS	=  -g -g3 -DSTATIC_PAPI_EVENTS_TABLE -DPEINCLUDE=\"libpfm4/include/perfmon/perf_event.h\" -D_REENTRANT -D_GNU_SOURCE -DUSE_COMPILER_TLS  -Wall 
+CFLAGS	=  -g -DSTATIC_PAPI_EVENTS_TABLE -DPEINCLUDE=\"libpfm4/include/perfmon/perf_event.h\" -D_REENTRANT -D_GNU_SOURCE -DUSE_COMPILER_TLS  -Wall 
 
 UTILSRCS= do_loops.c test_utils.c dummy.c clockcore.c ftests_util.F
 UTILOBJS=$(UTILSRCS:.c=.o) ftests_util.o

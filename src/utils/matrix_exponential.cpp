@@ -298,7 +298,7 @@ double *r8mat_expm2 ( int n, double a[] )
   const double one = 1.0;
   double s;
 
-  e = r8mat_zero_new ( n, n );
+  e = r8mat_zeros_new ( n, n );
 
   f = r8mat_identity_new ( n );
 
