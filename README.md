@@ -1,8 +1,6 @@
 # McFTP
 Multicore Fast Thermal Prototyping framework
 
-This is the first version. I am currently working on debugging, writing 
-comments and tutorials of this program. So, there may be bugs in the code...
 
 ## Very simple instruction of installation:  
 
