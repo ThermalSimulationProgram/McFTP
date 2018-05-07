@@ -353,7 +353,7 @@ int Parser::parseFile(){
 	}
 	#endif
 
-	Scratch::print();
+	//Scratch::print();
 	//exit(1);
 	return ret;
 }
