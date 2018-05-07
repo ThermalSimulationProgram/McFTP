@@ -104,11 +104,11 @@ void ThermalApproach::wrapper(){
 	}
 
 
-	#if _INFO == 1
+	// #if _INFO == 1
 	Semaphores::print_sem.wait_sem();
 	cout << "ThermalApproach " << id << " exiting wrapper...\n";
 	Semaphores::print_sem.post_sem();
-  	#endif
+  	// #endif
 }
 
 

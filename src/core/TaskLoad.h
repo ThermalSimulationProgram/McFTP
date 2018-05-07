@@ -4,9 +4,13 @@
 #include <time.h>
 #include <atomic>
 #include <semaphore.h>
+#include <list>
+#include <iostream>
 
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
+#include "core/ExecutionInterrupter.h"
+
 
 #define setCheckBlockBegin() \
     ++TASKLOADCOUNTER;                  \
@@ -23,16 +27,28 @@
     }                           \
 
 
+// #define NUM_SEM_SOURCE 2
+
 
 class TaskLoad {
 
 protected:
 
-	sem_t suspend_sem;
+	// sem_t suspend_sem;
 
-	sem_t resume_sem;
+	// sem_t resume_sem;
 
-	struct timespec sleepEnd;
+ //    sem_t papi_read_sem;
+
+ //    sem_t state_sem;
+
+ //    int current_state;
+
+ //    std::list<int> resume_sem_sources;
+
+ //    sem_t source_vector_sem;
+
+	// struct timespec sleepEnd;
 
 	sem_t stop_sem;
 
@@ -42,7 +58,7 @@ protected:
 
     unsigned long TASKLOADSTOPCOUNTER;
 
-    // bool isInterrupted;
+    ExecutionInterrupter* attached_EI;
 
 public:
 
@@ -52,41 +68,24 @@ public:
 
     bool LoadsInterface(unsigned long _wcet_us);
 
-	virtual bool runLoads(unsigned long _wcet_us);
+    // void  trigerPAPIReading(int source);
 
-	inline void setSuspendPoint(){
-    	if (sem_trywait(&suspend_sem) == 0)//successfully read a suspend singal, go to sleep immediately
-    	{
-    		// struct timespec now = TimeUtil::getTime();
-    		// struct timespec sleepEnd = now + sleepLength;
-    		int resumeVal;
+	virtual bool runLoads(unsigned long _wcet_us, int);
 
-            struct timespec rem;
-
-      		// make sure the resume semaphore is cleared
-    		sem_getvalue(&resume_sem, &resumeVal);
-    		for (int i = 0; i < resumeVal; ++i)
-    		{
-    			sem_trywait(&resume_sem);
-    		}
-
-      		// two exit conditions: reach the sleepEnd time, or recieves a resume_sem signal
-    		//sem_timedwait(&resume_sem, &sleepEnd);
-
-            nanosleep(&sleepEnd, &rem);
-    	}
-
-    };
+	void setSuspendPoint();
 
     inline void initCheckCounter(){
         TASKLOADCOUNTER = 0;
     }
 
-    void suspend(const struct timespec& length);
+
+    // void suspend(const struct timespec& length);
+
+    void setExecutionInterrupter(ExecutionInterrupter * ei);
 
     void stop();
 
-    void resume();
+    //void resume(int source);
 
     void dummy(void* array);
 

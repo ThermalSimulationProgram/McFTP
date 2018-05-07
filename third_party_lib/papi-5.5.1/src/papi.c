@@ -21,7 +21,6 @@
 * @brief Most of the low-level API is here.
 */
 
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -589,10 +588,7 @@ PAPI_library_init( int version )
 
 		if ( _papi_hwi_debug == 0 )
 			_papi_hwi_debug |= DEBUG_API;
-
-
 	}
-
 #endif
 
 	/* Be verbose for now */

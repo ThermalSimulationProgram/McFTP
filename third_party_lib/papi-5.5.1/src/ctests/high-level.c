@@ -10,13 +10,12 @@
 */
 
 #include "papi_test.h"
-#include <unistd.h>
 extern int TESTS_QUIET;				   /* Declared in test_utils.c */
 
 int
 main( int argc, char **argv )
 {
-#define NUM_EVENTS 3
+#define NUM_EVENTS 2
 	int retval;
 	long long values[NUM_EVENTS], dummyvalues[NUM_EVENTS];
 	long long myvalues[NUM_EVENTS];
@@ -35,13 +34,6 @@ main( int argc, char **argv )
 		Events[0] = PAPI_TOT_INS;
 	}
 	Events[1] = PAPI_TOT_CYC;
-	int lastEventId;
-	char lastEventName[] = "perf::CPU-CLOCK";
-	retval = PAPI_event_name_to_code(lastEventName, &lastEventId);
-	if ( retval != PAPI_OK )
-		test_fail( __FILE__, __LINE__, "PAPI_get_event_code", retval );
-
-	Events[2] = lastEventId;
 
 	retval = PAPI_start_counters( ( int * ) Events, NUM_EVENTS );
 	if ( retval != PAPI_OK )
@@ -55,11 +47,10 @@ main( int argc, char **argv )
 		test_fail( __FILE__, __LINE__, "PAPI_read_counters", retval );
 
 	if ( !TESTS_QUIET )
-		printf( THREE12, values[0], values[1], values[2], "(Counters continuing...)\n" );
+		printf( TWO12, values[0], values[1], "(Counters continuing...)\n" );
 
 	myvalues[0] = values[0];
 	myvalues[1] = values[1];
-	myvalues[2] = values[2];
 	/* Loop 2 */
 	do_flops( NUM_FLOPS );
 
@@ -68,7 +59,7 @@ main( int argc, char **argv )
 		test_fail( __FILE__, __LINE__, "PAPI_accum_counters", retval );
 
 	if ( !TESTS_QUIET )
-		printf( THREE12, values[0], values[1], values[2], "(Counters being ''held'')\n" );
+		printf( TWO12, values[0], values[1], "(Counters being ''held'')\n" );
 
 	/* Loop 3 */
 	/* Simulated code that should not be counted */
@@ -78,7 +69,7 @@ main( int argc, char **argv )
 	if ( retval != PAPI_OK )
 		test_fail( __FILE__, __LINE__, "PAPI_read_counters", retval );
 	if ( !TESTS_QUIET )
-		printf( THREE12, dummyvalues[0], dummyvalues[1], dummyvalues[2], "(Skipped counts)\n" );
+		printf( TWO12, dummyvalues[0], dummyvalues[1], "(Skipped counts)\n" );
 
 	if ( !TESTS_QUIET )
 		printf( "%12s %12s  (''Continuing'' counting)\n", "xxx", "xxx" );
@@ -90,7 +81,7 @@ main( int argc, char **argv )
 		test_fail( __FILE__, __LINE__, "PAPI_accum_counters", retval );
 
 	if ( !TESTS_QUIET )
-		printf( THREE12, values[0], values[1], values[2], "" );
+		printf( TWO12, values[0], values[1], "" );
 
 	if ( !TESTS_QUIET ) {
 		printf( "----------------------------------\n" );

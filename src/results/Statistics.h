@@ -10,6 +10,7 @@
 #include "results/Runtime.h"
 #include "results/Trace.h"
 #include "results/JobLog.h"
+#include "results/VectoredData.h"
 #include "utils/Enumerations.h"
 
 #define N_THREADS   100
@@ -36,14 +37,21 @@ struct compareId {
 class Statistics {
 
 private:
-  static struct timespec tstart;
-  static unsigned long tstart_us;
-  static unsigned long tstart_ms;
-
   /*********** VARIABLES ***********/
 
   /**** VECTORS ****/
 
+  static std::vector<std::vector<double> > hardwareTemperatures;
+
+  static std::vector<std::vector<double> > softwareTemperatures;
+
+  static std::vector<std::vector<long long> > performanceCounterValues;
+
+  static std::vector<double> hardwareReadingOverheads;
+
+  static std::vector<double> softwareReadingOverheads;
+
+  static std::vector<std::vector<double> > performanceCounterReadingOverheads;
 
   ///This vector holds all of the missed deadlines
   static std::vector<MissedDeadline> missedDeadlines;
@@ -77,12 +85,20 @@ private:
 public:
 
   /*********** MEMBER FUNCTIONS ***********/
-  static void start();
 
-  static unsigned long getRelativeTime();
-  static unsigned long getRelativeTime_ms();
-  
-  static struct timespec getStart();
+  static void addHardwareTemperature(const std::vector<double>& t);
+
+  static void addHardwareReadingOverhead(double t);
+
+  static void addSoftwareTemperature(const std::vector<double>& t);
+
+  static void addSoftwareReadingOverhead(double t);
+
+  static void addPerformanceCounterValue(const std::vector<long long>& v);
+
+  static void initializeOnePCOverheadTrace();
+
+  static void addPerformanceCounterOverhead(double v, int id);
 
   static void addJobLog(int workerid, int taskid);
 

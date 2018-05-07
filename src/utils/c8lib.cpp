@@ -4192,8 +4192,8 @@ void c8vec_sort_a_l1 ( int n, complex <double> x[] )
   int indx;
   int isgn;
   int j;
-  double normsq_i;
-  double normsq_j;
+  // double normsq_i;
+  // double normsq_j;
   complex <double> temp;
 
   i = 0;
@@ -4352,8 +4352,8 @@ void c8vec_sort_a_li ( int n, complex <double> x[] )
   int indx;
   int isgn;
   int j;
-  double normsq_i;
-  double normsq_j;
+  // double normsq_i;
+  // double normsq_j;
   complex <double> temp;
 
   i = 0;
@@ -4887,8 +4887,8 @@ complex <double> r8_csqrt ( double x )
 //    Output, complex <double> R8_CSQRT, the square root of X:
 //
 {
-  double argument;
-  double magnitude;
+  double argument = 0.0;
+  double magnitude = 0.0;
   const double r8_pi = 3.141592653589793;
   complex <double> value;
 

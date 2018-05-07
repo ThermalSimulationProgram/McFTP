@@ -6,42 +6,62 @@
 #include <vector>
 #include <string>
 
+#include "../McFTPBuildConfig.h"
+
+// #include <pthread.h>
+
 class PerformanceCounters{
 protected:
 	bool initialized;
 
-	int counters[MAX_EVENT_COUNTER_NUMBER];
-
-	std::vector<std::string> counterNames;
+	int PAPI_Counter_Set;
 
 	long long values[MAX_EVENT_COUNTER_NUMBER];
 
 	int counterNumber;
+
+	static bool library_initialized;
+
+	// static pthread_key_t key;
 
 
 public:
 
 	PerformanceCounters();
 
-	bool initialize();
+	bool initializeCounterSet();
+
+	static bool initializeLibrary();
+
+	static bool initializeThread();
+
+	bool addCounter(int counterId);
 
 	bool addCounter(const std::string counterName);
 
 	bool startAllCounters();
 
+	bool stopAllCounters();
+
 	bool readAllValues();
 
-	long long getCounterValue(const std::string counterName);
+	bool resetAllCounters();
+
+	// long long getCounterValue(const std::string counterName);
 
 	long long getCounterValue(int counterId);
 
 	int getCounterNumber();
+
+	bool exitThread();
 	
-	void endAllCounters();
+	// void endAllCounters();
 
-	static void printCounterInfo();
+	void clearCounterValues();
 
-	static void PAPI_test(int argc, char **argv);
+	// static void printCounterInfo();
+
+	// static void PAPI_test(int argc, char **argv);
 
 };
 

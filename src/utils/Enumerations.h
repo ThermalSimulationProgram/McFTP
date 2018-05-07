@@ -69,8 +69,8 @@ enum _thread_type
 ///This enumeration describes the two time types
 enum _time_type 
 {
-  absolute,
-  relative
+  _absolute,
+  _relative
 };
 
 

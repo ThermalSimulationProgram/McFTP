@@ -23,7 +23,6 @@
 #include <sys/time.h>
 #include <math.h>
 
-
 #include "papiStdEventDefs.h"
 #include "papi.h"
 #include "test_utils.h"
@@ -116,7 +115,6 @@ void clockcore(void);
 #define TAB4	"%-12s %12lld %12lld %12lld %12lld\n"
 #define TAB5	"%-12s %12lld %12lld %12lld %12lld %12lld\n"
 #define TWO12	"%12lld %12lld  %s"
-#define THREE12	"%12lld %12lld %12lld %s"
 #define LLDFMT  "%lld"
 #define LLDFMT10 "%10lld"
 #define LLDFMT12 "%12lld"

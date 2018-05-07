@@ -18,7 +18,7 @@
  ***************************************/
  
 
-
+class ExecutionInterrupter;
 
 class Task {
 
@@ -66,15 +66,15 @@ public:
   void setWorker(Worker* w);
 
   ///This function performs one task 
-  virtual bool fire();
+  virtual bool fire(int);
 
   void stop();
 
   void setLoad(TaskLoad* l);
 
-  void suspend(const struct timespec& length);
+  // void suspend(const struct timespec& length);
 
-  void resume();
+  // void resume(int source);
 
   int getId();
 
@@ -88,7 +88,7 @@ public:
 
   virtual unsigned long getWCET(int id) ;
 
-
+  void setLoadExecutionInterrupter(ExecutionInterrupter *e);
 
 };
 #endif

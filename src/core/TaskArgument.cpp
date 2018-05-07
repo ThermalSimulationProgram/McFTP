@@ -26,22 +26,23 @@ TaskArgument::TaskArgument():name(){
 }
 
 void TaskArgument::print(){
-	cout << "task name: " << name << endl;
-	cout << "task Id: " << taskId << endl;
-	cout << "task _periodicity: " << _periodicity << endl;
-	cout << "task _load_type: " << _load_type << endl;
-	cout << "task _type: " << _type << endl;
-	cout << "default_coreId: " << default_coreId << endl;
+	cout << "task name              = " << name << endl;
+	cout << "task Id                = " << taskId << endl;
+	cout << "task _periodicity      = " << _periodicity << endl;
+	cout << "task _load_type        = " << _load_type << endl;
+	cout << "task _type             = " << _type << endl;
+	cout << "default_coreId         = " << default_coreId << endl;
 
-	cout << "period: " << TimeUtil::convert_ms(period) << endl;
-	cout << "jitter: " << TimeUtil::convert_ms(jitter) << endl;
-	cout << "release_time: " << TimeUtil::convert_ms(release_time) << endl;
-	cout << "relative deadline: " << TimeUtil::convert_ms(relativeDeadline) << endl;
+	cout << "period (ms)            = " << TimeUtil::convert_ms(period) << endl;
+	cout << "jitter (ms)            = " << TimeUtil::convert_ms(jitter) << endl;
+	cout << "release_time (ms)      = " << TimeUtil::convert_ms(release_time) << endl;
+	cout << "relative deadline (ms) = " << TimeUtil::convert_ms(relativeDeadline) << endl;
 	
-	cout << "benchmark id: " << benchmark_id << endl;
-	cout << "user defined load id: " << user_defined_load_id << endl;
-	displayvector(wcets_us, "wcets_us");
-	displayvector(TimeUtil::convert_us(wcets), "wcets");
+	cout << "benchmark name         = " << benchmark_name << endl;
+	cout << "benchmark id           = " << benchmark_id << endl;
+	cout << "user defined load id   = " << user_defined_load_id << endl;
+	displayvector(wcets_us, "wcets_us (us)");
+	// displayvector(TimeUtil::convert_us(wcets), "wcets");
 }
 
 

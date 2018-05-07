@@ -29,7 +29,7 @@ struct timespec operator * (double a, struct timespec b) {
 }
 
 
-struct timespec operator +(struct timespec a, struct timespec b) {
+struct timespec operator +(const struct timespec& a, const struct timespec& b) {
   struct timespec x;
   x.tv_sec = a.tv_sec + b.tv_sec;
   x.tv_nsec = a.tv_nsec + b.tv_nsec;
@@ -48,7 +48,7 @@ struct timespec operator +(struct timespec a, struct timespec b) {
 
 
 
-struct timespec operator -(struct timespec a, struct timespec b) {
+struct timespec operator -(const struct timespec& a, const struct timespec& b) {
   struct timespec x;
   x.tv_sec = a.tv_sec - b.tv_sec;
 

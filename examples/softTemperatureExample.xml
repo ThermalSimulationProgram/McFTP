@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+<experiment name="aaa">
+	<duration unit="sec" value="5"/>
+	<processor core_number="4" fixed_active="false" fixed_frequency="false"/>
+	<temperature_sensors >
+		<sample_period unit="ms" value="100"/>
+		<hardware enabled = "true" >
+			<sensor_file1 path="/home/long/Desktop/mcftp_debug/trunk/test/test1"/>
+			<sensor_file2 path="/home/long/Desktop/mcftp_debug/trunk/test/test2"/>
+			<sensor_file3 path="/home/long/Desktop/mcftp_debug/trunk/test/test3"/>
+			<sensor_file4 path="/home/long/Desktop/mcftp_debug/trunk/test/test4"/>
+		</hardware>
+
+		<software enabled = "true" >
+			<thermal_model_parameters>
+				<parameterW source = "dell9020_W.csv"/>
+				<parameterV source = "dell9020_V.csv"/>
+				<parameterKtimesTamb source = "dell9020_KTamb.csv"/>
+				<initialT source = "thermal_model_initT.csv"/>
+			</thermal_model_parameters>
+
+			<power_model_parameters>
+				<coefA source = "coefA.csv"/>
+				<coefB source = "coefB.csv"/>
+			</power_model_parameters>
+
+			<performance_counters>
+				<counter0 name="PAPI_TOT_INS" 	value_scale="1" 	weight = "0" />
+				<counter1 name="PAPI_TOT_CYC" 	value_scale="1" 	weight = "0" />
+				<counter2 name="PAPI_L2_TCA"   	value_scale="1" 	weight = "0" />
+				<counter3 name="UOPS_EXECUTED" 	value_scale="1" 	weight = "0" />
+			</performance_counters>
+					
+		</software>
+	</temperature_sensors>
+
+	<results path="./">
+		<temperature_from_hardware_sensors>
+			<global_peak_temperature save = "true"/>
+			<sensor_peak_temperature save = "true"/>
+			<sensor_mean_temperature save = "true"/>
+			<sensor_read_overhead    save = "true"/>
+			<sensor_temperature_trace save = "true"/>
+ 		</temperature_from_hardware_sensors>
+ 		<temperature_from_software_sensors>
+			<global_peak_temperature save = "true"/>
+			<sensor_peak_temperature save = "true"/>
+			<sensor_mean_temperature save = "true"/>
+			<sensor_read_overhead    save = "true"/>
+			<sensor_temperature_trace save = "true"/>
+			<performance_counter_values save = "true"/>
+ 		</temperature_from_software_sensors>
+ 		<cpu_usage save = "true"/>
+
+	</results>
+
+
+	<tasks>
+		<task0 load_type="busy_wait" name="task0" periodicity="periodic" type="singlecore">
+			<period unit="ms" value="1000"/>
+			<wcets unit="ms" value="[100]"/>
+			<attached_core value="0"/>
+		</task0>
+		<task1 load_type="busy_wait" name="task1" periodicity="periodic" type="singlecore">
+			<benchmark name="sd" />
+			<period unit="ms" value="1000"/>
+			<wcets unit="ms" value="[100]"/>
+			<attached_core value="1"/>
+		</task1>
+		<task2 load_type="busy_wait" name="task2" periodicity="periodic" type="singlecore">
+			<period unit="ms" value="1000"/>
+			<wcets unit="ms" value="[100]"/>
+			<attached_core value="2"/>
+		</task2>
+		<task3 load_type="busy_wait" name="task3" periodicity="periodic" type="singlecore">
+			<period unit="ms" value="1000"/>
+			<wcets unit="ms" value="[100]"/>
+			<attached_core value="3"/>
+		</task3>
+		
+	</tasks>
+
+
+	<thermal_approach>
+		<kernel type="PTM">
+			<toff unit="ms" value="{3000, 3000, 3000, 3000}"/>
+			<ton unit="ms" value="{3000, 3000, 3000, 3000}"/>
+		</kernel>
+	</thermal_approach>
+</experiment>
+
+<ee>
+	</ee>

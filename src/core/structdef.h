@@ -24,7 +24,8 @@ typedef struct{
 typedef struct{
 	std::vector<CoreInfo> coreinfos;
 	std::vector<std::vector<Task*> > tasksInQueue;
-	std::vector<double> temperature;
+	std::vector<double> hardwareTemperature;
+	std::vector<double> softwareTemperature;
 	double currentTime;
 	int numstages;
 }DynamicInfo;
@@ -33,8 +34,8 @@ typedef struct{
 typedef struct 
 {
 	std::string counterName;
-	double coefA;
-	double coefB;
+	double valueScale;
+	double weight;
 }SoftTemperatureSensorConfig;
 
 

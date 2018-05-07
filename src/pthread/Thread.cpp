@@ -22,7 +22,7 @@ using namespace std;
 
 ///A simple Constructor which doesn't create the thread, because the static_wrapper
 ///contains the pure virtual method wrapper() which may be invoked when a derived class
-///object is constructed. Therefore, creating a actual thread is done in method trigger().
+///object is constructed. Therefore, creating an actual thread is done in method trigger().
 
 Thread::Thread(unsigned int _id) {
 

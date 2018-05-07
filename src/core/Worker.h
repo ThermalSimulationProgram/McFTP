@@ -7,13 +7,18 @@
 #include <time.h>
 #include <semaphore.h>
 
+#include "../McFTPBuildConfig.h"
 
 #include "configuration/JobQueue.h"
 #include "pthread/Thread.h"
 #include "core/structdef.h"
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
+#include "core/ExecutionInterrupter.h"
 
+#ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+#include "performance_counter/PerformanceCounters.h"
+#endif
 
 class Processor;
 
@@ -35,21 +40,26 @@ protected:
 
 	Processor * processor;
 
-	struct timespec sleepEnd;
+	// struct timespec sleepEnd;
 
+	ExecutionInterrupter exeInterrupter;
 
 	///semaphore controls accessing state and latestSleep
 	sem_t state_sem;
 
 	sem_t exetime_sem;
 
-	sem_t suspend_sem;
+	// sem_t suspend_sem;
 
-	sem_t resume_sem;
+	// sem_t resume_sem;
 
 	sem_t job_sem;
 
 	sem_t stop_sem;
+
+	#ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+	PerformanceCounters performanceCounter;
+	#endif
 
 public:
 	Worker(int, int);
@@ -58,28 +68,12 @@ public:
 	void join();
 
 	Task* stopCurrentJob();
+
+	void activate1();
 	
-	void activate();
+	void activate(int source);
 
 	void deactivate(const struct timespec& length);
-
-	inline void setSuspendPoint(){
-    if (sem_trywait(&suspend_sem) == 0)//successfully read a suspend singal, block the executing immediately
-    {
-      int resumeVal;
-
-      // make sure the resume semaphore is cleared
-      sem_getvalue(&resume_sem, &resumeVal);
-      for (int i = 0; i < resumeVal; ++i){
-         sem_trywait(&resume_sem);
-      }
-      
-      // two exit conditions: reach the sleepEnd time, or recieves a resume_sem signal
-      sem_timedwait(&resume_sem, &sleepEnd);
-    }
-
-  };
-
 
 	void wrapper();
 
@@ -102,6 +96,11 @@ public:
 
 	int getWorkerId();
 
+	int readPAPIValues();
+
+	void getPAPIValues(std::vector<long long> & v);
+
+	void triggerPAPIReading(int source);
 
 };
 

@@ -18,6 +18,7 @@
 #include "dispatchers/PeriodicJitter.h"
 #include "tasks/Pipelined.h"
 #include "CMI.h"
+#include "core/ComponentsDefine.h"
 
 
 //parser
@@ -33,6 +34,7 @@
 #include "utils/FileOperator.h"
 #include "utils/Enumerations.h"
 #include "utils/vectormath.h"
+
 
 
 using namespace std;
@@ -119,10 +121,11 @@ Processor::Processor(CMI* _cmi, int isAppendSaveFile):cpuUsageRecorder()
 		t->setProcessor(this);
 		workers.push_back(t);
 		worker_cpu.push_back(i);
+		Statistics::initializeOnePCOverheadTrace();
 		++thread_num;		
 	}
 	
-	tempwatcher 	= new TempWatcher(200000, 98, Scratch::isUsingHardwareTempSensor(), Scratch::isUsingSoftTempSensor());
+	tempwatcher 	= new TempWatcher(100000, 98, Scratch::isUsingHardwareTempSensor(), Scratch::isUsingSoftTempSensor(), this);
 	++thread_num;
 
 	powermanager 	= new PowerManager(200, workers);
@@ -130,12 +133,16 @@ Processor::Processor(CMI* _cmi, int isAppendSaveFile):cpuUsageRecorder()
 
 	for (int i = 0; i < n_cores; ++i){
 		sem_t aux;
-		sem_init(&aux, 0, 2); // at most two thread (a worker or a dispatcher) can access task queues
+		sem_init(&aux, 0, 2); // at most two thread (a worker and a dispatcher) can access task queues
 		taskqueue_sems.push_back(aux);
 
 		sem_t aux2;
 		sem_init(&aux2, 0, 0);
 		jobnumber_sems.push_back(aux2);
+
+		sem_t aux3;
+		sem_init(&aux3, 0, 0);
+		papireading_sems.push_back(aux3);
 
 		JobQueue temp_q = JobQueue();
 		allTaskQueues.push_back(temp_q);
@@ -213,11 +220,11 @@ double Processor::simulate(){
 	for (unsigned i = 0; i < workers.size(); ++i){
 		workers[i]->trigger();
 		workers[i]->setCPU(worker_cpu[i]);
-		workers[i]->activate();	
+		workers[i]->activate1();	
 	}
 	
 	for (int i = 0; i < (int) dispatchers.size(); ++i){
-		dispatchers[i]->setCPU(n_cpus-1);
+		dispatchers[i]->setCPU(n_cpus-2);
 		dispatchers[i]->activate();
 		
 	}
@@ -227,9 +234,9 @@ double Processor::simulate(){
 		tempwatcher->setCPU(n_cpus - worker_cpu[0] - 1);
 	}
 	else
-		tempwatcher->setCPU(n_cpus - 1);
+		tempwatcher->setCPU(n_cpus - 2);
 		
-	powermanager->setCPU(n_cpus-1);
+	powermanager->setCPU(n_cpus-2);
 	powermanager->activate();
 
 	Statistics::enable();
@@ -249,7 +256,6 @@ double Processor::simulate(){
 	}
 
 
-	Statistics::start();
 	TimeUtil::setOffset();
 	// main thread sleeps for duration time length
 	nanosleep(&duration, &rem);
@@ -266,7 +272,7 @@ double Processor::simulate(){
 	// join other threads, wait them to finish
 	join_all();
 	enum _thread_type main_type = _main;
-	Statistics::addRuntime(main_type, 1000, TimeUtil::getTime() - Statistics::getStart());
+	Statistics::addRuntime(main_type, 1000, TimeUtil::getTime(_relative));
 
 	std::vector<TaskArgument> allTaskData = Scratch::getTaskData();
 	int task_num = allTaskData.size();
@@ -286,12 +292,12 @@ double Processor::simulate(){
 	}
 
 	// return the average temperature 
-	// cout << "cpuUsageRecorder..." << endl;
+	cout << "cpuUsageRecorder..." << endl;
 	cpuUsageRecorder.endLoggingCPU();
 
-	saveResults();
+	Statistics::toFile(Scratch::getName());
 	
-	return tempwatcher->getMeanMaxTemp();
+	return 0;
 }
 
 
@@ -301,7 +307,7 @@ void Processor::join_all() {
 			dispatchers[i]->join();
 		}
 	}
-
+	cout << "processor is joining all threads" << endl;
 	thermal_approach->join();
 	
 	tempwatcher->join();
@@ -312,24 +318,17 @@ void Processor::join_all() {
 	for( unsigned i=0;i<workers.size();i++) {
 		t = workers[i];
 		if(t!=NULL) {
+			cout << "processor is joining worker " << i << endl;
 			t->join();
 		}
 	}
 
 
-    #if _INFO==1
+    // #if _INFO==1
   		cout << "Joined all!\n";
-    #endif
+    // #endif
 }
 
-
-// void Processor::setCMI(CMI* c){
-// 	cmi = c;
-// }
-
-// CMI* Processor::getCMI(){
-// 	return cmi;
-// }
 
 void Processor::newJob(Task * t, _task_type type){
 	int id;
@@ -366,17 +365,23 @@ void Processor::finishedJob(Task* t){
 }
 
 
-Task* Processor::tryLoadJob(int workerId){
+Task* Processor::tryLoadJob(int workerId, struct timespec timeout){
 	Task* ret = NULL;
 
-	// wait if the task queue is blocked
-	sem_wait(&taskqueue_sems[workerId]);
-	// wait if there is no job in the queue
-	sem_wait(&jobnumber_sems[workerId]);
-	ret = allTaskQueues[workerId].pop_front();
+    struct timespec waitEnd = TimeUtil::getTime() + timeout;
 
-	// unlock the task queue
-	sem_post(&taskqueue_sems[workerId]);
+	// wait at most timeout time units if the task queue is blocked
+	if(sem_timedwait(&taskqueue_sems[workerId], &waitEnd) == 0){
+		// if we recieve the signal
+
+		// wait if there is no job in the queue
+		if (sem_timedwait(&jobnumber_sems[workerId], &waitEnd) == 0){
+			ret = allTaskQueues[workerId].pop_front();
+		}
+		// unlock the task queue
+		sem_post(&taskqueue_sems[workerId]);
+	}
+	
 	return ret;
 }
 
@@ -390,11 +395,12 @@ void Processor::getDynamicInfo(DynamicInfo& dinfo){
 		dinfo.coreinfos.push_back(tmp);
 	}
 
-	dinfo.temperature = tempwatcher->getCurTemp();
+	dinfo.hardwareTemperature = tempwatcher->getCurHardwareTemp();
+	dinfo.softwareTemperature = tempwatcher->getCurSoftwareTemp();
 	dinfo.numstages   = n_cores;
 
 	// get current time from simulation start, unit ms
-	double curTime = (double)Statistics::getRelativeTime()/1000;
+	double curTime = (double)TimeUtil::getTimeMSec();
 
 	dinfo.currentTime = curTime;
 
@@ -457,64 +463,6 @@ bool Processor::isRunning(){
 	return running;
 }
 
-void Processor::saveResults(){
-	if (Scratch::isSaveFile()){
-		Statistics::toFile(Scratch::getName());
-		cout << "saving..." << endl;
-
-		string tempSaveName = Scratch::getName() + "_result.csv";
-
-		vector<string> beginOfData = vector<string>(1, "111111111111111111111111111111");
-		
-
-		if (_isAppendSaveFile > 0){
-			appendContentToFile(tempSaveName, beginOfData);
-		}else{
-			saveContentToNewFile(tempSaveName, beginOfData);
-		}
-		if (Scratch::isUsingHardwareTempSensor()){
-			appendToFile(tempSaveName, tempwatcher->getMeanTemp());
-			double maxTemp = tempwatcher->getMaxTemp();
-			appendToFile(tempSaveName, vector<double>(1, maxTemp));
-
-			double MeanMaxTemp = tempwatcher->getMeanMaxTemp();
-			appendToFile(tempSaveName, vector<double>(1, MeanMaxTemp));
-		}
-		
-
-		// appendToFile(tempSaveName, scheduler->getKernelTime());
-
-		float total_cpu_usage = cpuUsageRecorder.getUsage();
-		appendToFile(tempSaveName, vector<float>(1, total_cpu_usage));
-
-		// appendContentToFile(tempSaveName, Statistics::getAllMissedDeadline());
-		if (Scratch::isUsingHardwareTempSensor()){
-			appendToFile(tempSaveName, tempwatcher->getAllTempTrace());
-		}
-
-		vector<string> endOfData = vector<string>(1, "999999999999999999999999999999");
-		appendContentToFile(tempSaveName, endOfData);
-		// appendToFile(tempSaveName, scheduler->getAllSchemes());
-
-		if (Scratch::isUsingSoftTempSensor()){
-			string softTempSaveName = Scratch::getName() + "_soft_sensors_result.csv";
-			if (_isAppendSaveFile > 0){
-				appendContentToFile(softTempSaveName, beginOfData);
-			}else{
-				saveContentToNewFile(softTempSaveName, beginOfData);
-			}
-
-			appendToFile(softTempSaveName, tempwatcher->getMeanSoftSensorTemp());
-			double maxTemp = tempwatcher->getMaxSoftSensorTemp();
-			appendToFile(softTempSaveName, vector<double>(1, maxTemp));
-
-			double MeanMaxTemp = tempwatcher->getMeanMaxSoftSensorTemp();
-			appendToFile(softTempSaveName, vector<double>(1, MeanMaxTemp));
-			appendToFile(softTempSaveName, tempwatcher->getAllSoftSensorTempTrace());
-			appendContentToFile(softTempSaveName, endOfData);
-		}
-	}
-}
 
 
 bool Processor::taskMigration(int source_id, int target_id){
@@ -577,4 +525,51 @@ void Processor::preemptCurrentJobOnCore(int coreId){
 	if (r == 0){
 		sem_post(&taskqueue_sems[coreId]);
 	}
+}
+
+
+
+void Processor::triggerAllPAPIReading(int source){
+	#ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+	// cout << "processor trigger all papi" << endl;
+	for (int i = 0; i < (int) workers.size(); ++i){
+		workers[i]->triggerPAPIReading(source);
+		// cout << "papi " << i << " triggered" << endl;
+	}
+	#endif
+}
+
+
+void Processor::informPAPIReadingFinish(int workerId){
+	#ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+	if (workerId < 0 || workerId >= n_cores){
+		return;
+	}
+	sem_post(&papireading_sems[workerId]);
+	#endif
+}
+
+int Processor::waitPAPIReading(){
+	
+	int ret = 0;
+	#ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+	struct timespec waitEnd = TimeUtil::getTime() + TimeUtil::Millis(20);
+	for (int i = 0; i < (int) workers.size(); ++i){
+		ret += sem_timedwait(&papireading_sems[i], &waitEnd);
+	}
+	#endif
+	return ret;
+	
+}
+
+void Processor::getPAPIValues(vector< vector<long long> >& values){
+	#ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+	values.clear();
+	for (int i = 0; i < (int) workers.size(); ++i)
+	{
+		vector<long long> temp;
+		workers[i]->getPAPIValues(temp);
+		values.push_back(temp);
+	}
+	#endif
 }

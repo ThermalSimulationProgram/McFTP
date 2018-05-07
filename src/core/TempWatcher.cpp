@@ -21,13 +21,17 @@
 #include "utils/utils.h"
 #include "utils/r8lib.hpp"
 #include "utils/matrix_exponential.hpp"
+#include "core/ComponentsDefine.h"
+#include "soft_temperature_sensor/LinearTemperatureSensor.h"
+#include "results/Statistics.h"
+
 
 
 using namespace std;
 
 
 #define _INFO 0
-#define _DEBUG 1
+#define _DEBUG 0
 
 
 
@@ -36,12 +40,13 @@ using namespace std;
  *        CLASS DEFINITION             * 
  ***************************************/
 
-TempWatcher::TempWatcher(unsigned period, unsigned _id):TempWatcher(period, _id, true, false){
-
-	
+TempWatcher::TempWatcher(unsigned period, unsigned _id, Processor * p)
+:TempWatcher(period, _id, true, false, p){	
 }	
 
-TempWatcher::TempWatcher(unsigned period, unsigned _id, bool useHardware, bool useSoft):Thread(_id){
+TempWatcher::TempWatcher(unsigned period, unsigned _id, bool useHardware, 
+    bool useSoft, Processor * p):Thread(_id){
+
     thread_type = _temp_watcher;
     if (period == 0){
         printf("TempWatcher::TempWatcher: Error, period is zero!\n");
@@ -49,120 +54,33 @@ TempWatcher::TempWatcher(unsigned period, unsigned _id, bool useHardware, bool u
     }
     sem_init(&temp_sem, 0, 1);
 
-    sem_wait(&temp_sem);
-    curHardwareTemp = get_cpu_temperature();
-    sem_post(&temp_sem);
-
     samplingPeriod = TimeUtil::Micros(period);
-
-    hardwareTempTrace.reserve(Scratch::getDuration()/200000); 
 
     useHardwareSensor = useHardware;
 
-    useSoftSensor = useSoft;  
+    // if (useHardwareSensor){
+    //    hardwareTempTrace.reserve(Scratch::getDuration()/period);  
+    // }
+
+    useSoftSensor = useSoft;
+
+    #ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+    if (useSoftSensor){
+        // softTempTrace.clear();
+        // softTempTrace.reserve(Scratch::getDuration()/period);
+        // performanceCounterValues.reserve(Scratch::getDuration()/period);
+        // softSensorOverhead.reserve(Scratch::getDuration()/period);
+        PerformanceCounters::initializeLibrary();
+    }  
+    #endif
+
+    processor = p;
 
     
-
-    temperatureCounters = PerformanceCounters();
-
-    if (useSoftSensor){
-        temperatureCounters.initialize();
-        if (Scratch::softSensorCalculator == "default"){
-            powerEstimator = Scratch::powerEstimator;
-            if (powerEstimator == NULL){
-                printf("TempWatcher::TempWatcher: Error, power estimator must be given for default soft temperature calculator\n");
-                exit(1);
-            }
-            int N = Scratch::softSensorA.size();
-            if (N <= 0){
-                printf("TempWatcher::TempWatcher: Error, given matrix A is empty!\n");
-                exit(1);
-            }else{
-
-                if (Scratch::softSensorA[0].size() != N){
-                  printf("TempWatcher::TempWatcher: Error, given matrix A must be a square matrix!\n");
-                  exit(1);  
-                }
-
-                if (Scratch::softSensorB.size() != N  || Scratch::softSensorB[0].size() != N ){
-                    printf("TempWatcher::TempWatcher: Error, given matrix B must be a square matrix having same size as A!\n");
-                    exit(1); 
-                }
-
-                if (Scratch::softSensorK.size() != N ){
-                    printf("TempWatcher::TempWatcher: Error, given matrix K must be a vector having %d elements \n", N);
-                    exit(1); 
-                }
-            }
-
-            double  *a, *b;
-            a = vectorMatrixTo2DArray(Scratch::softSensorA);
-            if (a == NULL){
-                printf("TempWatcher::TempWatcher: Error, given A for soft sensor calculator is not a matrix!\n");
-                exit(1); 
-            }
-            b = vectorMatrixTo2DArray(Scratch::softSensorB);
-            if (b == NULL){
-                printf("TempWatcher::TempWatcher: Error, given B for soft sensor calculator is not a matrix!\n");
-                exit(1); 
-            }
-
-            double period = Scratch::softSamplingInterval / 1000000;
-
-            printf("TempWatcher::TempWatcher: start computing matrix W and V \n");
-
-            double * At = r8mat_copy_new(N, N, a);
-
-            r8mat_scale(N, N, period, At);
-
-            double * eAt = r8mat_expm1(N, At);
-
-            softSensorW = r8mat_mm_new ( N, N, N, eAt, b );
-
-            delete [] eAt;
-
-
-
-
-            softSensorV = r8mat_zeros_new(N, N);
-            double * eAtB = r8mat_zeros_new(N, N);
-
-            int integralStepNumber = 1000; // 1000 sub intervals to calculate integral
-            double integralStep = period / integralStepNumber;
-
-            for (int i = 0; i <= integralStepNumber; ++i) 
-            {
-                r8mat_copy(N, N, a, At);
-                double deltaT = i * integralStep;
-                r8mat_scale(N, N, deltaT, At);
-
-                double * eAt = r8mat_expm1(N, At); 
-
-                r8mat_mm(N, N, N, eAt, b, eAtB);
-
-                r8mat_add ( N, N, 1.0, softSensorV, integralStep, eAtB, softSensorV );
-
-
-                delete [] eAt;
-            }
-
-
-
-
-        }
-
-
-        softSensor = Scratch::softSensor;
-        for (int i = 0; i < (int) Scratch::soft_sensors.size(); ++i)
-        {
-            addSoftLinearTemperatureSensor(Scratch::soft_sensors[i].counterName,
-                Scratch::soft_sensors[i].coefA, Scratch::soft_sensors[i].coefB); 
-        }
-    }
 }
 
 TempWatcher::~TempWatcher(){
-  // cout << "temperature watcher with id " << id << " is being destructed\n";
+
 }
 
 void TempWatcher::activate(){
@@ -176,7 +94,15 @@ void TempWatcher::join(){
 
 
 void TempWatcher::wrapper(){
-    struct timespec rem;
+    #ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+    if (useSoftSensor){
+
+        Scratch::softSensor = LinearTemperatureSensor;
+        initializeLinearTemperatureSensor();    
+    }
+    #endif
+    
+    
     #if _INFO == 1
     Semaphores::print_sem.wait_sem();
     printf("TempWatcher: waiting for initialization\n");
@@ -184,7 +110,7 @@ void TempWatcher::wrapper(){
     #endif
 
 
-  //Wait until the simulation is initialized
+    //Wait until the simulation is initialized
     sem_wait(&Processor::init_sem);
 
     #if _INFO == 1
@@ -196,54 +122,57 @@ void TempWatcher::wrapper(){
 	///wait for the simulation start
     sem_wait(&Processor::running_sem);
 
-    if (useSoftSensor){
-        if (! temperatureCounters.startAllCounters() ){
-            printf("TempWatcher::wrapper: failed to start performance counters\n");
-            exit(1);
-        }
-    }
-
+    sem_t periodic_sem;
+    sem_init(&periodic_sem, 0, 0);
+    struct timespec waitEnd;
 
     while(Processor::isRunning()){
-        sem_wait(&temp_sem);
-        curHardwareTemp = get_cpu_temperature();
-        curSoftTemp = get_soft_cpu_temperature();
-        sem_post(&temp_sem);
-        hardwareTempTrace.push_back(curHardwareTemp);
-        softTempTrace.push_back(curSoftTemp);
 
-        nanosleep(&samplingPeriod, &rem);
+        waitEnd = TimeUtil::getTime() + samplingPeriod;
+
+        #ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+        if (useSoftSensor){
+            processor->triggerAllPAPIReading(TEMPWATCHER);
+        }
+        #endif
+
+        sem_wait(&temp_sem);
+        #ifdef HARD_TEMPERATURE_SENSOR_ENABLE
+        if (useHardwareSensor){
+           curHardwareTemp = get_cpu_temperature(); 
+           Statistics::addHardwareTemperature(curHardwareTemp);
+        }
+        #endif
+        
+        #ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+        if (useSoftSensor){ 
+            curSoftTemp = get_soft_cpu_temperature();  
+            if (curSoftTemp.size() == 0){
+                cout << "temperature size error" << endl;
+                exit(1);
+            
+            }
+            Statistics::addSoftwareTemperature(curSoftTemp);
+        }
+        #endif
+        sem_post(&temp_sem);
+
+        sem_timedwait(&periodic_sem, &waitEnd);
     }
 
-	#if _INFO == 1
+	// #if _INFO == 1
     Semaphores::print_sem.wait_sem();
-    printf( "TempWatcher  exiting wrapper...\n");
+    printf( "TempWatcher: %d is exiting wrapper...\n", id);
     Semaphores::print_sem.post_sem();
-    #endif
+    // #endif
 }
 
 bool TempWatcher::isSoftSensorEnabled(){
     return useSoftSensor;
 }
 
-bool TempWatcher::addSoftLinearTemperatureSensor(std::string counterName, double a, double b){
-    if (useSoftSensor){
-        temperatureCounters.initialize();
 
-        if (! temperatureCounters.addCounter(counterName) ) {
-            printf("Warning: TempWatcher::addSoftLinearTemperatureSensor failed to add performance counter \n");
-            return false;
-        }else{
-            coefAVector.push_back(a);
-            coefBVector.push_back(b);
-            return true;
-        }
-    }else{
-        printf("Warning: TempWatcher::addSoftLinearTemperatureSensor failed to add soft sensor because soft temperature sensor is not enabled!\n");
-        return false;
-    }
-}
-vector<double> TempWatcher::getCurTemp(){
+vector<double> TempWatcher::getCurHardwareTemp(){
     vector<double> ret;
     sem_wait(&temp_sem);
     ret = curHardwareTemp ;
@@ -252,36 +181,29 @@ vector<double> TempWatcher::getCurTemp(){
     return ret;
 }
 
+vector<double> TempWatcher::getCurSoftwareTemp(){
+    vector<double> ret;
+    sem_wait(&temp_sem);
+    ret = curSoftTemp ;
+    sem_post(&temp_sem);
 
-std::vector<double> TempWatcher::get_cpu_temperature(){
-	#if _DEBUG == 1
-    std::vector<double> ret(4, 30);
-    #endif
+    return ret;
+}
 
-    #if _DEBUG == 0
-    std::vector<double> ret;
+
+vector<double> TempWatcher::get_cpu_temperature(){
+
+    vector<double> ret;
+    #ifdef HARD_TEMPERATURE_SENSOR_ENABLE
     if (useHardwareSensor){
+        struct timespec start = TimeUtil::getTime();
         
         int value;
-        int TEMP_IDX_MAX = 4;
 
-    const char* n[] = {  "/sys/class/hwmon/hwmon1/temp2_input",
-    "/sys/class/hwmon/hwmon1/temp3_input",
-    "/sys/class/hwmon/hwmon1/temp4_input",
-    "/sys/class/hwmon/hwmon1/temp5_input"};
-
-        // const char* n[] = { "/home/long/test/test1",
-        // "/home/long/test/test2",
-        // "/home/long/test/test3",
-        // "/home/long/test/test4"};
-
-
-
-        int fd;
-
-        for ( int i = 0; i < TEMP_IDX_MAX; ++i) {
-            fd = open(n[i], O_RDONLY);
-            if (fd != -1 ) {
+        for ( int i = 0; i < (int) Scratch::hardwareSensorPath.size(); ++i) 
+        {
+            int fd = open(Scratch::hardwareSensorPath[i].c_str(), O_RDONLY);
+            if (fd != -1 ){
 
                 char buf[12];
                 ssize_t numwrite = read(fd, buf, 12);
@@ -296,162 +218,150 @@ std::vector<double> TempWatcher::get_cpu_temperature(){
 
                 sscanf(buf, "%d", &value);
             } else{
-               printf( " TempWatcher::get_cpu_temperature: read temperature error, NO:");
-               printf("%d\n", SENSORS_ERR_KERNEL); 
-               exit(-SENSORS_ERR_KERNEL) ;
+                printf( " TempWatcher::get_cpu_temperature: read temperature error, NO:");
+                exit(-1) ;
             }
 
            ret.push_back((double)value);
-        }
+       }
+
+     Statistics::addHardwareReadingOverhead(
+        TimeUtil::convert_us(TimeUtil::getTime() - start));
+     
     }
-
-    
-
-
     #endif
 
     return ret;
 }
 
-std::vector<double> TempWatcher::get_soft_cpu_temperature(){
-    std::vector<double> ret;
+vector<double> TempWatcher::get_soft_cpu_temperature(){
     if (useSoftSensor){
-        if (!temperatureCounters.readAllValues()){
-            cout << "warning: TempWatcher::get_soft_cpu_temperature: failed to read performance counter values\n";
+        // all workers have finished reading PAPI values
+        if (processor->waitPAPIReading() == 0){
+            struct timespec start = TimeUtil::getTime();
 
-        }
-        
+            vector< vector<long long> > allPAPIValues;
+            processor->getPAPIValues(allPAPIValues);
 
-        if (softSensor == NULL){
-            for (int i = 0; i < temperatureCounters.getCounterNumber(); ++i)
-            {
-                long long v = temperatureCounters.getCounterValue(i);
-                //cout << "debug: performanc counter value: " << v << endl;
-                double temp = coefAVector[i] * v + coefBVector[i];
-                ret.push_back(temp);
-            } 
-        }else{
             vector<long long> values;
-            for (int i = 0; i < temperatureCounters.getCounterNumber(); ++i)
+
+            for (int i = 0; i < (int) allPAPIValues.size(); ++i)
             {
-                values.push_back(temperatureCounters.getCounterValue(i));  
-            } 
+                for (int j = 0; j < (int) allPAPIValues[i].size(); ++j)
+                {
+                    values.push_back(allPAPIValues[i][j]);
+                }
+            }
 
-            ret = softSensor(values);
+            vector<double> temperature = Scratch::softSensor(values);
+            
+            Statistics::addSoftwareReadingOverhead(
+                TimeUtil::convert_us(TimeUtil::getTime() - start));
+            Statistics::addPerformanceCounterValue(values);
+
+            // 
+            return temperature;
+        } else{
+            return vector<double>{0, 0, 0, 0};
         }
+
+    }else{
+        return vector<double>{0, 0, 0, 0};
     }
 
-    return ret;
+    
 }
 
-double TempWatcher::calcMaxTemp(std::vector<std::vector<double> > temp){
-    vector<double> s_max;
-    s_max.reserve(temp.size());
-    for (unsigned i = 0; i < temp.size(); ++i)
-    {
-      s_max.push_back(maxElement(temp[i]));
-  }
-  return maxElement(s_max);
-}
-double TempWatcher::calcMeanMaxTemp(std::vector<std::vector<double> > temp){
-    vector<double> s_max;
-    s_max.reserve(temp.size());
-    for (unsigned i = 0; i < temp.size(); ++i)
-    {
-        s_max.push_back(maxElement(temp[i]));
-    }
-    double sum = std::accumulate(s_max.begin(), s_max.end(), 0.0);
-    double avg = sum/s_max.size();
+// double TempWatcher::calcMaxTemp(vector<vector<double> > temp){
+//     vector<double> s_max;
+//     s_max.reserve(temp.size());
+//     for (unsigned i = 0; i < temp.size(); ++i)
+//     {
+//       s_max.push_back(maxElement(temp[i]));
+//     }
 
-    return avg;
+//     return maxElement(s_max);
+// }
 
-}
-std::vector<double> TempWatcher::calcMeanTemp(std::vector<std::vector<double> > temp){
-    vector<double> ret;
-    unsigned nstage = temp.size();
+// double TempWatcher::calcMeanMaxTemp(vector<vector<double> > temp){
+//     vector<double> s_max;
+//     s_max.reserve(temp.size());
+//     for (unsigned i = 0; i < temp.size(); ++i)
+//     {
+//         s_max.push_back(maxElement(temp[i]));
+//     }
+//     double sum = accumulate(s_max.begin(), s_max.end(), 0.0);
+//     double avg = sum/s_max.size();
 
-    for (unsigned i = 0; i < nstage; ++i)
-    {
-        vector<double> singleStageTempTrace;
-        singleStageTempTrace.reserve(temp.size());
+//     return avg;
+// }
 
-        for (unsigned j = 0; j < temp.size(); ++j)
-        {
-          singleStageTempTrace.push_back(temp[j][i]);
-      }
+// vector<double> TempWatcher::calcMeanTemp(vector<vector<double> > temp){
+//     vector<double> ret;
+//     if (temp.size() == 0){
+//         return ret;
+//     }
+//     unsigned nstage = temp[0].size();
 
-      double sum = std::accumulate(singleStageTempTrace.begin(), 
-          singleStageTempTrace.end(), 0.0);
-      double avg = sum/singleStageTempTrace.size();
-      ret.push_back(avg);
-    }
+//     for (unsigned i = 0; i < nstage; ++i)
+//     {
+//         vector<double> singleStageTempTrace;
+//         singleStageTempTrace.reserve(temp.size());
 
-    return ret;
-}
+//         for (unsigned j = 0; j < temp.size(); ++j)
+//         {
+//           singleStageTempTrace.push_back(temp[j][i]);
+//         }
 
-
-
-double TempWatcher::getMaxTemp(){
-    return calcMaxTemp(hardwareTempTrace);
-}
-
-double TempWatcher::getMeanMaxTemp(){
-
-    return calcMeanMaxTemp(hardwareTempTrace);
-}
+//       double sum = std::accumulate(singleStageTempTrace.begin(), 
+//           singleStageTempTrace.end(), 0.0);
+//       if (singleStageTempTrace.size() == 0){
+//         printf( " TempWatcher::calcMeanTemp: temperature trace is empty!\n");
+//         exit(-1);
+//       }
+//       double avg = sum/singleStageTempTrace.size();
+//       ret.push_back(avg);
+//     }
+//     return ret;
+// }
 
 
-vector<double> TempWatcher::getMeanTemp(){
 
-    return calcMeanTemp(hardwareTempTrace);
+// double TempWatcher::getMaxTemp(){
+//     return calcMaxTemp(hardwareTempTrace);
+// }
 
-}
+// double TempWatcher::getMeanMaxTemp(){
 
-std::vector<std::vector<double> > TempWatcher::getAllTempTrace(){
-    return hardwareTempTrace;
-}
+//     return calcMeanMaxTemp(hardwareTempTrace);
+// }
 
 
-double TempWatcher::getMaxSoftSensorTemp(){
-    return calcMaxTemp(softTempTrace);
-}
+// vector<double> TempWatcher::getMeanTemp(){
+//     return calcMeanTemp(hardwareTempTrace);
+// }
 
-double TempWatcher::getMeanMaxSoftSensorTemp(){
-    return calcMeanMaxTemp(softTempTrace);
-}
+// vector<vector<double> > TempWatcher::getAllTempTrace(){
+//     return hardwareTempTrace;
+// }
 
-std::vector<double> TempWatcher::getMeanSoftSensorTemp(){
-    return calcMeanTemp(softTempTrace);
-}
 
-std::vector<std::vector<double> > TempWatcher::getAllSoftSensorTempTrace(){
-    return softTempTrace;
-}
+// double TempWatcher::getMaxSoftSensorTemp(){
+//     return calcMaxTemp(softTempTrace);
+// }
 
-// int get_type_scaling(sensors_subfeature_type type)
-// {
-// 	/* Multipliers for subfeatures */
-// 	switch (type & 0xFF80) {
-// 	case SENSORS_SUBFEATURE_IN_INPUT:
-// 	case SENSORS_SUBFEATURE_TEMP_INPUT:
-// 	case SENSORS_SUBFEATURE_CURR_INPUT:
-// 	case SENSORS_SUBFEATURE_HUMIDITY_INPUT:
-// 		return 1000;
-// 	case SENSORS_SUBFEATURE_FAN_INPUT:
-// 		return 1;
-// 	case SENSORS_SUBFEATURE_POWER_AVERAGE:
-// 	case SENSORS_SUBFEATURE_ENERGY_INPUT:
-// 		return 1000000;
-// 	}
+// double TempWatcher::getMeanMaxSoftSensorTemp(){
+//     return calcMeanMaxTemp(softTempTrace);
+// }
 
-// 	/* Multipliers for second class subfeatures
-// 	   that need their own multiplier */
-// 	switch (type) {
-// 	case SENSORS_SUBFEATURE_POWER_AVERAGE_INTERVAL:
-// 	case SENSORS_SUBFEATURE_VID:
-// 	case SENSORS_SUBFEATURE_TEMP_OFFSET:
-// 		return 1000;
-// 	default:
-// 		return 1;
-// 	}
+// vector<double> TempWatcher::getMeanSoftSensorTemp(){
+//     return calcMeanTemp(softTempTrace);
+// }
+
+// vector<vector<double> > TempWatcher::getAllSoftSensorTempTrace(){
+//     return softTempTrace;
+// }
+
+// vector<long> TempWatcher::getSoftSensorOverhead(){
+//     return softSensorOverhead;
 // }

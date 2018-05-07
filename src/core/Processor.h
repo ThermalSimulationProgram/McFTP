@@ -11,6 +11,7 @@
 #include "utils/Enumerations.h"
 #include "configuration/JobQueue.h"
 #include "configuration/StateTable.h"
+#include "../McFTPBuildConfig.h"
 
 class Worker;
 class Dispatcher;
@@ -54,6 +55,8 @@ protected:
 	std::vector<sem_t> taskqueue_sems;
 
 	std::vector<sem_t> jobnumber_sems;
+
+	std::vector<sem_t> papireading_sems;
 
 	// ThermalApproach manages the execution of the workers
 	ThermalApproach* thermal_approach;
@@ -118,7 +121,7 @@ public:
 
 	void preemptCurrentJobOnCore(int coreId);
 
-	Task* tryLoadJob(int workerId);
+	Task* tryLoadJob(int workerId, struct timespec timeout);
 
 	void updateStateTables(const std::vector<StateTable>& c);
 
@@ -146,13 +149,20 @@ public:
 	// in the simulation
 	void getDynamicInfo(DynamicInfo& p);
 
-	void saveResults();
-
 	std::vector<int> getAllTaskIds();
 
 	int getWorkerNumber();
 
 	JobQueue* getJobQueuePointer(int queueId);
+
+	void triggerAllPAPIReading(int source);
+
+	void informPAPIReadingFinish(int workerId);
+
+	int waitPAPIReading();
+
+	void getPAPIValues(std::vector< std::vector<long long> >& values);
+
 
 };
 

@@ -1321,3 +1321,26 @@ void CPUStressor::stressWithBenchmark(int _index){
 	methods[_index].func(name);
 }
 
+int getBenchmarkId(std::string name){
+	CPUStressor cs = CPUStressor();
+
+	int totalNumber = cs.getBenchmarkNumber();
+	int benchmarkId;
+	// find the benchmark id 
+	bool found = false;	
+	if (name != ""){
+		for (int i = 1; i <= totalNumber; ++i){
+			if(name == cs.getBenchmarkName(i)){
+				benchmarkId = i;
+				found = true;
+				break;
+			}
+		}
+	}
+
+	// set as the default benchmark if not found
+	if (!found){
+		benchmarkId = -1;
+	}
+	return benchmarkId;
+}

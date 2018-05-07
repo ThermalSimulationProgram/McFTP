@@ -33,7 +33,7 @@ DESCR =
 DOCDIR	  = 
 EPREFIX   = ${prefix}
 EXTRA_CFLAGS = -Wextra
-F77	  = 
+F77	  = gfortran
 FFLAGS    =   -Dlinux -Wall -ffixed-line-length-132
 FLAGS = 
 FILENAME = Rules.pfm4_pe
@@ -49,7 +49,7 @@ MANDIR	  = ${prefix}/man
 MISCHDRS = 
 MISCOBJS = $(MISCSRCS:.c=.o)
 MISCSRCS =  x86_cpuid_info.c
-MPICC = 
+MPICC = mpicc
 NOOPT = 
 NOTLS     = -DUSE_COMPILER_TLS
 OMPCFLGS = -fopenmp

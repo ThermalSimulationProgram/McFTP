@@ -24,14 +24,14 @@ struct timespec TimeUtil::getTime()
 }
 
 ///This function returns a timespec with the current time
-struct timespec TimeUtil::getTime(enum _time_type type)
+struct timespec TimeUtil::getTime(enum _time_type _type)
 {
   struct timespec aux;
   clock_gettime(HSF_CLOCK, &aux);
   
-  //if(type == relative) {
+  if(_type == _relative) {
     aux = aux - offset;
-    //}
+  }
 
   return aux;
 }
@@ -39,12 +39,11 @@ struct timespec TimeUtil::getTime(enum _time_type type)
 ///This function returns an unsigned long int with the current time in microseconds
 unsigned long TimeUtil::getTimeUSec()
 {
-  struct timespec aux;
-  clock_gettime(HSF_CLOCK, &aux);
-  
-  aux = aux - offset;
+  return convert_us(getTime(_relative));
+}
 
-  return convert_us(aux);
+unsigned long TimeUtil::getTimeMSec(){
+  return convert_ms(getTime(_relative));
 }
 
 ///This function converts a timestamp from absolute time to relative simulation time

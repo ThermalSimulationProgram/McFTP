@@ -28,7 +28,7 @@ string formatString(const string& base){
 // }
 
 void dumpLinesSeperator(){
-	std::cout << "***********************************************" << std::endl;
+	std::cout << "**********************************************************************" << std::endl;
 }
 
 
@@ -83,7 +83,25 @@ void matrixAAndBToWAndV(
     }
     delete [] At;
 
+}
 
 
-
+void checkVectorMatrixOrder(vector<vector<double> > A, int order, string title){
+	int N = A.size();
+	if (N <= 0){
+		printf("Error, given matrix is empty!\n") ;
+		exit(1);
+	}else{
+		if (N != order){
+			printf("Error, given matrix row number should be %d!\n",  order) ;
+			exit(1);
+		}
+		for (int i = 0; i < N; ++i)
+		{
+			if ((int) A[i].size() != N){
+				printf("Error, given matrix must be a square matrix!\n");
+				exit(1);  
+			}
+		}
+	}
 }

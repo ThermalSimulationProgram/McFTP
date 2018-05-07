@@ -7,10 +7,10 @@
 struct timespec operator*(double a, struct timespec b);
 
 ///This operator adds two timespecs
-struct timespec operator+(struct timespec a, struct timespec b);
+struct timespec operator+(const struct timespec& a, const struct timespec& b);
 
 ///This operator subtracts two timespecs
-struct timespec operator-(struct timespec a, struct timespec b);
+struct timespec operator-(const struct timespec& a, const struct timespec& b);
 
 
 ///This operator compares two timespecs 

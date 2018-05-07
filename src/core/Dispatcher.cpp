@@ -44,6 +44,8 @@ Thread(_id){
 	allTasks.reserve(10000);
 
 	jobCounter = 0;
+
+	sem_init(&dispatch_sem, 0, 0);
 }
 
 Dispatcher::~Dispatcher(){
@@ -58,6 +60,7 @@ Dispatcher::~Dispatcher(){
 
 ///This join function takes into account the dispatcher's unblocking mechanism
 void Dispatcher::join() {
+	sem_post(&dispatch_sem);
 	join2();
 }
 
@@ -87,9 +90,9 @@ void Dispatcher::wrapper() {
 	Dispatcher* disp = (Dispatcher*)this;
 	disp->dispatch();
 
-  #if _INFO == 1
-	cout << "Dispatcher " << id << " exiting wrapper...\n";
-  #endif
+  // #if _INFO == 1
+	cout << "Dispatcher: " << id << " is exiting wrapper...\n";
+  // #endif
 }
 
 /*********** MEMBER FUNCTIONS ***********/

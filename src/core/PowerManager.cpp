@@ -1,4 +1,4 @@
-#include "PowerManager.h"
+#include "core/PowerManager.h"
 
 #include <cstdlib>
 #include <stdio.h>
@@ -16,6 +16,7 @@
 #include "utils/Operators.h"
 #include "utils/Semaphores.h"
 #include "results/Statistics.h"
+#include "core/ComponentsDefine.h"
 
 // using namespace std;
 
@@ -109,7 +110,9 @@ void PowerManager::wrapper(){
 	{
 		// wait until next action time, or new tables are given
 		sem_timedwait(&interrupt_sem, &nextActionTime);
-
+		if ( !Processor::isRunning() ){
+			break;
+		}
 		
 		sem_wait(&statetable_sem);			
 		if (tables.size() > 0){
@@ -143,6 +146,7 @@ void PowerManager::wrapper(){
 
 	}
 
+	printf("PowerManager: %d is exiting wrapper \n", id);
 	// std::cout << "PowerManager: time1: " << time1 << " time2: " << time2 << std::endl;
 	// printf("PowerManager: time1:%d time2:%d\n", (int)time1, (int)time2);
 }
@@ -151,12 +155,14 @@ void PowerManager::changePower(int id, double f, struct timespec length){
 	// std::cout << "PowerManager id: " << id << " is changing power";
 	if ( f<EPSILON && f>-EPSILON){
 		if (!isFixedActive){
+			// printf("power manager: I am sleeping thread %d\n", id); 
 			workers[id]->deactivate(length);
 		}
 		
 	}else if (f > EPSILON){
 		if (!isFixedActive && !workers[id]->isActive()){
-			workers[id]->activate();
+			// printf("power manager: I am activating thread %d\n", id); 
+			workers[id]->activate(POWERMANAGER);
 		}
 		if (!isFixedFrequency){
 			setFrequency(id, (int)f);
@@ -168,7 +174,7 @@ void PowerManager::changePower(int id, double f, struct timespec length){
 void PowerManager::setFrequency(int id, int f){
 	int fd = open( freqInterface[id].c_str(), O_WRONLY);
 	if (fd == -1){
-		printf("Failed to open file\n");
+		printf("PowerManager::setFrequency: Failed to open file\n");
 		return ;
 	}
 
@@ -178,10 +184,11 @@ void PowerManager::setFrequency(int id, int f){
 
 	ssize_t numwrite = write(fd, buf, strlen(buf));
 	if (numwrite < 1) {
-		printf("Failed to write file\n");
+		printf("PowerManager::setFrequency: Failed to write file\n");
 		close(fd);
 		return ;
 	}
+	// printf("PowerManager::setFrequency: core %d frequency changed to %d\n", id, f);
 
 	close(fd);
 }
@@ -198,7 +205,7 @@ void PowerManager::setStateTables(const std::vector<StateTable> & newtables){
 	struct timespec now = TimeUtil::getTime();
 	for (int i = 0; i < (int)tables.size(); ++i){
 		tables[i].setStateTable(newtables[i], now);
-		tables[i].print();
+		// tables[i].print();
 	}
 	// default: next action time is now
 	nextActionTime = now;

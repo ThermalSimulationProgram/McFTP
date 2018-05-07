@@ -8,6 +8,8 @@
 
 using namespace std;
 
+bool 						Scratch::initialized = false;
+
 /*****************BASIC EXPERIMENT SETTINGS*******************/
 // The name of the experiment
 string 						Scratch::name;
@@ -19,8 +21,10 @@ unsigned long 				Scratch::duration;
 bool 						Scratch::isSave;
 // Whether to use hardware temperature sensors
 bool 						Scratch::useHardwareTempSensor;
+// file paths to read the hardware sensor values
+std::vector<std::string>    Scratch::hardwareSensorPath;
 // Whether to use soft temperature sensors
-bool 						Scratch::useSoftTempSensor;
+bool 						Scratch::useSoftwareTempSensor;
 // This semaphore protects the access to internal members
 sem_t 						Scratch::access_sem;
 	
@@ -38,15 +42,20 @@ user_defined_soft_temperature_sensor Scratch::softSensor;
 
 vector<SoftTemperatureSensorConfig> Scratch::soft_sensors;
 
-unsigned long 			Scratch::softSamplingInterval;
+unsigned long 			Scratch::temperatureSamplePeriod;
 
-unsigned long 			Scratch::hardSamplineInterval;
 
-std::vector<std::vector<double>> Scratch::softSensorA;
+std::vector<std::vector<double>> Scratch::softSensorW;
 
-std::vector<std::vector<double>> Scratch::softSensorB;
+std::vector<std::vector<double>> Scratch::softSensorV;
 
-std::vector<double> Scratch::softSensorK;
+std::vector<std::vector<double>> Scratch::softSensorK;
+
+std::vector<double>				Scratch::ambientT;
+
+std::vector<double>				Scratch::coefA;
+
+std::vector<double>				Scratch::coefB;
 
 std::string 					Scratch::softSensorCalculator;
 
@@ -60,6 +69,10 @@ vector<_task_periodicity> 	Scratch::periodicities;
 vector<_task_type> 			Scratch::task_types;
 // This vector stores the auxiliary data of all tasks
 vector<TaskArgument>  		Scratch::all_task_data;
+
+
+TemperatureSaveOption 		Scratch::hardwareOption;
+SoftTemperatureSaveOption 	Scratch::softwareOption;
 
 	
 /*****************AUXILIARY VARIABLES*******************/
@@ -76,6 +89,10 @@ string 						Scratch::benchmark;
 vector<struct timespec> 	Scratch::WCETS;
 
 
+bool Scratch::isInitialized(){
+	return initialized;
+}
+
 // This function initialize all the members, it needs the name of the experiment,
 // the number of used cores and experiment duration
 void Scratch::initialize(int _nCores,
@@ -85,16 +102,15 @@ void Scratch::initialize(int _nCores,
 	unsigned long onesecond = 1000000;
 	// we directly set the vairables and do not check whether they
 	// are valid, because Scratch is only for storing data
-	nCores                = _nCores;
-	duration              = _duration;
-	name                  = _name;
-	useHardwareTempSensor = _useHardwareTempSensor;
-	useSoftTempSensor     = _useSoftTempSensor;
-	isAppendSaveFile	  = 0;
-	softSamplingInterval  = 200000;
-	hardSamplineInterval  = 200000;
-	softSensorCalculator  = "default";
-	powerEstimator 		  = NULL;
+	nCores                  = _nCores;
+	duration                = _duration;
+	name                    = _name;
+	useHardwareTempSensor   = _useHardwareTempSensor;
+	useSoftwareTempSensor   = _useSoftTempSensor;
+	isAppendSaveFile        = 0;
+	temperatureSamplePeriod = 200000;
+	softSensorCalculator    = "default";
+	powerEstimator          = NULL;
 
 
 
@@ -111,30 +127,61 @@ void Scratch::initialize(int _nCores,
 
 	// mutex semaphore
 	sem_init(&access_sem, 0, 1);
+
+	initialized = true;
 }
 
 // This function prints the content of all members
 void Scratch::print(){
-	cout << "nCores 			= " << nCores << endl;
-	cout << "duration 			= " << duration << endl;
-	cout << "name 				= " << name << endl;
-	cout << "adaption_period 	= " << adaption_period << endl;
-	cout << "fixedFrequency 	= " << fixedFrequency << endl;
-	cout << "fixedActive 		= " << fixedActive << endl;
-	cout << "useSoftTempSensor  = " << useSoftTempSensor << endl;
+	cout << "nCores                 = " << nCores << endl;
+	cout << "duration (us)          = " << duration << endl;
+	cout << "name                   = " << name << endl;
+	cout << "adaption_period (us)   = " << adaption_period << endl;
+	cout << "fixedFrequency         = " << fixedFrequency << endl;
+	cout << "fixedActive            = " << fixedActive << endl;
+	cout << "useSoftwareTempSensor  = " << useSoftwareTempSensor << endl;
 	cout << "useHardwareTempSensor  = " << useHardwareTempSensor << endl;
+	cout << "temperatureSamplePeriod (us) = " << temperatureSamplePeriod << endl;
+	cout << "isAppendSaveFile       = " << isAppendSaveFile << endl;
+	cout << "softSensorCalculator   = " << softSensorCalculator << endl;
+	cout << "isSave                 = " << isSave << endl;
+	cout << "is_staticApproach      = " << is_staticApproach << endl;
+	cout << "benchmark              = " << benchmark << endl;
+	cout << "softSensor             = " << softSensor << endl;
+	cout << "powerEstimator         = " << powerEstimator << endl;
+	cout << "benchmark              = " << benchmark << endl;
 
-	for (int i = 0; i < soft_sensors.size(); ++i)
+	for (int i = 0; i < (int) hardwareSensorPath.size(); ++i)
+	{
+		cout << "hardware sensor path " << i << " = "
+			 << hardwareSensorPath[i] << endl;
+	}
+	
+
+	for (int i = 0; i < (int)soft_sensors.size(); ++i)
 	{
 		SoftTemperatureSensorConfig t = soft_sensors[i];
-		cout << "counter name: " << t.counterName << endl;
-		cout << "coef a: " << t.coefA << endl;
-		cout << "coef b: " << t.coefB << endl;
+		cout << "counter name : " << t.counterName << endl;
+		cout << " value scale : " << t.valueScale << endl;
+		cout << "      weight : " << t.weight << endl;
 	}
 
-	displayvector(TimeUtil::convert_us(PBOO_tons) , "PBOO_tons");
-	displayvector(TimeUtil::convert_us(PBOO_toffs), "PBOO_toffs");
+	displayvector(TimeUtil::convert_us(PBOO_tons) , "PBOO_tons (us)");
+	displayvector(TimeUtil::convert_us(PBOO_toffs), "PBOO_toffs (us)");
+	displayvector(TimeUtil::convert_us(WCETS), "WCETS (us)");
+
+	displayvector(ambientT, "ambientT (K)");
+	displayvector(coefA, "coefA ");
+	displayvector(coefB, "coefB ");
+
+	displayvector(softSensorW, "softSensorW ");
+	displayvector(softSensorV, "softSensorV ");
+	displayvector(softSensorK, "softSensorK ");
+
 	printAllTaskInfo();
+
+	hardwareOption.print("hardware temperature result saving option: ");
+	softwareOption.print("software temperature result saving option: ");
 }
 // This function prints the information of all tasks
 void Scratch::printAllTaskInfo(){
@@ -211,11 +258,11 @@ void Scratch::setWCETs(vector<struct timespec> wcets){
 }
 
 
-void Scratch::addSoftTempSensor(string name, double _coefA, double _coefB){
+void Scratch::addSoftTempSensor(string name, double _valueScale, double _weight){
 	SoftTemperatureSensorConfig temp;
 	temp.counterName = name;
-	temp.coefA = _coefA;
-	temp.coefB = _coefB;
+	temp.valueScale = _valueScale;
+	temp.weight = _weight;
 	soft_sensors.push_back(temp);
 }
 
@@ -245,7 +292,7 @@ bool Scratch::isUsingHardwareTempSensor(){
 	return useHardwareTempSensor;
 }
 bool Scratch::isUsingSoftTempSensor(){
-	return useSoftTempSensor;
+	return useSoftwareTempSensor;
 }
 
 bool Scratch::isSaveFile(){
@@ -300,7 +347,7 @@ vector<TaskArgument>  Scratch::getTaskData(){
 std::vector<int> 	Scratch::getAllTaskIds(){
 	vector<int> ret;
 	sem_wait(&access_sem);
-	for (int i = 0; i < all_task_data.size(); ++i)
+	for (int i = 0; i < (int) all_task_data.size(); ++i)
 	{
 		ret.push_back(all_task_data[i].taskId);
 	}

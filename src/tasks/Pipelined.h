@@ -40,7 +40,7 @@ class Pipelined : public Task {
   /**** FROM TASK ****/
   
   //This function will perform one task with execution time WCET
-  bool fire();
+  bool fire(int);
 
   int getNextCoreId();
 

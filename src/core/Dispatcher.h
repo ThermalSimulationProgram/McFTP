@@ -3,7 +3,7 @@
 
 #include <time.h>
 #include <vector>
-
+#include <semaphore.h>
 
 #include "pthread/Thread.h"
 #include "utils/Enumerations.h"
@@ -41,6 +41,8 @@ class Dispatcher : public Thread {
   TaskArgument taskdata;
 
   int jobCounter;
+
+  sem_t dispatch_sem;
    
  public:
 

@@ -106,30 +106,65 @@ std::vector<std::vector<T> > loadMatrixFromFile(const std::string& filename){
 	return file.readMatrix<T>();
 }
 
-void saveContentToNewFile(const std::string& filename, const std::vector<std::string>&data);
-void appendContentToFile(const std::string& filename, const std::vector<std::string>&data);
+void saveContentToNewFile(const std::string& filename, 
+	const std::vector<std::string>&data);
+
+void appendContentToFile(const std::string& filename, 
+	const std::vector<std::string>&data);
 
 template<typename T>
-void saveToNewFile(const std::string& filename,  const std::vector<T>& data){
-	saveContentToNewFile(filename, std::vector<std::string>(1, vectorTostring(data)));
+void saveToNewFile(const std::string& filename,  
+	const std::vector<T>& data){
+
+	saveContentToNewFile(filename, 
+		std::vector<std::string>(1, vectorTostring(data)));
 }
 
 template<typename T>
-void saveToNewFile(const std::string& filename,  const std::vector<std::vector<T>>& data){
+void saveToNewFile(const std::string& filename,  
+	const std::vector<T>& data, int columnNumberLimit){
+
+	saveContentToNewFile(filename, 
+		vectorTostringMatrix(data, columnNumberLimit));
+}
+
+template<typename T>
+void saveToNewFile(const std::string& filename,  
+	const std::vector<std::vector<T>>& data){
+
 	saveContentToNewFile(filename, matrixTostring(data));
 }
 
 
 template<typename T>
-void appendToFile(const std::string& filename,  const std::vector<T>& data){
-	appendContentToFile(filename, std::vector<std::string>(1, vectorTostring(data)));
+void appendToFile(const std::string& filename,  
+	const std::vector<T>& data){
+
+	appendContentToFile(filename, 
+		std::vector<std::string>(1, vectorTostring(data)));
 }
 
 template<typename T>
-void appendToFile(const std::string& filename,  const std::vector<std::vector<T>>&data){
+void appendToFile(const std::string& filename,  
+	const std::vector<std::vector<T>>&data){
+
+	// std::vector<std::string>  ss = matrixTostring(data);
+
+	// for (int i = 0; i < (int)ss.size(); ++i)
+	// {
+	// 	std::cout << ss[i] << std::endl;
+	// }
+
 	appendContentToFile(filename, matrixTostring(data));
 }
 
+template<typename T>
+void appendToFile(const std::string& filename,  
+	const std::vector<T>& data, int columnNumberLimit){
+
+	appendContentToFile(filename, 
+		vectorTostringMatrix(data, columnNumberLimit));
+}
 
 
 

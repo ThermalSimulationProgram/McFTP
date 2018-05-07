@@ -16,7 +16,7 @@ class Periodic : public Dispatcher {
   ///This timespec hols the Dispatcher's period
   struct timespec period;
 
-  sem_t dispatch_sem;
+  
 
  public:
 

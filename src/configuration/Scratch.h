@@ -12,11 +12,14 @@
 #include "core/structdef.h"
 #include "core/TaskArgument.h"
 #include "CMIFunctionPointerDefs.h"
+#include "utils/TemperatureSaveOption.h"
+#include "utils/SoftTemperatureSaveOption.h"
 
 // This class stores global parameters of the experiment
 
 class Scratch{
 public:
+	static bool 					isInitialized();
 	// This function initialize all the members, it needs the name of the experiment,
 	// the number of used cores and experiment duration
 	static void 					initialize(int, unsigned long, std::string, bool, bool);
@@ -40,7 +43,7 @@ public:
 	static void 					setBenchmark(const std::string&);
 	static void 					setWCETs(std::vector<struct timespec>);
 
-	static void 					addSoftTempSensor(std::string name, double _coefA, double _coefB);
+	static void 					addSoftTempSensor(std::string name, double _valueScale, double _weight);
 	
 	
 	/*********************GET FUNCTIONS****************************/
@@ -68,45 +71,53 @@ public:
 	static std::string 					getBenchmarkName();
 	static std::string 					getApproachName();
 
-	static std::vector<SoftTemperatureSensorConfig> soft_sensors;
+	static std::vector<SoftTemperatureSensorConfig> soft_sensors; //checked
 
 	// static std::vector<SoftTemperatureSensorConfig> getSoftTempSensorsConfig();
 	// Whether to use hardware temperature sensors
-	static bool 					useHardwareTempSensor;
+	static bool 					useHardwareTempSensor; //checked
+	static std::vector<std::string> hardwareSensorPath;
 	// Whether to use soft temperature sensors
-	static bool 					useSoftTempSensor;
+	static bool 					useSoftwareTempSensor; //checked
+	static unsigned long 			temperatureSamplePeriod; //checked
 
-	static int 						isAppendSaveFile;
-	static user_defined_soft_temperature_sensor softSensor;
-	static unsigned long 			softSamplingInterval;
-	static unsigned long 			hardSamplineInterval;
-	static std::vector<std::vector<double>> softSensorA;
-	static std::vector<std::vector<double>> softSensorB;
-	static std::vector<double> softSensorK;
-	static std::string 				softSensorCalculator;
-	static soft_temperature_sensor_power_estimator powerEstimator;
+	static int 						isAppendSaveFile; // checked
+	static user_defined_soft_temperature_sensor softSensor; //checked
+
+	static std::vector<std::vector<double>> softSensorW; //checked
+	static std::vector<std::vector<double>> softSensorV; //checked
+	static std::vector<std::vector<double>> softSensorK; //checked
+	static std::vector<double>				ambientT; //checked
+	static std::vector<double>				coefA; //checked
+	static std::vector<double>				coefB; //checked
+	static std::string 				softSensorCalculator; //checked
+	static soft_temperature_sensor_power_estimator powerEstimator; //checked
+
+	static TemperatureSaveOption hardwareOption;
+	static SoftTemperatureSaveOption softwareOption;
 
 	
 private:
+	static bool 					initialized;
 	/*****************BASIC EXPERIMENT SETTINGS*******************/
 	// The name of the experiment
-	static std::string 				name;
+	static std::string 				name;   //checked
 	// The number of used cores
-	static int 						nCores;
+	static int 						nCores; //checked
 	// The duration of the experiment, in microsecond
-	static unsigned long 			duration;
+	static unsigned long 			duration; //checked
 	// Whether to save the results
-	static bool 					isSave;
+	static bool 					isSave;  //checked
 	
 	// This semaphore protects the access to internal members
 	static sem_t 					access_sem;
 
 	// This variable indicates if the clock frequency of the core is fixed
-	static bool 					fixedFrequency;
+	static bool 					fixedFrequency; //checked
 	// This variable indicates if the cores will always be active
-	static bool 					fixedActive;
+	static bool 					fixedActive; //checked
 	// This variable indicates if the tested approach is static
-	static bool 					is_staticApproach;
+	static bool 					is_staticApproach; //chekced
 
 
 	
@@ -117,7 +128,7 @@ private:
 	// This vector stores the types of all tasks
 	static std::vector<_task_type> task_types;
 	// This vector stores the auxiliary data of all tasks
-	static std::vector<TaskArgument>  all_task_data;
+	static std::vector<TaskArgument>  all_task_data; //checked
 	
 
 
@@ -125,18 +136,18 @@ private:
 	/*****************AUXILIARY VARIABLES*******************/
 	// The tons and toffs for all the cores, if the user want to periodically switch
 	// the cores to idle state
-	static std::vector<struct timespec> 	PBOO_tons;
-	static std::vector<struct timespec> 	PBOO_toffs;
+	static std::vector<struct timespec> 	PBOO_tons; //checked
+	static std::vector<struct timespec> 	PBOO_toffs; //checked
 	
 	// the adaption period for an online approach
-	static unsigned long 			adaption_period;
+	static unsigned long 			adaption_period; //checked
 
 	// the name of the executed benchmark
-	static std::string 				benchmark;
+	static std::string 				benchmark; //checked
 
 	// The worst-case execution times of the task on every core, if the
 	// pipelined architecture is adopted
-	static std::vector<struct timespec> 	WCETS;
+	static std::vector<struct timespec> 	WCETS; //checked
 	
 	// static std::vector<double> 			dwcets;
 	// static std::vector<unsigned long> 	arrival_times;

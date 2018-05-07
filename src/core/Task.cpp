@@ -49,7 +49,7 @@ Task::Task(_task_type type, _task_load_type  load, int loadId, int _taskId,
   			loads = (TaskLoad*) newload;
   			break;
   		}
-}
+    }
 
 
 }
@@ -70,7 +70,7 @@ void Task::setLoad(TaskLoad* l){
 
 
 ///This function performs one task
-bool Task::fire() {
+bool Task::fire(int i) {
   cout << "Task::fire - This should not print!\n";
   return false;
 }
@@ -97,14 +97,14 @@ void Task::stop(){
   loads->stop();
 }
 
-void Task::suspend(const struct timespec& length){
-	loads->suspend(length);
+// void Task::suspend(const struct timespec& length){
+// 	loads->suspend(length);
 
-}
+// }
 
-void Task::resume(){
-	loads->resume();
-}
+// void Task::resume(int source){
+// 	loads->resume(source);
+// }
 
 
 bool Task::isFinished(){
@@ -115,3 +115,6 @@ int Task::getFinishCoreId(){
   return worker->getId();
 }
 
+void Task::setLoadExecutionInterrupter(ExecutionInterrupter *e){
+  loads->setExecutionInterrupter(e);
+}

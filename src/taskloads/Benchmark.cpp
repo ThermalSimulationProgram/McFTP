@@ -101,7 +101,6 @@ bool Benchmark::runLoads(unsigned long wcet_us){
 
 			timeEnd = TimeUtil::convert_us(TimeUtil::getTime());
 			realLength += timeEnd - timeIn;
-			timeIn = timeEnd;
 
 			setCheckBlockEnd();
 		}while(realLength < wcet_us);
@@ -115,7 +114,6 @@ bool Benchmark::runLoads(unsigned long wcet_us){
 			cpuStressor.stressWithBenchmark(benchmarkId);
 			timeEnd = TimeUtil::convert_us(TimeUtil::getTime());
 			realLength += timeEnd - timeIn;
-			timeIn = timeEnd;
 
 			setCheckBlockEnd();
 		}while(realLength < wcet_us);

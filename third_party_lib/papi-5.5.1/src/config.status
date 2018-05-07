@@ -482,10 +482,10 @@ s,@CPPFLAGS@, -Ilibpfm4/include,;t t
 s,@ac_ct_CC@,gcc,;t t
 s,@EXEEXT@,,;t t
 s,@OBJEXT@,o,;t t
-s,@F77@,,;t t
+s,@F77@,gfortran,;t t
 s,@FFLAGS@,  -Dlinux -Wall -ffixed-line-length-132,;t t
-s,@ac_ct_F77@,,;t t
-s,@MPICC@,,;t t
+s,@ac_ct_F77@,gfortran,;t t
+s,@MPICC@,mpicc,;t t
 s,@AWK@,mawk,;t t
 s,@CPP@,gcc -E,;t t
 s,@LN_S@,ln -s,;t t

@@ -145,9 +145,6 @@ const std::vector<T1> &b){
 }
 
 
-
-
-
 template<typename T> T maxElement(const std::vector<T> & a, int s, 
 int e, int *id){
 	std::vector<int> ids = integerVector(s, e);
@@ -174,6 +171,114 @@ const std::vector<std::vector<T>> & a){
 		double tmp = maxElement(a[i]);
 		if(ret < tmp)
 			ret = tmp;
+	}
+	return ret;
+}
+
+
+template<typename T> std::vector<T> localMaxORMinElement(
+const std::vector<std::vector<T>> & a, bool direction, bool ismax){
+	if (a.size() == 0 || a[0].size() == 0){
+		std::cerr << "vectormath::localMaxElement:input is empty!";
+		exit(1);
+	}
+	if (!isMatrix(a)){
+		std::cerr << "vectormath::localMaxElement:input is not a matrix!";
+		exit(1);
+	}
+	std::vector<T> ret;
+
+	if (direction){
+		bool (*compare) (T, T);
+
+		if (ismax){
+			compare = &largerThan;
+		}else{
+			compare = &smallerThan;
+		}
+
+		ret = a[0];
+
+		for (int i = 0; i < (int) a.size(); ++i)
+		{
+			for (int j = 0; j < (int) ret.size(); ++j)
+			{
+				if ( compare(a[i][j], ret[j]) ) ret[j] = a[i][j];
+			}
+		}
+
+	}else{
+
+		T (*method)(const std::vector<T>&);
+		if (ismax){
+			method = &maxElement;
+		}else{
+			method = &minElement;
+		}
+
+		
+		ret.reserve(a.size());
+		for (int i = 0; i < (int) a.size(); ++i)
+		{
+			ret.push_back(method(a[i]));
+		}
+	}
+
+	return ret;	
+}
+
+
+template<typename T> std::vector<T> localMaxElement(
+const std::vector<std::vector<T>> & a, bool direction){
+	return localMaxORMinElement(a, direction, true);
+}
+
+template<typename T> std::vector<T> localMinElement(
+const std::vector<std::vector<T>> & a, bool direction){
+	return localMaxORMinElement(a, direction, false);
+}
+
+template<typename T> std::vector<double> localMeanElement(
+const std::vector<std::vector<T>> & a, bool direction){
+	if (a.size() == 0 || a[0].size() == 0){
+		std::cerr << "vectormath::localMeanElement:input is empty!";
+		exit(1);
+	}
+	if (!isMatrix(a)){
+		std::cerr << "vectormath::localMeanElement:input is not a matrix!";
+		exit(1);
+	}
+
+	std::vector<double> ret;
+	if (direction){
+		unsigned ncloms = a[0].size();
+
+		for (unsigned i = 0; i < ncloms; ++i)
+		{
+			std::vector<T> localTrace;
+			localTrace.reserve(a.size());
+
+			for (unsigned j = 0; j < a.size(); ++j)
+			{
+				localTrace.push_back(a[j][i]);
+			}
+
+			double sum = std::accumulate(localTrace.begin(), 
+				localTrace.end(), 0.0);
+			
+			double avg = sum/localTrace.size();
+			ret.push_back(avg);
+		}
+	}else{
+		for (unsigned i = 0; i < a.size(); ++i)
+		{
+			double sum = std::accumulate(a[i].begin(), 
+				a[i].end(), 0.0);
+			
+			double avg = sum/a[i].size();
+			ret.push_back(avg);
+		}
+
 	}
 	return ret;
 }

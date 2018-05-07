@@ -10,6 +10,7 @@
 #include "utils/vectormath.h"
 //parser
 #include "utils/Parser.h"
+#include "utils/exceptions.h"
 
 #include "performance_counter/PerformanceCounters.h"
 
@@ -26,8 +27,25 @@ void PeriodicThermalManagement(CMI* cmi, std::vector<StateTable>& c){
 	for (int i = 0; i < (int) tons.size(); ++i)
 	{
 		StateTable temp = StateTable(i);
-		temp.pushState(3200, TimeUtil::convert_us(tons[i]) );
+		temp.pushState(3400, TimeUtil::convert_us(tons[i]) );
 		temp.pushState(0, TimeUtil::convert_us(toffs[i])) ;
+		c.push_back(temp);
+	}
+}
+
+void StateTableManagement(CMI*cmi, std::vector<StateTable>& c){
+	c.clear();
+
+	for (int i = 0; i < cmi->getCoreNumber(); ++i)
+	{
+		StateTable temp = StateTable(i);
+		
+		
+		temp.pushState(3400000, 100000000);
+		temp.pushState(800000, 100000000);
+		temp.pushState(2100000, 100000000);
+		temp.pushState(3000000, 100000000);
+		temp.pushState(0, 300000000) ;
 		c.push_back(temp);
 	}
 }
@@ -38,13 +56,25 @@ CMI::CMI(string _xml_path):CMI(xml_path, 0){}
 CMI::CMI(string _xml_path, int isAppendSaveFile){
 
 	xml_path = _xml_path;
-
 	Parser* p = new Parser(xml_path);
 
-	if (p->parseFile() != 0){
-		cerr << "Processor::Processor: failed to parse given xml file!\n";
+	try{
+		p->parseFile() ;
+	}
+	catch (XmlParseException & e){
+		cout << "Processor::Processor: failed to parse given xml file!\n";
+		cout << "The reason is: " << e.what() << endl;
+		delete p;
 		exit(1);
-	}	
+	}
+
+
+	
+
+	// if (p->parseFile() != 0){
+	// 	cerr << "Processor::Processor: failed to parse given xml file!\n";
+	// 	exit(1);
+	// }	
 	delete p;
 
 	Scratch::isAppendSaveFile = isAppendSaveFile;
@@ -143,7 +173,7 @@ void CMI::setOnlineTaskAllocator(online_task_allocator _allocator){
 }
 
 void CMI::enableSoftTemperatureSensor(){
-	Scratch::useSoftTempSensor = true;
+	Scratch::useSoftwareTempSensor = true;
 }
 // The user can customize the soft temperature sensor by passing the
 // function to this method.
@@ -305,7 +335,7 @@ void CMI::displayAllQueues(){
 
 
 void CMI::displayPerformanceCounterInfo(){
-	PerformanceCounters::printCounterInfo();
+	// PerformanceCounters::printCounterInfo();
 }
 
 /*********Basic Functions Automatically Called During Experiment********/

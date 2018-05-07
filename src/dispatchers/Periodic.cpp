@@ -21,7 +21,7 @@ using namespace std;
 
 Periodic::Periodic(unsigned int id) : Dispatcher(id) {
   period =  TimeUtil::Millis(20);
-  sem_init(&dispatch_sem, 0, 0);
+  
 
 }
 

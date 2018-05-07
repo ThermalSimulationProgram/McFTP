@@ -47,14 +47,54 @@ void appStringToVector(std::string const& pointLine, std::vector<T>& data)
 void dumpLinesSeperator();
 
 
+
+
+template<typename T>
+std::string 	vectorTostring(const std::vector<T>& data, 
+	int startid, int endid){
+	if (startid < 0){
+		std::cout << "vectorTostring: start id should not be negative!" << std::endl;
+		exit(1);	
+	}
+	if (endid > (int)data.size()){
+		std::cout << "vectorTostring: end id should not exceed data size!" << std::endl;
+		exit(1);
+	}
+	std::stringstream out;
+	for(int i = startid; i < endid; i++) {
+		out << (double)data[i];
+		if ( i != endid-1 ){
+			out << ", " ;
+		}		
+	}
+	return out.str();
+}
+
+template<typename T>
+std::string 	vectorTostring(const std::vector<T>& data){
+	return vectorTostring(data, 0, data.size());
+}
+
+
+template<typename T>
+std::vector<std::string> matrixTostring(const std::vector<std::vector<T>>& data){
+	std::vector<std::string> ret;
+	for (int i = 0; i < (int)data.size(); ++i){
+		ret.push_back(vectorTostring(data[i]));
+	}
+	return ret;
+}
+
+
 template<typename T> 
 void dumpVector(std::vector<T> a){
-	for (int i = 0; i < int(a.size()); ++i){
-		std::cout << a[i];
-		if (i < int(a.size())-1){
-			std::cout << "\t";
-		}
-	}
+	std::cout << vectorTostring(a);
+	// for (int i = 0; i < int(a.size()); ++i){
+	// 	std::cout << a[i];
+	// 	if (i < int(a.size())-1){
+	// 		std::cout << "\t";
+	// 	}
+	// }
 }
 
 
@@ -91,29 +131,39 @@ void displayvector(const std::vector<std::vector<T>>& a, const std::string& name
 	dumpMatrix(a);
 }
 
+
+
+
 template<typename T>
-std::string vectorTostring(const std::vector<T>& data){
-	std::stringstream out;
-	for(int i = 0; i < (int)data.size(); i++) {
-		out << (double)data[i];
-		if ( i != (int)data.size()-1 ){
-			out << ", " ;
-		}
-		
-			
+std::vector<std::string> vectorTostringMatrix(const std::vector<T>& data,
+	int columnNumberLimit){
+	if (columnNumberLimit <= 0){
+		columnNumberLimit = data.size();
 	}
-	return out.str();
+	std::vector<std::string> content;
+	for (int i = 0; i < (int)data.size(); i+=columnNumberLimit)
+	{
+		int nextId = i+columnNumberLimit;
+		int endid = nextId > (int)data.size() ? data.size() : nextId;
+		content.push_back(vectorTostring(data, i, endid));
+	}
+	return content;
 }
 
-template<typename T>
-std::vector<std::string> matrixTostring(const std::vector<std::vector<T>>& data){
-	std::vector<std::string> ret;
 
-	for (int i = 0; i < (int)data.size(); ++i){
-		ret.push_back(vectorTostring(data[i]));
+template<typename T>
+T* vectorToArray(const std::vector<T> & data){
+	int m = data.size();
+
+	T* ret = new T[m];
+
+	for (int i = 0; i < m; ++i)
+	{
+		ret[i] = data[i];
 	}
 
 	return ret;
+
 }
 
 template<typename T>
@@ -125,7 +175,7 @@ T* vectorMatrixTo2DArray(const std::vector<std::vector<T>>& data){
 	}
 	for (int i = 1; i < m; ++i)
 	{
-		if (data[i].size() != n){
+		if ((int)data[i].size() != n){
 			std::cout << "vectorMatrixTo2DArray: data is not a matrix! " << std::endl;
 			return NULL;
 		}
@@ -166,6 +216,7 @@ std::vector<std::vector<T>>  vector2DArrayToVectorMatrix(T  data[], int m, int n
 
 }
 
+void checkVectorMatrixOrder(std::vector<std::vector<double> > A, int order, std::string title);
 
 
 

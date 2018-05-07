@@ -32,6 +32,9 @@ class TimeUtil {
   ///This function returns an unsigned long int with the current time in microseconds
   static unsigned long getTimeUSec();
 
+  ///This function returns an unsigned long int with the current time in milliseconds
+  static unsigned long getTimeMSec();
+
   ///This function converts a timestamp from absolute time to relative simulation time
   static struct timespec relative(struct timespec absolute);
 

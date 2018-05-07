@@ -27,7 +27,7 @@ void Trace::setTrace(struct timespec ts, _thread_type tt, unsigned int ti, _task
 string Trace::toString() {
   stringstream out;
 
-  out << TimeUtil::convert_ms(timestamp-Statistics::getStart()) <<  "," << thread_id << "," << task_action;
+  out << TimeUtil::convert_ms(timestamp - TimeUtil::offset) <<  "," << thread_id << "," << task_action;
 
   return out.str();
 }

@@ -4,11 +4,18 @@
 
 
 #include "core/TaskLoad.h"
+#include "taskloads/MWC.h"
+
+
+
+
 
 class BusyWait : public TaskLoad{
 private:
 
 	unsigned long count;
+
+	MWC RND;
 
 public:
 	BusyWait();
@@ -17,7 +24,7 @@ public:
 
 	// void setWCET();
 
-	bool runLoads(unsigned long _wcet_us);
+	bool runLoads(unsigned long _wcet_us, int i);
 
 };
 

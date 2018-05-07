@@ -14,6 +14,7 @@ add_subdirectory(./results)
 add_subdirectory(./tasks)
 add_subdirectory(./taskloads)
 add_subdirectory(./performance_counter)
+add_subdirectory(./soft_temperature_sensor)
 add_subdirectory(./utils)
 
 
@@ -23,7 +24,7 @@ add_library(cmi STATIC  ${DIR_CMI_SRCS} )
 
 
 
-target_link_libraries(cmi  UnitTest core interfaces configuration  dispatchers pthread results tasks taskloads utils performance_counter benchmarks)
+target_link_libraries(cmi  UnitTest core interfaces configuration  dispatchers pthread results tasks taskloads utils performance_counter soft_sensor benchmarks)
 
 
 set_target_properties(cmi PROPERTIES ARCHIVE_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/../lib/)

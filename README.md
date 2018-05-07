@@ -14,6 +14,12 @@ third-party tools:
 hardware: The CPU should have built-in temperature sensors  
 
 ### Installation:
+#### change the CMakeLists.txt in the top directory, if necessary
+ by default, the two feature, reading hardware temperature sensors and estimating 
+temperature based on performance counters, are both enabled. The user can disable 
+and enable them by changing the line 3 and 4 of the CMakeLists.txt in the top 
+directory. For example, to disable reading hardware sensors, change line 3 to:
+set(HARD_TEMPERATURE_SENSOR_ENABLE "OFF")
 #### go to the program build directory
  cd build
 #### cmake

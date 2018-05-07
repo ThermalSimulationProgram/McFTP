@@ -4,13 +4,14 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <stdlib.h>
 
 #include "core/TaskArgument.h"
 
 #include "utils/pugixml.hpp"
 
 #include "utils/utils.h"
-
+#include "utils/exceptions.h"
 
 
 
@@ -25,24 +26,17 @@ public:
 	// save all necessary data required by the simulation in Scratch class.
 	int parseFile();
 
-	int parseThermalModel(
-		std::vector<std::vector<double> >& INVC, 
-		std::vector<std::vector<double> >& G,
-		std::vector<std::vector<double> >& K,
-		double& ambientT,
-		double& period);
-
 	TaskArgument parseTask(pugi::xml_node task, int taskid);
 
-	struct timespec parseTime(pugi::xml_node n);
-	unsigned long parseTimeMircroSecond(pugi::xml_node n);
+	struct timespec parseTime(pugi::xml_node n, std::string nodeName);
+	unsigned long parseTimeUsec(pugi::xml_node n, std::string nodeName);
 
 	
 };
 
 void ParserPAPITest(int argc, char** argv);
 
-template<typename T> T formatTimeMicros(double v, const std::string& unit){
+template<typename T> T formatTimeUsec(double v, const std::string& unit){
 	T r;
 	if (unit == "sec")
 		r = (T) (v*1000000);
@@ -51,31 +45,39 @@ template<typename T> T formatTimeMicros(double v, const std::string& unit){
 	else if (unit == "us")
 		r = (T) (v);
 	else {
-		std::cout << "parseTimeVectorMicro: Parser error: could not recognize time unit!\n";
-		exit(1);
+		throw std::invalid_argument("parseTimeVectorMicro: Parser error: could not recognize time unit!\n");
 	}
 	return r;
 }
 
-template<typename T> std::vector<T> formatTimeMicros(const std::vector<double>& v, 
+template<typename T> std::vector<T> formatTimeUsec(const std::vector<double>& v, 
 const std::string& unit){
 	std::vector<T> ret;
 	for (int i = 0; i < (int) v.size(); ++i)
-		ret.push_back(formatTimeMicros<T>(v[i], unit));
+		ret.push_back(formatTimeUsec<T>(v[i], unit));
 
 	return ret;
 }
 
 
-template<typename T> std::vector<T> parseTimeVectorMicro(pugi::xml_node n){
-	std::vector<double> initvalues = stringToVector<double>(n.attribute("value").value());
+template<typename T> std::vector<T> parseTimeVectorUsec(pugi::xml_node n, std::string nodeName){
+	std::vector<double> initvalues;
+	std::vector<T> ret;
+	try{
+		initvalues = stringToVector<double>(n.attribute("value").value());
+	}catch(...){
+		throw XmlAttributeInvalid(nodeName + "'s value");
+	}
 
-	std::string unit = n.attribute("unit").value();
-	std::vector<T> ret = formatTimeMicros<T>(initvalues, unit);
+	try{
+		std::string unit = n.attribute("unit").value();
+		ret = formatTimeUsec<T>(initvalues, unit);
+	}catch(...){
+		throw XmlAttributeInvalid(nodeName + "'s unit");
+	}
 
 	return ret;	
 }
-
 
 
 

@@ -24,7 +24,7 @@ Task(singlecore, load, loadId, taskid, _JobId, _relativeDeadline){
 }
 
 
-bool SingleCore::fire(){
-	 finished = loads->runLoads(wcet_us);
+bool SingleCore::fire(int i){
+	 finished = loads->runLoads(wcet_us, i);
 	 return finished;
 }

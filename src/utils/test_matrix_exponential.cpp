@@ -63,8 +63,8 @@ complex <double> *c8mat_exp_a ( int test, int n )
       0.0,
       0.0,
       complex <double> ( 7.0, -8.0 ) };
-  int i;
-  int j;
+  // int i;
+  // int j;
 
   if ( test == 1 )
   {

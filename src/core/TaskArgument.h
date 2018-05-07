@@ -30,6 +30,7 @@ public:
 	// parameters specifying task load
 	int user_defined_load_id;
 
+	std::string benchmark_name;
 	int benchmark_id;
 
 

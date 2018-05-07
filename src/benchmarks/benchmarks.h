@@ -476,9 +476,8 @@ HOT OPTIMIZE3 void stress_cpu_all(const char *name);
 /*
  * Table of cpu stress methods
  */
-const stress_cpu_stressor_info_t cpu_methods[100] = {
+const stress_cpu_stressor_info_t cpu_methods[36] = {
 	{ "all",		stress_cpu_all },	/* Special "all test */
-
 	{ "ackermann",		stress_cpu_ackermann },
 	{ "bitops",		stress_cpu_bitops },
 	{ "correlate",		stress_cpu_correlate },
@@ -516,16 +515,15 @@ const stress_cpu_stressor_info_t cpu_methods[100] = {
 	{ NULL,			NULL }
 };
 
-
+#define NUMBERSTRESSOR 34
 // cpu stressor, for signle thread
 class CPUStressor{
 private:
 /*
  * Table of cpu stress methods
  */
-	const stress_cpu_stressor_info_t methods[100]= {
+	const stress_cpu_stressor_info_t methods[35]= {
 	{ "all",		stress_cpu_all },	/* Special "all test */
-
 	{ "ackermann",		stress_cpu_ackermann },
 	{ "bitops",		stress_cpu_bitops },
 	{ "correlate",		stress_cpu_correlate },
@@ -575,5 +573,7 @@ public:
 	std::string getBenchmarkName(int id);
 
 };
+
+int getBenchmarkId(std::string name);
 
 #endif
