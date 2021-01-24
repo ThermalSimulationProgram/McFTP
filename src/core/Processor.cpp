@@ -101,7 +101,7 @@ Processor::Processor(CMI* _cmi, int isAppendSaveFile):cpuUsageRecorder()
 				PeriodicJitter* aux = new PeriodicJitter(100+i);
 				aux->setTaskData(allTaskData[i]);
 				aux->setPeriod(allTaskData[i].period);
-				aux->setPeriod(allTaskData[i].jitter);
+				aux->setJitter(allTaskData[i].jitter);
 				aux->setProcessor(this);
 				dispatchers.push_back((Dispatcher*)aux);
 				break;
