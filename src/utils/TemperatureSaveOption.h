@@ -1,27 +1,25 @@
 #ifndef TEMPERATURE_SAVE_OPTION_H
-#define TEMPERATURE_SAVE_OPTION_H 
+#define TEMPERATURE_SAVE_OPTION_H
 
 #include <string>
 
 class TemperatureSaveOption
 {
 public:
-	bool isSaveGlobalPeakTemperature;
-	bool isSaveSensorPeakTemperature;
-	bool isSaveSensorMeanTemperature;
-	bool isSaveSensorReadOverhead;
-	bool isSaveSensorTemperatureTrace;
+   bool isSaveGlobalPeakTemperature;
+   bool isSaveSensorPeakTemperature;
+   bool isSaveSensorMeanTemperature;
+   bool isSaveSensorReadOverhead;
+   bool isSaveSensorTemperatureTrace;
 
-	TemperatureSaveOption();
-	
-	~TemperatureSaveOption();
+   TemperatureSaveOption();
 
-	void dump();
+   ~TemperatureSaveOption();
 
-	void print(std::string name);
-	
+   void dump();
+
+   void print(std::string name);
 };
-
 
 
 

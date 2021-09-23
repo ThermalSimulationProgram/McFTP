@@ -28,80 +28,79 @@ class Task;
 class Worker : public Thread
 {
 protected:
-	int workerId;
+   int workerId;
 
-	enum _worker_state state;
+   enum _worker_state state;
 
-	struct timespec latestSleep;
+   struct timespec latestSleep;
 
-	struct timespec latestExecuteJob;
+   struct timespec latestExecuteJob;
 
-	Task* current_job;
+   Task *current_job;
 
-	Processor * processor;
+   Processor *processor;
 
-	// struct timespec sleepEnd;
+   // struct timespec sleepEnd;
 
-	ExecutionInterrupter exeInterrupter;
+   ExecutionInterrupter exeInterrupter;
 
-	///semaphore controls accessing state and latestSleep
-	sem_t state_sem;
+   ///semaphore controls accessing state and latestSleep
+   sem_t state_sem;
 
-	sem_t exetime_sem;
+   sem_t exetime_sem;
 
-	// sem_t suspend_sem;
+   // sem_t suspend_sem;
 
-	// sem_t resume_sem;
+   // sem_t resume_sem;
 
-	sem_t job_sem;
+   sem_t job_sem;
 
-	sem_t stop_sem;
+   sem_t stop_sem;
 
-	#ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
-	PerformanceCounters performanceCounter;
-	#endif
+        #ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
+   PerformanceCounters performanceCounter;
+        #endif
 
 public:
-	Worker(int, int);
-	~Worker();
+   Worker(int, int);
+   ~Worker();
 
-	void join();
+   void join();
 
-	Task* stopCurrentJob();
+   Task *stopCurrentJob();
 
-	void activate1();
-	
-	void activate(int source);
+   void activate1();
 
-	void deactivate(const struct timespec& length);
+   void activate(int source);
 
-	void wrapper();
+   void deactivate(const struct timespec &length);
 
-	// lock current job. When the worker finishes current job, 
-	// it cannot load new job
-	void lockCurrentJob();
+   void wrapper();
 
-	// unlock the job queue
-	void unlockCurrentJob();
+   // lock current job. When the worker finishes current job,
+   // it cannot load new job
+   void lockCurrentJob();
 
-	void setProcessor(Processor*);
+   // unlock the job queue
+   void unlockCurrentJob();
 
-	void getCoreInfo(CoreInfo& cinfo);
+   void setProcessor(Processor *);
 
-	struct timespec getLatestSleepTime();
+   void getCoreInfo(CoreInfo& cinfo);
 
-	struct timespec getlatestExecuteJobTime();
+   struct timespec getLatestSleepTime();
 
-	bool isActive();
+   struct timespec getlatestExecuteJobTime();
 
-	int getWorkerId();
+   bool isActive();
 
-	int readPAPIValues();
+   int getWorkerId();
 
-	void getPAPIValues(std::vector<long long> & v);
+   int readPAPIValues();
 
-	void triggerPAPIReading(int source);
+   void getPAPIValues(std::vector <long long>& v);
 
+   void triggerPAPIReading(int source);
 };
 
 #endif

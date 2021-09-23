@@ -1,5 +1,5 @@
 #ifndef POWERMANAGER_H
-#define POWERMANAGER_H 
+#define POWERMANAGER_H
 
 #include <vector>
 #include <string>
@@ -12,52 +12,49 @@
 
 class Worker;
 
-class PowerManager: public Thread{
+class PowerManager : public Thread {
 private:
-	struct timespec nextActionTime;
+   struct timespec nextActionTime;
 
-	std::vector<HyperStateTable> tables;
+   std::vector <HyperStateTable> tables;
 
-	std::vector<Worker* > workers;
+   std::vector <Worker *> workers;
 
-	int nextCoreId;
+   int nextCoreId;
 
-	std::vector<std::string> freqInterface; 
+   std::vector <std::string> freqInterface;
 
-	sem_t interrupt_sem;
+   sem_t interrupt_sem;
 
-	sem_t statetable_sem;
+   sem_t statetable_sem;
 
-	bool isFixedFrequency;
+   bool isFixedFrequency;
 
-	bool isFixedActive;
+   bool isFixedActive;
 
-	// std::vector<FILE*> file_d;
+   // std::vector<FILE*> file_d;
 
 public:
 
-	PowerManager(unsigned, std::vector<Worker* > workers);
+   PowerManager(unsigned, std::vector <Worker *> workers);
 
-	///gives the PowerManager thread the ACTIVE_PR priority
-	void activate();
+   ///gives the PowerManager thread the ACTIVE_PR priority
+   void activate();
 
-	///This join function takes into account the PowerManager's unblocking mechanism
-	void join();
+   ///This join function takes into account the PowerManager's unblocking mechanism
+   void join();
 
-	///The created thread in the object starts execution by invoking this function 
-	void wrapper();
+   ///The created thread in the object starts execution by invoking this function
+   void wrapper();
 
-	void setStateTables(const std::vector<StateTable> &);
+   void setStateTables(const std::vector <StateTable>&);
 
-	void setStateTable(const StateTable & t);
+   void setStateTable(const StateTable& t);
 
-	void changePower(int id, double f, struct timespec);
+   void changePower(int id, double f, struct timespec);
 
-	void setFrequency(int id, int f);
-
-
+   void setFrequency(int id, int f);
 };
-
 
 
 

@@ -30,246 +30,262 @@
 using namespace std;
 
 
-#define _INFO 0
-#define _DEBUG 0
-
+#define _INFO     0
+#define _DEBUG    0
 
 
 
 /***************************************
- *        CLASS DEFINITION             * 
- ***************************************/
+*        CLASS DEFINITION             *
+***************************************/
 
-TempWatcher::TempWatcher(unsigned period, unsigned _id, Processor * p)
-:TempWatcher(period, _id, true, false, p){	
-}	
+TempWatcher::TempWatcher(unsigned period, unsigned _id, Processor *p)
+   : TempWatcher(period, _id, true, false, p)
+{
+}
 
-TempWatcher::TempWatcher(unsigned period, unsigned _id, bool useHardware, 
-    bool useSoft, Processor * p):Thread(_id){
+TempWatcher::TempWatcher(unsigned period, unsigned _id, bool useHardware,
+                         bool useSoft, Processor *p) : Thread(_id)
+{
+   thread_type = _temp_watcher;
+   if (period == 0)
+   {
+      printf("TempWatcher::TempWatcher: Error, period is zero!\n");
+      exit(-1);
+   }
+   sem_init(&temp_sem, 0, 1);
 
-    thread_type = _temp_watcher;
-    if (period == 0){
-        printf("TempWatcher::TempWatcher: Error, period is zero!\n");
-        exit(-1);
-    }
-    sem_init(&temp_sem, 0, 1);
+   samplingPeriod = TimeUtil::Micros(period);
 
-    samplingPeriod = TimeUtil::Micros(period);
+   useHardwareSensor = useHardware;
 
-    useHardwareSensor = useHardware;
+   // if (useHardwareSensor){
+   //    hardwareTempTrace.reserve(Scratch::getDuration()/period);
+   // }
 
-    // if (useHardwareSensor){
-    //    hardwareTempTrace.reserve(Scratch::getDuration()/period);  
-    // }
-
-    useSoftSensor = useSoft;
+   useSoftSensor = useSoft;
 
     #ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
-    if (useSoftSensor){
-        // softTempTrace.clear();
-        // softTempTrace.reserve(Scratch::getDuration()/period);
-        // performanceCounterValues.reserve(Scratch::getDuration()/period);
-        // softSensorOverhead.reserve(Scratch::getDuration()/period);
-        PerformanceCounters::initializeLibrary();
-    }  
+   if (useSoftSensor)
+   {
+      // softTempTrace.clear();
+      // softTempTrace.reserve(Scratch::getDuration()/period);
+      // performanceCounterValues.reserve(Scratch::getDuration()/period);
+      // softSensorOverhead.reserve(Scratch::getDuration()/period);
+      PerformanceCounters::initializeLibrary();
+   }
     #endif
 
-    processor = p;
-
-    
+   processor = p;
 }
 
-TempWatcher::~TempWatcher(){
-
+TempWatcher::~TempWatcher()
+{
 }
 
-void TempWatcher::activate(){
-	setPriority(Priorities::get_tempwatcher_pr());
+void TempWatcher::activate()
+{
+   setPriority(Priorities::get_tempwatcher_pr());
 }
 
-void TempWatcher::join(){
-  // cout << "TempWatcher::joining" << endl;
-	join2();
+void TempWatcher::join()
+{
+   // cout << "TempWatcher::joining" << endl;
+   join2();
 }
 
-
-void TempWatcher::wrapper(){
+void TempWatcher::wrapper()
+{
     #ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
-    if (useSoftSensor){
-
-        Scratch::softSensor = LinearTemperatureSensor;
-        initializeLinearTemperatureSensor();    
-    }
-    #endif
-    
-    
-    #if _INFO == 1
-    Semaphores::print_sem.wait_sem();
-    printf("TempWatcher: waiting for initialization\n");
-    Semaphores::print_sem.post_sem();
+   if (useSoftSensor)
+   {
+      Scratch::softSensor = LinearTemperatureSensor;
+      initializeLinearTemperatureSensor();
+   }
     #endif
 
-
-    //Wait until the simulation is initialized
-    sem_wait(&Processor::init_sem);
 
     #if _INFO == 1
-    Semaphores::print_sem.wait_sem();
-    printf("TempWatcher: begining execution \n");
-    Semaphores::print_sem.post_sem();
+   Semaphores::print_sem.wait_sem();
+   printf("TempWatcher: waiting for initialization\n");
+   Semaphores::print_sem.post_sem();
     #endif
 
-	///wait for the simulation start
-    sem_wait(&Processor::running_sem);
 
-    sem_t periodic_sem;
-    sem_init(&periodic_sem, 0, 0);
-    struct timespec waitEnd;
+   //Wait until the simulation is initialized
+   sem_wait(&Processor::init_sem);
 
-    while(Processor::isRunning()){
+    #if _INFO == 1
+   Semaphores::print_sem.wait_sem();
+   printf("TempWatcher: begining execution \n");
+   Semaphores::print_sem.post_sem();
+    #endif
 
-        waitEnd = TimeUtil::getTime() + samplingPeriod;
+   ///wait for the simulation start
+   sem_wait(&Processor::running_sem);
+
+   sem_t periodic_sem;
+   sem_init(&periodic_sem, 0, 0);
+   struct timespec waitEnd;
+
+   while (Processor::isRunning())
+   {
+      waitEnd = TimeUtil::getTime() + samplingPeriod;
 
         #ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
-        if (useSoftSensor){
-            processor->triggerAllPAPIReading(TEMPWATCHER);
-        }
+      if (useSoftSensor)
+      {
+         processor->triggerAllPAPIReading(TEMPWATCHER);
+      }
         #endif
 
-        sem_wait(&temp_sem);
+      sem_wait(&temp_sem);
         #ifdef HARD_TEMPERATURE_SENSOR_ENABLE
-        if (useHardwareSensor){
-           curHardwareTemp = get_cpu_temperature(); 
-           Statistics::addHardwareTemperature(curHardwareTemp);
-        }
+      if (useHardwareSensor)
+      {
+         curHardwareTemp = get_cpu_temperature();
+         Statistics::addHardwareTemperature(curHardwareTemp);
+      }
         #endif
-        
+
         #ifdef SOFT_TEMPERATURE_SENSOR_ENABLE
-        if (useSoftSensor){ 
-            curSoftTemp = get_soft_cpu_temperature();  
-            if (curSoftTemp.size() == 0){
-                cout << "temperature size error" << endl;
-                exit(1);
-            
-            }
-            Statistics::addSoftwareTemperature(curSoftTemp);
-        }
+      if (useSoftSensor)
+      {
+         curSoftTemp = get_soft_cpu_temperature();
+         if (curSoftTemp.size() == 0)
+         {
+            cout << "temperature size error" << endl;
+            exit(1);
+         }
+         Statistics::addSoftwareTemperature(curSoftTemp);
+      }
         #endif
-        sem_post(&temp_sem);
+      sem_post(&temp_sem);
 
-        sem_timedwait(&periodic_sem, &waitEnd);
-    }
+      sem_timedwait(&periodic_sem, &waitEnd);
+   }
 
-	// #if _INFO == 1
-    Semaphores::print_sem.wait_sem();
-    printf( "TempWatcher: %d is exiting wrapper...\n", id);
-    Semaphores::print_sem.post_sem();
-    // #endif
+   // #if _INFO == 1
+   Semaphores::print_sem.wait_sem();
+   printf("TempWatcher: %d is exiting wrapper...\n", id);
+   Semaphores::print_sem.post_sem();
+   // #endif
 }
 
-bool TempWatcher::isSoftSensorEnabled(){
-    return useSoftSensor;
+bool TempWatcher::isSoftSensorEnabled()
+{
+   return(useSoftSensor);
 }
 
+vector <double> TempWatcher::getCurHardwareTemp()
+{
+   vector <double> ret;
 
-vector<double> TempWatcher::getCurHardwareTemp(){
-    vector<double> ret;
-    sem_wait(&temp_sem);
-    ret = curHardwareTemp ;
-    sem_post(&temp_sem);
+   sem_wait(&temp_sem);
+   ret = curHardwareTemp;
+   sem_post(&temp_sem);
 
-    return ret;
+   return(ret);
 }
 
-vector<double> TempWatcher::getCurSoftwareTemp(){
-    vector<double> ret;
-    sem_wait(&temp_sem);
-    ret = curSoftTemp ;
-    sem_post(&temp_sem);
+vector <double> TempWatcher::getCurSoftwareTemp()
+{
+   vector <double> ret;
 
-    return ret;
+   sem_wait(&temp_sem);
+   ret = curSoftTemp;
+   sem_post(&temp_sem);
+
+   return(ret);
 }
 
+vector <double> TempWatcher::get_cpu_temperature()
+{
+   vector <double> ret;
 
-vector<double> TempWatcher::get_cpu_temperature(){
-
-    vector<double> ret;
     #ifdef HARD_TEMPERATURE_SENSOR_ENABLE
-    if (useHardwareSensor){
-        struct timespec start = TimeUtil::getTime();
-        
-        int value;
+   if (useHardwareSensor)
+   {
+      struct timespec start = TimeUtil::getTime();
 
-        for ( int i = 0; i < (int) Scratch::hardwareSensorPath.size(); ++i) 
-        {
-            int fd = open(Scratch::hardwareSensorPath[i].c_str(), O_RDONLY);
-            if (fd != -1 ){
+      int value;
 
-                char buf[12];
-                ssize_t numwrite = read(fd, buf, 12);
+      for (int i = 0; i < (int)Scratch::hardwareSensorPath.size(); ++i)
+      {
+         int fd = open(Scratch::hardwareSensorPath[i].c_str(), O_RDONLY);
+         if (fd != -1)
+         {
+            char    buf[12];
+            ssize_t numwrite = read(fd, buf, 12);
 
-                if (numwrite < 1) {
-                    close(fd);
-                    printf(" TempWatcher::get_cpu_temperature: read temperature error, can not read the file\n"); 
-                    exit(1);
-                }
-
-                close(fd);
-
-                sscanf(buf, "%d", &value);
-            } else{
-                printf( " TempWatcher::get_cpu_temperature: read temperature error, NO:");
-                exit(-1) ;
+            if (numwrite < 1)
+            {
+               close(fd);
+               printf(" TempWatcher::get_cpu_temperature: read temperature error, can not read the file\n");
+               exit(1);
             }
 
-           ret.push_back((double)value);
-       }
+            close(fd);
 
-     Statistics::addHardwareReadingOverhead(
-        TimeUtil::convert_us(TimeUtil::getTime() - start));
-     
-    }
+            sscanf(buf, "%d", &value);
+         }
+         else
+         {
+            printf(" TempWatcher::get_cpu_temperature: read temperature error, NO:");
+            exit(-1);
+         }
+
+         ret.push_back((double)value);
+      }
+
+      Statistics::addHardwareReadingOverhead(
+         TimeUtil::convert_us(TimeUtil::getTime() - start));
+   }
     #endif
 
-    return ret;
+   return(ret);
 }
 
-vector<double> TempWatcher::get_soft_cpu_temperature(){
-    if (useSoftSensor){
-        // all workers have finished reading PAPI values
-        if (processor->waitPAPIReading() == 0){
-            struct timespec start = TimeUtil::getTime();
+vector <double> TempWatcher::get_soft_cpu_temperature()
+{
+   if (useSoftSensor)
+   {
+      // all workers have finished reading PAPI values
+      if (processor->waitPAPIReading() == 0)
+      {
+         struct timespec start = TimeUtil::getTime();
 
-            vector< vector<long long> > allPAPIValues;
-            processor->getPAPIValues(allPAPIValues);
+         vector <vector <long long> > allPAPIValues;
+         processor->getPAPIValues(allPAPIValues);
 
-            vector<long long> values;
+         vector <long long> values;
 
-            for (int i = 0; i < (int) allPAPIValues.size(); ++i)
+         for (int i = 0; i < (int)allPAPIValues.size(); ++i)
+         {
+            for (int j = 0; j < (int)allPAPIValues[i].size(); ++j)
             {
-                for (int j = 0; j < (int) allPAPIValues[i].size(); ++j)
-                {
-                    values.push_back(allPAPIValues[i][j]);
-                }
+               values.push_back(allPAPIValues[i][j]);
             }
+         }
 
-            vector<double> temperature = Scratch::softSensor(values);
-            
-            Statistics::addSoftwareReadingOverhead(
-                TimeUtil::convert_us(TimeUtil::getTime() - start));
-            Statistics::addPerformanceCounterValue(values);
+         vector <double> temperature = Scratch::softSensor(values);
 
-            // 
-            return temperature;
-        } else{
-            return vector<double>{0, 0, 0, 0};
-        }
+         Statistics::addSoftwareReadingOverhead(
+            TimeUtil::convert_us(TimeUtil::getTime() - start));
+         Statistics::addPerformanceCounterValue(values);
 
-    }else{
-        return vector<double>{0, 0, 0, 0};
-    }
-
-    
+         //
+         return(temperature);
+      }
+      else
+      {
+         return(vector <double>{ 0, 0, 0, 0 });
+      }
+   }
+   else
+   {
+      return(vector <double>{ 0, 0, 0, 0 });
+   }
 }
 
 // double TempWatcher::calcMaxTemp(vector<vector<double> > temp){
@@ -313,7 +329,7 @@ vector<double> TempWatcher::get_soft_cpu_temperature(){
 //           singleStageTempTrace.push_back(temp[j][i]);
 //         }
 
-//       double sum = std::accumulate(singleStageTempTrace.begin(), 
+//       double sum = std::accumulate(singleStageTempTrace.begin(),
 //           singleStageTempTrace.end(), 0.0);
 //       if (singleStageTempTrace.size() == 0){
 //         printf( " TempWatcher::calcMeanTemp: temperature trace is empty!\n");

@@ -4,24 +4,22 @@
 
 #include "core/TaskLoad.h"
 
-class UserDefinedLoad: public TaskLoad{
+class UserDefinedLoad : public TaskLoad {
 private:
-	unsigned long count;
+   unsigned long count;
 
-	int loadId;
+   int loadId;
 
-	void * arg;
+   void *arg;
 
 public:
-	UserDefinedLoad(int _loadId);
-	~UserDefinedLoad();
+   UserDefinedLoad(int _loadId);
+   ~UserDefinedLoad();
 
-	bool runLoads(unsigned long _wcet_us);
+   bool runLoads(unsigned long _wcet_us);
 
-	bool coolTask();
-
+   bool coolTask();
 };
-
 
 
 

@@ -3,22 +3,20 @@
 
 
 
-class JobLog{
-
+class JobLog {
 private:
-	int workerId;
+   int workerId;
 
-	int taskId;
+   int taskId;
 
 public:
-	JobLog(int _workerid, int _taskid);
+   JobLog(int _workerid, int _taskid);
 
-	int getWorkerId();
+   int getWorkerId();
 
-	int getTaskId();
+   int getTaskId();
 
-	bool isMatch(int _workerid, int _taskid);
-
+   bool isMatch(int _workerid, int _taskid);
 };
 
 

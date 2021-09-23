@@ -9,45 +9,44 @@
 // using namespace std;
 
 /***************************************
- *        CLASS DECLARATION            * 
- ***************************************/
+*        CLASS DECLARATION            *
+***************************************/
 
 class Runtime {
+private:
 
- private:
+   /*********** VARIABLES ***********/
 
-  /*********** VARIABLES ***********/
+   //Variables will be traced in the following order:
 
-  //Variables will be traced in the following order:
+   ///This variable stores the type of thread the statistic belongs to
+   enum _thread_type type;
 
-  ///This variable stores the type of thread the statistic belongs to
-  enum _thread_type type;
+   ///This variable stores the id of the thread the statistic belongs to
+   unsigned int id;
 
-  ///This variable stores the id of the thread the statistic belongs to
-  unsigned int id;
+   ///This variable stores the runtime of the thread
+   struct timespec runtime;
 
-  ///This variable stores the runtime of the thread
-  struct timespec runtime;
+public:
 
- public:
+   /*********** MEMBER FUNCTIONS ***********/
 
-  /*********** MEMBER FUNCTIONS ***********/
+   ///This sets the thread type, id, and runtime of trace
+   void setRuntime(enum _thread_type _type, unsigned int _id, struct timespec _rt);
 
-  ///This sets the thread type, id, and runtime of trace
-  void setRuntime(enum _thread_type _type, unsigned int _id, struct timespec _rt);
+   ///This function converts the runtime statistic to a string,
+   std::string toString();
 
-  ///This function converts the runtime statistic to a string,
-  std::string toString();
+   /*********** GETTER FUNCTIONS ***********/
 
-  /*********** GETTER FUNCTIONS ***********/  
-  
-  ///This function returns the ID of the trace
-  unsigned int getId();
+   ///This function returns the ID of the trace
+   unsigned int getId();
 
-  /*********** OPERATORS ***********/
+   /*********** OPERATORS ***********/
 
-  ///This operator comparest two runtimestatistics
-  int operator<(Runtime b);
+   ///This operator comparest two runtimestatistics
+   int operator<(Runtime b);
 };
 
 #endif

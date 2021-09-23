@@ -5,26 +5,25 @@
 
 
 
-class scoped_sem_t{
+class scoped_sem_t {
 private:
-	sem_t sem;
+   sem_t sem;
 
 public:
-	explicit scoped_sem_t(int);
-	~scoped_sem_t();
+   explicit scoped_sem_t(int);
+   ~scoped_sem_t();
 
-	int wait_sem();
-	int post_sem();
-	int timedwait_sem(const struct timespec *);
-
+   int wait_sem();
+   int post_sem();
+   int timedwait_sem(const struct timespec *);
 };
 
 
-class Semaphores{
+class Semaphores {
 public:
-	static scoped_sem_t print_sem;
-	static scoped_sem_t dispatch_sem;
-	static scoped_sem_t rtcinit_sem;
+   static scoped_sem_t print_sem;
+   static scoped_sem_t dispatch_sem;
+   static scoped_sem_t rtcinit_sem;
 };
 
 

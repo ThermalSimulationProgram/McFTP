@@ -4,38 +4,37 @@
 #include "core/Dispatcher.h"
 
 /***************************************
- *        CLASS DECLARATION            * 
- ***************************************/
+*        CLASS DECLARATION            *
+***************************************/
 
 class Aperiodic : public Dispatcher {
+private:
 
- private:
+   /*********** VARIABLES ***********/
 
-  /*********** VARIABLES ***********/
+   ///This parameter specifies the release time of the aperiodic dispatcher
+   struct timespec releaseTime;
 
-  ///This parameter specifies the release time of the aperiodic dispatcher
-  struct timespec releaseTime;
+public:
 
- public:
+   /*********** CONSTRUCTOR ***********/
 
-  /*********** CONSTRUCTOR ***********/
+   ///Constructor needs simulation pointer, and id
+   Aperiodic(unsigned int id);
 
-  ///Constructor needs simulation pointer, and id
-  Aperiodic(unsigned int id);
+   /*********** INHERITED FUNCTIONS ***********/
 
-  /*********** INHERITED FUNCTIONS ***********/
-  
-  /**** FROM DISPATCHER ****/
-  
-  ///This function was a flagged loop that activates the Worker according to the task periodicity
-  void dispatch();
+   /**** FROM DISPATCHER ****/
 
-  /*********** GETTER AND SETTER FUNCTIONS ***********/
+   ///This function was a flagged loop that activates the Worker according to the task periodicity
+   void dispatch();
 
-  ///This function returns the release time
-  struct timespec getReleaseTime();  
+   /*********** GETTER AND SETTER FUNCTIONS ***********/
 
-  ///This function sets the release time for the aperiodic dispatcher
-  void setReleaseTime(struct timespec r);
+   ///This function returns the release time
+   struct timespec getReleaseTime();
+
+   ///This function sets the release time for the aperiodic dispatcher
+   void setReleaseTime(struct timespec r);
 };
 #endif

@@ -14,83 +14,82 @@
 class Processor;
 
 /***************************************
- *        CLASS DECLARATION            * 
- ***************************************/
+*        CLASS DECLARATION            *
+***************************************/
 
 class Dispatcher : public Thread {
+protected:
 
- protected:
+   /*********** VARIABLES ***********/
 
-  /*********** VARIABLES ***********/
+   ///Periodicity of the task to be dispatched
+   _task_periodicity periodicity;
 
-  ///Periodicity of the task to be dispatched
-  _task_periodicity periodicity;
+   ///When this is set, the dispatcher will sleep for the specified time before beginning to dispatch
+   struct timespec offset;
 
-  ///When this is set, the dispatcher will sleep for the specified time before beginning to dispatch
-  struct timespec offset;
+   ///Pointer to the Processor associated to the dispatcher
+   Processor *processor;
 
-  ///Pointer to the Processor associated to the dispatcher
-  Processor *processor;
+   std::vector <Task *> allTasks;
 
-  std::vector<Task*> allTasks;
+   _task_load_type TASK_LOAD_TYPE;
 
-  _task_load_type TASK_LOAD_TYPE;
+   _task_type TASK_TYPE;
 
-  _task_type TASK_TYPE;
+   TaskArgument taskdata;
 
-  TaskArgument taskdata;
+   int jobCounter;
 
-  int jobCounter;
+   sem_t dispatch_sem;
 
-  sem_t dispatch_sem;
-   
- public:
+public:
 
-  /*********** CONSTRUCTOR ***********/
+   /*********** CONSTRUCTOR ***********/
 
-  ///Constructor needs  a disp_id
-  Dispatcher (unsigned int id);
+   ///Constructor needs  a disp_id
+   Dispatcher(unsigned int id);
 
-  ~Dispatcher();
+   ~Dispatcher();
 
-  /*********** INHERITED FUNCTIONS ***********/
+   /*********** INHERITED FUNCTIONS ***********/
 
-  /**** FROM THREAD ****/
+   /**** FROM THREAD ****/
 
-  ///This join function takes into account the dispatcher's unblocking mechanism
-  void join();
-  
-  ///This is the pthread's wrapper function, calls dispatch -> which has the flagged loop.
-  void wrapper();
+   ///This join function takes into account the dispatcher's unblocking mechanism
+   void join();
 
-  /*********** MEMBER FUNCTIONS ***********/
+   ///This is the pthread's wrapper function, calls dispatch -> which has the flagged loop.
+   void wrapper();
 
-  ///This function assignes DISP_PR to the thread
-  void activate();  
+   /*********** MEMBER FUNCTIONS ***********/
 
-  ///This function was a flagged loop that activates the Worker according to the task periodicity
-  virtual void dispatch();
+   ///This function assignes DISP_PR to the thread
+   void activate();
 
-  /*********** SETTER FUNCTIONS ***********/
+   ///This function was a flagged loop that activates the Worker according to the task periodicity
+   virtual void dispatch();
 
-  ///This function sets the dispatcher's offset
-  void setOffset(struct timespec o);
+   /*********** SETTER FUNCTIONS ***********/
 
-  ///This function sets the tasks's periodicity
-  void setPeriodicity(_task_periodicity t);
+   ///This function sets the dispatcher's offset
+   void setOffset(struct timespec o);
 
-  void setTaskLoadType(_task_load_type type);
+   ///This function sets the tasks's periodicity
+   void setPeriodicity(_task_periodicity t);
 
-  void setTaskType(_task_type type);
+   void setTaskLoadType(_task_load_type type);
 
-  void setTaskData(TaskArgument d);
+   void setTaskType(_task_type type);
 
-  ///This function sets the associated CMI
-  void setProcessor(Processor *c);
+   void setTaskData(TaskArgument d);
 
-  Task* createNewTask();
+   ///This function sets the associated CMI
+   void setProcessor(Processor *c);
 
-  int getTaskId();
+   Task *createNewTask();
+
+   int getTaskId();
 };
 
 #endif

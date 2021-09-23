@@ -1,7 +1,7 @@
 #ifndef MCFTP_PERFORMANCECOUNTERS_H
-#define MCFTP_PERFORMANCECOUNTERS_H 
+#define MCFTP_PERFORMANCECOUNTERS_H
 
-#define MAX_EVENT_COUNTER_NUMBER 100
+#define MAX_EVENT_COUNTER_NUMBER    100
 
 #include <vector>
 #include <string>
@@ -10,59 +10,58 @@
 
 // #include <pthread.h>
 
-class PerformanceCounters{
+class PerformanceCounters {
 protected:
-	bool initialized;
+   bool initialized;
 
-	int PAPI_Counter_Set;
+   int PAPI_Counter_Set;
 
-	long long values[MAX_EVENT_COUNTER_NUMBER];
+   long long values[MAX_EVENT_COUNTER_NUMBER];
 
-	int counterNumber;
+   int counterNumber;
 
-	static bool library_initialized;
+   static bool library_initialized;
 
-	// static pthread_key_t key;
+   // static pthread_key_t key;
 
 
 public:
 
-	PerformanceCounters();
+   PerformanceCounters();
 
-	bool initializeCounterSet();
+   bool initializeCounterSet();
 
-	static bool initializeLibrary();
+   static bool initializeLibrary();
 
-	static bool initializeThread();
+   static bool initializeThread();
 
-	bool addCounter(int counterId);
+   bool addCounter(int counterId);
 
-	bool addCounter(const std::string counterName);
+   bool addCounter(const std::string counterName);
 
-	bool startAllCounters();
+   bool startAllCounters();
 
-	bool stopAllCounters();
+   bool stopAllCounters();
 
-	bool readAllValues();
+   bool readAllValues();
 
-	bool resetAllCounters();
+   bool resetAllCounters();
 
-	// long long getCounterValue(const std::string counterName);
+   // long long getCounterValue(const std::string counterName);
 
-	long long getCounterValue(int counterId);
+   long long getCounterValue(int counterId);
 
-	int getCounterNumber();
+   int getCounterNumber();
 
-	bool exitThread();
-	
-	// void endAllCounters();
+   bool exitThread();
 
-	void clearCounterValues();
+   // void endAllCounters();
 
-	// static void printCounterInfo();
+   void clearCounterValues();
 
-	// static void PAPI_test(int argc, char **argv);
+   // static void printCounterInfo();
 
+   // static void PAPI_test(int argc, char **argv);
 };
 
 #endif

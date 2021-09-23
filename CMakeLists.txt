@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(HARD_TEMPERATURE_SENSOR_ENABLE "ON") 
+set(HARD_TEMPERATURE_SENSOR_ENABLE "ON")
 set(SOFT_TEMPERATURE_SENSOR_ENABLE "ON")
 
-configure_file(./McFTPBuildConfig.h.in  ../McFTPBuildConfig.h @ONLY) 
+configure_file(./McFTPBuildConfig.h.in  ../McFTPBuildConfig.h @ONLY)
 
 
 
@@ -23,6 +23,3 @@ add_executable(mcftp main.cpp)
 
 
 target_link_libraries(mcftp  cmi)
-
-
-

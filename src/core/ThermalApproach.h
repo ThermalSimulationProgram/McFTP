@@ -12,41 +12,39 @@
 
 
 
-
 class Processor;
 
-class ThermalApproach: public Thread
+class ThermalApproach : public Thread
 {
 protected:
 
-	/////////////////////////////////////////////
-	struct timespec period;
-	
-	Processor* processor;
+   /////////////////////////////////////////////
+   struct timespec period;
 
-	std::string approachName;
+   Processor *processor;
 
-	std::vector<double> timeExpense;
+   std::string approachName;
 
-	CMI* cmi;
+   std::vector <double> timeExpense;
+
+   CMI *cmi;
 
 public:
-	ThermalApproach(CMI* cmi, unsigned _id, Processor *c, std::string name);
-	
-	~ThermalApproach();
+   ThermalApproach(CMI *cmi, unsigned _id, Processor *c, std::string name);
 
-	void init();
+   ~ThermalApproach();
 
-	void activate();
+   void init();
 
-	void wrapper();
+   void activate();
 
-	void join();
+   void wrapper();
 
-	std::vector<double> getKernelTime();
+   void join();
 
-	void setPeriod(unsigned long period_us);
+   std::vector <double> getKernelTime();
 
+   void setPeriod(unsigned long period_us);
 };
 
 

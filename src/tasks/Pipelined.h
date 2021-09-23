@@ -6,46 +6,44 @@
 #include "core/Task.h"
 
 /***************************************
- *        CLASS DECLARATION            * 
- ***************************************/
+*        CLASS DECLARATION            *
+***************************************/
 
 class Pipelined : public Task {
+private:
 
- private:
+   /*********** VARIABLES ***********/
 
-  /*********** VARIABLES ***********/
+   ///This paremeter specifies the worst-case execution time for the busy wait loop
+   // std::vector<struct timespec> WCET;
+   std::vector <unsigned long> wcet_us;
 
-  ///This paremeter specifies the worst-case execution time for the busy wait loop
-  // std::vector<struct timespec> WCET;
-  std::vector<unsigned long> wcet_us;
+   std::vector <int> coreIds;
 
-  std::vector<int> coreIds;
+   // std::vector<bool> coreFinished;
 
-  // std::vector<bool> coreFinished;
+   int nextCoreId;
 
-  int nextCoreId;
+public:
 
- public:
+   /*********** CONSTRUCTOR ***********/
 
-  /*********** CONSTRUCTOR ***********/
+   ///The constructor requires a pointer
+   Pipelined(const std::vector <unsigned long>& wcet, _task_load_type load, int loadId, int taskid,
+             int _JobId, struct timespec _relativeDeadline);
 
-  ///The constructor requires a pointer
-  Pipelined(const std::vector<unsigned long>& wcet, _task_load_type  load, int loadId, int taskid,
-    int _JobId, struct timespec _relativeDeadline);
+   ~Pipelined();
 
-  ~Pipelined();
+   /*********** INHERITED FUNCTIONS ***********/
 
-  /*********** INHERITED FUNCTIONS ***********/
-  
-  /**** FROM TASK ****/
-  
-  //This function will perform one task with execution time WCET
-  bool fire(int);
+   /**** FROM TASK ****/
 
-  int getNextCoreId();
+   //This function will perform one task with execution time WCET
+   bool fire(int);
 
-  unsigned long getWCET(int id);
+   int getNextCoreId();
+
+   unsigned long getWCET(int id);
 };
 
 #endif
-

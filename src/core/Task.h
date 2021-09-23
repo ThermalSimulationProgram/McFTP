@@ -14,81 +14,79 @@
 #include "core/TaskLoad.h"
 
 /***************************************
- *        CLASS DECLARATION            * 
- ***************************************/
- 
+*        CLASS DECLARATION            *
+***************************************/
+
 
 class ExecutionInterrupter;
 
 class Task {
-
 protected:
- 
-  /*********** VARIABLES ***********/
-  
-  ///Varible describing the type of task (pipelined, singlecore)
-  _task_type task_type;
-  ///Varible describing the task's type of load (busywait, benchmarks, userdefined)
-  _task_load_type task_load_type;
 
-  // The index of this kind of task
-  int taskId;
-  // The index of this entity of the task
-  int jobId;
+   /*********** VARIABLES ***********/
 
-  struct timespec releaseTime;
+   ///Varible describing the type of task (pipelined, singlecore)
+   _task_type task_type;
+   ///Varible describing the task's type of load (busywait, benchmarks, userdefined)
+   _task_load_type task_load_type;
 
-  struct timespec relativeDeadline;
+   // The index of this kind of task
+   int taskId;
+   // The index of this entity of the task
+   int jobId;
 
-  struct timespec absoluteDeadline;
+   struct timespec releaseTime;
 
-  // the worker which is currently running this task
-  Worker* worker;
+   struct timespec relativeDeadline;
 
-  // task load
-  TaskLoad* loads;
+   struct timespec absoluteDeadline;
 
-  // variable indicating whether this job has finished
-  bool finished;
+   // the worker which is currently running this task
+   Worker *worker;
+
+   // task load
+   TaskLoad *loads;
+
+   // variable indicating whether this job has finished
+   bool finished;
 
 public:
- 
-  /*********** CONSTRUCTOR ***********/
-  
-  ///Constructor needs its load type
-  Task(_task_type type, _task_load_type  load, int loadId, int _taskId,  
-    int JobId, struct timespec _relativeDeadline);
 
-  virtual ~Task();
+   /*********** CONSTRUCTOR ***********/
 
-  /*********** MEMBER FUNCTIONS ***********/
+   ///Constructor needs its load type
+   Task(_task_type type, _task_load_type load, int loadId, int _taskId,
+        int JobId, struct timespec _relativeDeadline);
 
-  void setWorker(Worker* w);
+   virtual ~Task();
 
-  ///This function performs one task 
-  virtual bool fire(int);
+   /*********** MEMBER FUNCTIONS ***********/
 
-  void stop();
+   void setWorker(Worker *w);
 
-  void setLoad(TaskLoad* l);
+   ///This function performs one task
+   virtual bool fire(int);
 
-  // void suspend(const struct timespec& length);
+   void stop();
 
-  // void resume(int source);
+   void setLoad(TaskLoad *l);
 
-  int getId();
+   // void suspend(const struct timespec& length);
 
-  _task_type getType();
+   // void resume(int source);
 
-  int getTaskId();
+   int getId();
 
-  bool isFinished();
+   _task_type getType();
 
-  int getFinishCoreId();
+   int getTaskId();
 
-  virtual unsigned long getWCET(int id) ;
+   bool isFinished();
 
-  void setLoadExecutionInterrupter(ExecutionInterrupter *e);
+   int getFinishCoreId();
 
+   virtual unsigned long getWCET(int id);
+
+   void setLoadExecutionInterrupter(ExecutionInterrupter *e);
 };
 #endif

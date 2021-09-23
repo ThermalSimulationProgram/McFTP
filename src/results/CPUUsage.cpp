@@ -7,137 +7,144 @@
 #include <string>
 #include <vector>
 
-static size_t GetIdleTime(const CPUData & e){
-	return	e.times[S_IDLE] + 
-			e.times[S_IOWAIT];
-}
-
-static size_t GetActiveTime(const CPUData & e){
-	return	e.times[S_USER] +
-			e.times[S_NICE] +
-			e.times[S_SYSTEM] +
-			e.times[S_IRQ] +
-			e.times[S_SOFTIRQ] +
-			e.times[S_STEAL] +
-			e.times[S_GUEST] +
-			e.times[S_GUEST_NICE];
-}
-
-
-static void ReadStatsCPU(std::vector<CPUData> & entries)
+static size_t GetIdleTime(const CPUData& e)
 {
-	std::ifstream fileStat("/proc/stat");
-
-	std::string line;
-
-	const std::string STR_CPU("cpu");
-	const std::size_t LEN_STR_CPU = STR_CPU.size();
-	const std::string STR_TOT("tot");
-
-	while(std::getline(fileStat, line))
-	{
-		// cpu stats line found
-		if(!line.compare(0, LEN_STR_CPU, STR_CPU))
-		{
-			std::istringstream ss(line);
-
-			// store entry
-			entries.emplace_back(CPUData());
-			CPUData & entry = entries.back();
-
-			// read cpu label
-			ss >> entry.cpu;
-
-			// remove "cpu" from the label when it's a processor number
-			if(entry.cpu.size() > LEN_STR_CPU)
-				entry.cpu.erase(0, LEN_STR_CPU);
-			// replace "cpu" with "tot" when it's total values
-			else
-				entry.cpu = STR_TOT;
-
-			// read times
-			for(int i = 0; i < NUM_CPU_STATES; ++i)
-				ss >> entry.times[i];
-		}
-	}
+   return(e.times[S_IDLE] +
+          e.times[S_IOWAIT]);
 }
 
-
-
-
-
-CPUUsage::CPUUsage(){
-	isStartLogging = false;
-	isFinishLogging = false;
-
+static size_t GetActiveTime(const CPUData& e)
+{
+   return(e.times[S_USER] +
+          e.times[S_NICE] +
+          e.times[S_SYSTEM] +
+          e.times[S_IRQ] +
+          e.times[S_SOFTIRQ] +
+          e.times[S_STEAL] +
+          e.times[S_GUEST] +
+          e.times[S_GUEST_NICE]);
 }
 
+static void ReadStatsCPU(std::vector <CPUData>& entries)
+{
+   std::ifstream fileStat("/proc/stat");
 
-void CPUUsage::startLoggingCPU(){
-	entries1.clear();
-	ReadStatsCPU(entries1);
-	isStartLogging = true;
+   std::string line;
+
+   const std::string STR_CPU("cpu");
+   const std::size_t LEN_STR_CPU = STR_CPU.size();
+   const std::string STR_TOT("tot");
+
+   while (std::getline(fileStat, line))
+   {
+      // cpu stats line found
+      if (!line.compare(0, LEN_STR_CPU, STR_CPU))
+      {
+         std::istringstream ss(line);
+
+         // store entry
+         entries.emplace_back(CPUData());
+         CPUData& entry = entries.back();
+
+         // read cpu label
+         ss >> entry.cpu;
+
+         // remove "cpu" from the label when it's a processor number
+         if (entry.cpu.size() > LEN_STR_CPU)
+         {
+            entry.cpu.erase(0, LEN_STR_CPU);
+         }
+         // replace "cpu" with "tot" when it's total values
+         else
+         {
+            entry.cpu = STR_TOT;
+         }
+
+         // read times
+         for (int i = 0; i < NUM_CPU_STATES; ++i)
+         {
+            ss >> entry.times[i];
+         }
+      }
+   }
 }
 
-void CPUUsage::endLoggingCPU(){
-	if (!isStartLogging){
-		std::cout << "CPUUsage::endLoggingCPU: logging does not start yet!\n";
-		return;
-	}
-	entries2.clear();
-	ReadStatsCPU(entries2);
-	isFinishLogging = true;
+CPUUsage::CPUUsage()
+{
+   isStartLogging  = false;
+   isFinishLogging = false;
 }
 
-float CPUUsage::getUsage(){
-	return getUsage(0);
+void CPUUsage::startLoggingCPU()
+{
+   entries1.clear();
+   ReadStatsCPU(entries1);
+   isStartLogging = true;
 }
 
-
-float CPUUsage::getUsage(int cpuid){
-	if (!isFinishLogging){
-		std::cout << "CPUUsage::getUsage: logging does not finish yet!\n";
-		return -1;
-	}
-	const size_t NUM_ENTRIES = entries1.size();
-
-	if (cpuid < 0 || cpuid >= (int)NUM_ENTRIES){
-		std::cout << "CPUUsage::getUsage: wrong cpu index inputed!\n";
-		return -1;
-	}
-
-	const CPUData & e1 = entries1[cpuid];
-	const CPUData & e2 = entries2[cpuid];
-
-	const float ACTIVE_TIME = static_cast<float>(GetActiveTime(e2) - GetActiveTime(e1));
-	const float IDLE_TIME   = static_cast<float>(GetIdleTime(e2) - GetIdleTime(e1));
-	const float TOTAL_TIME  = ACTIVE_TIME + IDLE_TIME;
-
-	return ACTIVE_TIME/TOTAL_TIME;
-
+void CPUUsage::endLoggingCPU()
+{
+   if (!isStartLogging)
+   {
+      std::cout << "CPUUsage::endLoggingCPU: logging does not start yet!\n";
+      return;
+   }
+   entries2.clear();
+   ReadStatsCPU(entries2);
+   isFinishLogging = true;
 }
 
-void CPUUsage::printInfo(){
-	for (int i = 0; i < (int) entries1.size(); ++i)
-	{
-		const CPUData & e1 = entries1[i];
-		float active_usage = getUsage(i);
-		float idle_usage = 1 - active_usage;
-
-		std::cout.width(3);
-		std::cout << e1.cpu << "] ";
-
-		std::cout << "active: ";
-		std::cout.setf(std::ios::fixed, std::ios::floatfield);
-		std::cout.width(6);
-		std::cout.precision(2);
-		std::cout << (100.f * active_usage) << "%";
-
-		std::cout << " - idle: ";
-		std::cout.setf(std::ios::fixed, std::ios::floatfield);
-		std::cout.width(6);
-		std::cout.precision(2);
-		std::cout << (100.f * idle_usage) << "%" << std::endl;
-	}
+float CPUUsage::getUsage()
+{
+   return(getUsage(0));
 }
 
+float CPUUsage::getUsage(int cpuid)
+{
+   if (!isFinishLogging)
+   {
+      std::cout << "CPUUsage::getUsage: logging does not finish yet!\n";
+      return(-1);
+   }
+   const size_t NUM_ENTRIES = entries1.size();
+
+   if (cpuid < 0 || cpuid >= (int)NUM_ENTRIES)
+   {
+      std::cout << "CPUUsage::getUsage: wrong cpu index inputed!\n";
+      return(-1);
+   }
+
+   const CPUData& e1 = entries1[cpuid];
+   const CPUData& e2 = entries2[cpuid];
+
+   const float ACTIVE_TIME = static_cast <float>(GetActiveTime(e2) - GetActiveTime(e1));
+   const float IDLE_TIME   = static_cast <float>(GetIdleTime(e2) - GetIdleTime(e1));
+   const float TOTAL_TIME  = ACTIVE_TIME + IDLE_TIME;
+
+   return(ACTIVE_TIME / TOTAL_TIME);
+}
+
+void CPUUsage::printInfo()
+{
+   for (int i = 0; i < (int)entries1.size(); ++i)
+   {
+      const CPUData& e1           = entries1[i];
+      float          active_usage = getUsage(i);
+      float          idle_usage   = 1 - active_usage;
+
+      std::cout.width(3);
+      std::cout << e1.cpu << "] ";
+
+      std::cout << "active: ";
+      std::cout.setf(std::ios::fixed, std::ios::floatfield);
+      std::cout.width(6);
+      std::cout.precision(2);
+      std::cout << (100.f * active_usage) << "%";
+
+      std::cout << " - idle: ";
+      std::cout.setf(std::ios::fixed, std::ios::floatfield);
+      std::cout.width(6);
+      std::cout.precision(2);
+      std::cout << (100.f * idle_usage) << "%" << std::endl;
+   }
+}

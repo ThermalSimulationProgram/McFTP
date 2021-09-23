@@ -10,15 +10,17 @@
 
 
 using namespace std;
+
 /***************************************
- *        CLASS DEFINITION             * 
- ***************************************/
+*        CLASS DEFINITION             *
+***************************************/
 
 /*********** CONSTRUCTOR ***********/
 
 ///Constructor needs a pointer to simulation and id
-Aperiodic::Aperiodic(unsigned int id) : Dispatcher(id) {
-  releaseTime = TimeUtil::Millis(10); //default release time is 5 ms
+Aperiodic::Aperiodic(unsigned int id) : Dispatcher(id)
+{
+   releaseTime = TimeUtil::Millis(10); //default release time is 5 ms
 }
 
 /*********** INHERITED FUNCTIONS ***********/
@@ -26,42 +28,46 @@ Aperiodic::Aperiodic(unsigned int id) : Dispatcher(id) {
 /**** FROM DISPATCHER ****/
 
 ///This function was a flagged loop that activates the Worker according to the task periodicity
-void Aperiodic::dispatch() {
-  struct timespec rem;
+void Aperiodic::dispatch()
+{
+   struct timespec rem;
 
-  nanosleep(&releaseTime, &rem);
+   nanosleep(&releaseTime, &rem);
 
-  // #if _INFO == 1
-  // cout << "+Worker " << worker->getId() << " has new job!\n";
-  // #endif  
+   // #if _INFO == 1
+   // cout << "+Worker " << worker->getId() << " has new job!\n";
+   // #endif
 
-  // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
-  
-  if(processor != NULL) {
-    Task* t = createNewTask();
-    processor->newJob(t, TASK_TYPE);
-  }
-  else {
-    cout << "Dispatcher error: Processor is null!\n";
-  }
-  
-  //wait until simulation is done to free worker
-  do {
-    struct timespec aux = TimeUtil::Micros(Scratch::getDuration()) - releaseTime - offset;
-    nanosleep(&aux, &rem);
-  } while(Processor::isRunning());
-  
+   // Statistics::addTrace(dispatcher, worker->getId(), task_arrival);
 
+   if (processor != NULL)
+   {
+      Task *t = createNewTask();
+      processor->newJob(t, TASK_TYPE);
+   }
+   else
+   {
+      cout << "Dispatcher error: Processor is null!\n";
+   }
+
+   //wait until simulation is done to free worker
+   do
+   {
+      struct timespec aux = TimeUtil::Micros(Scratch::getDuration()) - releaseTime - offset;
+      nanosleep(&aux, &rem);
+   } while (Processor::isRunning());
 }
 
 /*********** GETTER AND SETTER FUNCTIONS ***********/
 
 ///This function returns the release time
-struct timespec Aperiodic::getReleaseTime() {
-  return releaseTime;
+struct timespec Aperiodic::getReleaseTime()
+{
+   return(releaseTime);
 }
 
 ///This function sets the release time for the aperiodic dispatcher
-void Aperiodic::setReleaseTime(struct timespec r) {
-  releaseTime = r;
+void Aperiodic::setReleaseTime(struct timespec r)
+{
+   releaseTime = r;
 }

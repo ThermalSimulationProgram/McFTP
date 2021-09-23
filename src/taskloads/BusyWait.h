@@ -1,5 +1,5 @@
 #ifndef BUSYWAIT_H
-#define BUSYWAIT_H 
+#define BUSYWAIT_H
 
 
 
@@ -8,34 +8,22 @@
 
 
 
-
-
-class BusyWait : public TaskLoad{
+class BusyWait : public TaskLoad {
 private:
 
-	unsigned long count;
+   unsigned long count;
 
-	MWC RND;
+   MWC RND;
 
 public:
-	BusyWait();
+   BusyWait();
 
-	virtual ~BusyWait();
+   virtual ~BusyWait();
 
-	// void setWCET();
+   // void setWCET();
 
-	bool runLoads(unsigned long _wcet_us, int i);
-
+   bool runLoads(unsigned long _wcet_us, int i);
 };
-
-
-
-
-
-
-
-
-
 
 
 

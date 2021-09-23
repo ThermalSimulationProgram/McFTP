@@ -1,5 +1,5 @@
 #ifndef EXECUTION_INTERRUPTER_H
-#define EXECUTION_INTERRUPTER_H 
+#define EXECUTION_INTERRUPTER_H
 
 
 
@@ -11,49 +11,46 @@
 #include "utils/TimeUtil.h"
 #include "utils/Operators.h"
 
-#define NOT_FIRED               0
-#define IS_EXECUTING            1
-#define IS_SLEEPING             2
+#define NOT_FIRED       0
+#define IS_EXECUTING    1
+#define IS_SLEEPING     2
 
 class Worker;
 
-class ExecutionInterrupter{
-
+class ExecutionInterrupter {
 protected:
-	sem_t suspend_sem;
+   sem_t suspend_sem;
 
-	sem_t resume_sem;
+   sem_t resume_sem;
 
-    sem_t papi_read_sem;
+   sem_t papi_read_sem;
 
-    sem_t state_sem;
+   sem_t state_sem;
 
-    int current_state;
+   int current_state;
 
-    std::list<int> resume_sem_sources;
+   std::list <int> resume_sem_sources;
 
-    sem_t source_vector_sem;
+   sem_t source_vector_sem;
 
-	struct timespec sleepEnd;
+   struct timespec sleepEnd;
 
-	Worker * worker;
+   Worker *worker;
 
 public:
-	ExecutionInterrupter();
+   ExecutionInterrupter();
 
-	void setWorker(Worker * w);
+   void setWorker(Worker *w);
 
-	void informExecutionBegin();
+   void informExecutionBegin();
 
-	void checkInterrupts();
+   void checkInterrupts();
 
-	void suspendExecution(const struct timespec& length);
+   void suspendExecution(const struct timespec &length);
 
-	void resumeExecution(int source);
+   void resumeExecution(int source);
 
-	void triggerPAPIReading(int source);
-
-
+   void triggerPAPIReading(int source);
 };
 
 

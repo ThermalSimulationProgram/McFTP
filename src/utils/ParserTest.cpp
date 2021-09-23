@@ -6,8 +6,10 @@
 
 using namespace std;
 
-void testParser(string xmlfile){
-	Parser* p = new Parser(xmlfile);
-	p->parseFile();
-	Scratch::print();
+void testParser(string xmlfile)
+{
+   Parser *p = new Parser(xmlfile);
+
+   p->parseFile();
+   Scratch::print();
 }

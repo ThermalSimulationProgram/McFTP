@@ -6,15 +6,19 @@
 
 using namespace std;
 
-SoftTemperatureSaveOption::SoftTemperatureSaveOption():TemperatureSaveOption(){
-	isSavePerformanceCounterValues = true;
+SoftTemperatureSaveOption::SoftTemperatureSaveOption() : TemperatureSaveOption()
+{
+   isSavePerformanceCounterValues = true;
 }
 
-SoftTemperatureSaveOption::~SoftTemperatureSaveOption(){}
+SoftTemperatureSaveOption::~SoftTemperatureSaveOption()
+{
+}
 
-void SoftTemperatureSaveOption::print(std::string name){
-	cout << name << ": " <<endl;
-	TemperatureSaveOption::dump();
-	cout << "isSavePerformanceCounterValues = " << isSavePerformanceCounterValues << endl;
-	dumpLinesSeperator();
+void SoftTemperatureSaveOption::print(std::string name)
+{
+   cout << name << ": " << endl;
+   TemperatureSaveOption::dump();
+   cout << "isSavePerformanceCounterValues = " << isSavePerformanceCounterValues << endl;
+   dumpLinesSeperator();
 }

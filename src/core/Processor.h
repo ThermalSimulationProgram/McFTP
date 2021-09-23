@@ -23,149 +23,146 @@ class PowerManager;
 // class CMI;
 
 
-class Processor{
+class Processor {
 protected:
-	// This attribute indicates if the processor is initialized
-	static bool initialized;
+   // This attribute indicates if the processor is initialized
+   static bool initialized;
 
-	// This attribute indicates if the processor is running
-	static bool running;
+   // This attribute indicates if the processor is running
+   static bool running;
 
-	CMI* cmi;
+   CMI *cmi;
 
-	// number of used cores, should be set in the xml file
-	int n_cores;
+   // number of used cores, should be set in the xml file
+   int n_cores;
 
-	// number of cpu cores in the hardware platform
-	int n_cpus;
+   // number of cpu cores in the hardware platform
+   int n_cpus;
 
-	// This vector stores the cpu core ids corresponding to each core
-	std::vector<unsigned> worker_cpu;
+   // This vector stores the cpu core ids corresponding to each core
+   std::vector <unsigned> worker_cpu;
 
-	// This vector stores pointers to workers. Each worker represents 
-	// a core.
-	std::vector<Worker*> workers;
+   // This vector stores pointers to workers. Each worker represents
+   // a core.
+   std::vector <Worker *> workers;
 
-	// Dispatchers release jobs to Processor
-	std::vector<Dispatcher*> dispatchers;
+   // Dispatchers release jobs to Processor
+   std::vector <Dispatcher *> dispatchers;
 
-	// JobQueue allTaskQueue;
-	std::vector<JobQueue> allTaskQueues;
+   // JobQueue allTaskQueue;
+   std::vector <JobQueue> allTaskQueues;
 
-	std::vector<sem_t> taskqueue_sems;
+   std::vector <sem_t> taskqueue_sems;
 
-	std::vector<sem_t> jobnumber_sems;
+   std::vector <sem_t> jobnumber_sems;
 
-	std::vector<sem_t> papireading_sems;
+   std::vector <sem_t> papireading_sems;
 
-	// ThermalApproach manages the execution of the workers
-	ThermalApproach* thermal_approach;
+   // ThermalApproach manages the execution of the workers
+   ThermalApproach *thermal_approach;
 
-	// TempWatcher periodically reads the temperatures of the cpu cores and 
-	// records them
-	TempWatcher *tempwatcher;
+   // TempWatcher periodically reads the temperatures of the cpu cores and
+   // records them
+   TempWatcher *tempwatcher;
 
-	// PowerManager controls the power dissipation of the cores according to
-	// StateTables given by thermal approaches
-	PowerManager * powermanager;
+   // PowerManager controls the power dissipation of the cores according to
+   // StateTables given by thermal approaches
+   PowerManager *powermanager;
 
-	// auxiliary variable to set main thread priority
-	struct sched_param param;
+   // auxiliary variable to set main thread priority
+   struct sched_param param;
 
-	// CPUUsage records cpu active and idle times, used to calculate cpu usage
-	CPUUsage cpuUsageRecorder;
+   // CPUUsage records cpu active and idle times, used to calculate cpu usage
+   CPUUsage cpuUsageRecorder;
 
-	// the number of created threads
-	int thread_num;
+   // the number of created threads
+   int thread_num;
 
 
-	int _isAppendSaveFile;
+   int _isAppendSaveFile;
 public:
 
-	static sem_t init_sem;
+   static sem_t init_sem;
 
-	static sem_t running_sem;
+   static sem_t running_sem;
 
-	// Constructor needs the cmi pointer
-	explicit Processor(CMI* cmi);
+   // Constructor needs the cmi pointer
+   explicit Processor(CMI *cmi);
 
-	// Constructor needs the cmi pointer and append file flag
-	explicit Processor(CMI* cmi, int);
+   // Constructor needs the cmi pointer and append file flag
+   explicit Processor(CMI *cmi, int);
 
-	~Processor();
+   ~Processor();
 
-	/************** Simulation interface functions ************/
-	// prepare for simulation, initialize statistics, dispatcher, scheduler
-	void initialize();
+   /************** Simulation interface functions ************/
+   // prepare for simulation, initialize statistics, dispatcher, scheduler
+   void initialize();
 
-	// explicitly set the CPUs to which the workers are attached 
-	void setWorkerCPU(std::vector<unsigned>);
+   // explicitly set the CPUs to which the workers are attached
+   void setWorkerCPU(std::vector <unsigned>);
 
-	// Start the simulation, the duration is loaded from Scratch class
-	double simulate();
+   // Start the simulation, the duration is loaded from Scratch class
+   double simulate();
 
-	// join other threads, wait them to finish
-	void join_all();
+   // join other threads, wait them to finish
+   void join_all();
 
-	void setThermalApproachPeriod(unsigned long period_us);
-	
-	/************** Simulation functions ************/
+   void setThermalApproachPeriod(unsigned long period_us);
 
-	bool taskMigration(int source_id, int target_id);
+   /************** Simulation functions ************/
 
-	void newJob(Task *, _task_type);
+   bool taskMigration(int source_id, int target_id);
 
-	void finishedJob(Task* t);
+   void newJob(Task *, _task_type);
 
-	void insertJobToQueue(int queueId, Task*);
+   void finishedJob(Task *t);
 
-	void preemptCurrentJobOnCore(int coreId);
+   void insertJobToQueue(int queueId, Task *);
 
-	Task* tryLoadJob(int workerId, struct timespec timeout);
+   void preemptCurrentJobOnCore(int coreId);
 
-	void updateStateTables(const std::vector<StateTable>& c);
+   Task *tryLoadJob(int workerId, struct timespec timeout);
 
-	void lockTaskQueue(int coreId);
+   void updateStateTables(const std::vector <StateTable>& c);
 
-	void unlockTaskQueue(int coreId);
+   void lockTaskQueue(int coreId);
 
-	void lockTaskQueues();
+   void unlockTaskQueue(int coreId);
 
-	void tryLockTaskQueues();
+   void lockTaskQueues();
 
-	void unlockTaskQueues();
+   void tryLockTaskQueues();
 
-	void lockAllWorkers();
+   void unlockTaskQueues();
 
-	void unlockAllWorkers();
+   void lockAllWorkers();
 
-	// Interface function to get member 'initialized'
-	static bool isInitialized();
+   void unlockAllWorkers();
 
-	// Interface function to get member 'running'
-	static bool isRunning();
+   // Interface function to get member 'initialized'
+   static bool isInitialized();
 
-	// This function collects all the information of the pipeline
-	// in the simulation
-	void getDynamicInfo(DynamicInfo& p);
+   // Interface function to get member 'running'
+   static bool isRunning();
 
-	std::vector<int> getAllTaskIds();
+   // This function collects all the information of the pipeline
+   // in the simulation
+   void getDynamicInfo(DynamicInfo& p);
 
-	int getWorkerNumber();
+   std::vector <int> getAllTaskIds();
 
-	JobQueue* getJobQueuePointer(int queueId);
+   int getWorkerNumber();
 
-	void triggerAllPAPIReading(int source);
+   JobQueue *getJobQueuePointer(int queueId);
 
-	void informPAPIReadingFinish(int workerId);
+   void triggerAllPAPIReading(int source);
 
-	int waitPAPIReading();
+   void informPAPIReadingFinish(int workerId);
 
-	void getPAPIValues(std::vector< std::vector<long long> >& values);
+   int waitPAPIReading();
 
-
+   void getPAPIValues(std::vector <std::vector <long long> >& values);
 };
-
 
 
 

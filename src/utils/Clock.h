@@ -2,9 +2,9 @@
 #define HSFCLOCK_H
 
 #if MONOTONIC == 1
-  #define HSF_CLOCK CLOCK_MONOTONIC
+  #define HSF_CLOCK    CLOCK_MONOTONIC
 #else
-  #define HSF_CLOCK CLOCK_REALTIME
+  #define HSF_CLOCK    CLOCK_REALTIME
 #endif
 
 #endif

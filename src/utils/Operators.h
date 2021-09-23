@@ -4,28 +4,28 @@
 #include <time.h>
 
 ///This operator multiplies a float with a timespec
-struct timespec operator*(double a, struct timespec b);
+struct timespec operator *(double a, struct timespec b);
 
 ///This operator adds two timespecs
-struct timespec operator+(const struct timespec& a, const struct timespec& b);
+struct timespec operator + (const struct timespec &a, const struct timespec& b);
 
 ///This operator subtracts two timespecs
-struct timespec operator-(const struct timespec& a, const struct timespec& b);
+struct timespec operator - (const struct timespec &a, const struct timespec& b);
 
-
-///This operator compares two timespecs 
-bool operator>(const struct timespec& a, const struct timespec& b);
 
 ///This operator compares two timespecs
-bool operator<(const struct timespec& a, const struct timespec& b);
+bool operator > (const struct timespec &a, const struct timespec& b);
 
 ///This operator compares two timespecs
-bool operator==(struct timespec a, struct timespec b);
+bool operator < (const struct timespec &a, const struct timespec& b);
 
 ///This operator compares two timespecs
-bool operator <=(struct timespec a, struct timespec b);
+bool operator == (struct timespec a, struct timespec b);
 
 ///This operator compares two timespecs
-bool operator >=(struct timespec a, struct timespec b);
+bool operator <= (struct timespec a, struct timespec b);
+
+///This operator compares two timespecs
+bool operator >= (struct timespec a, struct timespec b);
 
 #endif
