@@ -2,7 +2,7 @@
 #define VECTORED_DATA_H
 
 #include <vector>
-
+#include <string>
 #include <sstream>
 
 #include "utils/TimeUtil.h"
@@ -34,7 +34,7 @@ public:
    {
    }
 
-   void toString()
+   std::string toString()
    {
       std::stringstream sout;
 
