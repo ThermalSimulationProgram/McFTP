@@ -198,19 +198,19 @@ PFMLIBDIR=$(TOPDIR)/lib
 # -Wextra: to enable extra compiler sanity checks (e.g., signed vs. unsigned)
 # -Wno-unused-parameter: to avoid warnings on unused foo(void *this) parameter
 #
-DBG?=-g -Wall -Werror -Wextra -Wno-unused-parameter
+DBG?=-g -Wall -Wextra -Wno-unused-parameter
 
 ifeq ($(SYS),Darwin)
 # older gcc-4.2 does not like -Wextra and some of our initialization code
 # Xcode uses a gcc version which is too old for some static initializers
 CC=clang
-DBG?=-g -Wall -Werror
+DBG?=-g -Wall
 LDCONFIG=true
 endif
 
 ifeq ($(SYS),FreeBSD)
 # gcc-4.2 does not like -Wextra and some of our initialization code
-DBG=-g -Wall -Werror
+DBG=-g -Wall
 endif
 
 CFLAGS+=$(OPTIM) $(DBG) -I$(SYSINCDIR) -I$(PFMINCDIR)
