@@ -26,6 +26,8 @@ directory. For example, to disable reading hardware sensors, change line 3 to:
  make
  
  sudo make install-all
+ 
+ cd ../../../
 #### make and go to the program build directory
  mkdir build
  
