@@ -41,7 +41,7 @@ directory. For example, to disable reading hardware sensors, change line 3 to:
 #### first change the cpu frquency governor as userspace, if you want to control the cpu frequency
 a. sudo cpupower -c all frequency-set -g userspace 
 #### then go to the program directory
-b. cd build
+b. cd ../
 #### run the program 
 c. sudo ./mcftp XMLFILENAME  
 
