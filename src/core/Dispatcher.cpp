@@ -114,6 +114,7 @@ Task *Dispatcher::createNewTask()
    switch (taskdata._type)
    {
    case pipelined: {
+    
       Pipelined *newTask = new Pipelined(taskdata.wcets_us,
                                          taskdata._load_type, taskdata.getLoadId(), taskdata.taskId,
                                          jobCounter, taskdata.relativeDeadline);

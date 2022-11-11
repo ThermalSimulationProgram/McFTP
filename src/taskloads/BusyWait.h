@@ -22,7 +22,7 @@ public:
 
    // void setWCET();
 
-   bool runLoads(unsigned long _wcet_us, int i);
+   bool runLoads(unsigned long _wcet_us);
 };
 
 

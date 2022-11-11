@@ -31,8 +31,11 @@ Task::Task(_task_type type, _task_load_type load, int loadId, int _taskId,
    worker   = NULL;
    finished = false;
 
+   printf("Inside Task::Task, task_load_type=%d\n", task_load_type);
+
    switch (task_load_type)
    {
+
    case busywait: {
       BusyWait *newload = new BusyWait();
       loads = (TaskLoad *)newload;
@@ -40,6 +43,7 @@ Task::Task(_task_type type, _task_load_type load, int loadId, int _taskId,
    }
 
    case benchmark: {
+      printf("Creating benchmark!\n");
       Benchmark *newload = new Benchmark("hyperbolic");
       loads = (TaskLoad *)newload;
       break;

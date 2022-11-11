@@ -18,7 +18,7 @@ BusyWait::~BusyWait()
 {
 }
 
-bool BusyWait::runLoads(unsigned long _wcet_us, int j)
+bool BusyWait::runLoads(unsigned long _wcet_us)
 {
    initCheckCounter();
    //unsigned long fire_start = TimeUtil::convert_us(TimeUtil::getTime());

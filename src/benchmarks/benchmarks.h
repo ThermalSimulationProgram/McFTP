@@ -19,15 +19,15 @@
 #define PR_ALL                    (PR_ERROR | PR_INFO | PR_DEBUG | PR_FAIL)
 
 #define _VER_(major, minor, patchlevel) \
-   ((major * 10000) + (minor * 100) + patchlevel)
+    ((major * 10000) + (minor * 100) + patchlevel)
 
 #if defined(__GNUC__) && defined(__GNUC_MINOR__)
 #if defined(__GNUC_PATCHLEVEL__)
 #define NEED_GNUC(major, minor, patchlevel) \
-   _VER_(major, minor, patchlevel) <= _VER_(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)
+    _VER_(major, minor, patchlevel) <= _VER_(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)
 #else
 #define NEED_GNUC(major, minor, patchlevel) \
-   _VER_(major, minor, patchlevel) <= _VER_(__GNUC__, __GNUC_MINOR__, 0)
+    _VER_(major, minor, patchlevel) <= _VER_(__GNUC__, __GNUC_MINOR__, 0)
 #endif
 #else
 #define NEED_GNUC(major, minor, patchlevel)    (0)
@@ -67,8 +67,8 @@ typedef void (*stress_cpu_func)(const char *name);
 
 typedef struct
 {
-   const char *          name;          // human readable form of stressor
-   const stress_cpu_func func;          /* the stressor function */
+    const char *          name;         // human readable form of stressor
+    const stress_cpu_func func;         /* the stressor function */
 } stress_cpu_stressor_info_t;
 
 
@@ -81,10 +81,10 @@ void stress_cpu_queens(const char *name);
 
 
 uint32_t queens_try(
-   uint32_t left_diag,
-   uint32_t cols,
-   uint32_t right_diag,
-   uint32_t all);
+    uint32_t left_diag,
+    uint32_t cols,
+    uint32_t right_diag,
+    uint32_t all);
 
 
 /*
@@ -148,10 +148,10 @@ void HOT OPTIMIZE3 stress_cpu_phi(const char *name);
  *    partial Fast Fourier Transform
  */
 void HOT OPTIMIZE3 fft_partial(
-   std::complex < double > *data,
-   std::complex < double > *tmp,
-   const int n,
-   const int m);
+    std::complex < double > *data,
+    std::complex < double > *tmp,
+    const int n,
+    const int m);
 
 
 /*
@@ -178,10 +178,10 @@ void random_buffer(uint8_t *data, const size_t len);
  *	stress test generic string hash function
  */
 void stress_cpu_hash_generic(
-   const char *name,
-   const char *hash_name,
-   uint32_t (*hash_func)(const char *str),
-   const uint32_t result);
+    const char *name,
+    const char *hash_name,
+    uint32_t (*hash_func)(const char *str),
+    const uint32_t result);
 
 /*
  *  jenkin()
@@ -253,33 +253,33 @@ void stress_cpu_sdbm(const char *name);
 void HOT OPTIMIZE3 stress_cpu_idct(const char *name);
 
 #define int_ops(a, b, c1, c2, c3) \
-   do {                           \
-      a  += b;                    \
-      b  ^= a;                    \
-      a >>= 1;                    \
-      b <<= 2;                    \
-      b  -= a;                    \
-      a  ^= ~0;                   \
-      b  ^= ~(c1);                \
-      a  *= 3;                    \
-      b  *= 7;                    \
-      a  += 2;                    \
-      b  -= 3;                    \
-      a  /= 77;                   \
-      b  /= 3;                    \
-      a <<= 1;                    \
-      b <<= 2;                    \
-      a  |= 1;                    \
-      b  |= 3;                    \
-      a  *= RND.mwc32();          \
-      b  ^= RND.mwc32();          \
-      a  += RND.mwc32();          \
-      b  -= RND.mwc32();          \
-      a  /= 7;                    \
-      b  /= 9;                    \
-      a  |= (c2);                 \
-      b  &= (c3);                 \
-   } while (0);
+    do {                          \
+        a  += b;                  \
+        b  ^= a;                  \
+        a >>= 1;                  \
+        b <<= 2;                  \
+        b  -= a;                  \
+        a  ^= ~0;                 \
+        b  ^= ~(c1);              \
+        a  *= 3;                  \
+        b  *= 7;                  \
+        a  += 2;                  \
+        b  -= 3;                  \
+        a  /= 77;                 \
+        b  /= 3;                  \
+        a <<= 1;                  \
+        b <<= 2;                  \
+        a  |= 1;                  \
+        b  |= 3;                  \
+        a  *= RND.mwc32();        \
+        b  ^= RND.mwc32();        \
+        a  += RND.mwc32();        \
+        b  -= RND.mwc32();        \
+        a  /= 7;                  \
+        b  /= 9;                  \
+        a  |= (c2);               \
+        b  &= (c3);               \
+    } while (0);
 
 #define C1    (0xf0f0f0f0f0f0f0f0ULL)
 #define C2    (0x1000100010001000ULL)
@@ -290,23 +290,23 @@ void HOT OPTIMIZE3 stress_cpu_idct(const char *name);
 template < typename T >
 void HOT OPTIMIZE3 stress_cpu_int_unit(T _a, T _b, T _c1, T _c2, T _c3)
 {
-   const T mask = ~0;
-   // const T a_final = _a;
-   // const T b_final = _b;
-   const T    c1 = _c1 & mask;
-   const T    c2 = _c2 & mask;
-   const T    c3 = _c3 & mask;
-   register T a, b;
-   int        i;
-   MWC        RND = MWC();
+    const T mask = ~0;
+    // const T a_final = _a;
+    // const T b_final = _b;
+    const T    c1 = _c1 & mask;
+    const T    c2 = _c2 & mask;
+    const T    c3 = _c3 & mask;
+    register T a, b;
+    int        i;
+    MWC        RND = MWC();
 
-   a = RND.mwc32();
-   b = RND.mwc32();
+    a = RND.mwc32();
+    b = RND.mwc32();
 
-   for (i = 0; i < 80; i++)
-   {
-      int_ops(a, b, c1, c2, c3)
-   }
+    for (i = 0; i < 80; i++)
+    {
+        int_ops(a, b, c1, c2, c3)
+    }
 }
 
 void stress_cpu_int(const char *name);
@@ -315,22 +315,22 @@ void stress_cpu_int(const char *name);
 template < typename T >
 void float_ops(T&  a, T&  b, T&  c, T&  d)
 {
-   a = a + b;
-   b = a * c;
-   c = a - b;
-   d = a / b;
-   a = c / (T)0.1923;
-   b = c + a;
-   c = b * (T)3.12;
-   d = d + b + (T)sin(a);
-   a = (b + c) / c;
-   b = b * c;
-   c = c + (T)1.0;
-   d = d - (T)sin(c);
-   a = a * (T)cos(b);
-   b = b + (T)cos(c);
-   c = (T)sin(a) / (T)2.344;
-   b = d - (T)1.0;
+    a = a + b;
+    b = a * c;
+    c = a - b;
+    d = a / b;
+    a = c / (T)0.1923;
+    b = c + a;
+    c = b * (T)3.12;
+    d = d + b + (T)sin(a);
+    a = (b + c) / c;
+    b = b * c;
+    c = c + (T)1.0;
+    d = d - (T)sin(c);
+    a = a * (T)cos(b);
+    b = b + (T)cos(c);
+    c = (T)sin(a) / (T)2.344;
+    b = d - (T)1.0;
 }
 
 //template<typename T>
@@ -415,25 +415,25 @@ void HOT OPTIMIZE3 stress_cpu_correlate(const char *name);
  */
 static inline HOT OPTIMIZE3 bool is_prime(uint32_t n)
 {
-   register uint32_t i, max;
+    register uint32_t i, max;
 
-   if (n <= 3)
-   {
-      return(n >= 2);
-   }
-   if ((n % 2 == 0) || (n % 3 == 0))
-   {
-      return(false);
-   }
-   max = sqrt(n) + 1;
-   for (i = 5; i < max; i += 6)
-   {
-      if ((n % i == 0) || (n % (i + 2) == 0))
-      {
-         return(false);
-      }
-   }
-   return(true);
+    if (n <= 3)
+    {
+        return(n >= 2);
+    }
+    if ((n % 2 == 0) || (n % 3 == 0))
+    {
+        return(false);
+    }
+    max = sqrt(n) + 1;
+    for (i = 5; i < max; i += 6)
+    {
+        if ((n % i == 0) || (n % (i + 2) == 0))
+        {
+            return(false);
+        }
+    }
+    return(true);
 }
 
 /*
@@ -491,42 +491,42 @@ HOT OPTIMIZE3 void stress_cpu_all(const char *name);
  */
 const stress_cpu_stressor_info_t cpu_methods[36] =
 {
-   { "all",        stress_cpu_all         },            /* Special "all test */
-   { "ackermann",  stress_cpu_ackermann   },
-   { "bitops",     stress_cpu_bitops      },
-   { "correlate",  stress_cpu_correlate   },
-   { "crc16",      stress_cpu_crc16       },
-   { "djb2a",      stress_cpu_djb2a       },
-   { "euler",      stress_cpu_euler       },
-   { "explog",     stress_cpu_explog      },
-   { "fft",        stress_cpu_fft         },
-   { "fibonacci",  stress_cpu_fibonacci   },
-   { "float",      stress_cpu_fp          },
-   { "fnv1a",      stress_cpu_fnv1a       },
-   { "gcd",        stress_cpu_gcd         },
-   { "hamming",    stress_cpu_hamming     },
-   { "hyperbolic", stress_cpu_hyperbolic  },
-   { "idct",       stress_cpu_idct        },
-   { "int",        stress_cpu_int         },
-   { "jenkin",     stress_cpu_jenkin      },
-   { "jmp",        stress_cpu_jmp         },
-   { "ln2",        stress_cpu_ln2         },
-   { "loop",       stress_cpu_loop        },
-   { "matrixprod", stress_cpu_matrix_prod },
-   { "nsqrt",      stress_cpu_nsqrt       },
-   { "omega",      stress_cpu_omega       },
-   { "phi",        stress_cpu_phi         },
-   { "pi",         stress_cpu_pi          },
-   { "pjw",        stress_cpu_pjw         },
-   { "prime",      stress_cpu_prime       },
-   { "psi",        stress_cpu_psi         },
-   { "queens",     stress_cpu_queens      },
-   { "rand48",     stress_cpu_rand48      },
-   { "sdbm",       stress_cpu_sdbm        },
-   { "sqrt",       stress_cpu_sqrt        },
-   { "trig",       stress_cpu_trig        },
-   { "union",      stress_cpu_union       },
-   { NULL,         NULL                   }
+    { "all",        stress_cpu_all         },           /* Special "all test */
+    { "ackermann",  stress_cpu_ackermann   },
+    { "bitops",     stress_cpu_bitops      },
+    { "correlate",  stress_cpu_correlate   },
+    { "crc16",      stress_cpu_crc16       },
+    { "djb2a",      stress_cpu_djb2a       },
+    { "euler",      stress_cpu_euler       },
+    { "explog",     stress_cpu_explog      },
+    { "fft",        stress_cpu_fft         },
+    { "fibonacci",  stress_cpu_fibonacci   },
+    { "float",      stress_cpu_fp          },
+    { "fnv1a",      stress_cpu_fnv1a       },
+    { "gcd",        stress_cpu_gcd         },
+    { "hamming",    stress_cpu_hamming     },
+    { "hyperbolic", stress_cpu_hyperbolic  },
+    { "idct",       stress_cpu_idct        },
+    { "int",        stress_cpu_int         },
+    { "jenkin",     stress_cpu_jenkin      },
+    { "jmp",        stress_cpu_jmp         },
+    { "ln2",        stress_cpu_ln2         },
+    { "loop",       stress_cpu_loop        },
+    { "matrixprod", stress_cpu_matrix_prod },
+    { "nsqrt",      stress_cpu_nsqrt       },
+    { "omega",      stress_cpu_omega       },
+    { "phi",        stress_cpu_phi         },
+    { "pi",         stress_cpu_pi          },
+    { "pjw",        stress_cpu_pjw         },
+    { "prime",      stress_cpu_prime       },
+    { "psi",        stress_cpu_psi         },
+    { "queens",     stress_cpu_queens      },
+    { "rand48",     stress_cpu_rand48      },
+    { "sdbm",       stress_cpu_sdbm        },
+    { "sqrt",       stress_cpu_sqrt        },
+    { "trig",       stress_cpu_trig        },
+    { "union",      stress_cpu_union       },
+    { NULL,         NULL                   }
 };
 
 #define NUMBERSTRESSOR    34
@@ -537,56 +537,56 @@ private:
 /*
  * Table of cpu stress methods
  */
-   const stress_cpu_stressor_info_t methods[35] =
-   {
-      { "all",        stress_cpu_all         },         /* Special "all test */
-      { "ackermann",  stress_cpu_ackermann   },
-      { "bitops",     stress_cpu_bitops      },
-      { "correlate",  stress_cpu_correlate   },
-      { "crc16",      stress_cpu_crc16       },
-      { "djb2a",      stress_cpu_djb2a       },
-      { "euler",      stress_cpu_euler       },
-      { "explog",     stress_cpu_explog      },
-      { "fft",        stress_cpu_fft         },
-      { "fibonacci",  stress_cpu_fibonacci   },
-      { "float",      stress_cpu_fp          },
-      { "fnv1a",      stress_cpu_fnv1a       },
-      { "gcd",        stress_cpu_gcd         },
-      { "hamming",    stress_cpu_hamming     },
-      { "hyperbolic", stress_cpu_hyperbolic  },
-      { "idct",       stress_cpu_idct        },
-      { "int",        stress_cpu_int         },
-      { "jenkin",     stress_cpu_jenkin      },
-      { "jmp",        stress_cpu_jmp         },
-      { "ln2",        stress_cpu_ln2         },
-      { "loop",       stress_cpu_loop        },
-      { "matrixprod", stress_cpu_matrix_prod },
-      { "nsqrt",      stress_cpu_nsqrt       },
-      { "omega",      stress_cpu_omega       },
-      { "phi",        stress_cpu_phi         },
-      { "pi",         stress_cpu_pi          },
-      { "pjw",        stress_cpu_pjw         },
-      { "prime",      stress_cpu_prime       },
-      { "psi",        stress_cpu_psi         },
-      { "queens",     stress_cpu_queens      },
-      { "sdbm",       stress_cpu_sdbm        },
-      { "sqrt",       stress_cpu_sqrt        },
-      { "trig",       stress_cpu_trig        },
-      { "union",      stress_cpu_union       },
-      { NULL,         NULL                   }
-   };
-   int numberStressor;
-   int index;
+    const stress_cpu_stressor_info_t methods[35] =
+    {
+        { "all",        stress_cpu_all         },       /* Special "all test */
+        { "ackermann",  stress_cpu_ackermann   },
+        { "bitops",     stress_cpu_bitops      },
+        { "correlate",  stress_cpu_correlate   },
+        { "crc16",      stress_cpu_crc16       },
+        { "djb2a",      stress_cpu_djb2a       },
+        { "euler",      stress_cpu_euler       },
+        { "explog",     stress_cpu_explog      },
+        { "fft",        stress_cpu_fft         },
+        { "fibonacci",  stress_cpu_fibonacci   },
+        { "float",      stress_cpu_fp          },
+        { "fnv1a",      stress_cpu_fnv1a       },
+        { "gcd",        stress_cpu_gcd         },
+        { "hamming",    stress_cpu_hamming     },
+        { "hyperbolic", stress_cpu_hyperbolic  },
+        { "idct",       stress_cpu_idct        },
+        { "int",        stress_cpu_int         },
+        { "jenkin",     stress_cpu_jenkin      },
+        { "jmp",        stress_cpu_jmp         },
+        { "ln2",        stress_cpu_ln2         },
+        { "loop",       stress_cpu_loop        },
+        { "matrixprod", stress_cpu_matrix_prod },
+        { "nsqrt",      stress_cpu_nsqrt       },
+        { "omega",      stress_cpu_omega       },
+        { "phi",        stress_cpu_phi         },
+        { "pi",         stress_cpu_pi          },
+        { "pjw",        stress_cpu_pjw         },
+        { "prime",      stress_cpu_prime       },
+        { "psi",        stress_cpu_psi         },
+        { "queens",     stress_cpu_queens      },
+        { "sdbm",       stress_cpu_sdbm        },
+        { "sqrt",       stress_cpu_sqrt        },
+        { "trig",       stress_cpu_trig        },
+        { "union",      stress_cpu_union       },
+        { NULL,         NULL                   }
+    };
+    int numberStressor;
+    int index;
 public:
-   CPUStressor();
+    CPUStressor();
 
-   void stressOnce();
+    void stressOnce();
 
-   void stressWithBenchmark(int index);
+    void stressWithBenchmark(int index);
 
-   int getBenchmarkNumber();
+    int getBenchmarkNumber();
 
-   std::string getBenchmarkName(int id);
+    std::string getBenchmarkName(int id);
 };
 
 int getBenchmarkId(std::string name);

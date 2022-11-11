@@ -69,7 +69,7 @@ public:
 
    // void  trigerPAPIReading(int source);
 
-   virtual bool runLoads(unsigned long _wcet_us, int);
+   virtual bool runLoads(unsigned long _wcet_us);
 
    void setSuspendPoint();
 

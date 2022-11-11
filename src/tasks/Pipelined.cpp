@@ -44,7 +44,7 @@ bool Pipelined::fire(int i)
 {
    int current_core_id = worker->getId();
 
-   bool isfinished = loads->runLoads(wcet_us[current_core_id], i);
+   bool isfinished = loads->runLoads(wcet_us[current_core_id]);
 
    if (current_core_id == (int)wcet_us.size() - 1)
    {

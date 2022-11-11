@@ -25,6 +25,7 @@ SingleCore::SingleCore(unsigned long _wcet_us, _task_load_type load, int loadId,
 
 bool SingleCore::fire(int i)
 {
-   finished = loads->runLoads(wcet_us, i);
+	// printf("Inside singlecore::fire, id=%d\n", i);
+   finished = loads->runLoads(wcet_us);
    return(finished);
 }

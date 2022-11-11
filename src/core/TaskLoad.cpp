@@ -51,11 +51,11 @@ TaskLoad::~TaskLoad()
 bool TaskLoad::LoadsInterface(unsigned long _wcet_us)
 {
    initCheckCounter();
-   runLoads(_wcet_us, 1);
+   runLoads(_wcet_us);
    return(true);
 }
 
-bool TaskLoad::runLoads(unsigned long _wcet_us, int i)
+bool TaskLoad::runLoads(unsigned long _wcet_us)
 {
    std::cout << "TaskLoad::runLoads: This should not print!\n";
    return(false);
